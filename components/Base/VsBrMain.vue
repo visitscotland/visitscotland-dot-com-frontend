@@ -53,7 +53,13 @@ if (page.value) {
 
     const componentModels = component.value.getModels();
 
-    // globally important config items should be passed to the store here
+    /**
+     * As a quirk of the data structure in the resourceApi, this main component receives all
+     * of the labels, as well as things like the is-business-events flag, the locale and gtm
+     * information. As a lot of this is needed in the menu and footer components, the easiest
+     * way to make it available globally is to place it in this configStore at the point this
+     * component is mounted, which can then be queried anywhere.
+     */
 
     configStore.pageMetaData = componentModels.metadata;
 

@@ -39,6 +39,12 @@
 /* eslint vue/component-name-in-template-casing: 0 */
 /* eslint no-undef: 0 */
 
+/**
+ * As the core of the vue application booted up by nuxt, this component manages all of the
+ * communication with the bloomreach resourceApi instance and scaffolds out the component. It
+ * also renders the skeleton which is displayed until the site has been mounted.
+ */
+
 import axios from 'axios';
 
 import {
@@ -51,21 +57,30 @@ import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
 
-const app = getCurrentInstance();
-const emitter = mitt();
-app.appContext.config.globalProperties.emitter = emitter;
+/**
+ * This section sets up all of the information we need to make available for the Bloomreach SDK
+ * to make a connection to the resourceApi. Once it is all gathered and bundled into the
+ * configuration object, we then pass it as a prop to the br-page component and everything is
+ * handled by the SDK internally.
+ */
 
+/**
+ * The current path, which is then transformed into a resource api endpoint to get from the CMS
+ */
 const route = useRoute().path;
 
+/**
+ * The endpoint, and a host name which is only needed in prod to ensure different servers can
+ * communicate
+ */
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 
-const isMounted = ref(false);
-
-onMounted(() => {
-  isMounted.value = true;
-});
-
+/**
+ * The query parameter names which the cms is set to use in preview mode, so we can retrieve the
+ * correct flags from the preview iframe url to request preview data from the cms / show edit
+ * buttons.
+ */
 const PREVIEW_TOKEN_KEY = 'token';
 const PREVIEW_SERVER_ID_KEY = 'server-id';
 
@@ -78,12 +93,21 @@ if (window && window.location) {
   serverId = searchParams.get(PREVIEW_SERVER_ID_KEY);
 }
 
+/**
+ * This object retrieves the runtimeConfig object from nuxt.config, making set values from the .env
+ * file available at runtime
+ */ 
 const runtimeConfig = useRuntimeConfig();
 
 if (process.server && xForwardedhost.value) {
   axios.defaults.headers.common.Host = xForwardedhost.value;
 }
 
+/**
+ * The actual constructed configuration object, with all necessary information to retrieve the
+ * current page's information from the resourceApi, along with debug and preview flags and our
+ * httpClient of choice
+ */
 const configuration = {
   path: route,
   endpoint: endpoint.value,
@@ -100,11 +124,47 @@ const configuration = {
   debug: runtimeConfig.public.BR_NUXT_APP_DEBUG === 'true',
 };
 
+/**
+ * This object maps Bloomreach Components in the CMS data to a set of Vue components. It is
+ * passed to the br-page object as a prop, and we can then render each of those components by
+ * name as a br-component object, as in the template above.
+ * 
+ * It would be possible to render every aspect of the site here with this mapping, but in most
+ * of our projects the main CMS data isn't constructed using Bloomreach Components. As such, we
+ * only get passed the 3 core components: menu, main and footer. Within each of those the component
+ * receives a `component` prop, which can be interrogated for a set of child models, and within
+ * those sit the menu data (in the case of the menu and footer) and the full set of `pageItems`
+ * which contain our modules in the case of main.
+ */
 const mapping = {
   menu: VsBrMenu,
   main: VsBrMain,
   footer: VsBrFooter,
 };
+
+/**
+ * Sets a flag that indicates the whole component has been mounted, and the skeleton site
+ * can be removed.
+ */
+
+const isMounted = ref(false);
+
+onMounted(() => {
+  isMounted.value = true;
+});
+
+/**
+ * The event bus in the component library relies on a third party library called Mitt, which
+ * must be attached to the vue app globally to make it available for use. Within the component
+ * library repo we ensure that it is available for tests and for storybook, and in the freemarker
+ * applications we attach it to the core app in main.js, but as components are consumed in
+ * library mode here it isn't provided by the library. As such it has to be set here.
+ */
+
+const app = getCurrentInstance();
+const emitter = mitt();
+app.appContext.config.globalProperties.emitter = emitter;
+
 </script>
 
 <style lang="scss">
