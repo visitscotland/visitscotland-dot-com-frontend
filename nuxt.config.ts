@@ -48,13 +48,13 @@ export default defineNuxtConfig({
         disableOptionsAPI: true,
     },
     css: [
-        '@visitscotland/component-library-export/components/style.css',
-        '@visitscotland/component-library-export/components/fonts.css',
+        '@visitscotland/component-library/components/style.css',
+        '@visitscotland/component-library/components/fonts.css',
     ],
     build: {
         transpile: [
             'bootstrap-vue-next',
-            '@visitscotland/component-library-export',
+            '@visitscotland/component-library',
         ],
     },
     experimental: {
