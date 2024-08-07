@@ -98,6 +98,21 @@ if (page.value) {
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
+        title: document.model.data.seoTitle,
+        meta: [
+            {
+                name: 'title',
+                content: document.model.data.seoTitle,
+            },
+            {
+                name: 'description',
+                content: document.model.data.seoDescription,
+            },
+            {
+                name: 'robots',
+                content: document.model.data.noIndex ? 'noindex' : '',
+            },
+        ],
         htmlAttrs: {
             lang: langString,
             'data-version': configStore.pageMetaData.version,
