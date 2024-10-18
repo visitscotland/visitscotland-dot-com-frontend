@@ -19,7 +19,7 @@
     "*.{js,vue,ts}": "eslint"
   },
   "devDependencies": {
-    "@nuxt/eslint-config": "^0.3.13",
+    "@nuxt/eslint-config": "^0.5.0",
     "@nuxtjs/dotenv": "^1.4.2",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@vue/eslint-config-airbnb": "^8.0.0",
@@ -32,7 +32,7 @@
     "@bloomreach/spa-sdk": "^23.3.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^0.5.1",
-    "@visitscotland/component-library": "^3.0.14",
+    "@visitscotland/component-library": "^3.3.7",
     "axios": "^1.7.2",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
@@ -42,6 +42,7 @@
     "pinia": "^2.1.7",
     "sass": "^1.77.4",
     "standard-version": "^9.5.0",
+    "typescript": "^5.6.3",
     "youtube-vue3": "^0.1.15"
   },
   "overrides": {
