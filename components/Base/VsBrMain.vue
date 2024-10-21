@@ -8,7 +8,7 @@
         />
 
         <VsBrGtm />
-        
+
         <h1>Main component</h1>
     </div>
 </template>
@@ -65,7 +65,7 @@ if (page.value) {
 
     // configStore.isBusinessEvents = componentModels['business-events'];
     // configStore.pageItems = componentModels.pageItems;
-    // configStore.labels = componentModels.labels;
+    configStore.labels = componentModels.labels;
 
     document = page.value.getDocument();
 
