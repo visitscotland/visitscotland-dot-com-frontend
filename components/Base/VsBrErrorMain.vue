@@ -23,9 +23,9 @@ const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
 
-let pageComponent : any = {
-};
-let pageName : string = '';
+// let pageComponent : any = {
+// };
+// let pageName : string = '';
 
 let document : any = {
 };
@@ -38,15 +38,15 @@ const errorData = {
 const configStore = useConfigStore();
 
 if (page.value) {
-    pageComponent = page.value.getComponent();
-    pageName = pageComponent.model.name;
+    // pageComponent = page.value.getComponent();
+    // pageName = pageComponent.model.name;
 
     const event = useRequestEvent();
     setResponseStatus(event, 500, 'Something Went Wrong');
 
     const componentModels = component.value.getModels();
 
-    configStore.isBusinessEvents = componentModels['business-events'];
+    configStore.activeSite = componentModels['site-id'];
     configStore.labels = componentModels.labels;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;

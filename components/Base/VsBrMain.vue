@@ -63,7 +63,7 @@ if (page.value) {
 
     configStore.pageMetaData = componentModels.metadata;
 
-    // configStore.isBusinessEvents = componentModels['business-events'];
+    configStore.activeSite = componentModels['site-id'];
     // configStore.pageItems = componentModels.pageItems;
     configStore.labels = componentModels.labels;
 
