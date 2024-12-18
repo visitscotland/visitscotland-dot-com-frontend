@@ -6,7 +6,22 @@
                 :active-site="configStore.activeSite === 'be'
                     ? 'https://businessevents.visitscotland.com/'
                     : 'https://www.visitscotland.com/'"
-            />
+            >
+                <template #third-menu-item>
+                    <VsGlobalMenuLanguage
+                        :language="configStore.locale"
+                        :language-label="configStore.getLabel('navigation.static', 'universal.language')"
+                    >
+                        <VsGlobalMenuLanguageItem
+                            v-for="(language, index) in localisedUrls"
+                            :key="index"
+                            :language-link="language.url"
+                            :language-name="language.displayName"
+                            :language="language.locale.language"
+                        />
+                    </VsGlobalMenuLanguage>
+                </template>
+            </VsGlobalMenu>
 
             <BrManageMenuButton :menu="menuData" />
 
@@ -64,6 +79,8 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import {
     VsGlobalMenu,
+    VsGlobalMenuLanguage,
+    VsGlobalMenuLanguageItem,
     VsMeganav,
     VsMegaNavStaticLink,
     VsAccordion,
@@ -81,6 +98,7 @@ let menu = {
 let menuData : any = {
 };
 let menuItems : any[] = [];
+let localisedUrls : any[] = [];
 
 const configStore = useConfigStore();
 
@@ -88,5 +106,6 @@ if (page.value) {
     menu = component.value.getModels().menu;
     menuData = page.value.getContent(menu.$ref);
     menuItems = menuData.items;
+    localisedUrls = component.value.getModels().localizedURLs;
 }
 </script>
