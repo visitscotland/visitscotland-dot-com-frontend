@@ -1,7 +1,7 @@
 <template>
     <div>
         <VsBrSkeleton
-            v-show="!isMounted"
+            v-show="!hideSkeleton"
         />
         <div
             class="hydrate"
@@ -26,12 +26,6 @@
                 </template>
             </br-page>
         </div>
-        <noscript>
-            <component :is="'style'">
-            .skeleton-site { display: none !important }
-            .hydrate { display: block !important }
-            </component>
-        </noscript>
     </div>
 </template>
 
@@ -63,6 +57,9 @@ import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
  * configuration object, we then pass it as a prop to the br-page component and everything is
  * handled by the SDK internally.
  */
+const app = getCurrentInstance();
+const emitter = mitt();
+app.appContext.config.globalProperties.emitter = emitter;
 
 /**
  * The current path, which is then transformed into a resource api endpoint to get from the CMS
@@ -75,6 +72,33 @@ const route = useRoute().path;
  */
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
+
+let locale = '/site/resourceapi';
+
+const localeStrings = [
+    'fr-fr',
+    'es-es',
+    'nl-nl',
+    'de-de',
+];
+
+const isMounted = ref(false);
+const hideSkeleton = ref(false);
+
+onMounted(() => {
+    isMounted.value = true;
+});
+
+let deLocalisedRoute = route;
+
+for (let x = 0; x < localeStrings.length; x++) {
+    if (route.includes(localeStrings[x])) {
+        locale = `/site/${localeStrings[x]}/resourceapi`;
+        deLocalisedRoute = deLocalisedRoute.replace(`/${localeStrings[x]}`, '');
+    }
+}
+
+const localisedEndpoint = endpoint.value + locale;
 
 /**
  * The query parameter names which the cms is set to use in preview mode, so we can retrieve the
@@ -110,7 +134,7 @@ if (process.server && xForwardedhost.value) {
  */
 const configuration = {
     path: route,
-    endpoint: endpoint.value,
+    endpoint: localisedEndpoint,
     httpClient: axios,
     ...(authorizationToken ? {
         authorizationToken,
@@ -141,38 +165,20 @@ const mapping = {
     main: VsBrMain,
     footer: VsBrFooter,
 };
-
-/**
- * Sets a flag that indicates the whole component has been mounted, and the skeleton site
- * can be removed.
- */
-
-const isMounted = ref(false);
-
-onMounted(() => {
-    isMounted.value = true;
-});
-
-/**
- * The event bus in the component library relies on a third party library called Mitt, which
- * must be attached to the vue app globally to make it available for use. Within the component
- * library repo we ensure that it is available for tests and for storybook, and in the freemarker
- * applications we attach it to the core app in main.js, but as components are consumed in
- * library mode here it isn't provided by the library. As such it has to be set here.
- */
-
-const app = getCurrentInstance();
-const emitter = mitt();
-app.appContext.config.globalProperties.emitter = emitter;
-
 </script>
 
 <style lang="scss">
-  .has-edit-button {
-      position: relative;
+    .has-edit-button {
+        position: relative;
 
-      &.vs-sticky-nav {
-          top: 0;
-      }
-  }
+        &.vs-sticky-nav {
+            top: 0;
+        }
+    }
+
+    .hydrate {
+        z-index: 2;
+        position: relative;
+        background-color: white;
+    }
 </style>

@@ -2,24 +2,34 @@ import { defineStore } from 'pinia';
 
 interface IConfigState {
     activeSite: string,
-    // pageItems: any[],
+    productSearch: any,
+    otyml: any,
+    pageItems: any[],
     labels: any,
+    newsletterSignpost: any,
     gtm: any,
+    locale: string,
     pageMetaData: any,
 }
 
 const useConfigStore = defineStore('configStore', {
     state: (): IConfigState => ({
         activeSite: '',
-        // pageItems: [],
+        productSearch: {
+        },
+        otyml: null,
+        pageItems: [],
         labels: {
         },
+        newsletterSignpost: {
+        },
         gtm: null,
+        locale: '',
         pageMetaData: {
         },
     }),
     actions: {
-        getLabel(section: string, key: string): string {
+        getLabel(section: string, key: string) {
             if (!this.labels || !this.labels[section]) {
                 return '';
             }

@@ -1,24 +1,104 @@
 <template>
-    <div class="vs-sticky-nav" :class="{ 'has-edit-button': page.isPreview() }">
-        <header>
-            <h1>Footer component</h1>
-        </header>
-
-        <!-- <BrManageMenuButton :menu="menuData" /> -->
-
-        <!-- <ul>
-            <li
+    <VsFooter :class="{ 'has-edit-button': page.isPreview() }">
+        <template #accordion-items>
+            <VsCol
                 v-for="(menuItem, index) in menuItems"
                 :key="index"
+                cols="12"
+                md="4"
+                lg="3"
             >
-                <a
-                    :href="menuItem.getUrl()"
+                <VsFooterAccordionItem
+                    :title="menuItem.model.title ? menuItem.model.title : ''"
+                    :control-id="`footer_accordion_item${index}`"
                 >
-                    {{ menuItem.model.title }}
-                </a>
-            </li>
-        </ul> -->
-    </div>
+                    <template #icon-open>
+                        <VsIcon
+                            name="chevron"
+                            variant="inverse"
+                            size="xs"
+                        />
+                    </template>
+
+                    <template #icon-closed>
+                        <VsIcon
+                            name="chevron"
+                            orientation="down"
+                            variant="inverse"
+                            size="xs"
+                        />
+                    </template>
+
+                    <VsList
+                        v-if="menuItem.loadedChildren.length"
+                        unstyled
+                        role="menu"
+                    >
+                        <template
+                            v-for="(childItem, childIndex) in menuItem.loadedChildren"
+                            :key="childIndex"
+                        >
+                            <VsFooterNavListItem
+                                v-if="childItem.model.title"
+                                :href="childItem.getUrl()"
+                                :link-text="childItem.model.title"
+                                :type="childItem.model.links.site && childItem.model.links.site.type === 'external'
+                                    ? childItem.model.links.site.type
+                                    : 'default'"
+                            />
+                        </template>
+                    </VsList>
+                </VsFooterAccordionItem>
+            </VsCol>
+        </template>
+
+        <BrManageMenuButton :menu="menuData" />
+
+        <template #social-menu>
+            <VsFooterSocialMenu
+                v-if="configStore.labels"
+            >
+                <template #title>
+                    Find us on
+                </template>
+
+                <VsFooterSocialItem
+                    v-for="(link, key, index) in configStore.labels['navigation.social-media']"
+                    :key="index"
+                    :href="link"
+                    :icon="key === 'twitter' ? 'x-twitter' : key"
+                />
+            </vsfootersocialmenu>
+        </template>
+
+        <template
+            v-for="(utilityMenu, index) in utilityMenuItems"
+            :key="index"
+        >
+            <VsFooterUtilityList>
+                <BrManageMenuButton :menu="utilityData" />
+                <VsFooterNavListItem
+                    v-for="(utilityItem, childIndex) in utilityMenu.children"
+                    :key="childIndex"
+                    :href="utilityItem.getUrl()"
+                    :link-text="utilityItem.model.title"
+                    :type="utilityItem.model.links.site && utilityItem.model.links.site.type === 'external'
+                        ? utilityItem.model.links.site.type
+                        : 'default'"
+                />
+            </VsFooterUtilityList>
+        </template>
+
+        <VsFooterCopyright
+            href="https://www.scotland.org/"
+            :link-alt-text="configStore.getLabel('navigation.static', 'footer.logo-alt-text')"
+        >
+            <template #copyright>
+                VisitScotland. All rights reserved.
+            </template>
+        </VsFooterCopyright>
+    </VsFooter>
+    <VsCookieChecker />
 
     <Suspense
         v-if="isMounted"
@@ -36,25 +116,59 @@ import {
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
+import useConfigStore from '~/stores/configStore.ts';
+
+import {
+    VsFooter,
+    VsFooterAccordionItem,
+    VsFooterNavListItem,
+    VsFooterSocialMenu,
+    VsFooterSocialItem,
+    VsFooterCopyright,
+    VsFooterUtilityList,
+    VsList,
+    VsIcon,
+    VsCol,
+    VsCookieChecker,
+} from '@visitscotland/component-library/components';
+
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
 
-// let menu = {
-//     $ref: '',
-// };
-// let menuData : any = {
-// };
-// let menuItems : any[] = [];
+const configStore = useConfigStore();
+
+let menu = {
+    $ref: '',
+};
+let menuData : any = {
+};
+let menuItems : any[] = [];
+let utilityData : any = {
+};
+let utilityMenuItems : any[] = [];
 
 if (page.value) {
-    // Menu content can be retrieved from the models on the sdk core Menu component
-    // like so
-    // Multiple menus may exist depending on the site
+    menu = component.value.getModels().menu;
+    if (menu) {
+        menuData = page.value.getContent(menu.$ref);
+        menuItems = menuData.items;
 
-    // menu = component.value.getModels().menu;
-    // menuData = page.value.getContent(menu.$ref);
-    // menuItems = menuData.items;
+        for (let x = 0; x < menuItems.length; x++) {
+            menuItems[x].loadedChildren = menuItems[x].getChildren();
+        }
+    }
+
+    let children : any[] = [];
+
+    children = component.value.getChildren();
+
+    for (let x = 0; x < children.length; x++) {
+        if (children[x].model.name === 'utility' && children[x].model.models.menu) {
+            utilityData = page.value.getContent(children[x].model.models.menu.$ref);
+            utilityMenuItems = utilityData.items;
+        }
+    }
 }
 
 const isMounted = ref(false);

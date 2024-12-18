@@ -30,6 +30,9 @@ export default defineNuxtConfig({
             cssCodeSplit: true,
         },
     },
+    vue: {
+        runtimeCompiler: true,
+    },
     components: [
         {
             path: '~/components',
@@ -56,8 +59,5 @@ export default defineNuxtConfig({
             'bootstrap-vue-next',
             '@visitscotland/component-library',
         ],
-    },
-    experimental: {
-        inlineSSRStyles: false,
     },
 });

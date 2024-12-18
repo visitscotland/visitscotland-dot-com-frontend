@@ -1,0 +1,277 @@
+{
+    "content": {
+        "heading": "Submit your RFP",
+        "successHeading": "Thanks for signing up",
+        "successContent": "",
+        "noJs": "<p><strong>You need JavaScript enabled to be able to display this form.</strong></p> <p>You can enable this in your browser settings.</p>",
+        "submit": "Complete Sign-Up"
+    },
+    "fields": [
+        {
+            "name": "first_name",
+            "element": "input",
+            "type": "text",
+            "label": "First Name *",
+            "validation": {
+                "required": true,
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "surname",
+            "element": "input",
+            "type": "text",
+            "label": "Surname *",
+            "validation": {
+                "required": true,
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "organisation_or_association",
+            "element": "input",
+            "type": "text",
+            "label": "Organisation Or Association *",
+            "validation": {
+                "required": true,
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "position",
+            "element": "input",
+            "type": "text",
+            "label": "Position *",
+            "validation": {
+                "required": true,
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "address_line_1",
+            "element": "input",
+            "type": "text",
+            "label": "Address Line 1 *",
+            "validation": {
+                "required": true,
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "address_line_2",
+            "element": "input",
+            "type": "text",
+            "label": "Address Line 2",
+            "validation": {
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "address_line_3",
+            "element": "input",
+            "type": "text",
+            "label": "Address Line 3",
+            "validation": {
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "city",
+            "element": "input",
+            "type": "text",
+            "label": "City *",
+            "validation": {
+                "required": true,
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "postcode",
+            "element": "input",
+            "type": "text",
+            "label": "Postcode *",
+            "validation": {
+                "required": true,
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "Country",
+            "element": "select",
+            "countries": true,
+            "label": "Country *",
+            "validation": {
+                "required": true
+            },
+            "validationMessages": {
+                "required": "Please choose a country"
+            }
+        },
+        {
+            "name": "your_telephone_number",
+            "element": "input",
+            "type": "text",
+            "label": "Your Telephone Number *",
+            "validation": {
+                "required": true,
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "email",
+            "element": "input",
+            "type": "email",
+            "label": "Email *",
+            "validation": {
+                "required": true,
+                "email": true,
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "website",
+            "element": "input",
+            "type": "text",
+            "label": "Website",
+            "validation": {
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "title_of_event",
+            "element": "input",
+            "type": "text",
+            "label": "Title Of Event *",
+            "validation": {
+                "required": true,
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "type_of_event",
+            "element": "input",
+            "type": "select",
+            "label": "Type Of Event *",
+            "validation": {
+                "required": true
+            },
+            "options": [
+                {
+                    "value": "Accommodation",
+                    "text": "Accommodation"
+                },
+                {
+                    "value": "Meeting",
+                    "text": "Meeting"
+                },
+                {
+                    "value": "Conference",
+                    "text": "Conference"
+                },
+                {
+                    "value": "Dinner",
+                    "text": "Dinner"
+                },
+                {
+                    "value": "Product Launch",
+                    "text": "Product Launch"
+                },
+                {
+                    "value": "Exhibition",
+                    "text": "Exhibition"
+                },
+                {
+                    "value": "Reception",
+                    "text": "Reception"
+                },
+                {
+                    "value": "Incentive",
+                    "text": "Incentive"
+                },
+                {
+                    "value": "Seminar",
+                    "text": "Seminar"
+                },
+                {
+                    "value": "Team Building",
+                    "text": "Team Building"
+                },
+                {
+                    "value": "Other",
+                    "text": "Other"
+                }
+            ]
+        },
+        {
+            "name": "proposed_date_of_event",
+            "element": "input",
+            "type": "text",
+            "label": "Proposed Date(s) Of Event",
+            "validation": {
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "detail_of_your_programme",
+            "element": "input",
+            "type": "text",
+            "label": "Detail Of Your Programme",
+            "validation": {
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "additional_information",
+            "element": "input",
+            "type": "text",
+            "label": "Additional Information",
+            "validation": {
+                "maxLength": "255"
+            }
+        },
+        {
+            "name": "min_number_of_delegates",
+            "element": "input",
+            "type": "number",
+            "label": "Min. No. Of Delegates",
+            "validation": {
+                "min": "0",
+                "max": "100000"
+            }
+        },
+        {
+            "name": "max_number_of_delegates",
+            "element": "input",
+            "type": "number",
+            "label": "Max. No. Of Delegates",
+            "validation": {
+                "min": "0",
+                "max": "100000"
+            }
+        },{
+            "name": "residential_or_non_residential",
+            "element": "input",
+            "type": "select",
+            "label": "Residention Or Non-Residential",
+            "options": [
+                {
+                    "value": "Residential",
+                    "text": "Residential"
+                },
+                {
+                    "value": "Non-residential",
+                    "text": "Non-residential"
+                }
+            ]
+        },
+        {
+            "name": "location",
+            "element": "input",
+            "type": "text",
+            "label": "Location",
+            "validation": {
+                "maxLength": "255"
+            }
+        }
+    ]
+}
