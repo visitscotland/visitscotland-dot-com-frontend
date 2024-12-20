@@ -4,7 +4,7 @@
         :key="index"
     >
         <VsMegaNavDropdownContainer
-            :href="`/${menuItem.getUrl() ? menuItem.getUrl() : menuItem.model.name}`"
+            :href="`${menuItem.getUrl() ? menuItem.getUrl() : menuItem.model.name}`"
             :cta-text="menuItem.model.cta ? menuItem.model.cta : ''"
         >
             <template #button-content>
@@ -21,8 +21,8 @@
                         <VsMegaNavListItem
                             v-for="(gChildItem, gChildIndex) in childItem.children"
                             :key="gChildIndex"
-                            v-show="gChildItem.title"
-                            :href="`/${gChildItem.getUrl() ? gChildItem.getUrl() : gChildItem.model.name}`"
+                            v-show="gChildItem.model.title"
+                            :href="`${gChildItem.getUrl() ? gChildItem.getUrl() : gChildItem.model.name}`"
                         >
                             {{ gChildItem.model.title }}
                         </VsMegaNavListItem>
@@ -33,7 +33,7 @@
                         v-if="childItem.model.cta"
                     >
                         <VsMegaNavListItem
-                            :href="`/${childItem.getUrl() ? childItem.getUrl() : childItem.model.name}`"
+                            :href="`${childItem.getUrl() ? childItem.getUrl() : childItem.model.name}`"
                             subheading-link
                         >
                             {{ childItem.model.cta }}
