@@ -16,6 +16,7 @@
                     v-for="(childItem, childIndex) in menuItem.children"
                     :key="childIndex"
                     v-show="childItem.model.title"
+                    :list-heading="childItem.model.title"
                 >
                     <template #nav-list-items>
                         <VsMegaNavListItem
