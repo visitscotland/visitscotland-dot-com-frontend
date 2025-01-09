@@ -144,7 +144,7 @@ if (modules) {
         }
 
         modules[x].themeIndex = newThemeIndex;
-        modules[x].themeValue = themeCalculator(newThemeIndex, modules[x]);
+        modules[x].themeValue = themeCalculator(newThemeIndex);
 
         if (modules[x].hippoBean) {
             hippoContent[x] = page.getContent(modules[x].hippoBean);
