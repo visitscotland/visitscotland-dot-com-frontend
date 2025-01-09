@@ -61,6 +61,14 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
+        <VsBrSocialShare
+            :no-js="true"
+        />
+    </NuxtLazyHydrate>
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
         <VsBrHorizontalLinksModule
             v-if="otyml"
             :module="otyml"
@@ -90,6 +98,7 @@ import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
+import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 

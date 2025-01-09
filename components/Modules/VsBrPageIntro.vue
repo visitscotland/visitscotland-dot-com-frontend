@@ -68,7 +68,13 @@
             />
         </template>
 
-        <!-- TODO - Share Button -->
+        <template
+            #vs-share-button
+        >
+            <VsBrSocialShare
+                :no-js="false"
+            />
+        </template>
 
         <template
             #vs-intro-content
