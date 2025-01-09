@@ -20,6 +20,12 @@
             :component="component"
         />
 
+        <VsBrDestination
+            v-if="pageName === 'destination-page'"
+            :page="page"
+            :component="component"
+        />
+
         <VsBr404
             v-else-if="pageName === 'pagenotfound'"
             :page="page"
@@ -44,6 +50,7 @@ import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
+import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr404 from '~/components/PageTypes/VsBr404.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
