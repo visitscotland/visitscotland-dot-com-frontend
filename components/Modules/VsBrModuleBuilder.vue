@@ -82,6 +82,14 @@
             />
         </NuxtLazyHydrate>
 
+        <Suspense
+            v-else-if="item.type === 'MapsModule'"
+        >
+            <component
+                :is="VsBrMap"
+            />
+        </Suspense>
+
         <div
             v-else-if="item.type === 'ErrorModule'"
         >
@@ -98,7 +106,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from 'vue';
+import { inject, defineAsyncComponent } from 'vue';
 
 import type { Page } from '@bloomreach/spa-sdk';
 import { BrManageContentButton } from '@bloomreach/vue3-sdk';
@@ -113,6 +121,8 @@ import VsBrForm from '~/components/Modules/VsBrForm.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
+
+const VsBrMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMap.vue'));
 
 const props = defineProps<{
     modules: any[],
