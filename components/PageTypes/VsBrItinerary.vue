@@ -1,0 +1,198 @@
+<template>
+    <VsBrPageIntro
+        :content="documentData"
+        :hero-image="heroImage"
+        :light-background="true"
+        :itinerary="itinerary"
+    />
+
+    <VsItinerary>
+        <template #map>
+            Map
+        </template>
+        <template #list>
+            <VsItineraryDay
+                v-for="(day, index) in itinerary.days"
+                :key="index"
+                :day-number="`${index + 1}`"
+                :day-label="configStore.getLabel('itinerary', 'day')"
+                :day-title="day.title"
+            >
+                <template
+                    #day-introduction
+                    v-if="day.introduction"
+                >
+                    <div
+                        v-html="day.introduction.value"
+                    />
+                </template>
+
+                <template
+                    #day-transport
+                    v-if="day.transports"
+                >
+                    <VsDescriptionList
+                        class="text-center justify-content-center mb-075 has-edit-button"
+                        inline
+                    >
+                        <VsDescriptionListItem
+                            title
+                            class="col-auto px-0"
+                        >
+                            {{ configStore.getLabel("itinerary", "transport") }}
+                        </VsDescriptionListItem>
+
+                        <VsDescriptionListItem
+                            class="col-auto px-0"
+                            v-for="(transport, index) in day.transports"
+                            :key="index"
+                        >
+                            <VsTooltip
+                                :title="configStore.getLabel('transports', '${transport}')"
+                                href="#"
+                                :icon="transport"
+                                size="sm"
+                                icon-only
+                                variant="transparent"
+                            >
+                                <span class="visually-hidden">
+                                    {{ configStore.getLabel("transports", "${transport}") }}
+                                </span>
+                            </VsTooltip>
+                        </VsDescriptionListItem>
+                    </VsDescriptionList>
+                </template>
+
+                <template
+                    #stops
+                    v-if="day.stops"
+                >
+                    <VsBrItineraryStop
+                        v-for="(stop, index) in day.stops"
+                        :key="index"
+                        :stop="stop"
+                        isLastStop="index === day.stops.length - 1"
+                    />
+                </template>
+            </VsItineraryDay>
+        </template>
+    </VsItinerary>
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
+        <VsBrSocialShare
+            :no-js="true"
+        />
+    </NuxtLazyHydrate>
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
+        <VsBrProductSearch
+            v-if="productSearch"
+            class="mt-300 mt-lg-600"
+        />
+    </NuxtLazyHydrate>
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
+        <VsBrHorizontalLinksModule
+            v-if="otyml"
+            :module="otyml"
+            theme="light"
+        />
+    </NuxtLazyHydrate>
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
+        <VsBrNewsletterSignpost
+            v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
+            :data="configStore.newsletterSignpost"
+        />
+    </NuxtLazyHydrate>
+</template>
+
+<script lang="ts" setup>
+import { toRefs } from 'vue';
+import type { Component, Page } from '@bloomreach/spa-sdk';
+
+import useConfigStore from '~/stores/configStore.ts';
+
+import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
+import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
+import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
+import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
+import VsBrItineraryStop from '~/components/Modules/VsBrItineraryStop.vue';
+
+import {
+    VsItinerary,
+    VsItineraryDay,
+    VsDescriptionList,
+    VsDescriptionListItem,
+    VsTooltip,
+} from '@visitscotland/component-library/components';
+
+const props = defineProps<{ component: Component, page: Page }>();
+
+const { page, component } = toRefs(props);
+
+let document : any = {
+};
+let documentData : any = {
+};
+let productSearch : any = {
+};
+let heroImage = {
+};
+let otyml : any = null;
+
+const configStore = useConfigStore();
+
+let itinerary = {
+};
+
+if (page.value) {
+    document = page.value.getDocument();
+    documentData = document.getData();
+    productSearch = configStore.productSearch;
+    heroImage = documentData.heroImage;
+    if (configStore.otyml) {
+        otyml = configStore.otyml;
+    }
+
+    if (component.value) {
+        itinerary = component.value.model.models.itinerary;
+
+        if (itinerary.days) {
+            const allStops = [];
+
+            for (let x = 0; x < Object.keys(itinerary.stops).length; x++) {
+                const nextStop = itinerary.stops[Object.keys(itinerary.stops)[x]];
+
+                allStops[nextStop.hippoBean.$ref] = nextStop;
+            }
+
+            for (let x = 0; x < itinerary.days.length; x++) {
+                if (itinerary.days[x].$ref) {
+                    itinerary.days[x] = page.value.getContent(itinerary.days[x]);
+                }
+                if (itinerary.days[x].model) {
+                    itinerary.days[x] = itinerary.days[x].model.data;
+                }
+
+                if (itinerary.days[x].stops) {
+                    for (let y = 0; y < itinerary.days[x].stops.length; y++) {
+                        if (itinerary.days[x].stops[y].$ref) {
+                            itinerary.days[x].stops[y] = allStops[itinerary.days[x].stops[y].$ref];
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+</script>

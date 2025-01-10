@@ -19,8 +19,8 @@
         </template>
 
         <VsImg
-            v-if="imageValue"
-            :src="imageValue.getOriginal().getUrl()"
+            v-if="imageSrc"
+            :src="imageSrc"
             :alt="noAltText
                 ? configStore.getLabel('essentials.global', 'default.alt-text')
                 : imageData.altText"
@@ -101,7 +101,8 @@ import useConfigStore from '~/stores/configStore.ts';
 const configStore = useConfigStore();
 
 interface IProps {
-    image: any,
+    image?: any,
+    imageString?: string,
     variant?: string,
     isHero?: boolean,
     isVideo?: boolean,
@@ -114,9 +115,12 @@ interface IProps {
     useLazyLoading?: boolean,
     noAltText?: boolean
     showToggle?: boolean
+    fullImageData?: string,
 };
 
 const props = withDefaults(defineProps<IProps>(), {
+    image: null,
+    imageString: '',
     variant: 'fullwidth',
     isHero: false,
     isVideo: false,
@@ -129,10 +133,12 @@ const props = withDefaults(defineProps<IProps>(), {
     videoId: '',
     videoTitle: '',
     videoBtn: '',
+    fullImageData: '',
 });
 
 const {
     image,
+    imageString,
     variant,
     isHero,
     isVideo,
@@ -145,15 +151,28 @@ const {
     useLazyLoading,
     noAltText,
     showToggle,
+    fullImageData,
 } = toRefs(props);
 
 const page: Page | undefined = inject('page');
 let imageValue: any;
 let imageData: any;
 
-if (page && image && image.value) {
-    imageValue = page.getContent(image.value.$ref);
-    imageData = imageValue.model.data;
-}
+let imageSrc = '';
 
+if (page) {
+    if (image.value) {
+        imageValue = page.getContent(image.value.$ref);
+        imageData = imageValue.model.data;
+        imageSrc = imageValue.getOriginal().getUrl();
+    }
+
+    if (imageString.value) {
+        imageSrc = imageString;
+    }
+
+    if (fullImageData.value) {
+        imageData = fullImageData;
+    }
+}
 </script>

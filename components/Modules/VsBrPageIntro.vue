@@ -83,13 +83,73 @@
         </template>
 
         <!-- TODO - Itinerary Summary -->
+
+        <template
+            v-if="itinerary"
+            #vs-intro-start-finish
+        >
+            <dt class="list-inline-item">
+                {{ configStore.getLabel("itinerary", "start-finish") }}
+            </dt>
+            <dd class="list-inline-item">
+                {{ itinerary.firstStopLocation }} / {{ itinerary.lastStopLocation }}
+            </dd>
+        </template>
+
+        <template
+            v-if="itinerary"
+            #vs-intro-summary-box
+        >
+            <VsBrItinerarySummaryBox
+                :itinerary="itinerary"
+            />
+        </template>
+
+        <template
+            v-if="itinerary && areas"
+            #vs-intro-lower
+        >
+            <VsContainer>
+                <VsRow>
+                    <VsCol cols="12" lg="5" xl="6" offset-lg="1">
+                        <VsDescriptionList class="mb-150">
+                            <VsDescriptionListItem title>
+                                {{ configStore.getLabel("itinerary", "highlights") }}
+                            </VsDescriptionListItem>
+
+                            <VsDescriptionListItem
+                                v-for="(highlight, index) in highlights"
+                                :key="index"
+                            >
+                                {{ highlight }}
+                            </VsDescriptionListItem>
+                        </VsDescriptionList>
+
+                        <VsDescriptionList class="mb-200">
+                            <VsDescriptionListItem title>
+                                {{ configStore.getLabel("itinerary", "areas-covered") }}
+                            </VsDescriptionListItem>
+
+                            <VsDescriptionListItem
+                                v-for="(area, index) in areas"
+                                :key="index"
+                            >
+                                {{ configStore.getLabel("areas", area) }}
+                            </VsDescriptionListItem>
+                        </VsDescriptionList>
+                    </VsCol>
+                </VsRow>
+            </VsContainer>
+        </template>
     </VsPageIntro>
 </template>
 
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
 
-import { VsPageIntro, VsBlogDetails } from '@visitscotland/component-library/components';
+import {
+    VsPageIntro, VsBlogDetails, VsContainer, VsRow, VsCol, VsDescriptionList, VsDescriptionListItem,
+} from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 import themeCalculator from '~/composables/themeCalculator.ts';
@@ -99,6 +159,7 @@ import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue'
 import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
 import VsBrVideoModal from '~/components/Modules/VsBrVideoModal.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrItinerarySummaryBox from '~/components/Modules/VsBrItinerarySummaryBox.vue';
 
 const configStore = useConfigStore();
 
@@ -123,6 +184,10 @@ let blogDate : string;
 
 let heroVideo : any;
 let youtubeId : string = '';
+
+let document : any = null;
+let areas : [];
+let highlights : [];
 
 if (page) {
     const pageContent : any = page.getContent(page.model.root);
@@ -165,6 +230,13 @@ if (page) {
                 youtubeId = extractYoutubeId(heroVideo.url);
             }
         }
+    }
+
+    document = page.getDocument();
+
+    if (document) {
+        areas = document.model.data.areas;
+        highlights = document.model.data.highlights;
     }
 }
 </script>
