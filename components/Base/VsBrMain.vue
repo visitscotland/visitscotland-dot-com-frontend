@@ -32,6 +32,12 @@
             :component="component"
         />
 
+        <VsBrListicle
+            v-if="pageName === 'listicle-page'"
+            :page="page"
+            :component="component"
+        />
+
         <VsBr404
             v-else-if="pageName === 'pagenotfound'"
             :page="page"
