@@ -1,5 +1,5 @@
 <template>
-    <template v-if="id">
+    <template v-if="id && !isPreviewMode">
         <noscript>
             <iframe
             :src="`https://www.googletagmanager.com/ns.html?id=${id}${queryString}`"
@@ -33,7 +33,13 @@ if (configStore.gtm) {
         : configStore.gtm['gtm.preview-query-string'];
 }
 
-if (id) {
+let isPreviewMode = false;
+
+if (page && page.isPreview()) {
+    isPreviewMode = true;
+}
+
+if (id && !isPreviewMode) {
     useHead({
         script: [
             `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -45,7 +51,7 @@ if (id) {
     });
 }
 
-if (page && page.isPreview() && window) {
+if (isPreviewMode && window) {
     window.bypassCookieChecks = true;
 }
 
