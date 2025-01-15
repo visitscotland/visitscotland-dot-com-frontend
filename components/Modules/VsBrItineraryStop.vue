@@ -97,13 +97,29 @@
             </VsIconList>
         </template>
 
-        <!-- <template
+        <template
             #stop-buttons
+            v-if="isLastStop"
         >
             <VsItineraryBorderOverlapWrapper>
-                Buttons
+                <!-- TODO - Generate urls for these - productSearchBuilder? -->
+                <VsButton
+                    class="mb-075"
+                    variant="secondary"
+                    icon="food"
+                    href="#"
+                >
+                    {{ configStore.getLabel("itinerary", "stop.nearby-eat") }}
+                </VsButton>
+                <VsButton
+                    variant="secondary"
+                    icon="product-accommodation"
+                    href="#"
+                >
+                    {{ configStore.getLabel("itinerary", "stop.nearby-stay") }}
+                </VsButton>
             </VsItineraryBorderOverlapWrapper>
-        </template> -->
+        </template>
     </VsItineraryStop>
 </template>
 
@@ -119,13 +135,17 @@ import {
     VsDescriptionListItem,
     VsLink,
     VsAddress,
+    VsItineraryBorderOverlapWrapper,
+    VsButton,
 } from '@visitscotland/component-library/components';
 
 const props = defineProps<{
     stop: any,
+    isLastStop?: boolean,
 }>();
 
 const configStore = useConfigStore();
 
 const stop: any = props.stop;
+const isLastStop: boolean = props.isLastStop || false;
 </script>

@@ -68,10 +68,10 @@
                     v-if="day.stops"
                 >
                     <VsBrItineraryStop
-                        v-for="(stop, index) in day.stops"
-                        :key="index"
+                        v-for="(stop, stopsIndex) in day.stops"
+                        :key="stopsIndex"
                         :stop="stop"
-                        isLastStop="index === day.stops.length - 1"
+                        :is-last-stop="stopsIndex === day.stops.length - 1"
                     />
                 </template>
             </VsItineraryDay>
