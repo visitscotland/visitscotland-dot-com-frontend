@@ -82,6 +82,33 @@
             />
         </NuxtLazyHydrate>
 
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'TravelInformationModule'"
+        >
+            <VsBrTravelInformationModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'ICentreModule'"
+        >
+            <VsBrTourismInformationModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'IKnowModule'"
+        >
+            <VsBrIknowCommunityModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
         <Suspense
             v-else-if="item.type === 'MapsModule'"
         >
@@ -115,6 +142,9 @@ import VsBrListLinksModule from '~/components/Modules/VsBrListLinksModule.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksModule.vue';
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
+import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
+import VsBrTourismInformationModule from '~/components/Modules/VsBrTourismInformationModule.vue';
+import VsBrIknowCommunityModule from '~/components/Modules/VsBrIknowCommunityModule.vue';
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
 import VsBrForm from '~/components/Modules/VsBrForm.vue';

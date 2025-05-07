@@ -1,0 +1,49 @@
+<template>
+    <VsTabItem :title="tab.title">
+        <div class="px-075 px-md-150 px-lg-300 px-xl-400 pt-200 pb-125">
+            <VsAccordion>
+                <VsAccordionItem
+                    v-for="(row, rowIndex) in tab.travelInformationTransportRows"
+                    :key="rowIndex"
+                    :open-by-default="rowIndex === 0 ? true : false"
+                    variant="transparent"
+                    :control-id="`{accordion-item-${row.transport.key}-${rowIndex}`"
+                    :class="rowIndex === 0 ? 'border-top-0' : ''"
+                >
+                    <template #title>
+                        <VsIcon
+                            :name="row.transport.key"
+                            size="sm"
+                            class="me-050"
+                        />
+                        {{ row.transport.label }}
+                    </template>
+                    <template #icon-open>
+                        <VsIcon name="chevron" size="sm" />
+                    </template>
+                    <template #icon-closed>
+                        <VsIcon name="chevron" orientation="down" size="sm" />
+                    </template>
+                    <div
+                        class="p-075"
+                        v-html="row.copy.value"
+                    />
+                </VsAccordionItem>
+            </VsAccordion>
+        </div>
+    </VsTabItem>
+</template>
+
+<script lang="ts" setup>
+
+import {
+    VsTabItem,
+    VsAccordion,
+    VsAccordionItem,
+    VsIcon,
+} from '@visitscotland/component-library/components';
+
+const props = defineProps<{ tab: Object }>();
+const tab: any = props.tab;
+
+</script>
