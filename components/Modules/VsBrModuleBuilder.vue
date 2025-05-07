@@ -104,9 +104,7 @@
             :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'IKnowModule'"
         >
-            <VsBrIknowCommunityModule
-                :module="item"
-            />
+            IKnow
         </NuxtLazyHydrate>
 
         <Suspense
@@ -144,7 +142,6 @@ import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksM
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
 import VsBrTourismInformationModule from '~/components/Modules/VsBrTourismInformationModule.vue';
-import VsBrIknowCommunityModule from '~/components/Modules/VsBrIknowCommunityModule.vue';
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
 import VsBrForm from '~/components/Modules/VsBrForm.vue';
