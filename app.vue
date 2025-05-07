@@ -26,6 +26,12 @@
                 </template>
             </br-page>
         </div>
+        <noscript>
+            <component :is="'style'">
+            .skeleton-site { display: none !important }
+            .hydrate { display: block !important }
+            </component>
+        </noscript>
     </div>
 </template>
 
@@ -87,6 +93,9 @@ const hideSkeleton = ref(false);
 
 onMounted(() => {
     isMounted.value = true;
+
+    const hydrationEvent = new Event('vs-app-hydrated');
+    window.dispatchEvent(hydrationEvent);
 });
 
 let deLocalisedRoute = route;
