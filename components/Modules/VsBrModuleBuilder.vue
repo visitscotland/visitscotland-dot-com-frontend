@@ -18,7 +18,7 @@
                 :when-visible="{ rootMargin: '50px' }"
             >
                 <VsBrListLinksModule
-                    v-if="hippoContent[index].model.data.layout === 'List'"
+                    v-if="hippoContent[index].model.data.layout === 'List' || hippoContent[index].model.data.layout === 'Default'"
                     :module="item"
                     :theme="item.themeValue"
                 />
