@@ -115,6 +115,24 @@
             />
         </Suspense>
 
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'SkiListModule'"
+        >
+            <VsBrSkiListModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'SkiModule'"
+        >
+            <VsBrSkiModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
         <div
             v-else-if="item.type === 'ErrorModule'"
         >
@@ -144,6 +162,8 @@ import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformat
 import VsBrTourismInformationModule from '~/components/Modules/VsBrTourismInformationModule.vue';
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
+import VsBrSkiListModule from '~/components/Modules/VsBrSkiListModule.vue';
+import VsBrSkiModule from '~/components/Modules/VsBrSkiModule.vue';
 import VsBrForm from '~/components/Modules/VsBrForm.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
