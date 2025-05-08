@@ -133,6 +133,15 @@
             />
         </NuxtLazyHydrate>
 
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'CannedSearchModule'"
+        >
+            <VsBrCannedSearchModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
         <div
             v-else-if="item.type === 'ErrorModule'"
         >
@@ -165,6 +174,7 @@ import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
 import VsBrSkiListModule from '~/components/Modules/VsBrSkiListModule.vue';
 import VsBrSkiModule from '~/components/Modules/VsBrSkiModule.vue';
 import VsBrForm from '~/components/Modules/VsBrForm.vue';
+import VsBrCannedSearchModule from '~/components/Modules/VsBrCannedSearchModule.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
