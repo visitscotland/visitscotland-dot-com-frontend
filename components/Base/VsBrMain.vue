@@ -15,7 +15,7 @@
         />
 
         <VsBrGeneral
-            v-if="pageName === 'general-page'"
+            v-if="pageName === 'general-page' || pageName === 'pagenotfound'"
             :page="page"
             :component="component"
         />

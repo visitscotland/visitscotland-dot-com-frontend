@@ -18,7 +18,7 @@
                 :when-visible="{ rootMargin: '50px' }"
             >
                 <VsBrListLinksModule
-                    v-if="hippoContent[index].model.data.layout === 'List'"
+                    v-if="hippoContent[index].model.data.layout === 'List' || hippoContent[index].model.data.layout === 'Default'"
                     :module="item"
                     :theme="item.themeValue"
                 />
@@ -104,9 +104,7 @@
             :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'IKnowModule'"
         >
-            <VsBrIknowCommunityModule
-                :module="item"
-            />
+            <!-- Todo - investigate if still in use at all -->
         </NuxtLazyHydrate>
 
         <Suspense
@@ -116,6 +114,33 @@
                 :is="VsBrMap"
             />
         </Suspense>
+
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'SkiListModule'"
+        >
+            <VsBrSkiListModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'SkiModule'"
+        >
+            <VsBrSkiModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'CannedSearchModule'"
+        >
+            <VsBrCannedSearchModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
 
         <div
             v-else-if="item.type === 'ErrorModule'"
@@ -144,10 +169,12 @@ import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksM
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
 import VsBrTourismInformationModule from '~/components/Modules/VsBrTourismInformationModule.vue';
-import VsBrIknowCommunityModule from '~/components/Modules/VsBrIknowCommunityModule.vue';
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
+import VsBrSkiListModule from '~/components/Modules/VsBrSkiListModule.vue';
+import VsBrSkiModule from '~/components/Modules/VsBrSkiModule.vue';
 import VsBrForm from '~/components/Modules/VsBrForm.vue';
+import VsBrCannedSearchModule from '~/components/Modules/VsBrCannedSearchModule.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';

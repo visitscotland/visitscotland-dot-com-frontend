@@ -5,7 +5,30 @@
     >
         <template
             #vs-article-img
-            v-if="module.image"
+            v-if="module.video"
+        >
+            <VsVideo
+                :video-title="module.video.label"
+                :video-id="module.video.youtubeId"
+                :locale="configStore.locale"
+                :single-minute-descriptor="configStore.getLabel('video', 'video.minute-text')"
+                :plural-minute-descriptor="configStore.getLabel('video', 'video.minutes-text')"
+                :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
+                :no-js-message="configStore.getLabel('video', 'video.no-js')"
+                :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+                :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
+            />
+            <VsVideoCaption
+                :video-id="module.video.youtubeId"
+            >
+                <template #video-title>
+                    {{ module.video.label ?? configStore.getLabel('video', 'video.play-btn') }}
+                </template>?
+            </VsVideoCaption>
+        </template>
+        <template
+            #vs-article-img
+            v-else-if="module.image"
         >
             <VsBrImageWithCaption
                 :image="module.image.cmsImage"
@@ -49,6 +72,8 @@
 import {
     VsArticle,
     VsArticleSection,
+    VsVideoCaption,
+    VsVideo,
 } from '@visitscotland/component-library/components';
 
 import formatLink from '~/composables/formatLink.ts';
@@ -57,6 +82,10 @@ import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue'
 import VsBrArticleSidebar from '~/components/Modules/VsBrArticleSidebar.vue';
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
 
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;

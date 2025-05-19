@@ -1,7 +1,6 @@
 <template>
     <VsBrPageIntro
         :content="documentData"
-        :hero-image="heroImage"
         :light-background="true"
     />
 
@@ -178,8 +177,6 @@ let documentData : any = {
 };
 let productSearch : any = {
 };
-let heroImage = {
-};
 let otyml : any = null;
 
 const configStore = useConfigStore();
@@ -191,7 +188,6 @@ if (page.value) {
     document = page.value.getDocument();
     documentData = document.getData();
     productSearch = configStore.productSearch;
-    heroImage = documentData.heroImage;
     if (configStore.otyml) {
         otyml = configStore.otyml;
     }

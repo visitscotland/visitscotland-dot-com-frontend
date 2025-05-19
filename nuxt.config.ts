@@ -22,6 +22,7 @@ export default defineNuxtConfig({
             COMP_LIBRARY_VERSION: clVersion,
         },
     },
+
     vite: {
         resolve: {
             preserveSymlinks: true,
@@ -30,34 +31,43 @@ export default defineNuxtConfig({
             cssCodeSplit: true,
         },
     },
+
     vue: {
         runtimeCompiler: true,
     },
+
     components: [
         {
             path: '~/components',
             pathPrefix: false,
         },
     ],
+
     buildModules: [
         '@nuxtjs/dotenv',
     ],
+
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
         'nuxt-lazy-hydrate',
     ],
+
     'nuxt-jsonld': {
         disableOptionsAPI: true,
     },
+
     css: [
         '@visitscotland/component-library/components/style.css',
         '@visitscotland/component-library/components/fonts.css',
     ],
+
     build: {
         transpile: [
             'bootstrap-vue-next',
             '@visitscotland/component-library',
         ],
     },
+
+    compatibilityDate: '2025-05-06',
 });
