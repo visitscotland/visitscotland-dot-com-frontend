@@ -137,6 +137,9 @@ import {
     VsAddress,
     VsItineraryBorderOverlapWrapper,
     VsButton,
+    VsIconList,
+    VsIconListItem,
+    VsSvg,
 } from '@visitscotland/component-library/components';
 
 const props = defineProps<{

@@ -107,13 +107,17 @@
             <!-- Todo - investigate if still in use at all -->
         </NuxtLazyHydrate>
 
-        <Suspense
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'MapsModule'"
         >
-            <component
-                :is="VsBrMap"
-            />
-        </Suspense>
+            <Suspense>
+                <component
+                    :is="VsBrMapWithSidebar"
+                    :module="item"
+                />
+            </Suspense>
+        </NuxtLazyHydrate>
 
         <NuxtLazyHydrate
             :when-visible="{ rootMargin: '50px' }"
@@ -189,7 +193,7 @@ import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
 
-const VsBrMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMap.vue'));
+const VsBrMapWithSidebar = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSidebar.vue'));
 
 const props = defineProps<{
     modules: any[],
