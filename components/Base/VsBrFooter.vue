@@ -99,19 +99,11 @@
         </VsFooterCopyright>
     </VsFooter>
     <VsCookieChecker />
-
-    <Suspense
-        v-if="isMounted"
-    >
-        <component
-            :is="VsBrIconFonts"
-        />
-    </Suspense>
 </template>
 
 <script lang="ts" setup>
 import {
-    toRefs, ref, defineAsyncComponent, onMounted,
+    toRefs, ref, onMounted,
 } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
@@ -172,8 +164,6 @@ if (page.value) {
 }
 
 const isMounted = ref(false);
-
-const VsBrIconFonts = defineAsyncComponent(() => import('../Utils/VsBrIconFonts.vue'));
 
 onMounted(() => {
     isMounted.value = true;

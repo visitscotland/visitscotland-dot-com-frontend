@@ -8,7 +8,10 @@
 
     <VsItinerary>
         <template #map>
-            Map
+            <component
+                :is="VsBrItineraryMap"
+                :places="itineraryPlaces"
+            />
         </template>
         <template #list>
             <VsItineraryDay
@@ -116,7 +119,7 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs } from 'vue';
+import { toRefs, defineAsyncComponent } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
@@ -134,6 +137,8 @@ import {
     VsDescriptionListItem,
     VsTooltip,
 } from '@visitscotland/component-library/components';
+
+const VsBrItineraryMap = defineAsyncComponent(() => import('~/components/Modules/VsBrItineraryMap.vue'));
 
 const props = defineProps<{ component: Component, page: Page }>();
 
@@ -153,6 +158,8 @@ const configStore = useConfigStore();
 
 let itinerary = {
 };
+
+const itineraryPlaces : any[] = [];
 
 if (page.value) {
     document = page.value.getDocument();
@@ -187,6 +194,19 @@ if (page.value) {
                     for (let y = 0; y < itinerary.days[x].stops.length; y++) {
                         if (itinerary.days[x].stops[y].$ref) {
                             itinerary.days[x].stops[y] = allStops[itinerary.days[x].stops[y].$ref];
+                        }
+
+                        const stop = itinerary.days[x].stops[y];
+
+                        if (stop.coordinates) {
+                            itineraryPlaces.push({
+                                title: stop.title,
+                                latitude: stop.coordinates.latitude,
+                                longitude: stop.coordinates.longitude,
+                                stopCount: stop.index,
+                                imageSrc: '', // TODO - currently no examples to work from
+                                altText: stop.title,
+                            });
                         }
                     }
                 }

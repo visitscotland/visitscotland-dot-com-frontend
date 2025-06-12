@@ -26,12 +26,6 @@
             :component="component"
         />
 
-        <VsBrItinerary
-            v-if="pageName === 'itinerary-page'"
-            :page="page"
-            :component="component"
-        />
-
         <VsBrListicle
             v-if="pageName === 'listicle-page'"
             :page="page"
@@ -63,7 +57,6 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
-import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
 import VsBr404 from '~/components/PageTypes/VsBr404.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
