@@ -169,7 +169,7 @@ if (page) {
     }
 
     if (imageString.value) {
-        imageSrc = imageString;
+        imageSrc = imageString.value;
     }
 
     if (fullImageData.value) {
