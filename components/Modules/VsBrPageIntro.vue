@@ -102,11 +102,13 @@
         >
             <VsBrItinerarySummaryBox
                 :itinerary="itinerary"
+                :theme="theme"
+                :all-transports="allTransports"
             />
         </template>
 
         <template
-            v-if="itinerary && areas"
+            v-if="itinerary && allAreas"
             #vs-intro-lower
         >
             <VsContainer>
@@ -131,10 +133,10 @@
                             </VsDescriptionListItem>
 
                             <VsDescriptionListItem
-                                v-for="(area, index) in areas"
+                                v-for="(area, index) in allAreas"
                                 :key="index"
                             >
-                                {{ configStore.getLabel("areas", area) }}
+                                {{ area.displayName }}
                             </VsDescriptionListItem>
                         </VsDescriptionList>
                     </VsCol>
@@ -171,9 +173,21 @@ const props = defineProps<{
     heroImage?: any,
     itinerary?: any,
     blog?: any,
+    theme?: any,
+    allTransports?: any[],
+    allAreas?: any[],
 }>();
 
-const { content, lightBackground, heroImage, itinerary, blog } = toRefs(props);
+const {
+    content,
+    lightBackground,
+    heroImage,
+    itinerary,
+    blog,
+    theme,
+    allTransports,
+    allAreas,
+} = toRefs(props);
 
 let breadcrumb : [];
 let isHome : boolean;
@@ -186,7 +200,6 @@ let heroVideo : any;
 let youtubeId : string = '';
 
 let document : any = null;
-let areas : [];
 let highlights : [];
 
 if (page) {
@@ -235,7 +248,6 @@ if (page) {
     document = page.getDocument();
 
     if (document) {
-        areas = document.model.data.areas;
         highlights = document.model.data.highlights;
     }
 }

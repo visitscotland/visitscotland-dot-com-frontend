@@ -65,7 +65,7 @@
                         >
                             <div>
                                 <VsIconList
-                                    :title="configStore.getLabel('essentials.global', 'keyfacilities.title')"
+                                    :title="configStore.getLabel('itinerary', 'keyfacilities.title')"
                                 >
                                     <VsIconListItem
                                         v-for="(facility, facilityIndex) in item.facilities"

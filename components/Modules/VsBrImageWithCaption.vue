@@ -115,7 +115,7 @@ interface IProps {
     useLazyLoading?: boolean,
     noAltText?: boolean
     showToggle?: boolean
-    fullImageData?: string,
+    fullImageData?: object,
 };
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -133,7 +133,8 @@ const props = withDefaults(defineProps<IProps>(), {
     videoId: '',
     videoTitle: '',
     videoBtn: '',
-    fullImageData: '',
+    fullImageData: () => ({
+    }),
 });
 
 const {

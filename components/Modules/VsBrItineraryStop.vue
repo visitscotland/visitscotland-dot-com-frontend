@@ -86,7 +86,7 @@
             #stop-facilities
         >
             <VsIconList
-                :title="configStore.getLabel('essentials.global', 'keyfacilities.title')"
+                :title="configStore.getLabel('itinerary', 'keyfacilities.title')"
             >
                 <VsIconListItem
                     v-for="(facility, index) in stop.facilities"
@@ -102,19 +102,18 @@
             v-if="isLastStop"
         >
             <VsItineraryBorderOverlapWrapper>
-                <!-- TODO - Generate urls for these - productSearchBuilder? -->
                 <VsButton
                     class="mb-075"
                     variant="secondary"
                     icon="food"
-                    href="#"
+                    :href="nearbyEatLink"
                 >
                     {{ configStore.getLabel("itinerary", "stop.nearby-eat") }}
                 </VsButton>
                 <VsButton
                     variant="secondary"
                     icon="product-accommodation"
-                    href="#"
+                    :href="nearbyStayLink"
                 >
                     {{ configStore.getLabel("itinerary", "stop.nearby-stay") }}
                 </VsButton>
@@ -145,10 +144,15 @@ import {
 const props = defineProps<{
     stop: any,
     isLastStop?: boolean,
+    nearbyEatLink?: string,
+    nearbyStayLink?: string,
 }>();
 
 const configStore = useConfigStore();
 
 const stop: any = props.stop;
 const isLastStop: boolean = props.isLastStop || false;
+
+const nearbyEatLink: string = props.nearbyEatLink || '';
+const nearbyStayLink: string = props.nearbyStayLink || '';
 </script>

@@ -13,14 +13,14 @@
                 :distance-label="configStore.getLabel('itinerary', 'distance')"
             />
             <VsSummaryBoxListItem
-                :icon="mainTransport"
-                :icon-label="configStore.getLabel('transports', mainTransport)"
-                :label="configStore.getLabel('itinerary', 'transport')"
+                :icon="allTransports[0]?.key || ''"
+                :icon-label="allTransports[0]?.displayName || ''"
+                :label="allTransports[0]?.displayName || ''"
             />
             <VsSummaryBoxListItem
-                :icon="itineraryTheme"
-                :icon-label="configStore.getLabel('themes', itineraryTheme)"
-                :label="configStore.getLabel('itinerary', 'theme')"
+                :icon="theme.key"
+                :icon-label="theme.displayName"
+                :label="theme.displayName"
             />
         </VsSummaryBoxList>
     </VsCol>
@@ -29,10 +29,6 @@
 <script lang="ts" setup>
 import useConfigStore from '~/stores/configStore.ts';
 
-import { inject } from 'vue';
-
-import type { Page } from '@bloomreach/spa-sdk';
-
 import {
     VsCol,
     VsSummaryBoxList,
@@ -40,27 +36,16 @@ import {
     VsSummaryBoxDistanceListItem,
 } from '@visitscotland/component-library/components';
 
-const page: Page | undefined = inject('page');
-
 const props = defineProps<{
     itinerary: any,
+    theme?: any,
+    allTransports?: any[],
 }>();
 
 const configStore = useConfigStore();
 
 const itinerary: any = props.itinerary;
+const theme: any = props.theme;
+const allTransports: any[] = props.allTransports || [];
 
-let document;
-
-let mainTransport = '';
-let itineraryTheme = '';
-
-if (page) {
-    document = page.getDocument();
-
-    if (document) {
-        mainTransport = document.model.data.transports[0];
-        itineraryTheme = document.model.data.theme;
-    }
-}
 </script>

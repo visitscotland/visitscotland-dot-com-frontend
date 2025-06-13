@@ -4,6 +4,9 @@
         :hero-image="heroImage"
         :light-background="true"
         :itinerary="itinerary"
+        :theme="theme"
+        :all-transports="allTransports"
+        :all-areas="allAreas"
     />
 
     <VsItinerary>
@@ -47,8 +50,8 @@
 
                         <VsDescriptionListItem
                             class="col-auto px-0"
-                            v-for="(transport, index) in day.transports"
-                            :key="index"
+                            v-for="(transport, transportIndex) in day.transports"
+                            :key="transportIndex"
                         >
                             <VsTooltip
                                 :title="configStore.getLabel('transports', '${transport}')"
@@ -75,6 +78,8 @@
                         :key="stopsIndex"
                         :stop="stop"
                         :is-last-stop="stopsIndex === day.stops.length - 1"
+                        :nearby-eat-link="nearbyEatLink"
+                        :nearby-stay-link="nearbyStayLink"
                     />
                 </template>
             </VsItineraryDay>
@@ -159,6 +164,16 @@ const configStore = useConfigStore();
 let itinerary = {
 };
 
+let allTransports = [];
+
+let allAreas = [];
+
+let theme = {
+};
+
+let nearbyEatLink = '';
+let nearbyStayLink = '';
+
 const itineraryPlaces : any[] = [];
 
 if (page.value) {
@@ -166,12 +181,20 @@ if (page.value) {
     documentData = document.getData();
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
+
     if (configStore.otyml) {
         otyml = configStore.otyml;
     }
 
     if (component.value) {
         itinerary = component.value.model.models.itinerary;
+
+        allTransports = itinerary.transports;
+        allAreas = itinerary.areas;
+        theme = itinerary.theme;
+
+        nearbyEatLink = itinerary.lastStopNearbyEat;
+        nearbyStayLink = itinerary.lastStopNearbyStay;
 
         if (itinerary.days) {
             const allStops = [];

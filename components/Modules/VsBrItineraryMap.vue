@@ -10,6 +10,8 @@
 </template>
 
 <script lang="ts" setup>
+import { VsMap } from '@visitscotland/component-library/maps';
+
 import { toRefs } from 'vue';
 
 import useConfigStore from '~/stores/configStore.ts';
