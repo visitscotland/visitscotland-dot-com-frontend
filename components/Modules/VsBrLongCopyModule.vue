@@ -10,9 +10,9 @@
                 xl="7"
                 class="col-xxl-6"
             >
-                <VsRichTextWrapper>
+                <VsBody>
                     <VsBrRichText :input-content="module.copy.value" />
-                </VsRichTextWrapper>
+                </VsBody>
             </VsCol>
         </VsRow>
     </VsContainer>
@@ -24,7 +24,7 @@ import {
     VsContainer,
     VsRow,
     VsCol,
-    VsRichTextWrapper,
+    VsBody,
 } from '@visitscotland/component-library/components';
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';

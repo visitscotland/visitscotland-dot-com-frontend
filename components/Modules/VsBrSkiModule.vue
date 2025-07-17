@@ -79,7 +79,7 @@
                                 <VsList unstyled>
                                     <li class="mb-050" v-if="module.phone">
                                         <VsIcon
-                                            name="phone"
+                                            icon="fa-regular fa-phone"
                                             size="xs"
                                             class="me-050"
                                         />
@@ -89,7 +89,7 @@
                                     </li>
                                     <li class="mb-050" v-if="module.website.link">
                                         <VsIcon
-                                            name="globe"
+                                            icon="fa-regular fa-globe"
                                             size="xs"
                                             class="me-050"
                                         />
@@ -102,7 +102,7 @@
                                     </li>
                                     <li class="mb-050" v-if="module.address">
                                         <VsIcon
-                                            name="map-marker"
+                                            icon="fa-regular fa-location-dot"
                                             size="xs"
                                             class="me-050"
                                         />
@@ -113,7 +113,7 @@
                                     </li>
                                     <li class="mb-050" v-if="module.pisteMap">
                                         <VsIcon
-                                            name="landscape"
+                                            icon="fa-regular fa-mountain"
                                             size="xs"
                                             class="me-050"
                                         />
@@ -126,7 +126,7 @@
                                     </li>
                                     <li class="mb-050" v-if="module.openingLink && module.openingLink.label">
                                         <VsIcon
-                                            name="clock"
+                                            icon="fa-regular fa-clock"
                                             size="xs"
                                             class="me-050"
                                         />
@@ -139,7 +139,7 @@
                                     </li>
                                     <li class="mb-050" v-if="module.webcam">
                                         <VsIcon
-                                            name="webcam"
+                                            icon="fa-regular fa-webcam"
                                             size="xs"
                                             class="me-050"
                                         />
@@ -156,9 +156,9 @@
                                         <span class="visually-hidden">{{ channel.label }}</span>
                                         <VsIcon
                                             size="sm"
-                                            :name="channel.label
+                                            :icon="`fa-brands fa-${channel.label
                                                 ? channel.label.toLowerCase()
-                                                : channel.label"
+                                                : channel.label}`"
                                             :custom-colour="channel.processedColour"
                                         />
                                     </div>

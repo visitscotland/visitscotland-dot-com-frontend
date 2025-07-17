@@ -14,7 +14,7 @@
                 >
                     <template #icon-open>
                         <VsIcon
-                            name="chevron"
+                            icon="fa-regular fa-chevron-up"
                             variant="inverse"
                             size="xs"
                         />
@@ -22,8 +22,7 @@
 
                     <template #icon-closed>
                         <VsIcon
-                            name="chevron"
-                            orientation="down"
+                            icon="fa-regular fa-chevron-down"
                             variant="inverse"
                             size="xs"
                         />

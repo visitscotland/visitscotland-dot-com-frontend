@@ -49,7 +49,7 @@
                     #toggle-icon
                 >
                     <VsIcon
-                        :name="`${imageData.source}-filled`"
+                        :icon="`fa-kit fa-${imageData.source}-filled`"
                         size="md"
                     />
                 </template>

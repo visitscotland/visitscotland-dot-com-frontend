@@ -95,11 +95,11 @@
                         </VsHeading>
                     </template>
 
-                    <VsRichTextWrapper variant="lead">
+                    <VsBody variant="lead">
                         <div
                             v-html="listicleClosing.copy.value"
                         />
-                    </VsRichTextWrapper>
+                    </VsBody>
                 </VsPanel>
             </VsCol>
         </VsRow>
@@ -163,7 +163,7 @@ import {
     VsIconList,
     VsIconListItem,
     VsPanel,
-    VsRichTextWrapper,
+    VsBody,
     VsHeading,
 } from '@visitscotland/component-library/components';
 

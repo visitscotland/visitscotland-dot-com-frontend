@@ -12,17 +12,17 @@
                 >
                     <template #title>
                         <VsIcon
-                            :name="row.transport.key"
+                            :icon="`fa-regular fa-${getTransportIcon(row.transport.key)}`"
                             size="sm"
                             class="me-050"
                         />
                         {{ row.transport.label }}
                     </template>
                     <template #icon-open>
-                        <VsIcon name="chevron" size="sm" />
+                        <VsIcon icon="fa-regular fa-chevron-up" size="sm" />
                     </template>
                     <template #icon-closed>
-                        <VsIcon name="chevron" orientation="down" size="sm" />
+                        <VsIcon icon="fa-regular fa-chevron-down" size="sm" />
                     </template>
                     <div
                         class="p-075"
@@ -45,5 +45,28 @@ import {
 
 const props = defineProps<{ tab: Object }>();
 const tab: any = props.tab;
+
+const getTransportIcon = (transportKey: string): string => {
+    switch (transportKey) {
+    case 'dsblaccess':
+        return 'wheelchair';
+    case 'cycling':
+        return 'person-biking';
+    case 'car':
+        return 'car-side';
+    case 'boat':
+        return 'ferry';
+    case 'map-marker':
+        return 'location-dot';
+    case 'tram':
+        return 'train-subway';
+    case 'transport':
+        return 'taxi-bus';
+    case 'walking':
+        return 'person-walking';
+    default:
+        return transportKey;
+    }
+};
 
 </script>

@@ -14,12 +14,12 @@
                     offset-lg="1"
                     class="text-center text-sm-start col-xxl-4"
                 >
-                    <VsRichTextWrapper
+                    <VsBody
                         variant="lead"
                         class="mb-300 mb-lg-400"
                     >
                         <VsBrRichText :input-content="data.copy.value" />
-                    </VsRichTextWrapper>
+                    </VsBody>
 
                     <VsButton
                         :href="data.cta.link"
@@ -54,7 +54,7 @@ import {
     VsContainer,
     VsRow,
     VsCol,
-    VsRichTextWrapper,
+    VsBody,
     VsButton,
     VsImg,
 } from '@visitscotland/component-library/components';

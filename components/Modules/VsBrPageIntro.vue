@@ -58,13 +58,13 @@
         </template>
 
         <template
-            #vs-blog-data
+            #vs-article-data
             v-if="blog"
         >
-            <VsBlogDetails
-                :blog-author="blogAuthor"
-                :blog-publish-date="blogDate"
-                :blog-read-time="blogTime"
+            <VsArticleDetails
+                :article-author="blogAuthor"
+                :article-publish-date="blogDate"
+                :article-read-time="blogTime"
             />
         </template>
 
@@ -150,7 +150,13 @@
 import { inject, toRefs } from 'vue';
 
 import {
-    VsPageIntro, VsBlogDetails, VsContainer, VsRow, VsCol, VsDescriptionList, VsDescriptionListItem,
+    VsPageIntro,
+    VsArticleDetails,
+    VsContainer,
+    VsRow,
+    VsCol,
+    VsDescriptionList,
+    VsDescriptionListItem,
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';

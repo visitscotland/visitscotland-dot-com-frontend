@@ -28,9 +28,9 @@
                     cols="10"
                     offset="1"
                 >
-                    <VsRichTextWrapper>
+                    <VsBody>
                         <p>{{ video.teaser }}</p>
-                    </VsRichTextWrapper>
+                    </VsBody>
                 </VsCol>
             </VsRow>
         </VsModal>
@@ -45,7 +45,7 @@ import { toRefs, inject } from 'vue';
 import type { Page } from '@bloomreach/spa-sdk';
 
 import {
-    VsModal, VsVideo, VsRow, VsCol, VsRichTextWrapper,
+    VsModal, VsVideo, VsRow, VsCol, VsBody,
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
