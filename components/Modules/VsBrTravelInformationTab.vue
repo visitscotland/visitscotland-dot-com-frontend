@@ -62,7 +62,7 @@ const getTransportIcon = (transportKey: string): string => {
         return 'train-subway';
     case 'transport':
         return 'taxi-bus';
-    case 'walking':
+    case 'walk':
         return 'person-walking';
     default:
         return transportKey;
