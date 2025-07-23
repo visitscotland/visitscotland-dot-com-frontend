@@ -91,7 +91,7 @@
                 <VsIconListItem
                     v-for="(facility, index) in stop.facilities"
                     :key="index"
-                    :icon="facility.id"
+                    :icon="getDMSIconName(facility.id)"
                     :label="facility.name"
                 />
             </VsIconList>

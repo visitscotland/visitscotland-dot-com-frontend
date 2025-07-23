@@ -13,12 +13,12 @@
                 :distance-label="configStore.getLabel('itinerary', 'distance')"
             />
             <VsSummaryBoxListItem
-                :icon="allTransports[0]?.key || ''"
+                :icon="getDMSIconName(allTransports[0]?.key || '')"
                 :icon-label="allTransports[0]?.displayName || ''"
                 :label="allTransports[0]?.displayName || ''"
             />
             <VsSummaryBoxListItem
-                :icon="theme.key"
+                :icon="getDMSIconName(theme.key)"
                 :icon-label="theme.displayName"
                 :label="theme.displayName"
             />

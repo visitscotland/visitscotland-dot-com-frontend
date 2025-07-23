@@ -12,7 +12,7 @@
                 >
                     <template #title>
                         <VsIcon
-                            :icon="`fa-regular fa-${getTransportIcon(row.transport.key)}`"
+                            :icon="getDMSIconName(row.transport.key)"
                             size="sm"
                             class="me-050"
                         />
@@ -45,28 +45,5 @@ import {
 
 const props = defineProps<{ tab: Object }>();
 const tab: any = props.tab;
-
-const getTransportIcon = (transportKey: string): string => {
-    switch (transportKey) {
-    case 'dsblaccess':
-        return 'wheelchair';
-    case 'cycling':
-        return 'person-biking';
-    case 'car':
-        return 'car-side';
-    case 'boat':
-        return 'ferry';
-    case 'map-marker':
-        return 'location-dot';
-    case 'tram':
-        return 'train-subway';
-    case 'transport':
-        return 'taxi-bus';
-    case 'walk':
-        return 'person-walking';
-    default:
-        return transportKey;
-    }
-};
 
 </script>
