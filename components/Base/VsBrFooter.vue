@@ -65,7 +65,7 @@
                     v-for="(link, key, index) in configStore.labels['navigation.social-media']"
                     :key="index"
                     :href="link"
-                    :icon="key === 'twitter' ? 'x-twitter' : key"
+                    :icon="`fab fa-${key === 'twitter' ? 'x-twitter' : key}`"
                 />
             </vsfootersocialmenu>
         </template>
