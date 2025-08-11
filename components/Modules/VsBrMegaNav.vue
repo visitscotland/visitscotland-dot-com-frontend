@@ -48,6 +48,7 @@
                 #nav-featured-item
             >
                 <VsBrMegaNavFeaturedItem
+                    v-if="isMounted"
                     :link="menuItem.model.widget.links[0]"
                 />
             </template>
@@ -57,7 +58,7 @@
                 #nav-featured-item-left
             >
                 <VsBrMegaNavFeaturedItem
-                    v-if="menuItem.model.widget.links.length > 1"
+                    v-if="menuItem.model.widget.links.length > 1 && isMounted"
                     :link="menuItem.model.widget.links[1]"
                 />
             </template>
@@ -75,6 +76,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, onMounted } from 'vue';
 
 import {
     VsMegaNavDropdownContainer,
@@ -87,5 +89,11 @@ import VsBrMegaNavFeaturedItem from '~/components/Modules/VsBrMegaNavFeaturedIte
 
 const props = defineProps<{ links: any[] }>();
 const links: any = props.links;
+
+const isMounted = ref(false);
+
+onMounted(() => {
+    isMounted.value = true;
+});
 
 </script>
