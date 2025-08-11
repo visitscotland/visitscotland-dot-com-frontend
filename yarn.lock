@@ -2295,10 +2295,10 @@
     node-gyp-build "^4.2.2"
     resolve-from "^5.0.0"
 
-"@visitscotland/component-library@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-5.0.1.tgz#a59d88b9a3e05fe370410386ebd35bd4a3924bd0"
-  integrity sha512-AMXcJK1y2h7Lap1y1fCy8yD0zD1PDQ0tFhfaDnTkjQb+M6sCV+V1h3YBqzBnmvDDHnJUH9g0fUOS6dMpnu0PGg==
+"@visitscotland/component-library@^5.3.5":
+  version "5.3.5"
+  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-5.3.5.tgz#20b775f6de32afbfc4a88e99900d73afdacb13e1"
+  integrity sha512-ELvWN6cyRBb7C5i9zwAiOOb5CilVYIEPvKhUpk8RY7pgSqNFvZeEt8xD6ltnwWYF9/NN1w9kdWnxIT1tXJTixQ==
   dependencies:
     "@mapbox/geojson-extent" "^1.0.1"
     "@pinia/testing" "^0.1.3"
@@ -2312,7 +2312,7 @@
     mitt "^3.0.0"
     pinia "^2.1.3"
     vite "^5.1.3"
-    vite-plugin-node-polyfills "^0.23.0"
+    vite-plugin-node-polyfills "^0.24.0"
     vue "^3.3.4"
     vue-combo-blocks "^2.1.1"
     vue-recaptcha "^2.0.1"
@@ -11445,10 +11445,10 @@ vite-plugin-inspect@^0.8.7:
     picocolors "^1.0.1"
     sirv "^2.0.4"
 
-vite-plugin-node-polyfills@^0.23.0:
-  version "0.23.1"
-  resolved "https://registry.yarnpkg.com/vite-plugin-node-polyfills/-/vite-plugin-node-polyfills-0.23.1.tgz#35d9bb7a3f4f4743a48a33ba0a09076432c3186a"
-  integrity sha512-hR2YlaMqVo2f/0w6V9YgaeKsIy8z5gEsMFHX8MQlh8ATEAbfI4EWjE6qnCvkZ9lyaXKoJD2rAwL/up8/Rzsjkg==
+vite-plugin-node-polyfills@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-node-polyfills/-/vite-plugin-node-polyfills-0.24.0.tgz#4a2e984bba134017fc88cace0149cf8afdb50b54"
+  integrity sha512-GA9QKLH+vIM8NPaGA+o2t8PDfFUl32J8rUp1zQfMKVJQiNkOX4unE51tR6ppl6iKw5yOrDAdSH7r/UIFLCVhLw==
   dependencies:
     "@rollup/plugin-inject" "^5.0.5"
     node-stdlib-browser "^1.2.0"
