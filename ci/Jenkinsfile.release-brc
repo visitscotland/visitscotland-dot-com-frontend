@@ -180,7 +180,7 @@ pipeline {
                         yarn build
                         VS_BUILD_RESULT=$?
                         if [ $VS_BUILD_RESULT = 0 ]; then
-                            VS_DSSR_PACKAGE_NAME=business-events-$GIT_COMMIT-dssr.tar.gz
+                            VS_DSSR_PACKAGE_NAME=visitscotland-$GIT_COMMIT-dssr.tar.gz
                             echo "NPM build successful, creating $VS_DSSR_PACKAGE_NAME in target folder"
                             if [ ! -d "$WORKSPACE/target" ]; then
                                 echo " - creating target folder"
