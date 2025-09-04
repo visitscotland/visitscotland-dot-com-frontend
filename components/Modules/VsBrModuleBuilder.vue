@@ -102,13 +102,6 @@
 
         <NuxtLazyHydrate
             :when-visible="{ rootMargin: '50px' }"
-            v-else-if="item.type === 'IKnowModule'"
-        >
-            <!-- Todo - investigate if still in use at all -->
-        </NuxtLazyHydrate>
-
-        <NuxtLazyHydrate
-            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'MapsModule'"
         >
             <Suspense>
