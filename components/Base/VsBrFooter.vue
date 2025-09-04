@@ -97,7 +97,6 @@
             </template>
         </VsFooterCopyright>
     </VsFooter>
-    <VsCookieChecker />
 </template>
 
 <script lang="ts" setup>
@@ -120,7 +119,6 @@ import {
     VsList,
     VsIcon,
     VsCol,
-    VsCookieChecker,
 } from '@visitscotland/component-library/components';
 
 const props = defineProps<{ component: Component, page: Page }>();
