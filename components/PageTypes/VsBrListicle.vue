@@ -70,7 +70,7 @@
                                     <VsIconListItem
                                         v-for="(facility, facilityIndex) in item.facilities"
                                         :key="facilityIndex"
-                                        :icon="facility.id"
+                                        :icon="getDMSIconName(facility.id)"
                                         :label="facility.name"
                                     />
                                 </VsIconList>
