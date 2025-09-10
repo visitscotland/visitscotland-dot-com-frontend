@@ -84,7 +84,7 @@
                 v-if="isListicle"
                 class="mt-200"
             >
-                {{ configStore.getLabel("listicle", "listicle.disclaimer") }}3
+                {{ configStore.getLabel("listicle", "listicle.disclaimer") }}
             </p>
         </template>
 
