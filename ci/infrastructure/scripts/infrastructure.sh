@@ -1137,7 +1137,7 @@ createBuildReport() {
         /\?vs-reset/ s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2">\1\2<\/a>&g
       ' $VS_MAIL_NOTIFY_BUILD_MESSAGE
       echo "</pre></body></html>"
-    } > $VS_HTML_PUBLISHER_REPORT_FILE/$VS_HTML_PUBLISHER_REPORT_FILE
+    } > $VS_HTML_PUBLISHER_REPORT_DIR/$VS_HTML_PUBLISHER_REPORT_FILE
   fi
 }
 
