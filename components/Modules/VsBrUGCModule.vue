@@ -8,6 +8,7 @@
             :error-text="configStore.getLabel('essentials.global', 'third-party-error')"
             :no-js-text="configStore.getLabel('ugc', 'ugc.no-js-message')"
             :extra-content="configStore.getLabel('ugc', 'ugc.extra-warning-content')"
+            :embedded-script="`https://apps.storystream.ai/app/js/${module.storystreamId}.js`"
         >
             <template #embed-intro-copy>
                 <VsBrRichText :input-content="module.copy.value" />

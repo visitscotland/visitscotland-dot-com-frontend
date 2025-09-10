@@ -52,7 +52,8 @@ if (id && !isPreviewMode) {
 }
 
 if (isPreviewMode && window) {
-    window.bypassCookieChecks = true;
+    window.bypassCookiesRequired = true;
+    window.bypassCookiesLoaded = true;
 }
 
 </script>
