@@ -35,6 +35,7 @@
                                     variant="fullwidth"
                                     :no-alt-text="true"
                                     :use-lazy-loading="index !== 0"
+                                    :full-image-data="item.image"
                                 />
                             </div>
                         </template>
