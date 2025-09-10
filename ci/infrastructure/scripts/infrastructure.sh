@@ -1123,9 +1123,21 @@ createBuildReport() {
     echo "" >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "" >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
   fi
+  # quick and dirty conversion of the email message to an "HTML" file that'll play nice with the Jenkins HTML Publisher
   if [ -e "$VS_MAIL_NOTIFY_BUILD_MESSAGE" ]; then
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] writing build report to $VS_HTML_PUBLISHER_REPORT_DIR/$VS_HTML_PUBLISHER_REPORT_FILE"
-    cat $VS_MAIL_NOTIFY_BUILD_MESSAGE > $VS_HTML_PUBLISHER_REPORT_FILE/$VS_HTML_PUBLISHER_REPORT_FILE
+    {
+      echo "<html><body><pre>" 
+      sed -E '
+        /^$/d
+        s/&/\&amp;/g
+        s/</\&lt;/g
+        s/>/\&gt;/g
+        /\?vs-reset/! s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2">\1<\/a>&g
+        /\?vs-reset/ s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2">\1\2<\/a>&g
+      ' $VS_MAIL_NOTIFY_BUILD_MESSAGE
+      echo "</pre></body></html>"
+    } > $VS_HTML_PUBLISHER_REPORT_FILE/$VS_HTML_PUBLISHER_REPORT_FILE
   fi
 }
 
