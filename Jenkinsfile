@@ -248,7 +248,7 @@ pipeline {
                     alwaysLinkToLastBuild: false,
                     keepAll: false,
                     reportDir: '',
-                    reportFiles: '$VS_MAIL_NOTIFY_BUILD_MESSAGE',
+                    reportFiles: "${env.VS_MAIL_NOTIFY_BUILD_MESSAGE}",
                     reportName: 'Environment Details',
                     reportTitles: ''
                 ]
