@@ -313,7 +313,7 @@ defaultSettings() {
   fi
   # report settings
   VS_HTML_PUBLISHER_REPORT_DIR="$WORKSPACE/ci/reports"
-  VS_HTML_PUBLISHER_REPORT_FILE="$VS_HTML_PUBLISHER_REPORT_DIR/build-report.html"
+  VS_HTML_PUBLISHER_REPORT_FILE="build-report.html"
 }
 
 reportSettings() {
@@ -1126,8 +1126,8 @@ createBuildReport() {
     echo "" >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
   fi
   if [ -e "$VS_MAIL_NOTIFY_BUILD_MESSAGE" ]; then
-    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] writing build report to $VS_HTML_PUBLISHER_REPORT_FILE"
-    cat $VS_MAIL_NOTIFY_BUILD_MESSAGE > $VS_HTML_PUBLISHER_REPORT_FILE
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] writing build report to $VS_HTML_PUBLISHER_REPORT_DIR/$VS_HTML_PUBLISHER_REPORT_FILE"
+    cat $VS_MAIL_NOTIFY_BUILD_MESSAGE > $VS_HTML_PUBLISHER_REPORT_FILE/$VS_HTML_PUBLISHER_REPORT_FILE
   fi
 }
 
