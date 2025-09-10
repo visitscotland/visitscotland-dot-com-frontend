@@ -7,20 +7,20 @@ thisAgent = "docker-02"
 echo "== Setting conditional environment variables"
 if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?feature.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
-    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3000"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3060"
     env.VS_TIDY_CONTAINERS = "TRUE"
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
-    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3004"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3064"
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-brc.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
-    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3001"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3061"
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?release-brc.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3002"
 } else if (BRANCH_NAME ==~ "ops/(feature-environment(s)?-enhancements|pipeline-updates)" && (JOB_NAME ==~ "([^/]*/)?feature(-(businessevents|support))?.visitscotland.(com|org)(-mb)?(-frontend)?/ops%(25)?2F(feature-environment(s)?-enhancements|pipeline-updates)")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
-    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3005"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3069"
     env.VS_CONTAINER_PRESERVE = "FALSE"
 } else {
     echo "=== No conditional environment variables found for branch $BRANCH_NAME in job $JOB_NAME, using defaults"
