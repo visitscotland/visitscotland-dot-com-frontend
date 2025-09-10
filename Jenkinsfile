@@ -247,8 +247,8 @@ pipeline {
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
                     keepAll: false,
-                    reportDir: '',
-                    reportFiles: env.VS_MAIL_NOTIFY_BUILD_MESSAGE,
+                    reportDir: env.VS_HTML_PUBLISHER_REPORT_DIR,
+                    reportFiles: env.VS_HTML_PUBLISHER_REPORT_FILE,
                     reportName: 'Environment Details',
                     reportTitles: ''
                 ]

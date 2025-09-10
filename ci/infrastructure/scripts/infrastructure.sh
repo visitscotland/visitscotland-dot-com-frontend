@@ -218,6 +218,7 @@ defaultSettings() {
   fi
   if [ ! -d "$VS_CI_DIR" ]; then mkdir -p $VS_CI_DIR; fi
   if [ ! -d "$VS_CI_DIR/logs" ]; then mkdir -p $VS_CI_DIR/logs; fi
+  if [ ! -d "$VS_CI_DIR/reports" ]; then mkdir -p $VS_CI_DIR/reports; fi
   ## add additional check here to see if there's a CHANGE_BRANCH variable as well as a BRANCH_NAME variable
   if [ -z "$VS_BRANCH_NAME" ]; then
     if [ ! -z "$CHANGE_BRANCH" ]; then
@@ -310,6 +311,9 @@ defaultSettings() {
       VS_MAILER_BIN="/bin/false"
     fi
   fi
+  # report settings
+  VS_HTML_PUBLISHER_REPORT_DIR="$WORKSPACE/ci/reports"
+  VS_HTML_PUBLISHER_REPORT_FILE="$VS_HTML_PUBLISHER_REPORT_DIR/build-report.html"
 }
 
 reportSettings() {
@@ -1120,6 +1124,10 @@ createBuildReport() {
     echo "#######################################################################################################################################" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "" >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "" >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
+  fi
+  if [ -e "$VS_MAIL_NOTIFY_BUILD_MESSAGE" ]; then
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] writing build report to $VS_HTML_PUBLISHER_REPORT_FILE"
+    cat $VS_MAIL_NOTIFY_BUILD_MESSAGE > $VS_HTML_PUBLISHER_REPORT_FILE
   fi
 }
 
