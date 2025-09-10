@@ -1098,12 +1098,11 @@ createBuildReport() {
     if [ ! -z "$VS_CONTAINER_EXT_PORT_SSH" ]; then
       echo "# SSH access (if enabled on the container) - available only on the Web Development LAN" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
       echo "#   - ssh -o UserKnownHostsFile=/dev/null -p $VS_CONTAINER_EXT_PORT_SSH hippo@$VS_HOST_IP_ADDRESS ($VS_CONTAINER_SSH_PASS_HIPPO)" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-      echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     fi
     if [ -e "$VS_MAIL_NOTIFY_BUILD_MESSAGE_EXTRA" ]; then
       cat $VS_MAIL_NOTIFY_BUILD_MESSAGE_EXTRA | grep -Ev "^$" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     fi
-    echo "# " >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
+    echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "####/Feature Environment Details #########################################################################################################" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "# " >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "# " >> $VS_MAIL_NOTIFY_BUILD_MESSAGE

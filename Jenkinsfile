@@ -243,6 +243,15 @@ pipeline {
                     VS_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
                     docker exec -d -t $VS_CONTAINER_ID /bin/bash -c "NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs 2>&1 | tee -a ./nodeapp.log"
                 '''
+                publishHTML target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: false,
+                    reportDir: '',
+                    reportFiles: '$VS_MAIL_NOTIFY_BUILD_MESSAGE',
+                    reportName: 'Environment Details',
+                    reportTitles: ''
+                ]
             }
         } //end stage
     } //end stages
