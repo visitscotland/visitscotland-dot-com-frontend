@@ -1103,7 +1103,7 @@ createBuildReport() {
     if [ -e "$VS_MAIL_NOTIFY_BUILD_MESSAGE_EXTRA" ]; then
       cat $VS_MAIL_NOTIFY_BUILD_MESSAGE_EXTRA | grep -Ev "^$" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     fi
-    echo
+    echo "# " >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "####/Feature Environment Details #########################################################################################################" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "# " >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "# " >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
