@@ -1108,8 +1108,6 @@ createBuildReport() {
     fi
     echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "####/Feature Environment Details #########################################################################################################" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-    echo "# " >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
-    echo "# " >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "$VS_CONTAINER_BASE_PORT" > env_port.txt
     echo "$VS_HOST_IP_ADDRESS" > env_host.txt
   else
