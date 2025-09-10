@@ -2,6 +2,7 @@
     <VsBrPageIntro
         :content="documentData"
         :light-background="true"
+        :is-listicle="true"
     />
 
     <!-- TODO Author -->
@@ -65,7 +66,7 @@
                         >
                             <div>
                                 <VsIconList
-                                    :title="configStore.getLabel('itinerary', 'keyfacilities.title')"
+                                    :title="configStore.getLabel('listicle', 'keyfacilities.title')"
                                 >
                                     <VsIconListItem
                                         v-for="(facility, facilityIndex) in item.facilities"

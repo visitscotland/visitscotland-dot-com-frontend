@@ -80,6 +80,12 @@
             #vs-intro-content
         >
             <VsBrRichText :input-content="content.introduction.value" />
+            <p
+                v-if="isListicle"
+                class="mt-200"
+            >
+                {{ configStore.getLabel("listicle", "listicle.disclaimer") }}3
+            </p>
         </template>
 
         <!-- TODO - Itinerary Summary -->
@@ -182,6 +188,7 @@ const props = defineProps<{
     theme?: any,
     allTransports?: any[],
     allAreas?: any[],
+    isListicle: boolean,
 }>();
 
 const {
@@ -193,6 +200,7 @@ const {
     theme,
     allTransports,
     allAreas,
+    isListicle,
 } = toRefs(props);
 
 let breadcrumb : [];
