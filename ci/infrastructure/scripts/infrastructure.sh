@@ -1057,7 +1057,7 @@ createBuildReport() {
 		  echo "#  - console: $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/cms/console/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
 		  echo "#  - logs:    $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/logs/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     elif [ "${VS_BUILD_TYPE^^}" == "DSSR" ]; then
-		  echo "#   - $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/?vs-dssr-host=$VS_HOST_IP_ADDRESS&vs-dssr-http-port=$VS_CONTAINER_BASE_PORT&vs-dssr-proxy=$VS_DSSR_PROXY&vs-brxm-host=$VS_BRXM_HOST&vs-brxm-port=$VS_BRXM_PORT&vs_brxm_http_host=$VS_BRXM_INSTANCE_HTTP_HOST&vs_tln_http_port=$VS_CONTAINER_EXT_PORT_TLN&vs_feature_branch=$BRANCH_NAME" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#   - $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/?vs-dssr-host=$VS_HOST_IP_ADDRESS&vs-dssr-http-port=$VS_CONTAINER_BASE_PORT&vs-dssr-proxy=$VS_DSSR_PROXY_ON&vs-brxm-host=$VS_BRXM_HOST&vs-brxm-port=$VS_BRXM_PORT&vs_brxm_http_host=$VS_BRXM_INSTANCE_HTTP_HOST&vs_tln_http_port=$VS_CONTAINER_EXT_PORT_TLN&vs_feature_branch=$BRANCH_NAME" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
 		  echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
 		  echo "# Thereafter, until you clear the settings, you will be able to access the environment on the following URLs" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
 		  echo "#  - site:    $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
