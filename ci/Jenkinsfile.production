@@ -1,0 +1,188 @@
+def MAIL_TO = "webops@visitscotland.net"
+def thisAgent
+thisAgent = "docker-02"
+
+echo "== Setting default environment variables"
+if (!env.VS_DSSR_PROXY_ON) { env.VS_DSSR_PROXY_ON = "TRUE" }
+if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "TRUE" }
+if (!env.VS_DOCKER_IMAGE_NAME) { env.VS_DOCKER_IMAGE_NAME = "vs/vs-brxm15:node18" }
+if (!env.VS_DOCKER_BUILDER_IMAGE_NAME) { env.VS_DOCKER_BUILDER_IMAGE_NAME = "vs/vs-brxm15-builder:node18" }
+if (!env.VS_BRANCH_PROPERTIES_DIR) { env.VS_BRANCH_PROPERTIES_DIR = "ci/properties" }
+if (!env.VS_BRANCH_PROPERTIES_FILE) { env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" }
+echo "==/Setting default environment variables"
+
+pipeline {
+	options {
+		buildDiscarder(logRotator(numToKeepStr: '10'))
+		disableConcurrentBuilds()
+		timestamps()
+	}
+
+	agent {label thisAgent}
+
+	environment {
+		GITHUB_PAT_JENKINS_CI = credentials('github-pat-jenkins-ci')
+	}
+
+	stages {
+		stage ('SCM checkout') {
+			agent {
+				docker {
+				image '$VS_DOCKER_BUILDER_IMAGE_NAME'
+				label thisAgent
+				reuseNode true
+				}
+			}
+			steps {
+				sh '''
+					set +x
+					echo; echo "running stage $STAGE_NAME on $HOSTNAME"
+					echo; echo "==== PRINTENV $STAGE_NAME 1 =====" > printenv.$STAGE_NAME
+					printenv >> printenv.$STAGE_NAME
+					echo "====/PRINTENV $STAGE_NAME 1 =====" >> printenv.$STAGE_NAME ; echo
+					#ls -alh
+					export HOME=$WORKSPACE
+					export npm_config_cache=$HOME
+					echo; echo "==== PRINTENV $STAGE_NAME 2 =====" > printenv2.$STAGE_NAME
+					printenv >> printenv2.$STAGE_NAME
+					echo "====/PRINTENV $STAGE_NAME 2 =====" >> printenv2.$STAGE_NAME; echo
+					echo; echo "==== TOOLS CHECK ====="
+				'''
+				sh 'set +x; node --version; exit 0'
+				sh 'set +x; npm --version; exit 0'
+				sh 'set +x; yarn --version; exit 0'
+				sh 'set +x; echo "==== TOOLS CHECK ====="; echo'
+				checkout scm
+			}
+		} //end stage
+
+		stage ('Install Dependencies') {
+			agent {
+				docker {
+				image '$VS_DOCKER_BUILDER_IMAGE_NAME'
+				label thisAgent
+				reuseNode true
+				}
+			}
+			steps {
+				sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
+				sh '''
+					set +x
+					export HOME=$WORKSPACE
+					export npm_config_cache=$HOME/.npm
+					if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
+					echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
+					printenv >> printenv.$STAGE_NAME
+					echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
+					yarn
+				'''
+			}
+		} //end stage
+
+		stage ('Run Tests') {
+			agent {
+				docker {
+				image '$VS_DOCKER_BUILDER_IMAGE_NAME'
+				label thisAgent
+				reuseNode true
+				}
+			}
+			steps {
+				catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+					sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
+					sh '''
+						set +x
+						export HOME=$WORKSPACE
+						export npm_config_cache=$HOME/.npm
+						if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
+						echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
+						printenv >> printenv.$STAGE_NAME
+						echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
+						yarn test
+					'''
+				}
+			}
+		} //end stage
+
+		stage ('NPM Build') {
+			agent {
+				docker {
+				image '$VS_DOCKER_BUILDER_IMAGE_NAME'
+				label thisAgent
+				reuseNode true
+				}
+			}
+			steps {
+				catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+					sh '''
+						set +x
+						echo; echo "running stage $STAGE_NAME on $HOSTNAME"
+						export HOME=$WORKSPACE
+						export npm_config_cache=$HOME/.npm
+						if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
+						echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
+						printenv >> printenv.$STAGE_NAME
+						echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
+						export BR_CMS_ORIGIN_LOCATION=https://cms.visitscotland.com
+						export BR_RESOURCE_API_ENDPOINT=https://beta-businessevents.visitscotland.com/resourceapi
+						export BR_X_FORWARDED_HOST=beta-businessevents.visitscotland.com
+						yarn build
+						VS_BUILD_RESULT=$?
+						if [ $VS_BUILD_RESULT = 0 ]; then
+							VS_DSSR_PACKAGE_NAME=business-events-$GIT_COMMIT-dssr.tar.gz
+							echo "NPM build successful, creating $VS_DSSR_PACKAGE_NAME in target folder"
+							if [ ! -d "$WORKSPACE/target" ]; then
+								echo " - creating target folder"
+								mkdir -p $WORKSPACE/target
+							fi
+							if [ -d "$WORKSPACE/target" ]&&[ -d $WORKSPACE/.output/ ]&&[ ! -z "$VS_DSSR_PACKAGE_NAME" ]; then
+								cd $WORKSPACE/.output/
+								echo " - creating tarball"
+								tar -zcf $WORKSPACE/target/$VS_DSSR_PACKAGE_NAME *
+								cd $WORKSPACE
+								VS_DSSR_PACKAGE=$(find $WORKSPACE -name "$VS_DSSR_PACKAGE_NAME")
+							else
+								echo " - either target folder or .output folder does not exist, exiting"
+							fi
+						fi
+						if [ ! -z "$VS_DSSR_PACKAGE" ]; then
+							echo "VS DSSR Package created at $VS_DSSR_PACKAGE"
+						fi
+					'''
+				}
+			}
+		} //end stage
+
+		stage ('Deploy') {
+			steps {
+				sh '''
+					set +x
+					echo; echo "running stage $STAGE_NAME on $HOSTNAME"
+					VS_CONTAINER_NAME=$(echo $JOB_NAME | sed -e "s/\\//_/g")
+					VS_CONTAINER_USR=$(id -u $USER)
+					VS_CONTAINER_GRP=$(id -g $USER)
+					VS_CONTAINER_WD=$PWD
+					VS_CONTAINER_WORKSPACE=$WORKSPACE
+					VS_CONTAINER_VOLUME_PERMISSIONS="rw,z"
+					VS_CONTAINER_PORTS="-p 3003:3000"
+					VS_CONTAINER_ENVIRONMENT=""
+					VS_CONTAINER_ENVIRONMENT_FILE="--env-file [FILE_NAME]"
+					VS_CONTAINER_INIT_EXEC="cat"
+					#VS_CONTAINER_EXEC="NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs"
+					#VS_CONTAINER_EXEC="/bin/bash -c \\"HOME=$PWD; set | tee ./nodeapp.log; NODE_DEBUG=http node $HOME/.output/server/index.mjs 2>&1 | tee -a ./nodeapp.log\\""
+					VS_CONTAINER_EXEC="/bin/bash -c \\"node .output/server/index.mjs\\""
+					VS_RUNNING_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
+					echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
+					printenv >> printenv.$STAGE_NAME
+					echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
+					echo "found container with name: $VS_CONTAINER_NAME and id: $VS_RUNNING_CONTAINER_ID"
+					echo "removing any container with name: $VS_CONTAINER_NAME: $VS_RUNNING_CONTAINER_ID"
+					docker container rm -f $VS_RUNNING_CONTAINER_ID
+					docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP $VS_CONTAINER_PORTS --workdir $VS_CONTAINER_WD --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS $VS_CONTAINER_ENVIRONMENT --name $VS_CONTAINER_NAME --hostname $VS_CONTAINER_NAME $VS_DOCKER_IMAGE_NAME $VS_CONTAINER_INIT_EXEC
+					VS_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
+					docker exec -d -t $VS_CONTAINER_ID /bin/bash -c "NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs 2>&1 | tee -a ./nodeapp.log"
+				'''
+			}
+		} //end stage
+	} //end stages
+}
