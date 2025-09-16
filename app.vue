@@ -142,7 +142,7 @@ if (process.server && xForwardedhost.value) {
  * httpClient of choice
  */
 const configuration = {
-    path: route,
+    path: deLocalisedRoute,
     endpoint: localisedEndpoint,
     httpClient: axios,
     ...(authorizationToken ? {
