@@ -24,6 +24,10 @@
                 </template>
             </VsGlobalMenu>
 
+            <div style="display: none;" aria-hidden="true">
+                Navigation generated at {{ cacheBustDate }}
+            </div>
+
             <BrManageMenuButton :menu="menuData" />
 
             <VsMeganav
@@ -104,6 +108,8 @@ let menuItems : any[] = [];
 let localisedUrls : any[] = [];
 let banner : any = null;
 
+let cacheBustDate : string = '';
+
 const configStore = useConfigStore();
 
 if (page.value) {
@@ -116,6 +122,18 @@ if (page.value) {
     if (banner && banner.ctaLink) {
         banner.ctaLink.link = banner.ctaLink.link.replace('/site/resourceapi', '');
     }
+
+    const timestamp = menuData.model.data.timeStamp;
+    const date = new Date(timestamp);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1);
+    const day = String(date.getDate());
+    const hours = String(date.getHours());
+    const minutes = String(date.getMinutes());
+    const seconds = String(date.getSeconds());
+
+    cacheBustDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 provide('page', page.value);
