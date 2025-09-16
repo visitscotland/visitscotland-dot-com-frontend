@@ -2,6 +2,7 @@
     <VsBrPageIntro
         :content="documentData"
         :light-background="true"
+        :is-listicle="true"
     />
 
     <!-- TODO Author -->
@@ -34,6 +35,7 @@
                                     variant="fullwidth"
                                     :no-alt-text="true"
                                     :use-lazy-loading="index !== 0"
+                                    :full-image-data="item.image"
                                 />
                             </div>
                         </template>
@@ -65,12 +67,12 @@
                         >
                             <div>
                                 <VsIconList
-                                    :title="configStore.getLabel('itinerary', 'keyfacilities.title')"
+                                    :title="configStore.getLabel('listicle', 'keyfacilities.title')"
                                 >
                                     <VsIconListItem
                                         v-for="(facility, facilityIndex) in item.facilities"
                                         :key="facilityIndex"
-                                        :icon="facility.id"
+                                        :icon="getDMSIconName(facility.id)"
                                         :label="facility.name"
                                     />
                                 </VsIconList>

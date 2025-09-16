@@ -24,15 +24,15 @@
     "@vue/eslint-config-airbnb": "^8.0.0",
     "eslint": "^8.56.0",
     "husky": "^9.1.7",
-    "nuxt": "^3.14.1592",
+    "nuxt": "~3.16.0",
     "nuxt-lazy-hydrate": "^1.0.0"
   },
   "dependencies": {
     "@bloomreach/spa-sdk": "^23.4.4",
     "@bloomreach/vue3-sdk": "^22.0.5",
-    "@pinia/nuxt": "^0.7.0",
-    "@visitscotland/component-library": "^5.0.1",
-    "axios": "^1.7.7",
+    "@pinia/nuxt": "^0.5.1",
+    "@visitscotland/component-library": "^5.5.4",
+    "axios": "^1.8.2",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "lint-staged": "^15.2.10",
@@ -43,6 +43,9 @@
     "standard-version": "^9.5.0",
     "typescript": "^5.6.3",
     "youtube-vue3": "^0.1.15"
+  },
+  "resolutions": {
+    "vite": "6.3.5"
   },
   "overrides": {
     "minimist": "latest"

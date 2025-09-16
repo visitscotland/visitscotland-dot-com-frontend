@@ -56,7 +56,7 @@
                             <VsTooltip
                                 :title="configStore.getLabel('transports', '${transport}')"
                                 href="#"
-                                :icon="transport"
+                                :icon="getDMSIconName(transport)"
                                 size="sm"
                                 icon-only
                                 variant="transparent"

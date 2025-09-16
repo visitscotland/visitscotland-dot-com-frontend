@@ -20,10 +20,6 @@
                     v-for="(centre, index) in module.skiCentres"
                     :key="index"
                 >
-                    <!--
-                        TODO - timeout duration is not being passed to the component
-                        :timeout-duration="${property('ski.timeout')}"
-                    -->
                     <VsSkiScotlandCard
                         :centre-info-url="centre.feedURL"
                         :img-src="centreImages[index].url"
@@ -43,6 +39,7 @@
                         :summary-on-hold-label="configStore.getLabel('ski', 'ski-centre.summary.on-hold')"
                         :piste-map-label="configStore.getLabel('ski', 'ski-centre.view-piste-map')"
                         :more-details-label="configStore.getLabel('ski', 'ski-centre.more-details')"
+                        :timeout-duration="centre.timeout"
                     >
                         <template #centre-name>
                             {{ centre.title }}

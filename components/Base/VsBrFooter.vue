@@ -65,7 +65,7 @@
                     v-for="(link, key, index) in configStore.labels['navigation.social-media']"
                     :key="index"
                     :href="link"
-                    :icon="key === 'twitter' ? 'x-twitter' : key"
+                    :icon="`fab fa-${key === 'twitter' ? 'x-twitter' : key}`"
                 />
             </vsfootersocialmenu>
         </template>
@@ -97,7 +97,6 @@
             </template>
         </VsFooterCopyright>
     </VsFooter>
-    <VsCookieChecker />
 </template>
 
 <script lang="ts" setup>
@@ -120,7 +119,6 @@ import {
     VsList,
     VsIcon,
     VsCol,
-    VsCookieChecker,
 } from '@visitscotland/component-library/components';
 
 const props = defineProps<{ component: Component, page: Page }>();
