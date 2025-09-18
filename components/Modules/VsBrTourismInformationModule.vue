@@ -11,7 +11,6 @@
                             ? module.image.cmsImage
                             : module.image.externalImage"
                         :no-alt-text="true"
-                        :full-image-data="module.image"
                     />
                 </template>
                 <template
