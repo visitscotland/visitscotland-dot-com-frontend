@@ -97,6 +97,7 @@
         >
             <VsBrTourismInformationModule
                 :module="item"
+                theme="grey"
             />
         </NuxtLazyHydrate>
 
