@@ -11,12 +11,20 @@
         />
     </template>
 
-    <VsBrPageIntro
-        v-else-if="documentData.theme === 'Top-Level'"
-        :content="documentData"
-        :hero-image="heroImage"
-        :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
-    />
+    <template v-else-if="documentData.theme === 'Top-Level'">
+        <VsBrHeroSection
+            v-if="configStore.heroVideo"
+            :content="documentData"
+            :video="configStore.heroVideo"
+            :image="heroImage"
+        />
+        <VsBrPageIntro
+            v-else
+            :content="documentData"
+            :hero-image="heroImage"
+            :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
+        />
+    </template>
 
     <template v-else-if="documentData.theme === 'Standard'">
         <VsBrPageIntro
@@ -93,6 +101,7 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
+import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 import VsBrIntroImage from '~/components/Modules/VsBrIntroImage.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
@@ -125,6 +134,7 @@ if (page.value) {
     pageItems = configStore.pageItems;
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
+
     if (configStore.otyml) {
         otyml = configStore.otyml;
     }

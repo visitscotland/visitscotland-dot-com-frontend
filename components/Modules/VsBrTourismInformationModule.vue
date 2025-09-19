@@ -1,5 +1,5 @@
 <template>
-    <VsModuleWrapper theme="<#if themeName?has_content>${themeName}<#else>light</#if>">
+    <VsModuleWrapper :theme="theme">
         <template #vs-module-wrapper-heading>
             {{ module.title }}
         </template>
@@ -42,7 +42,8 @@ import VsBrQuote from './VsBrQuote.vue';
 
 // const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: Object, theme: string }>();
 const module: any = props.module;
+const theme: string = props.theme;
 
 </script>

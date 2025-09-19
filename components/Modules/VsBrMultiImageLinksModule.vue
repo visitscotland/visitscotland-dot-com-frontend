@@ -1,5 +1,4 @@
 <template>
-    <!-- TODO - itinerary, themes -->
     <VsMegalinks
         :title="module.title"
         variant="single-image"
@@ -39,6 +38,10 @@
                                 : ''
                             "
                             :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
+                            :transport-name="featuredLinks[0].transportName"
+                            :transport="featuredLinks[0].transport"
+                            :days-label="featuredLinks[0].daysLabel"
+                            :days="featuredLinks[0].itineraryDays"
                         >
                             <template #vs-multi-image-heading>
                                 {{ featuredLinks[0].label }}
@@ -79,6 +82,10 @@
                                 : ''
                             "
                             :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
+                            :transport-name="link.transportName"
+                            :transport="link.transport"
+                            :days-label="link.daysLabel"
+                            :days="link.itineraryDays"
                         >
                             <template #vs-multi-image-heading>
                                 {{ link.label }}
@@ -120,6 +127,10 @@
                                 : ''
                             "
                             :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
+                            :transport-name="featuredLinks[1].transportName"
+                            :transport="featuredLinks[1].transport"
+                            :days-label="featuredLinks[1].daysLabel"
+                            :days="featuredLinks[1].itineraryDays"
                         >
                             <template #vs-multi-image-heading>
                                 {{ featuredLinks[1].label }}
@@ -149,6 +160,7 @@
 
 <script lang="ts" setup>
 /* eslint-disable import/no-import-module-exports */
+/* eslint-disable no-undef */
 
 import { inject } from 'vue';
 
@@ -194,6 +206,16 @@ if (page && module.links) {
             'error-message': configStore.getLabel('essentials.global', 'third-party-error'),
             label: nextLink.label,
             teaser: nextLink.teaser,
+            transportName: nextLink.itineraryMainTransport
+                ? nextLink.itineraryMainTransport.displayName
+                : '',
+            transport: nextLink.itineraryTransport
+                ? getDMSIconName(nextLink.itineraryTransport)
+                : '',
+            itineraryDays: nextLink.itineraryDays,
+            daysLabel: nextLink.itineraryDays && nextLink.itineraryDays > 1
+                ? configStore.getLabel('megalinks', 'days')
+                : configStore.getLabel('megalinks', 'day'),
         });
     }
 }
@@ -213,6 +235,16 @@ if (page && module.featuredLinks) {
             'error-message': configStore.getLabel('essentials.global', 'third-party-error'),
             label: nextLink.label,
             teaser: nextLink.teaser,
+            transportName: nextLink.itineraryMainTransport
+                ? nextLink.itineraryMainTransport.displayName
+                : '',
+            transport: nextLink.itineraryTransport
+                ? getDMSIconName(nextLink.itineraryTransport)
+                : '',
+            itineraryDays: nextLink.itineraryDays,
+            daysLabel: nextLink.itineraryDays && nextLink.itineraryDays > 1
+                ? configStore.getLabel('megalinks', 'days')
+                : configStore.getLabel('megalinks', 'day'),
         });
     }
 }
