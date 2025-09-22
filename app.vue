@@ -79,14 +79,14 @@ const route = useRoute().path;
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 
-let locale = '/site/resourceapi';
+// let locale = 'resourceapi';
 
-const localeStrings = [
-    'fr-fr',
-    'es-es',
-    'nl-nl',
-    'de-de',
-];
+// const localeStrings = [
+//     'fr-fr',
+//     'es-es',
+//     'nl-nl',
+//     'de-de',
+// ];
 
 const isMounted = ref(false);
 const hideSkeleton = ref(false);
@@ -98,16 +98,16 @@ onMounted(() => {
     window.dispatchEvent(hydrationEvent);
 });
 
-let deLocalisedRoute = route;
+// let deLocalisedRoute = route;
 
-for (let x = 0; x < localeStrings.length; x++) {
-    if (route.includes(localeStrings[x])) {
-        locale = `/site/${localeStrings[x]}/resourceapi`;
-        deLocalisedRoute = deLocalisedRoute.replace(`/${localeStrings[x]}`, '');
-    }
-}
+// for (let x = 0; x < localeStrings.length; x++) {
+//     if (route.includes(localeStrings[x])) {
+//        locale = `/${localeStrings[x]}/resourceapi`;
+//        deLocalisedRoute = deLocalisedRoute.replace(`/${localeStrings[x]}`, '');
+//    }
+// }
 
-const localisedEndpoint = endpoint.value + locale;
+// const localisedEndpoint = endpoint.value + locale;
 
 /**
  * The query parameter names which the cms is set to use in preview mode, so we can retrieve the
@@ -142,8 +142,8 @@ if (process.server && xForwardedhost.value) {
  * httpClient of choice
  */
 const configuration = {
-    path: deLocalisedRoute,
-    endpoint: localisedEndpoint,
+    path: route,
+    endpoint: endpoint.value,
     httpClient: axios,
     ...(authorizationToken ? {
         authorizationToken,
