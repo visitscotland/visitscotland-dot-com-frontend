@@ -10,6 +10,7 @@ interface IConfigState {
     gtm: any,
     locale: string,
     pageMetaData: any,
+    heroVideo: any,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -27,6 +28,7 @@ const useConfigStore = defineStore('configStore', {
         locale: '',
         pageMetaData: {
         },
+        heroVideo: null,
     }),
     actions: {
         getLabel(section: string, key: string) {

@@ -13,19 +13,16 @@
         :video-id="videoId"
         :small-play-button="smallPlayButton"
         :play-button-text="videoBtn ? videoBtn : configStore.getLabel('video', 'video.play-btn')"
+        :image-src="imageSrc"
+        :alt-text="(noAltText || !imageData)
+            ? configStore.getLabel('essentials.global', 'default.alt-text')
+            : imageData.altText"
+        :use-lazy-loading="useLazyLoading"
+        :toggle-button-text="configStore.getLabel('essentials.global', 'image.toggle.text')"
     >
         <template #video-title>
             {{ videoTitle }}
         </template>
-
-        <VsImg
-            v-if="imageSrc"
-            :src="imageSrc"
-            :alt="noAltText
-                ? configStore.getLabel('essentials.global', 'default.alt-text')
-                : imageData.altText"
-            :use-lazy-loading="useLazyLoading"
-        />
 
         <template
             #img-caption
@@ -90,7 +87,6 @@ import type { Page } from '@bloomreach/spa-sdk';
 
 import {
     VsImageWithCaption,
-    VsImg,
     VsCaption,
     VsSocialCreditLink,
     VsIcon,
@@ -107,15 +103,14 @@ interface IProps {
     isHero?: boolean,
     isVideo?: boolean,
     mobileOverlap?: boolean,
-    alignment?: string
+    alignment?: string,
     videoId?: string,
     videoTitle?: string,
     videoBtn?: string,
-    smallPlayButton?: boolean
+    smallPlayButton?: boolean,
     useLazyLoading?: boolean,
-    noAltText?: boolean
-    showToggle?: boolean
-    fullImageData?: object,
+    noAltText?: boolean,
+    showToggle?: boolean,
 };
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -133,8 +128,6 @@ const props = withDefaults(defineProps<IProps>(), {
     videoId: '',
     videoTitle: '',
     videoBtn: '',
-    fullImageData: () => ({
-    }),
 });
 
 const {
@@ -152,7 +145,6 @@ const {
     useLazyLoading,
     noAltText,
     showToggle,
-    fullImageData,
 } = toRefs(props);
 
 const page: Page | undefined = inject('page');
@@ -170,10 +162,6 @@ if (page) {
 
     if (imageString.value) {
         imageSrc = imageString.value;
-    }
-
-    if (fullImageData.value) {
-        imageData = fullImageData;
     }
 }
 </script>

@@ -119,6 +119,10 @@ if (page.value) {
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
+    if (componentModels.videoHeader) {
+        configStore.heroVideo = componentModels.heroVideo;
+    }
+
     document = page.value.getDocument();
 
     configStore.locale = document.model.data.localeString;

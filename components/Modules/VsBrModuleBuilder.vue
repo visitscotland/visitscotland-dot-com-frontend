@@ -97,6 +97,7 @@
         >
             <VsBrTourismInformationModule
                 :module="item"
+                theme="grey"
             />
         </NuxtLazyHydrate>
 
@@ -201,6 +202,8 @@ let currentMegaLinkSection = -1;
 const hippoContent : any = {
 };
 
+let singleImageAlternate = false;
+
 if (modules) {
     for (let x = 0; x < modules.length; x++) {
         let newThemeIndex = 1;
@@ -215,6 +218,11 @@ if (modules) {
             }
 
             newThemeIndex = currentMegaLinkSection % themeCount;
+        }
+
+        if (modules[x].type === 'SingleImageLinksModule') {
+            modules[x].alternate = singleImageAlternate;
+            singleImageAlternate = !singleImageAlternate;
         }
 
         modules[x].themeIndex = newThemeIndex;

@@ -188,7 +188,7 @@ const props = defineProps<{
     theme?: any,
     allTransports?: any[],
     allAreas?: any[],
-    isListicle: boolean,
+    isListicle?: boolean,
 }>();
 
 const {
