@@ -54,7 +54,7 @@ echo "==/Setting default pipeline environment variables"
 
 echo "== Setting default application variables"
 if (!env.BR_CMS_ORIGIN_LOCATION ) { env.BR_CMS_ORIGIN_LOCATION = "https://feature.visitscotland.com" }
-if (!env.BR_RESOURCE_API_ENDPOINT ) { env.BR_RESOURCE_API_ENDPOINT = "https://feature.visitscotland.com/resourceapi?vs-brxm-host=172.28.87.25&vs-brxm-port=8087&vs-no-redirect" }
+if (!env.BR_RESOURCE_API_ENDPOINT ) { env.BR_RESOURCE_API_ENDPOINT = "https://feature.visitscotland.com/resourceapi?vs-brxm-host=172.28.87.25&vs-brxm-port=8087&vs-no-redirect=TRUE" }
 if (!env.BR_X_FORWARDED_HOST ) { env.BR_X_FORWARDED_HOST = "feature.visitscotland.com" }
 echo "==/Setting default application variables"
 
