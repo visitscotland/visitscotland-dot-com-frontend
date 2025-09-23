@@ -157,6 +157,11 @@ const configuration = {
     debug: runtimeConfig.public.BR_NUXT_APP_DEBUG === 'true',
 };
 
+console.log('');
+console.log('--- Config Object ---');
+console.log(configuration);
+console.log('');
+
 /**
  * This object maps Bloomreach Components in the CMS data to a set of Vue components. It is
  * passed to the br-page object as a prop, and we can then render each of those components by
