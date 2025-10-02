@@ -28,8 +28,12 @@ export default defineNuxtConfig({
             preserveSymlinks: true,
         },
         build: {
-            cssCodeSplit: true,
+            cssCodeSplit: false,
         },
+    },
+
+    experimental: {
+        inlineSSRStyles: false,
     },
 
     vue: {
