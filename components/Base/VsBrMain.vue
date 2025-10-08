@@ -114,6 +114,7 @@ if (page.value) {
         configStore.otyml = componentModels.otyml;
     }
     configStore.pageItems = componentModels.pageItems;
+    configStore.heroImage = componentModels.heroImage;
     configStore.labels = componentModels.labels;
     configStore.newsletterSignpost = componentModels.newsletterSignpost;
     configStore.gtm = componentModels.gtm;

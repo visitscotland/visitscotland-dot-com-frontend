@@ -1,5 +1,4 @@
 <template>
-    <!-- TODO - latitude, longitude, toggle-button-text, play-button-text -->
     <VsImageWithCaption
         :variant="variant"
         :is-hero-image="isHero"
@@ -28,17 +27,16 @@
             #img-caption
             v-if="imageData"
         >
-            <!-- TODO - latitude & longitude don't seem to be available for hero images, it comes
-            down as a raw ImageSet without that info. Images in links have them but we need them
-            here-->
             <VsCaption
                 :variant="variant"
                 :text-align="alignment"
+                :latitude="imageData.coordinates ? imageData.coordinates.latitude.toString() : ''"
+                :longitude="imageData.coordinates ? imageData.coordinates.longitude.toString() : ''"
             >
                 <template
                     #caption
                 >
-                    {{ imageData.description }}
+                    {{ descriptionString }}
                 </template>
 
                 <template
@@ -153,15 +151,28 @@ let imageData: any;
 
 let imageSrc = '';
 
+let descriptionString = '';
+
 if (page) {
     if (image.value) {
         imageValue = page.getContent(image.value.$ref);
         imageData = imageValue.model.data;
         imageSrc = imageValue.getOriginal().getUrl();
+
+        if (image.value.coordinates) {
+            imageData.coordinates = image.value.coordinates;
+        }
+
+        if (isVideo.value) {
+            descriptionString = `${configStore.getLabel('essentials.global', 'image.title')}: ${imageData.description}`;
+        } else {
+            descriptionString = imageData.description;
+        }
     }
 
     if (imageString.value) {
         imageSrc = imageString.value;
     }
 }
+
 </script>

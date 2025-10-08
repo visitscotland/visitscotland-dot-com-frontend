@@ -14,48 +14,55 @@
         >
             <VsBrRichText :input-content="module.introduction.value" />
         </template>
-
         <VsRow>
             <VsCol
-                v-for="(link, index) in links"
-                :key="index"
                 cols="12"
-                md="6"
+                lg="10"
+                class="offset-lg-1"
             >
-                <VsMegalinkLinkList
-                    :img-src="link.image ? link.image : ''"
-                    :theme="theme"
-                    :link-type="link.type"
-                    :link-url="link.url"
-                    :error-message="link['error-message']"
-                    :video-id="link.type === 'video'
-                        ? extractYoutubeId(link.url)
-                        : ''
-                    "
-                    :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
-                >
-                    <template #vs-link-list-heading>
-                        {{ link.label }}
-                    </template>
-
-                    <template
-                        #vs-link-list-content
-                        v-if="module.teaserVisible"
+                <VsRow>
+                    <VsCol
+                        v-for="(link, index) in links"
+                        :key="index"
+                        cols="12"
+                        md="6"
                     >
-                        <p>{{ link.teaser }}</p>
-                    </template>
-                </VsMegalinkLinkList>
+                        <VsMegalinkLinkList
+                            :img-src="link.image ? link.image : ''"
+                            :theme="theme"
+                            :link-type="link.type"
+                            :link-url="link.url"
+                            :error-message="link['error-message']"
+                            :video-id="link.type === 'video'
+                                ? extractYoutubeId(link.url)
+                                : ''
+                            "
+                            :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
+                        >
+                            <template #vs-link-list-heading>
+                                {{ link.label }}
+                            </template>
 
-                <VsBrVideoModal
-                    v-if="link.type === 'video'"
-                    :is-video-modal="true"
-                    :close-btn-text="configStore.getLabel('essentials.global', 'close')"
-                    :modal-id="link.type === 'video'
-                        ? extractYoutubeId(link.url)
-                        : ''
-                    "
-                    :video="link"
-                />
+                            <template
+                                #vs-link-list-content
+                                v-if="module.teaserVisible"
+                            >
+                                <p>{{ link.teaser }}</p>
+                            </template>
+                        </VsMegalinkLinkList>
+
+                        <VsBrVideoModal
+                            v-if="link.type === 'video'"
+                            :is-video-modal="true"
+                            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+                            :modal-id="link.type === 'video'
+                                ? extractYoutubeId(link.url)
+                                : ''
+                            "
+                            :video="link"
+                        />
+                    </VsCol>
+                </VsRow>
             </VsCol>
         </VsRow>
     </VsMegalinks>

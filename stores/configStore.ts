@@ -5,6 +5,7 @@ interface IConfigState {
     productSearch: any,
     otyml: any,
     pageItems: any[],
+    heroImage: any,
     labels: any,
     newsletterSignpost: any,
     gtm: any,
@@ -20,6 +21,7 @@ const useConfigStore = defineStore('configStore', {
         },
         otyml: null,
         pageItems: [],
+        heroImage: null,
         labels: {
         },
         newsletterSignpost: {
