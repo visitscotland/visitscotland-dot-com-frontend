@@ -1,5 +1,7 @@
 <template>
-    <VsModuleWrapper>
+    <VsModuleWrapper
+        v-if="module.storystreamId"
+    >
         <template #vs-module-wrapper-heading>
             {{ module.title }}
         </template>
