@@ -257,7 +257,7 @@ if (page) {
 
                 youtubeId = extractYoutubeId(heroVideo.url);
 
-                if (heroVideo.cta) {
+                if (heroVideo && heroVideo.cta) {
                     videoCta = heroVideo.cta;
                 } else if (configStore.heroVideo && configStore.heroVideo.cta) {
                     videoCta = configStore.heroVideo.cta;

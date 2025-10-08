@@ -30,8 +30,8 @@
             <VsCaption
                 :variant="variant"
                 :text-align="alignment"
-                :latitude="imageData.coordinates ? imageData.coordinates.latitude.toString() : ''"
-                :longitude="imageData.coordinates ? imageData.coordinates.longitude.toString() : ''"
+                :latitude="latitude"
+                :longitude="longitude"
             >
                 <template
                     #caption
@@ -153,6 +153,9 @@ let imageSrc = '';
 
 let descriptionString = '';
 
+let longitude = '';
+let latitude = '';
+
 if (page) {
     if (image.value) {
         imageValue = page.getContent(image.value.$ref);
@@ -161,11 +164,17 @@ if (page) {
 
         if (image.value.coordinates) {
             imageData.coordinates = image.value.coordinates;
+            if (imageData.coordinates.longitude) {
+                longitude = imageData.coordinates.longitude.toString();
+            }
+            if (imageData.coordinates.latitude) {
+                latitude = imageData.coordinates.latitude.toString();
+            }
         }
 
         if (isVideo.value) {
             descriptionString = `${configStore.getLabel('essentials.global', 'image.title')}: ${imageData.description}`;
-        } else {
+        } else if (imageData) {
             descriptionString = imageData.description;
         }
     }
