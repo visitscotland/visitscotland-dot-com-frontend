@@ -114,13 +114,18 @@ if (page.value) {
         configStore.otyml = componentModels.otyml;
     }
     configStore.pageItems = componentModels.pageItems;
+    configStore.heroImage = componentModels.heroImage;
     configStore.labels = componentModels.labels;
     configStore.newsletterSignpost = componentModels.newsletterSignpost;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
-    if (componentModels.videoHeader) {
+    if (componentModels.heroVideo) {
         configStore.heroVideo = componentModels.heroVideo;
+    }
+
+    if (componentModels.videoHeader) {
+        configStore.isLocalVideoheader = true;
     }
 
     document = page.value.getDocument();

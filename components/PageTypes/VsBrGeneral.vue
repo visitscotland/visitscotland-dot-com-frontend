@@ -13,7 +13,7 @@
 
     <template v-else-if="documentData.theme === 'Top-Level'">
         <VsBrHeroSection
-            v-if="configStore.heroVideo"
+            v-if="configStore.heroVideo && configStore.isLocalVideoheader"
             :content="documentData"
             :video="configStore.heroVideo"
             :image="heroImage"
@@ -121,6 +121,7 @@ let pageItems : any[] = [];
 let productSearch : any = {
 };
 let heroImage = {
+    coordinates: null,
 };
 let otyml : any = null;
 
@@ -134,6 +135,10 @@ if (page.value) {
     pageItems = configStore.pageItems;
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
+
+    if (configStore.heroImage && configStore.heroImage.coordinates) {
+        heroImage.coordinates = configStore.heroImage.coordinates;
+    }
 
     if (configStore.otyml) {
         otyml = configStore.otyml;

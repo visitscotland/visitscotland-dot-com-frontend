@@ -16,7 +16,7 @@
                         <VsGlobalMenuLanguageItem
                             v-for="(language, index) in localisedUrls"
                             :key="index"
-                            :language-link="language.url"
+                            :language-link="formatLink(language.url)"
                             :language-name="language.displayName"
                             :language="language.locale.language"
                         />
@@ -78,6 +78,8 @@
 import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
+
+import formatLink from '~/composables/formatLink.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 

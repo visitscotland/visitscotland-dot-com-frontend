@@ -5,12 +5,14 @@ interface IConfigState {
     productSearch: any,
     otyml: any,
     pageItems: any[],
+    heroImage: any,
     labels: any,
     newsletterSignpost: any,
     gtm: any,
     locale: string,
     pageMetaData: any,
     heroVideo: any,
+    isLocalVideoheader: boolean,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -20,6 +22,7 @@ const useConfigStore = defineStore('configStore', {
         },
         otyml: null,
         pageItems: [],
+        heroImage: null,
         labels: {
         },
         newsletterSignpost: {
@@ -29,6 +32,7 @@ const useConfigStore = defineStore('configStore', {
         pageMetaData: {
         },
         heroVideo: null,
+        isLocalVideoheader: false,
     }),
     actions: {
         getLabel(section: string, key: string) {
