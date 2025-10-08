@@ -25,7 +25,7 @@
                     variant="large"
                     :image="heroImage"
                     :video-id="youtubeId"
-                    :video-title="heroVideo.displayName"
+                    :video-title="heroVideo.label"
                     :video-btn="videoCta"
                 />
             </template>
