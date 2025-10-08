@@ -22,7 +22,7 @@
                     </VsBody>
 
                     <VsButton
-                        :href="data.cta.link"
+                        :href="formatLink(data.cta.link)"
                     >
                         {{ data.cta.label }}
                     </VsButton>
@@ -49,6 +49,8 @@
 </template>
 
 <script lang="ts" setup>
+import formatLink from '~/composables/formatLink.ts';
+
 import {
     VsModuleWrapper,
     VsContainer,
