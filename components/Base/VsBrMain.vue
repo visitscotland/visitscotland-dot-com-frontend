@@ -120,8 +120,12 @@ if (page.value) {
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
-    if (componentModels.videoHeader) {
+    if (componentModels.heroVideo) {
         configStore.heroVideo = componentModels.heroVideo;
+    }
+
+    if (componentModels.videoHeader) {
+        configStore.isLocalVideoheader = true;
     }
 
     document = page.value.getDocument();

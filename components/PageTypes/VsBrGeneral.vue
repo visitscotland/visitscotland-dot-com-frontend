@@ -13,7 +13,7 @@
 
     <template v-else-if="documentData.theme === 'Top-Level'">
         <VsBrHeroSection
-            v-if="configStore.heroVideo"
+            v-if="configStore.heroVideo && configStore.isLocalVideoheader"
             :content="documentData"
             :video="configStore.heroVideo"
             :image="heroImage"

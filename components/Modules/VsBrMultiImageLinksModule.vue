@@ -41,7 +41,7 @@
                             :transport-name="featuredLinks[0].transportName"
                             :transport="featuredLinks[0].transport"
                             :days-label="featuredLinks[0].daysLabel"
-                            :days="featuredLinks[0].itineraryDays"
+                            :days="featuredLinks[0].itineraryDays.toString()"
                         >
                             <template #vs-multi-image-heading>
                                 {{ featuredLinks[0].label }}
@@ -85,7 +85,7 @@
                             :transport-name="link.transportName"
                             :transport="link.transport"
                             :days-label="link.daysLabel"
-                            :days="link.itineraryDays"
+                            :days="link.itineraryDays.toString()"
                         >
                             <template #vs-multi-image-heading>
                                 {{ link.label }}
@@ -130,7 +130,7 @@
                             :transport-name="featuredLinks[1].transportName"
                             :transport="featuredLinks[1].transport"
                             :days-label="featuredLinks[1].daysLabel"
-                            :days="featuredLinks[1].itineraryDays"
+                            :days="featuredLinks[1].itineraryDays.toString()"
                         >
                             <template #vs-multi-image-heading>
                                 {{ featuredLinks[1].label }}

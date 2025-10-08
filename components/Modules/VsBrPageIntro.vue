@@ -26,7 +26,7 @@
                     :image="heroImage"
                     :video-id="youtubeId"
                     :video-title="heroVideo.displayName"
-                    :video-btn="heroVideo.cta"
+                    :video-btn="videoCta"
                 />
             </template>
             <template
@@ -212,6 +212,7 @@ let blogDate : string;
 
 let heroVideo : any;
 let youtubeId : string = '';
+let videoCta : string = '';
 
 let document : any = null;
 let highlights : [];
@@ -255,6 +256,12 @@ if (page) {
                 heroVideo = video.model.data;
 
                 youtubeId = extractYoutubeId(heroVideo.url);
+
+                if (heroVideo.cta) {
+                    videoCta = heroVideo.cta;
+                } else if (configStore.heroVideo && configStore.heroVideo.cta) {
+                    videoCta = configStore.heroVideo.cta;
+                }
             }
         }
     }
