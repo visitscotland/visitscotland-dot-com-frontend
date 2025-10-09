@@ -57,6 +57,16 @@
 
         <NuxtLazyHydrate
             :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'CardGroupModule'"
+        >
+            <VsBrCardGroupModule
+                :module="item"
+                :theme="item.themeValue"
+            />
+        </NuxtLazyHydrate>
+
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'ArticleModule'"
         >
             <VsBrArticleModule
@@ -173,6 +183,7 @@ import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 import VsBrListLinksModule from '~/components/Modules/VsBrListLinksModule.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksModule.vue';
+import VsBrCardGroupModule from '~/components/Modules/VsBrCardGroupModule.vue';
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
 import VsBrTourismInformationModule from '~/components/Modules/VsBrTourismInformationModule.vue';
