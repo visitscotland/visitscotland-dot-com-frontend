@@ -159,6 +159,15 @@
             />
         </NuxtLazyHydrate>
 
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'SignpostModule'"
+        >
+            <VsBrSpotlightSection
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
         <div
             v-else-if="item.type === 'ErrorModule'"
         >
@@ -194,6 +203,7 @@ import VsBrSkiModule from '~/components/Modules/VsBrSkiModule.vue';
 import VsBrForm from '~/components/Modules/VsBrForm.vue';
 import VsBrCannedSearchModule from '~/components/Modules/VsBrCannedSearchModule.vue';
 import VsBrUGCModule from '~/components/Modules/VsBrUGCModule.vue';
+import VsBrSpotlightSection from '~/components/Modules/VsBrSpotlightSection.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
