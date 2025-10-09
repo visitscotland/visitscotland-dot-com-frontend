@@ -35,10 +35,12 @@ const page: Page | undefined = inject('page');
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;
 
-const image: any = module.image.cmsImage
+let image: any = module.image.cmsImage
     ? page.getContent(module.image.cmsImage.$ref)
     : page.getContent(module.image.externalImage.$ref);
 
-const description = module.copy.content.replace(/<[^>]+>/g, '');
+image = image?.getOriginal().getUrl();
+
+const description = module.copy.value.replace(/<[^>]+>/g, '');
 
 </script>
