@@ -1,6 +1,6 @@
 <template>
     <VsSocialShare
-        id="<#if nojs == false>default<#else>nojs</#if>"
+        :id="noJs ? 'nojs' : 'default'"
         :no-js="noJs"
         page-url="<@hst.link hippobean=document canonical=true fullyQualified=true/>"
         page-title="${document.title}"

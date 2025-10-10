@@ -57,6 +57,16 @@
 
         <NuxtLazyHydrate
             :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'CardGroupModule'"
+        >
+            <VsBrCardGroupModule
+                :module="item"
+                :theme="item.themeValue"
+            />
+        </NuxtLazyHydrate>
+
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'ArticleModule'"
         >
             <VsBrArticleModule
@@ -149,6 +159,15 @@
             />
         </NuxtLazyHydrate>
 
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'SignpostModule'"
+        >
+            <VsBrSpotlightSection
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
         <div
             v-else-if="item.type === 'ErrorModule'"
         >
@@ -173,6 +192,7 @@ import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 import VsBrListLinksModule from '~/components/Modules/VsBrListLinksModule.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksModule.vue';
+import VsBrCardGroupModule from '~/components/Modules/VsBrCardGroupModule.vue';
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
 import VsBrTourismInformationModule from '~/components/Modules/VsBrTourismInformationModule.vue';
@@ -183,6 +203,7 @@ import VsBrSkiModule from '~/components/Modules/VsBrSkiModule.vue';
 import VsBrForm from '~/components/Modules/VsBrForm.vue';
 import VsBrCannedSearchModule from '~/components/Modules/VsBrCannedSearchModule.vue';
 import VsBrUGCModule from '~/components/Modules/VsBrUGCModule.vue';
+import VsBrSpotlightSection from '~/components/Modules/VsBrSpotlightSection.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
