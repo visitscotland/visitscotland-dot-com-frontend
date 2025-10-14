@@ -159,11 +159,11 @@ if (page.value) {
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        title: document.model.data.seoTitle,
+        title: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
         meta: [
             {
                 name: 'title',
-                content: document.model.data.seoTitle,
+                content: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
             },
             {
                 name: 'description',
