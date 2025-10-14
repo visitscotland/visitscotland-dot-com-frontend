@@ -55,7 +55,9 @@
                         :key="index"
                     >
                         <VsLinkListItem
-                            :type="link.type.toLowerCase()"
+                            :type="link.youtubeId
+                                ? 'video'
+                                : ''"
                             :href="link.youtubeId
                                 ? '#'
                                 : formatLink(link.link)
