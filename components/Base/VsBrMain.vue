@@ -191,11 +191,6 @@ if (page.value) {
                 type: 'image/svg+xml',
             },
             {
-                rel: 'apple-touch-icon',
-                href: '/icons/apple-touch-icon-180-180.svg',
-                sizes: 'any',
-            },
-            {
                 rel: 'manifest',
                 href: '/manifest.webmanifest',
             },
