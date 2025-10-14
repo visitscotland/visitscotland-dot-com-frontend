@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-    <div class="vs-sticky-nav" :class="{ 'has-edit-button': page.isPreview() }">
+    <div class="vs-sticky-nav vs-sticky-nav--has-content" :class="{ 'has-edit-button': page.isPreview() }">
         <VsBrSkipTo />
         <header>
             <VsGlobalMenu
