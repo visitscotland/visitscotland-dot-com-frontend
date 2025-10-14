@@ -24,7 +24,7 @@
     "@vue/eslint-config-airbnb": "^8.0.0",
     "eslint": "^8.56.0",
     "husky": "^9.1.7",
-    "nuxt": "~3.16.0",
+    "nuxt": "~3.19.0",
     "nuxt-lazy-hydrate": "^1.0.0"
   },
   "dependencies": {
