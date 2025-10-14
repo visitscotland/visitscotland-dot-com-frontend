@@ -38,6 +38,10 @@
                                 : ''
                             "
                             :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
+                            :transport-name="link.transportName"
+                            :transport="link.transport"
+                            :days-label="link.daysLabel"
+                            :days="link.itineraryDays.toString()"
                         >
                             <template #vs-link-list-heading>
                                 {{ link.label }}
@@ -70,6 +74,8 @@
 
 <script lang="ts" setup>
 /* eslint-disable import/no-import-module-exports */
+/* eslint-disable no-undef */
+
 import { inject } from 'vue';
 
 import type { Page } from '@bloomreach/spa-sdk';
@@ -111,6 +117,16 @@ if (page && module.links) {
             'error-message': '',
             label: nextLink.label,
             teaser: nextLink.teaser,
+            transportName: nextLink.itineraryMainTransport
+                ? nextLink.itineraryMainTransport.displayName
+                : '',
+            transport: nextLink.itineraryTransport
+                ? getDMSIconName(nextLink.itineraryTransport)
+                : '',
+            itineraryDays: nextLink.itineraryDays,
+            daysLabel: nextLink.itineraryDays && nextLink.itineraryDays > 1
+                ? configStore.getLabel('megalinks', 'days')
+                : configStore.getLabel('megalinks', 'day'),
         });
     }
 }
