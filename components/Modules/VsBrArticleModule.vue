@@ -92,13 +92,13 @@ const module: any = props.module;
 
 const articleSections: any[] = [];
 
-let sidebarCount = -1;
+let sidebarCount = 0;
 
 for (let x = 0; x < module.sections.length; x++) {
     const nextSection = module.sections[x];
     let alignment = '';
 
-    if (nextSection.quote || nextSection.image || nextSection.video) {
+    if (nextSection.quote || nextSection.image) {
         sidebarCount += 1;
 
         if (sidebarCount % 2 !== 0) {

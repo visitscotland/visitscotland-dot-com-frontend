@@ -159,11 +159,11 @@ if (page.value) {
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        title: document.model.data.seoTitle,
+        title: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
         meta: [
             {
                 name: 'title',
-                content: document.model.data.seoTitle,
+                content: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
             },
             {
                 name: 'description',
@@ -189,11 +189,6 @@ if (page.value) {
                 rel: 'icon',
                 href: '/icons/favicon.svg',
                 type: 'image/svg+xml',
-            },
-            {
-                rel: 'apple-touch-icon',
-                href: '/icons/apple-touch-icon-180-180.svg',
-                sizes: 'any',
             },
             {
                 rel: 'manifest',

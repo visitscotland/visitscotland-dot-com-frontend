@@ -24,10 +24,11 @@
                     <template #icon-closed>
                         <VsIcon icon="fa-regular fa-chevron-down" size="sm" />
                     </template>
-                    <div
-                        class="p-075"
-                        v-html="row.copy.value"
-                    />
+                    <div class="p-075">
+                        <VsBrRichText
+                            :input-content="row.copy.value"
+                        />
+                    </div>
                 </VsAccordionItem>
             </VsAccordion>
         </div>
@@ -35,6 +36,8 @@
 </template>
 
 <script lang="ts" setup>
+
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
     VsTabItem,
