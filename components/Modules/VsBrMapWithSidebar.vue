@@ -27,7 +27,11 @@
             :map-no-results-message="configStore.getLabel('map', 'map.no-results')"
             :toggle-data="toggleValues"
             :details-endpoint="module.detailsEndpoint ? module.detailsEndpoint : ''"
-            :panel-message="configStore.getLabel('map', 'map.panel-bottom-msg')"
+            :panel-message="
+                module.mapType === 'regional'
+                    ? configStore.getLabel('map', 'map.panel-bottom-msg')
+                    : ''
+            "
         >
             <template #close-side-panel-text>
                 <span class="visually-hidden">
