@@ -164,6 +164,11 @@ if (page) {
 
         if (image.value.coordinates) {
             imageData.coordinates = image.value.coordinates;
+        } else if (configStore.heroImage && configStore.heroImage.coordinates) {
+            imageData.coordinates = configStore.heroImage.coordinates;
+        }
+
+        if (imageData.coordinates) {
             if (imageData.coordinates.longitude) {
                 longitude = imageData.coordinates.longitude.toString();
             }
