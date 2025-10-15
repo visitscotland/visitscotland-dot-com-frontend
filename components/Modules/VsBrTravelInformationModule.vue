@@ -5,7 +5,9 @@
         </template>
 
         <template #vs-module-wrapper-intro>
-            <div v-html="module.copy.value" />
+            <VsBrRichText
+                :input-content="module.copy.value"
+            />
         </template>
 
         <VsContainer>
@@ -22,6 +24,8 @@
 </template>
 
 <script lang="ts" setup>
+
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
     VsModuleWrapper,
