@@ -28,7 +28,7 @@
                     cols="10"
                     offset="1"
                 >
-                    <VsBody>
+                    <VsBody class="mt-200">
                         <p>{{ video.teaser }}</p>
                     </VsBody>
                 </VsCol>

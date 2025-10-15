@@ -14,7 +14,7 @@
                         <VsIcon
                             :icon="getDMSIconName(row.transport.key)"
                             size="sm"
-                            class="me-050"
+                            class="me-050 pt-050 pb-025"
                         />
                         {{ row.transport.label }}
                     </template>
