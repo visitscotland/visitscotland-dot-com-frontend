@@ -57,7 +57,7 @@
                         <VsLinkListItem
                             :type="link.youtubeId
                                 ? 'video'
-                                : ''"
+                                : null"
                             :href="link.youtubeId
                                 ? '#'
                                 : formatLink(link.link)
