@@ -36,6 +36,8 @@
                 :link-url="link.url"
                 :link-type="link.type"
                 :img-src="link.image ? link.image : ''"
+                :category-label="link.categoryLabel"
+                :category="link.category"
                 :transport-name="link.transportName"
                 :transport="link.transport"
                 :days-label="link.daysLabel"
@@ -82,17 +84,29 @@ if (page && module.links) {
     for (let x = 0; x < module.links.length; x++) {
         const nextLink = module.links[x];
 
-        const image: any = nextLink.image.cmsImage
-            ? page.getContent(nextLink.image.cmsImage.$ref)
-            : page.getContent(nextLink.image.externalImage.$ref);
+        let image: any = '';
+
+        if (nextLink.image.cmsImage) {
+            image = page.getContent(nextLink.image.cmsImage.$ref);
+            image = image.getOriginal().getUrl();
+        } else if (nextLink.image.externalImage) {
+            if (nextLink.image.externalImage.$ref) {
+                image = page.getContent(nextLink.image.externalImage.$ref);
+                image = image.getOriginal().getUrl();
+            } else {
+                image = nextLink.image.externalImage;
+            }
+        }
 
         links.push({
-            image: image?.getOriginal().getUrl(),
+            image,
             type: nextLink.type.toLowerCase(),
             url: formatLink(nextLink.link),
             'error-message': '',
             label: nextLink.label,
             teaser: nextLink.teaser,
+            categoryLabel: configStore.getLabel('otyml', 'otyml.category'),
+            category: nextLink.category,
             transportName: nextLink.itineraryMainTransport
                 ? nextLink.itineraryMainTransport.displayName
                 : '',
