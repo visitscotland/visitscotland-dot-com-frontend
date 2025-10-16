@@ -36,6 +36,8 @@
                 :link-url="link.url"
                 :link-type="link.type"
                 :img-src="link.image ? link.image : ''"
+                :category-label="link.categoryLabel"
+                :category="link.category"
                 :transport-name="link.transportName"
                 :transport="link.transport"
                 :days-label="link.daysLabel"
@@ -103,6 +105,8 @@ if (page && module.links) {
             'error-message': '',
             label: nextLink.label,
             teaser: nextLink.teaser,
+            categoryLabel: configStore.getLabel('otyml', 'otyml.category'),
+            category: nextLink.category,
             transportName: nextLink.itineraryMainTransport
                 ? nextLink.itineraryMainTransport.displayName
                 : '',
