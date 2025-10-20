@@ -32,6 +32,7 @@
                     ? configStore.getLabel('map', 'map.panel-bottom-msg')
                     : ''
             "
+            :load-branding-immediately="true"
         >
             <template #close-side-panel-text>
                 <span class="visually-hidden">
