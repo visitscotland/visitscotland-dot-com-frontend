@@ -17,7 +17,10 @@ if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?feature.visitscotland.(com|
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3061"
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?release-brc.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
-    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3002"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3062"
+} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?beta.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
+    echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3068"
 } else if (BRANCH_NAME ==~ "ops/(feature-environment(s)?-enhancements|pipeline-updates)" && (JOB_NAME ==~ "([^/]*/)?feature(-(businessevents|support))?.visitscotland.(com|org)(-mb)?(-frontend)?/ops%(25)?2F(feature-environment(s)?-enhancements|pipeline-updates)")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3069"
