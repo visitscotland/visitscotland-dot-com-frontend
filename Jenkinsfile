@@ -21,6 +21,9 @@ if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?feature.visitscotland.(com|
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?beta.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3068"
+    env.BR_CMS_ORIGIN_LOCATION = "https://cms-beta.visitscotland.com"
+    env.BR_RESOURCE_API_ENDPOINT = "https://beta.visitscotland.com/resourceapi"
+    env.BR_X_FORWARDED_HOST = "beta.visitscotland.com"
 } else if (BRANCH_NAME ==~ "ops/(feature-environment(s)?-enhancements|pipeline-updates)" && (JOB_NAME ==~ "([^/]*/)?feature(-(businessevents|support))?.visitscotland.(com|org)(-mb)?(-frontend)?/ops%(25)?2F(feature-environment(s)?-enhancements|pipeline-updates)")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3069"
