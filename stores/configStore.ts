@@ -46,6 +46,13 @@ const useConfigStore = defineStore('configStore', {
 
             return '';
         },
+        getLabelMap(section: string) {
+            if (!this.labels || !this.labels[section]) {
+                return '';
+            }
+
+            return this.labels[section];
+        },
     },
 });
 
