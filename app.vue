@@ -15,13 +15,18 @@
                     <div
                         :class="!isMounted ? 'no-js' : ''"
                     >
-                        <br-component component="menu" />
-                        <br-component component="main" />
-                        <NuxtLazyHydrate
-                            :when-visible="{ rootMargin: '50px' }"
-                        >
-                            <br-component component="footer" />
-                        </NuxtLazyHydrate>
+                        <br-component
+                            component="menu"
+                            v-if="!isInternalResource || internalResourceName === 'header'"
+                        />
+                        <br-component
+                            component="main"
+                            v-if="!isInternalResource"
+                        />
+                        <br-component
+                            component="footer"
+                            v-if="!isInternalResource || internalResourceName === 'footer'"
+                        />
                     </div>
                 </template>
             </br-page>
@@ -135,6 +140,21 @@ const runtimeConfig = useRuntimeConfig();
 
 if (process.server && xForwardedhost.value) {
     axios.defaults.headers.common.Host = xForwardedhost.value;
+}
+
+let isInternalResource = false;
+let internalResourceName = '';
+
+if (deLocalisedRoute.includes('/data/internal/')) {
+    isInternalResource = true;
+    internalResourceName = deLocalisedRoute.substr(
+        deLocalisedRoute.indexOf('/data/internal/') + '/data/internal/'.length,
+        deLocalisedRoute.length,
+    );
+}
+
+if (isInternalResource) {
+    deLocalisedRoute = '/';
 }
 
 /**
