@@ -15,6 +15,8 @@
                     <div
                         :class="!isMounted ? 'no-js' : ''"
                     >
+                        <CssHeader v-if="isInternalResource && internalResourceName === 'css-header'" />
+
                         <br-component
                             component="menu"
                             v-if="!isInternalResource || internalResourceName === 'header'"
@@ -61,6 +63,8 @@ import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
+
+import CssHeader from '~/components/InternalResources/CssHeader.vue';
 
 /**
  * This section sets up all of the information we need to make available for the Bloomreach SDK

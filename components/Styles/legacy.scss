@@ -1,0 +1,474 @@
+/*
+    In order to avoid issue about files caches on the user browser, the minified version should contain a version number.
+    Please, increase the version manually if this file is updated
+ */
+
+.vs-global-menu {
+    .vs-global-menu__languages .btn-primary.dropdown-toggle,
+    .vs-global-menu__dropdown .btn-primary.dropdown-toggle,
+    .vs-global-menu__languages .btn-primary.dropdown-toggle,
+    .vs-global-menu__dropdown .dropdown-menu li a,
+    .vs-global-menu__languages__item {
+        font-size: 1.5rem !important;
+    }
+
+    .vs-global-menu__languages__item .dropdown-item,
+    .vs-global-menu__dropdown .dropdown-menu li a {
+        padding: 1.5rem !important;
+    }
+
+    .vs-global-menu__list_item a{
+        padding: 0 2rem;
+    }
+
+    .vs-global-menu__list_item,
+    .vs-global-menu__languages__text,
+    .vs-global-menu__languages__selected {
+        font-size: 1.2rem !important;
+    }
+
+    .dropdown-menu {
+        border-radius: 0;
+
+        .vs-global-menu__languages__item {
+            margin-bottom: 0;
+
+            .dropdown-item {
+                &:hover,
+                &:focus {
+                    color: #fff !important;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 499px) {
+        .vs-global-menu__dropdown .btn-primary.dropdown-toggle {
+            padding: 0.5rem 1.5rem;
+        }
+
+        .vs-global-menu__languages .btn-primary.dropdown-toggle {
+            padding: 0.5rem 2rem;
+        }
+    }
+
+    @media (min-width: 500px) and (max-width: 991px) {
+        .vs-global-menu__list_item,
+        .vs-global-menu__languages .btn-primary.dropdown-toggle,
+        .vs-global-menu__dropdown .btn-primary.dropdown-toggle,
+        .vs-global-menu__languages .btn-primary.dropdown-toggle,
+        .vs-global-menu__dropdown .dropdown-menu li a,
+        .vs-global-menu__languages__item {
+            font-size: 1.33rem !important;
+        }
+
+        .vs-global-menu__languages__item .dropdown-item,
+        .vs-global-menu__dropdown .dropdown-menu li a {
+            padding: 1.33rem !important;
+        }
+
+        .vs-global-menu__dropdown .btn-primary.dropdown-toggle {
+            padding: 0.44rem 1.33rem !important;
+        }
+
+        .vs-global-menu__languages .btn-primary.dropdown-toggle {
+            padding: 0.44rem 1.77rem !important;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .vs-global-menu__languages__item {
+            font-size: 1.2rem !important;
+
+            .dropdown-item {
+                padding: 1.2rem !important;
+            }
+        }
+    }
+}
+
+.vs-mega-nav {
+    .vs-mega-nav__logo svg{
+        margin: 0;
+    }
+
+    .vs-mega-nav-accordion-item {
+        width: 100%;
+        height: auto; 
+    }
+
+    .card.vs-mega-nav-featured-item,
+    .card.vs-mega-nav-featured-event {
+        width: 100%;
+        height: auto;
+        text-align: left;
+    }
+
+    .vs-mega-nav-top-menu-item__featured-event {
+        font-size: 1.6rem !important;
+
+        .vs-stretched-link-card__content {
+            font-size: 1.6rem !important;
+            border-left-width: 4px !important;
+        }
+    }
+
+    .vs-mega-nav-dropdown .btn-group {
+        position: unset;
+    }
+
+    @media (max-width: 499px) {
+        .vs-mega-nav-dropdown .btn.dropdown-toggle,
+        .vs-mega-nav-top-menu-item__cta-link,
+        .vs-mega-nav-list-item .vs-link--variant-primary {
+            font-size: 1.6rem !important;
+        }
+
+        .vs-mega-nav-list {
+            .vs-mega-nav-list-item {
+                &__heading > a {
+                    font-size: 1.8rem !important;
+                }
+
+                .vs-link--variant-primary {
+                    font-size: 1.6rem !important;
+                }
+            }
+        }
+
+        .vs-accordion-toggle__text {
+            font-size: 2.5rem !important;
+        }
+
+        .vs-mega-nav-accordion-item--level-1 > .vs-accordion-item__card-header .vs-accordion-toggle.btn-primary {
+            padding: 1.25rem 2.5rem !important;
+        }
+
+        .vs-mega-nav-accordion-item--level-2 > .vs-accordion-item__card-header .vs-accordion-toggle.btn-primary {
+            padding: 1.5rem 2.25rem 1.5rem 4rem !important;
+        }
+
+        .vs-mega-nav-accordion-item--level-2 > .vs-accordion-item__card-header .vs-accordion-toggle.btn-primary,
+        .vs-mega-nav-list-item__cta-link .vs-link--variant-primary {
+            font-size: 2rem !important;
+        }
+
+        .vs-accordion-item .vs-mega-nav-list-item .vs-link--variant-primary {
+            padding: 1.2rem 4.8rem !important;
+            font-size: 2rem !important;
+        }
+
+        .card.vs-mega-nav-featured-item {
+            .card-body {
+                padding: 2.5rem 1.5rem !important;
+            }
+        }
+
+        .card.vs-mega-nav-featured-item .vs-stretched-link-card__link,
+        .card.vs-mega-nav-featured-item .card-title {
+            font-size: 1.75rem !important;
+        }
+    }
+
+    @media (min-width: 500px) and (max-width: 991px) {
+        .vs-mega-nav-dropdown .btn.dropdown-toggle,
+        .vs-mega-nav-top-menu-item__cta-link {
+            font-size: 2.22rem !important;
+        }
+
+        .vs-mega-nav-accordion-item--level-1>.vs-accordion-item__card-header .vs-accordion-toggle.btn-primary {
+            padding: 1.33rem 2.22rem !important;
+            font-size: 2.22rem !important;
+        }
+
+        .vs-mega-nav-accordion-item--level-2 > .vs-accordion-item__card-header .vs-accordion-toggle.btn-primary {
+            padding: 1.33rem 2.22rem 1.33rem 3.5rem !important;
+            font-size: 2rem !important;
+        }
+
+        .vs-mega-nav-list-item__cta-link .vs-link--variant-primary {
+            font-size: 1.77rem !important;
+        }
+
+        .vs-accordion-item .vs-mega-nav-list-item .vs-link--variant-primary {
+            padding: 1.22rem 5.33rem !important;
+            font-size: 1.77rem !important;
+        }
+
+        .card.vs-mega-nav-featured-item .card-body {
+            padding: 3.55rem !important;
+        }
+
+        .card.vs-mega-nav-featured-item .vs-stretched-link-card__link,
+        .card.vs-mega-nav-featured-item .card-title {
+            font-size: 1.55rem !important;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .vs-mega-nav-list {
+            .vs-mega-nav-list-item {
+                &__heading > a {
+                    font-size: 1.8rem !important;
+                }
+
+                .vs-link--variant-primary {
+                    font-size: 1.6rem !important;
+                }
+            }
+        }
+
+        .vs-mega-nav-list-item .vs-link--variant-primary {
+            font-size: 1.8rem !important;
+        }
+
+        .card.vs-mega-nav-featured-item .vs-stretched-link-card__content {
+            font-size: 1.4rem !important;
+        }
+
+        .vs-mega-nav-dropdown .btn.dropdown-toggle {
+            font-size: 1.6rem !important;
+            padding-bottom: 1.2rem !important;
+        }
+
+        .vs-list.vs-list--unstyled .vs-mega-nav-top-menu-item__cta-link {
+            font-size: 1.6rem !important;
+        }
+
+        .vs-list.vs-list--unstyled .vs-mega-nav-list {
+            margin-bottom: 1.6rem !important;
+        }
+
+        .card.vs-mega-nav-featured-item .vs-stretched-link-card__link,
+        .card.vs-mega-nav-featured-item .card-title {
+            font-size: 1.4rem !important;
+        }
+    }
+}
+
+.vs-button{
+    border-radius: 0;
+}
+
+.vs-banner {
+    &__title,
+    &__text p,
+    &__cta-link {
+        font-size: 1.6rem !important;
+    }
+
+    @media (max-width: 499px) {
+        &__title,
+        &__text p,
+        &__cta-link {
+            font-size: 1.778rem !important;
+        }
+    }
+}
+
+.vs-footer {    
+    .vs-accordion-item__title {
+        text-transform: none !important;
+        font-size: 1.6rem !important;
+        margin: 0.4rem 0 1.2rem !important;
+    }
+
+    .vs-footer-social-item {
+        margin: 0 1.2rem 1.2rem 0 !important;
+    }
+
+    .vs-footer-accordion-item.card {
+        width: 100%;
+        height: auto;
+        text-align: left;
+    }
+
+    @media (max-width: 499px) {
+        .vs-footer-accordion-item.card .btn.vs-accordion-toggle {
+            font-size: 2rem !important;
+            padding: 1.5rem !important;
+        }
+
+        .vs-footer-nav-list-item {
+            font-size: 1.75rem !important;
+            padding: 1.5rem 4rem 1.5rem !important;
+        }
+
+        .vs-footer-social-menu__title {
+            text-transform: none;
+            font-size: 2rem !important;
+            margin-left: 1.8rem !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .vs-list.vs-list--unstyled .vs-footer-social-item {
+            margin-right: 1.5rem !important;
+        }
+
+        .vs-footer-utility-list .vs-list--unstyled .vs-footer-nav-list-item {
+            padding: 1.5rem 1.5rem 1.5rem 0 !important;
+        }
+    }
+
+    @media (min-width: 500px) and (max-width: 991px) {
+        .vs-footer-accordion-item.card .btn.vs-accordion-toggle {
+            font-size: 1.77rem !important;
+            padding: 1.33rem !important;
+        }
+
+        .vs-footer-nav-list-item {
+            font-size: 1.55rem !important;
+            padding: 1.33rem 3.55rem 1.33rem !important;
+        }
+
+        .vs-footer-social-menu__title {
+            text-transform: none;
+            font-size: 1.77rem !important;
+            margin-left: 1.6rem !important;
+            margin-bottom: 0.88rem !important;
+        }
+
+        .vs-list.vs-list--unstyled .vs-footer-social-item {
+            margin-right: 1.33rem !important;
+        }
+
+        .vs-footer-utility-list .vs-list--unstyled .vs-footer-nav-list-item {
+            padding: 1.33rem 1.33rem 1.33rem 0 !important;
+        }
+    }
+
+    @media (min-width: 772px) and (max-width: 991px) {
+        .vs-footer-nav-list-item {
+            padding: 0.88rem 0rem !important;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .vs-footer-accordion-item.card {
+            padding: 0 1.2rem !important;
+        }
+
+        .vs-footer-nav-list-item {
+            font-size: 1.4rem !important;
+            margin: 0.8rem 0 !important;
+        }
+    }
+}
+
+// correct clashes with code outside of header/footer
+.c-results__grid.row {
+    display: block;
+}
+
+.c-results__product__card > a {
+    text-decoration: none;
+}
+
+.c-search__button--submit {
+    bottom: 0 !important;
+    background: #1F49D6 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: #fff !important;
+    padding: 5px 20px 6px !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    max-width: 164px !important;
+}
+
+.listing-content {
+    .row {
+        display: block;
+    }
+}
+
+.component-booking-nav .booking {
+    position: relative !important;
+    top: auto !important;
+}
+
+.c-search {
+    .col-xs-5 {
+        width: 41.6666666667%;
+    }
+}
+
+.c-search__button--submit-primary {
+    display: flex;
+    align-items: center;
+
+    .c-search__button-container {
+        padding-top: 18px !important;
+
+        .c-search__button--submit {
+            height: calc(1.5em + 1.5rem + 2px);
+            font-size: 1.4rem;
+        }
+    }
+}
+
+.c-results__sort .c-results__label {
+    display: flex !important;
+
+    .c-results__sort__label {
+        float: none !important;
+        flex-shrink: 0 !important;
+    }
+
+    .c-results__sort-dropdown {
+        border: none !important;
+        font-size: 1.4rem !important;
+    }
+}
+
+.c-search__in, .c-search__on {
+    left: -1.5rem;
+}
+
+.datepicker-dropdown.dropdown-menu {
+    width: 30rem !important;
+}
+
+#loading-content .col-lg-12 > .row {
+    justify-content: center;
+}
+
+.c-results__map__refresh.btn {
+    background: #fff !important;
+    font-size: 1.4rem !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+@media (min-width: 500px) {
+    .c-results__filters__list-title,
+    .c-results__pagination__li {
+        font-size: 1.8rem !important;
+    }
+}
+
+@media (min-width: 576px) {
+    .form-inline .form-control {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 992px) {
+    .c-search__button--submit {
+        padding: 5px 30px 6px !important;
+    }
+
+    .c-search-type .form-group,
+    .c-search__date-summary {
+        max-width: 95%;
+    }
+
+    .c-search__for {
+        left: -1.9rem;
+    }
+}
+
+// fix spacing at top for old floating header
+html body main > #wrapper {
+    padding-top: 0 !important;
+}
