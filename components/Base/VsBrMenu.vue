@@ -1,5 +1,22 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
+    <div
+        v-if="configStore.pageMetaData
+            && (configStore.pageMetaData.branch || configStore.pageMetaData.pr)"
+        style="background-color: #200F2E; position: relative; z-index: 10000;"
+    >
+        <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
+            <span class="text-warning"><strong>Branch:</strong> {{ configStore.pageMetaData.branch }}</span>
+            <span class="text-warning"><strong>Author:</strong> {{ configStore.pageMetaData.lastCommitAuthor }}</span>
+            <span
+                v-if="configStore.pageMetaData.pr"
+                class="text-warning"
+            >
+                <strong>PR:</strong> {{ configStore.pageMetaData.pr }}
+            </span>
+        </div>
+    </div>
+
     <div class="vs-sticky-nav vs-sticky-nav--has-content" :class="{ 'has-edit-button': page.isPreview() }">
         <VsBrSkipTo />
         <header>
