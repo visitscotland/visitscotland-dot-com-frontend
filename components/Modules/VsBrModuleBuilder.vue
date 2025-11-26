@@ -161,6 +161,15 @@
 
         <NuxtLazyHydrate
             :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'SpotlightModule'"
+        >
+            <VsBrSpotlightSection
+                :module="item"
+            />
+        </NuxtLazyHydrate>
+
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'SignpostModule'"
         >
             <VsBrSpotlightSection
