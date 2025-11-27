@@ -1,5 +1,5 @@
 <template>
-    <VsBrPageIntro
+    <!-- <VsBrPageIntro
         :content="documentData"
         :hero-image="heroImage"
         :light-background="true"
@@ -7,9 +7,26 @@
         :theme="theme"
         :all-transports="allTransports"
         :all-areas="allAreas"
+    /> -->
+    <!-- {{ heroImage.getContent(image.value.$ref) }} -->
+    <!-- <VsBrHeroSection
+        :content="documentData"
+    /> -->
+    {{ page.getContent(heroImage.$ref).getOriginal().getUrl()}}
+    <br>
+    <!-- {{ page }} -->
+    <!-- <VsHeroSection
+        :heading="documentData.title"
+        :lede="documentData.teaser"
+    /> -->
+    <!-- <VsHeroSection
+        :heading="documentData.title"
+    /> -->
+  <VsBrHeroSection
+        :content="documentData"
+        :image="heroImage"
     />
-
-    <VsItinerary>
+    <!-- <VsItinerary>
         <template #map>
             <component
                 :is="VsBrItineraryMap"
@@ -84,7 +101,7 @@
                 </template>
             </VsItineraryDay>
         </template>
-    </VsItinerary>
+    </VsItinerary> -->
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -129,19 +146,21 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
+// import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrItineraryStop from '~/components/Modules/VsBrItineraryStop.vue';
 
 import {
+    VsHeroSection,
     VsItinerary,
     VsItineraryDay,
     VsDescriptionList,
     VsDescriptionListItem,
     VsTooltip,
 } from '@visitscotland/component-library/components';
+import VsBrHeroSection from '../Modules/VsBrHeroSection.vue';
 
 const VsBrItineraryMap = defineAsyncComponent(() => import('~/components/Modules/VsBrItineraryMap.vue'));
 
@@ -237,5 +256,4 @@ if (page.value) {
         }
     }
 }
-
 </script>
