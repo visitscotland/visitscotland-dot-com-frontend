@@ -1,0 +1,61 @@
+{
+    "name": "content",
+    "displayName": "Harry potter Itinerary",
+    "theme": "filmev",
+    "distance": 0,
+    "otherThings": {
+        "name": "visitscotland:otherThings",
+        "displayName": "visitscotland:otherThings",
+        "links": [
+            { "$ref": "/page/ufaada3bd88bd430cbfac667d1858494f" },
+            { "$ref": "/page/u444ada56f29349d2b9893339b84ac1b4" },
+            { "$ref": "/page/u0b7ad67729744bc2bce6001944089039" },
+            { "$ref": "/page/u42de099b46a049969ea1668a6aecd522" },
+            { "$ref": "/page/u554973584ca14012be1d4fa217bb5215" }
+        ],
+        "introduction": { "contentType": "hippostd:html", "value": "" },
+        "megalinkItems": [
+            { "$ref": "/page/ucbc8477d1deb4153b66312212905b472" },
+            { "$ref": "/page/u0161886acf5747f6a1f8820b894f5648" },
+            { "$ref": "/page/u7d2653e5806849d19c1e8aad6d951985" },
+            { "$ref": "/page/ua2ca775b0df54e2c900cc51c9f2e5d47" },
+            { "$ref": "/page/ub3a031846cf74186bf5f2c7f4e8c64b6" }
+        ],
+        "title": "",
+        "contentType": "visitscotland:OTYML"
+    },
+    "heroVideo": null,
+    "highlights": [
+        "Glenfinnan Viaduct",
+        "Jacobite Steam Train",
+        "Glen Etive",
+        "The Elephant House"
+    ],
+    "popular": true,
+    "finish": "",
+    "areas": ["all"],
+    "transports": ["car", "public", "train"],
+    "translationDeadline": null,
+    "translationPriority": null,
+    "start": "",
+    "translationFlag": null,
+    "translation": "",
+    "diff": null,
+    "heroImage": { "$ref": "/page/uea857cd52d454f7c9da9503b2be8f382" },
+    "seoTitle": "Iconic Harry Potter Film Locations - An Itinerary",
+    "hideNewsletter": false,
+    "seoDescription": "It was in Scotland's capital city that JK Rowling started to plot the adventures",
+    "blog": null,
+    "image": { "$ref": "/page/uea857cd52d454f7c9da9503b2be8f382" },
+    "breadcrumb": "Hola",
+    "teaser": "It was in Scotland's capital city that JK Rowling started to plot the adventures of Harry and his friends",
+    "introduction": {
+        "contentType": "hippostd:html",
+        "value": "<p>It was in Scotland&#39;s capital city that JK Rowling started to plot the adventures of Harry and his friends. With cobbled streets, winding alleys and medieval architecture, the city certainly have a few things in common with the settings from the books and films. She wrote the early chapters in various caf&#233;s around the city&#39;s Old Town, before coming back to finish off the series from a peaceful suite in The Balmoral Hotel. It is also said that Hogwarts School was styled on Edinburgh&#8217;s Fettes College, a private school on the outskirts of Edinburgh&#8217;s west end new town. You could also try the <vs-link type=\"default\" href=\"https://www.visitscotland.com/info/tours/wizarding-world-of-edinburgh-03e61189\">Wizarding World of Edinburgh</vs-link> tour.</p>"
+    },
+    "seoNoIndex": false,
+    "title": "Harry Potter film and book locations itinerary",
+    "localeString": "en",
+    "contentType": "visitscotland:Itinerary",
+    "id": "8b4a3c11-8b84-4aa0-bccf-f407d18c1c44"
+}

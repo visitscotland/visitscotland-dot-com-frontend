@@ -8,31 +8,25 @@
         :all-transports="allTransports"
         :all-areas="allAreas"
     /> -->
-    <!-- {{ heroImage.getContent(image.value.$ref) }} -->
-    <!-- <VsBrHeroSection
-        :content="documentData"
-    /> -->
-    {{ page.getContent(heroImage.$ref).getOriginal().getUrl()}}
-    <br>
-    <!-- {{ page }} -->
-    <!-- <VsHeroSection
-        :heading="documentData.title"
-        :lede="documentData.teaser"
-    /> -->
-    <!-- <VsHeroSection
-        :heading="documentData.title"
-    /> -->
-  <VsBrHeroSection
+    <!-- {{ documentData }} -->
+    <VsBrHeroSection
         :content="documentData"
         :image="heroImage"
+        inset
+    />
+    <!-- <VsSectionHeader
+        :heading="itinerary.days[0].title"
+    >
+        <template #section-header-lede>
+            <VsBrRichText :input-content="itinerary.days[0].introduction.value" />
+        </template>
+    </VsSectionHeader> -->
+        <!-- {{ itinerary.days[0].stops[0].title }} -->
+    
+    <VsBrContentSectionsDST
+        :stops="itinerary.days[0].stops"
     />
     <!-- <VsItinerary>
-        <template #map>
-            <component
-                :is="VsBrItineraryMap"
-                :places="itineraryPlaces"
-            />
-        </template>
         <template #list>
             <VsItineraryDay
                 v-for="(day, index) in itinerary.days"
@@ -150,19 +144,19 @@ import useConfigStore from '~/stores/configStore.ts';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
-import VsBrItineraryStop from '~/components/Modules/VsBrItineraryStop.vue';
 
 import {
-    VsHeroSection,
+    VsSectionHeader,
     VsItinerary,
     VsItineraryDay,
     VsDescriptionList,
     VsDescriptionListItem,
     VsTooltip,
 } from '@visitscotland/component-library/components';
-import VsBrHeroSection from '../Modules/VsBrHeroSection.vue';
 
-const VsBrItineraryMap = defineAsyncComponent(() => import('~/components/Modules/VsBrItineraryMap.vue'));
+import VsBrHeroSection from '../Modules/VsBrHeroSection.vue';
+import VsBrContentSections from '../Modules/VsBrContentSections.vue';
+import VsBrContentSectionsDST from '../Modules/VsBrContentSectionsDST.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 

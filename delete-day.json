@@ -1,0 +1,272 @@
+{
+    "name": "edinburgh",
+    "displayName": "Edinburgh",
+    "title": "Explore Edinburgh",
+    "introduction": {
+        "contentType": "hippostd:html",
+        "value": "<p>It was in Scotland&#39;s capital city that JK Rowling started to plot the adventures of Harry and his friends. With cobbled streets, winding alleys and medieval architecture, the city certainly has a few things in common with the settings from the books and films. She wrote the early chapters in various caf&#233;s around the city&#39;s Old Town, before coming back to finish off the series from a peaceful suite in The Balmoral Hotel. It is also said that Hogwarts School was styled on Edinburgh&#8217;s Fettes College, a private school on the outskirts of Edinburgh&#8217;s west end new town. You could also try the Wizarding World of Edinburgh tour.</p>"
+    },
+    "translationFlag": null,
+    "translation": "",
+    "diff": null,
+    "stops": [
+        {
+            "hippoBean": { "$ref": "/page/u9830f174d0eb47bf9b1a02f86f43e17f" },
+            "anchor": null,
+            "errorMessages": null,
+            "marketoId": null,
+            "index": 1,
+            "title": "Edinburgh castle",
+            "subTitle": "Edinburgh - City Centre",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Make Edinburgh Castle your first port of call. It sits at the top of the historic Royal Mile on a volcanic plug, and is perhaps the most famous landmark on the Edinburgh skyline. Beat the crowds and get there for opening at 9.30am. The views over the city are pretty spectacular, and there is so much to take in, including the National Museum of War, the National War Monument and the Honours of Scotland, the county&#39;s Crown Jewels.</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": null,
+                "externalImage": "http://www.visitscotland.com/wsimgs/EC%20Graphic%202%20low%20res.jpg",
+                "altText": "Edinburgh Castle",
+                "credit": null,
+                "description": "Edinburgh Castle",
+                "coordinates": { "latitude": 55.9486, "longitude": -3.19994 },
+                "source": null,
+                "postUrl": null,
+                "location": "Edinburgh - City Centre"
+            },
+            "timeToExplore": null,
+            "tipsTitle": "Covid information",
+            "ctaLink": {
+                "label": "Discover Edinburgh castle",
+                "link": "http://172.28.81.65:8089/info/see-do/edinburgh-castle-p245821",
+                "type": "INTERNAL"
+            },
+            "tipsBody": {
+                "contentType": "hippostd:html",
+                "value": "<p>Edinburgh Castle is now open and we are delighted to welcome you back.&#160;<vs-link type=\"external\" rel=\"nofollow\" href=\"http://www.restarthistory.scot/\">Find out more about our re-opening plans</vs-link>.</p>"
+            },
+            "facilities": [
+                { "id": "pubtranrte", "name": "On Public Transport Route" },
+                {
+                    "id": "accessparkdrop",
+                    "name": "Accessible Parking Or Drop-off Point"
+                },
+                { "id": "dsblaccess", "name": "Level Access" },
+                { "id": "cafereston", "name": "Cafe or Restaurant" }
+            ],
+            "address": {
+                "line1": "Castle Hill",
+                "city": "Edinburgh - City Centre",
+                "county": "Edinburgh & The Lothians",
+                "postCode": "EH1 2NG",
+                "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+                "streetAddress": "Castle Hill",
+                "empty": false
+            },
+            "price": "Admission charge",
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": { "latitude": 55.9486, "longitude": -3.19994 },
+            "identifier": "e10310a1-8c67-47e0-9b5b-8bc049f3bf3d",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/edinburgh-castle/edinburgh-castle"
+        },
+        {
+            "hippoBean": { "$ref": "/page/u98ec3739fc6745b3bbdbe21478facbb7" },
+            "anchor": null,
+            "errorMessages": null,
+            "marketoId": null,
+            "index": 2,
+            "title": "Old Town",
+            "subTitle": "Edinburgh - City Centre",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Edinburgh&#39;s Old Town is part of a <vs-link type=\"external\" rel=\"noopener noreferrer\" href=\"http://www.ewht.org.uk/\" target=\"_blank\">UNESCO World Heritage Site</vs-link>, together with the Georgian era New Town on the north side of the city centre. The buildings you&#8217;ll see remain largely unchanged from how they would have looked centuries ago.</p>\n\n<p>The Old Town and Royal Mile is home to three filming locations from <em>Outlander</em>. If you&#8217;re looking for a memorable souvenir while you&#8217;re there, pop into <vs-link type=\"external\" rel=\"noopener noreferrer\" href=\"http://www.hamiltonandyoung.co.uk/\" title=\"Hamilton &#38; Young Jewellery Designers\" target=\"_blank\">Hamilton &#38; Young Jewellery Designers</vs-link> on the Royal Mile to browse Celtic and Outlander inspired items.</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": null,
+                "externalImage": "http://www.visitscotland.com/wsimgs/john-knox-min_400602568.jpg",
+                "altText": "Groups of sightseers outside John Knox House on Edinburgh's cobbled Royal mile. The architecture dates from the 1490s with upper storeys overhanging.",
+                "credit": "VisitScotland / Kenny Lam, all rights reserved.",
+                "description": "Groups of sightseers outside John Knox House on Edinburgh's cobbled Royal mile. The architecture dates from the 1490s with upper storeys overhanging.",
+                "coordinates": { "latitude": 55.95217, "longitude": -3.19774 },
+                "source": null,
+                "postUrl": null,
+                "location": "Edinburgh - City Centre"
+            },
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": {
+                "label": "Explore Edinburgh’s beautifully Old Town",
+                "link": "http://172.28.81.65:8089/info/towns-villages/old-town-and-new-town-p918411",
+                "type": "INTERNAL"
+            },
+            "tipsBody": null,
+            "facilities": [],
+            "address": {
+                "city": "Edinburgh - City Centre",
+                "county": "Edinburgh & The Lothians",
+                "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+                "empty": false
+            },
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": { "latitude": 55.95217, "longitude": -3.19774 },
+            "identifier": "b6fef35d-70c2-45ba-b104-cd300e8201b7",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/old-town/old-town"
+        },
+        {
+            "hippoBean": { "$ref": "/page/ue67cca0b469d428188150612f856f316" },
+            "anchor": null,
+            "errorMessages": null,
+            "marketoId": null,
+            "index": 3,
+            "title": "Greyfriars Kirkyard",
+            "subTitle": "Edinburgh - City Centre",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Only a short walk away from The Elephant House you&#39;ll find this infamous, spine-tingling graveyard, and burial place of several notable Edinburgh academics and writers of the past. However, also buried here are a few other notable residents: Thomas Riddell, William McGonagall and Elizabeth Moodie. A coincidence? We think not.</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": null,
+                "externalImage": "http://www.visitscotland.com/wsimgs/03%20Museum%20on%20the%20Mound%2c%20Edinburgh%20low-res_1904926619.jpg",
+                "altText": "Museum on the Mound sign",
+                "credit": null,
+                "description": "Museum on the Mound sign",
+                "coordinates": { "latitude": 55.9505, "longitude": -3.194 },
+                "source": null,
+                "postUrl": null,
+                "location": "Edinburgh - City Centre"
+            },
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": {
+                "label": "Find out more about Greyfriars Kirkyard",
+                "link": "http://172.28.81.65:8089/info/see-do/museum-on-the-mound-p246891",
+                "type": "INTERNAL"
+            },
+            "tipsBody": null,
+            "facilities": [
+                { "id": "pubtranrte", "name": "On Public Transport Route" },
+                { "id": "audioloop", "name": "Hearing Loop" },
+                { "id": "dsblaccess", "name": "Level Access" },
+                { "id": "accesstoliet", "name": "Accessible toilets" }
+            ],
+            "address": {
+                "line1": "Museum On The Mound",
+                "line2": "Lloyds Banking Group, The Mound",
+                "city": "Edinburgh - City Centre",
+                "county": "Edinburgh & The Lothians",
+                "postCode": "EH1 1YZ",
+                "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+                "streetAddress": "Museum On The Mound, Lloyds Banking Group, The Mound",
+                "empty": false
+            },
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": { "latitude": 55.9505, "longitude": -3.194 },
+            "identifier": "47a289e7-13dd-4bd4-98d4-2fc128951806",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/greyfriars-kirkyard/greyfriars-kirkyard"
+        },
+        {
+            "hippoBean": { "$ref": "/page/u030dde7974ad441bb7f2731cb0312e3c" },
+            "anchor": null,
+            "errorMessages": null,
+            "marketoId": null,
+            "index": 4,
+            "title": "Palace of Holyroodhouse",
+            "subTitle": "Edinburgh - City Centre",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Book location and Jacobite connection</p>\n\n<p>Located at the foot of the Royal Mile, the Palace of Holyroodhouse is an elegant royal residence with links to monarchs from throughout the centuries. Today it is the official Scottish residence of Her Majesty The Queen.</p>\n\n<p>In September 1745 Bonnie Prince Charlie established his court at Holyroodhouse for six weeks. This is portrayed in the <em>Outlander</em> novels when Claire and Jamie visit the Prince at the palace and beg him to abandon his hopeless cause.</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": null,
+                "externalImage": "http://www.visitscotland.com/wsimgs/RS211268_8170158__Holyrood38_515096165.JPG",
+                "altText": "The Palace of Holyroodhouse",
+                "credit": "Royal Collection Trust / © His Majesty King Charles III 2022.",
+                "description": "The Palace of Holyroodhouse",
+                "coordinates": { "latitude": 55.95276, "longitude": -3.17211 },
+                "source": null,
+                "postUrl": null,
+                "location": "Edinburgh - City Centre"
+            },
+            "timeToExplore": "2 hours",
+            "tipsTitle": null,
+            "ctaLink": {
+                "label": "Find out more about Palace of Holyroodhouse",
+                "link": "http://172.28.81.65:8089/info/see-do/palace-of-holyroodhouse-p247111",
+                "type": "INTERNAL"
+            },
+            "tipsBody": null,
+            "facilities": [
+                { "id": "pubtranrte", "name": "On Public Transport Route" },
+                { "id": "audioloop", "name": "Hearing Loop" },
+                {
+                    "id": "accessparkdrop",
+                    "name": "Accessible Parking Or Drop-off Point"
+                },
+                { "id": "dsblaccess", "name": "Level Access" },
+                { "id": "accesstoliet", "name": "Accessible toilets" },
+                { "id": "wifi", "name": "WiFi" },
+                { "id": "cafereston", "name": "Cafe or Restaurant" }
+            ],
+            "address": {
+                "line1": "Palace of Holyroodhouse",
+                "line2": "Canongate, Royal Mile",
+                "city": "Edinburgh - City Centre",
+                "county": "Edinburgh & The Lothians",
+                "postCode": "EH8 8DX",
+                "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+                "streetAddress": "Palace of Holyroodhouse, Canongate, Royal Mile",
+                "empty": false
+            },
+            "price": null,
+            "opening": {
+                "openNewYear": "Open over New Year",
+                "extraDescription": "April - October\t09:30-18:00\n\n(last admission 16:30)\n\nNovember - March\t09:30-16:30\n(last admission 15:15)\n\nThe Palace of Holyroodhouse is closed on Tuesdays and Wednesdays, except 24 May - 7 September when we are open 7 days a week.\n\nAs a working royal palace, opening arrangements may chance at short notice. Please check our website before planning a visit.",
+                "period": { "startDay": "2025-01-01", "endDay": "2025-12-31" },
+                "days": [
+                    {
+                        "key": "tuesday",
+                        "day": "Tuesdays",
+                        "state": "closed",
+                        "provisional": false
+                    },
+                    {
+                        "key": "wednesday",
+                        "day": "Wednesdays",
+                        "state": "closed",
+                        "provisional": false
+                    }
+                ]
+            },
+            "openLink": {
+                "label": "Check opening times",
+                "link": "http://172.28.81.65:8089/info/see-do/palace-of-holyroodhouse-p247111#opening",
+                "type": null
+            },
+            "distance": null,
+            "coordinates": { "latitude": 55.95276, "longitude": -3.17211 },
+            "identifier": "442aa35c-52e7-4db6-b44a-3c2d18f9f581",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/palace-of-holyroodhouse/palace-of-holyroodhouse"
+        }
+    ],
+    "transports": ["car", "public", "walking"],
+    "translationPriority": null,
+    "translationDeadline": null,
+    "localeString": "en",
+    "contentType": "visitscotland:Day",
+    "id": "806448db-18e1-4a25-81c3-777a76f530d2"
+}

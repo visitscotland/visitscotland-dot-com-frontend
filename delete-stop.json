@@ -1,0 +1,62 @@
+{
+    "hippoBean": { "$ref": "/page/u9830f174d0eb47bf9b1a02f86f43e17f" },
+    "anchor": null,
+    "errorMessages": null,
+    "marketoId": null,
+    "index": 1,
+    "title": "Edinburgh castle",
+    "subTitle": "Edinburgh - City Centre",
+    "description": {
+        "contentType": "hippostd:html",
+        "value": "<p>Make Edinburgh Castle your first port of call. It sits at the top of the historic Royal Mile on a volcanic plug, and is perhaps the most famous landmark on the Edinburgh skyline. Beat the crowds and get there for opening at 9.30am. The views over the city are pretty spectacular, and there is so much to take in, including the National Museum of War, the National War Monument and the Honours of Scotland, the county&#39;s Crown Jewels.</p>"
+    },
+    "image": {
+        "errorMessages": [],
+        "cmsImage": null,
+        "externalImage": "http://www.visitscotland.com/wsimgs/EC%20Graphic%202%20low%20res.jpg",
+        "altText": "Edinburgh Castle",
+        "credit": null,
+        "description": "Edinburgh Castle",
+        "coordinates": { "latitude": 55.9486, "longitude": -3.19994 },
+        "source": null,
+        "postUrl": null,
+        "location": "Edinburgh - City Centre"
+    },
+    "timeToExplore": null,
+    "tipsTitle": "Covid information",
+    "ctaLink": {
+        "label": "Discover Edinburgh castle",
+        "link": "http://172.28.81.65:8089/info/see-do/edinburgh-castle-p245821",
+        "type": "INTERNAL"
+    },
+    "tipsBody": {
+        "contentType": "hippostd:html",
+        "value": "<p>Edinburgh Castle is now open and we are delighted to welcome you back.&#160;<vs-link type=\"external\" rel=\"nofollow\" href=\"http://www.restarthistory.scot/\">Find out more about our re-opening plans</vs-link>.</p>"
+    },
+    "facilities": [
+        { "id": "pubtranrte", "name": "On Public Transport Route" },
+        {
+            "id": "accessparkdrop",
+            "name": "Accessible Parking Or Drop-off Point"
+        },
+        { "id": "dsblaccess", "name": "Level Access" },
+        { "id": "cafereston", "name": "Cafe or Restaurant" }
+    ],
+    "address": {
+        "line1": "Castle Hill",
+        "city": "Edinburgh - City Centre",
+        "county": "Edinburgh & The Lothians",
+        "postCode": "EH1 2NG",
+        "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+        "streetAddress": "Castle Hill",
+        "empty": false
+    },
+    "price": "Admission charge",
+    "opening": null,
+    "openLink": null,
+    "distance": null,
+    "coordinates": { "latitude": 55.9486, "longitude": -3.19994 },
+    "identifier": "e10310a1-8c67-47e0-9b5b-8bc049f3bf3d",
+    "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/edinburgh-castle/edinburgh-castle",
+    "type": "ItineraryStopModule"
+}

@@ -1,10 +1,15 @@
 <template>
+    <!-- {{ imageValue }} -->
+    <!-- {{ content }} -->
     <VsHeroSection
         :heading="content.title"
         :lede="content.teaser"
         :img-src="imageSrc"
         :video-src="video ? video.link : null"
         :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
+        :img-caption="imageValue.caption"
+        :img-credit="imageValue.credit"
+        :inset
     />
 </template>
 
@@ -23,6 +28,7 @@ const props = defineProps<{
     content: any,
     video: any,
     image: any,
+    inset: boolean
 }>();
 
 const {

@@ -1,0 +1,128 @@
+{
+    "model": {
+        "type": "imageset",
+        "links": {},
+        "meta": {},
+        "data": {
+            "name": "edinburgh-castle-blue-sky.jpg",
+            "displayName": "edinburgh-castle-blue-sky.jpg",
+            "de": {
+                "name": "visitscotland:de",
+                "displayName": "visitscotland:de",
+                "altText": "",
+                "caption": "",
+                "contentType": "visitscotland:ImageData"
+            },
+            "es": {
+                "name": "visitscotland:es",
+                "displayName": "visitscotland:es",
+                "altText": "",
+                "caption": "",
+                "contentType": "visitscotland:ImageData"
+            },
+            "nl": {
+                "name": "visitscotland:nl",
+                "displayName": "visitscotland:nl",
+                "altText": "",
+                "caption": "",
+                "contentType": "visitscotland:ImageData"
+            },
+            "it": {
+                "name": "visitscotland:it",
+                "displayName": "visitscotland:it",
+                "altText": "",
+                "caption": "",
+                "contentType": "visitscotland:ImageData"
+            },
+            "altText": "",
+            "fr": {
+                "name": "visitscotland:fr",
+                "displayName": "visitscotland:fr",
+                "altText": "",
+                "caption": "",
+                "contentType": "visitscotland:ImageData"
+            },
+            "credit": "VisitScotland",
+            "location": "Edinburgh",
+            "thumbnail": {
+                "name": "hippogallery:thumbnail",
+                "displayName": "hippogallery:thumbnail",
+                "width": 60,
+                "height": 39,
+                "mimeType": "image/jpeg",
+                "filename": "edinburgh-castle-blue-sky.jpg",
+                "lastModified": 1624538889265,
+                "contentType": "hippogallery:image",
+                "size": 3813,
+                "links": {
+                    "site": {
+                        "href": "http://localhost:8080/site/binaries/thumbnail/content/gallery/visitscotland/default/2021/01/edinburgh-castle-blue-sky.jpg",
+                        "type": "resource"
+                    }
+                }
+            },
+            "original": {
+                "name": "hippogallery:original",
+                "displayName": "hippogallery:original",
+                "width": 2048,
+                "height": 1365,
+                "mimeType": "image/jpeg",
+                "filename": null,
+                "lastModified": 1624538889265,
+                "contentType": "hippogallery:image",
+                "size": 449646,
+                "links": {
+                    "site": {
+                        "href": "http://localhost:8080/site/binaries/content/gallery/visitscotland/default/2021/01/edinburgh-castle-blue-sky.jpg",
+                        "type": "resource"
+                    }
+                }
+            },
+            "fileName": "edinburgh-castle-blue-sky.jpg",
+            "description": "Edinburgh Castle",
+            "contentType": "visitscotland:Image",
+            "localeString": null,
+            "id": "ea857cd5-2d45-4f7c-9da9-503b2be8f382"
+        }
+    },
+    "original": {
+        "model": {
+            "name": "hippogallery:original",
+            "displayName": "hippogallery:original",
+            "width": 2048,
+            "height": 1365,
+            "mimeType": "image/jpeg",
+            "filename": null,
+            "lastModified": 1624538889265,
+            "contentType": "hippogallery:image",
+            "size": 449646,
+            "links": {
+                "site": {
+                    "href": "http://localhost:8080/site/binaries/content/gallery/visitscotland/default/2021/01/edinburgh-castle-blue-sky.jpg",
+                    "type": "resource"
+                }
+            }
+        },
+        "linkFactory": { "mapping": { "Map(1)": {} } }
+    },
+    "thumbnail": {
+        "model": {
+            "name": "hippogallery:thumbnail",
+            "displayName": "hippogallery:thumbnail",
+            "width": 60,
+            "height": 39,
+            "mimeType": "image/jpeg",
+            "filename": "edinburgh-castle-blue-sky.jpg",
+            "lastModified": 1624538889265,
+            "contentType": "hippogallery:image",
+            "size": 3813,
+            "links": {
+                "site": {
+                    "href": "http://localhost:8080/site/binaries/thumbnail/content/gallery/visitscotland/default/2021/01/edinburgh-castle-blue-sky.jpg",
+                    "type": "resource"
+                }
+            }
+        },
+        "linkFactory": { "mapping": { "Map(1)": {} } }
+    }
+}
