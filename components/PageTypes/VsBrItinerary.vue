@@ -1,31 +1,15 @@
 <template>
-    <!-- <VsBrPageIntro
-        :content="documentData"
-        :hero-image="heroImage"
-        :light-background="true"
-        :itinerary="itinerary"
-        :theme="theme"
-        :all-transports="allTransports"
-        :all-areas="allAreas"
-    /> -->
-    <!-- {{ documentData }} -->
     <VsBrHeroSection
         :content="documentData"
         :image="heroImage"
         inset
     />
-    <!-- <VsSectionHeader
-        :heading="itinerary.days[0].title"
-    >
-        <template #section-header-lede>
-            <VsBrRichText :input-content="itinerary.days[0].introduction.value" />
-        </template>
-    </VsSectionHeader> -->
-        <!-- {{ itinerary.days[0].stops[0].title }} -->
-    
-    <VsBrContentSectionsDST
-        :stops="itinerary.days[0].stops"
+    <VsBrDaySection
+        v-for="(day, index) in itinerary.days"
+        :day="day"
+        :key="index"
     />
+
     <!-- <VsItinerary>
         <template #list>
             <VsItineraryDay
@@ -33,7 +17,7 @@
                 :key="index"
                 :day-number="`${index + 1}`"
                 :day-label="configStore.getLabel('itinerary', 'day')"
-                :day-title="day.title"
+                :day-title="day.ttle"
             >
                 <template
                     #day-introduction
@@ -44,10 +28,7 @@
                     />
                 </template>
 
-                <template
-                    #day-transport
-                    v-if="day.transports"
-                >
+<template #day-transport v-if="day.transports">
                     <VsDescriptionList
                         class="text-center justify-content-center mb-075 has-edit-button"
                         inline
@@ -80,10 +61,7 @@
                     </VsDescriptionList>
                 </template>
 
-                <template
-                    #stops
-                    v-if="day.stops"
-                >
+<template #stops v-if="day.stops">
                     <VsBrItineraryStop
                         v-for="(stop, stopsIndex) in day.stops"
                         :key="stopsIndex"
@@ -93,44 +71,24 @@
                         :nearby-stay-link="nearbyStayLink"
                     />
                 </template>
-            </VsItineraryDay>
-        </template>
-    </VsItinerary> -->
+</VsItineraryDay>
+</VsItinerary> -->
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrSocialShare
-            :no-js="true"
-        />
+    <NuxtLazyHydrate :when-visible="{ rootMargin: '50px' }">
+        <VsBrSocialShare :no-js="true" />
     </NuxtLazyHydrate>
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrProductSearch
-            v-if="productSearch"
-            class="mt-300 mt-lg-600"
-        />
+    <NuxtLazyHydrate :when-visible="{ rootMargin: '50px' }">
+        <VsBrProductSearch v-if="productSearch" class="mt-300 mt-lg-600" />
     </NuxtLazyHydrate>
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrHorizontalLinksModule
-            v-if="otyml"
-            :module="otyml"
-            theme="light"
-        />
+    <NuxtLazyHydrate :when-visible="{ rootMargin: '50px' }">
+        <VsBrHorizontalLinksModule v-if="otyml" :module="otyml" theme="light" />
     </NuxtLazyHydrate>
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrNewsletterSignpost
-            v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
-            :data="configStore.newsletterSignpost"
-        />
+    <NuxtLazyHydrate :when-visible="{ rootMargin: '50px' }">
+        <VsBrNewsletterSignpost v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
+                                :data="configStore.newsletterSignpost" />
     </NuxtLazyHydrate>
 </template>
 
@@ -152,25 +110,31 @@ import {
     VsDescriptionList,
     VsDescriptionListItem,
     VsTooltip,
+    VsHeading,
+    VsBody,
+    VsContainer,
+    VsRow,
+    VsCol,
 } from '@visitscotland/component-library/components';
 
 import VsBrHeroSection from '../Modules/VsBrHeroSection.vue';
 import VsBrContentSections from '../Modules/VsBrContentSections.vue';
-import VsBrContentSectionsDST from '../Modules/VsBrContentSectionsDST.vue';
+import VsBrDaySection from '../Modules/VsBrDaySection.vue';
+import VsBrRichText from '../Modules/VsBrRichText.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { page, component } = toRefs(props);
 
-let document : any = {
+let document: any = {
 };
-let documentData : any = {
+let documentData: any = {
 };
-let productSearch : any = {
+let productSearch: any = {
 };
 let heroImage = {
 };
-let otyml : any = null;
+let otyml: any = null;
 
 const configStore = useConfigStore();
 
@@ -187,7 +151,7 @@ let theme = {
 let nearbyEatLink = '';
 let nearbyStayLink = '';
 
-const itineraryPlaces : any[] = [];
+const itineraryPlaces: any[] = [];
 
 if (page.value) {
     document = page.value.getDocument();
