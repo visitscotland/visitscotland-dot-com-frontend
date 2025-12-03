@@ -6,8 +6,8 @@
     />
     <VsBrDaySection
         v-for="(day, index) in itinerary.days"
+        :key="`day-${index}`"
         :day="day"
-        :key="index"
     />
 
     <!-- <VsItinerary>
@@ -87,8 +87,10 @@
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate :when-visible="{ rootMargin: '50px' }">
-        <VsBrNewsletterSignpost v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
-                                :data="configStore.newsletterSignpost" />
+        <VsBrNewsletterSignpost
+            v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
+            :data="configStore.newsletterSignpost"
+        />
     </NuxtLazyHydrate>
 </template>
 
@@ -97,15 +99,11 @@ import { toRefs, defineAsyncComponent } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
-
-// import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 
 import {
-    VsSectionHeader,
-    VsItinerary,
     VsItineraryDay,
     VsDescriptionList,
     VsDescriptionListItem,
@@ -115,12 +113,11 @@ import {
     VsContainer,
     VsRow,
     VsCol,
+    VsImg,
 } from '@visitscotland/component-library/components';
 
 import VsBrHeroSection from '../Modules/VsBrHeroSection.vue';
-import VsBrContentSections from '../Modules/VsBrContentSections.vue';
 import VsBrDaySection from '../Modules/VsBrDaySection.vue';
-import VsBrRichText from '../Modules/VsBrRichText.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
@@ -207,6 +204,13 @@ if (page.value) {
                                 imageSrc: '', // TODO - currently no examples to work from
                                 altText: stop.title,
                             });
+                        }
+
+                        if (stop.image.cmsImage) {
+                            const cmsImage = page.value.getContent(stop.image.cmsImage.$ref);
+                            stop.image.imageSrc = cmsImage.getOriginal().getUrl();
+                        } else if (stop.image.externalImage) {
+                            stop.image.imageSrc = stop.image.externalImage;
                         }
                     }
                 }
