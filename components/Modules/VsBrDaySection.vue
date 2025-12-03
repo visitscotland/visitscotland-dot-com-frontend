@@ -47,7 +47,7 @@
                             </VsCol>
                         </VsRow>
                         <VsImg
-                            v-if="stop.image.imageSrc"
+                            v-if="stop.image && stop.image.imageSrc"
                             :src="stop.image.imageSrc"
                             use-lazy-loading
                             class="rounded-2 w-100 mb-175"
@@ -60,12 +60,14 @@
 
                     <div class="d-flex flex-wrap gap-125">
                         <VsButton
+                            v-if="stop.ctaLink && stop.ctaLink.link"
                             :href="stop.ctaLink.link"
                             variant="secondary"
                         >
                             {{ stop.ctaLink.label }}
                         </VsButton>
                         <VsButton
+                            v-if="stop.coordinates && stop.coordinates.latitude && stop.coordinates.longitude"
                             :href="`http://maps.google.com/maps?z=12&t=m&q=loc:${stop.coordinates.latitude}+${stop.coordinates.longitude}`"
                             variant="subtle"
                             icon="fa-regular fa-map"

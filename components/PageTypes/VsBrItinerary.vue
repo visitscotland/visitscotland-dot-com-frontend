@@ -206,10 +206,10 @@ if (page.value) {
                             });
                         }
 
-                        if (stop.image.cmsImage) {
+                        if (stop.image && stop.image.cmsImage) {
                             const cmsImage = page.value.getContent(stop.image.cmsImage.$ref);
                             stop.image.imageSrc = cmsImage.getOriginal().getUrl();
-                        } else if (stop.image.externalImage) {
+                        } else if (stop.image && stop.image.externalImage) {
                             stop.image.imageSrc = stop.image.externalImage;
                         }
                     }
