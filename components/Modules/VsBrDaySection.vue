@@ -60,7 +60,7 @@
 
                     <div class="d-flex flex-wrap gap-125">
                         <VsButton
-                            href="#"
+                            :href="stop.ctaLink.link"
                             variant="secondary"
                         >
                             {{ stop.ctaLink.label }}
