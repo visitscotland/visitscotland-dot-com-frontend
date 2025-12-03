@@ -1,0 +1,213 @@
+{
+    "name": "edinburgh-city-centre",
+    "displayName": "Edinburgh city centre",
+    "title": "Travel to Fort William",
+    "translationFlag": null,
+    "translation": "",
+    "diff": null,
+    "transports": [
+        "boat",
+        "bus",
+        "car",
+        "cycling",
+        "ferry",
+        "public",
+        "train",
+        "walking"
+    ],
+    "stops": [
+        {
+            "hippoBean": { "$ref": "/page/uf0c435ec14f248a081b705507be62018" },
+            "anchor": null,
+            "errorMessages": null,
+            "marketoId": null,
+            "index": 5,
+            "title": "Linlithgow Palace",
+            "subTitle": "Linlithgow",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Jacobite connection and filming location &#8211; season 1</p>\n\n<p>Explore the nooks and towers of this sizeable ruined, yet still beautiful palace. The various floors are still accessible via the intact turret staircases, and beautiful views can be observed from the roof. In 1745 Bonnie Prince Charlie visited the palace on his journey south. Its elaborate courtyard fountain is said to have flowed with red wine to mark the occasion! In <em>Outlander</em>, the majestic entrance and corridors feature as Wentworth Prison where Jamie was imprisoned.</p>\n\n<p>You could also take a refreshing walk around Linlithgow Loch, the shores of which the palace sits upon.</p>\n\n<p>Linlithgow has a direct rail connection to Edinburgh which takes just 20 minutes.</p>\n\n<p>Stay in&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/destinations-maps/edinburgh/accommodation/\" title=\"Accommodation\">Edinburgh</vs-link>&#160;or&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/info/accommodation/search-results?prodtypes=acco&#38;loc=Linlithgow&#38;locplace=4571&#38;locprox=1&#38;areaproxdist=10&#38;stay=&#38;endDate=&#38;r1a=2&#38;r1children=0&#38;r1infants=0&#38;r1c=0&#38;avail=off\" title=\"Accommodation in Linlithgow\">Linlithgow</vs-link>.</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": null,
+                "externalImage": "http://www.visitscotland.com/wsimgs/lin.1-000022.jpg",
+                "altText": "Linlithgow Palace",
+                "credit": null,
+                "description": "Linlithgow Palace",
+                "coordinates": { "latitude": 55.9776, "longitude": -3.6009 },
+                "source": null,
+                "postUrl": null,
+                "location": "Linlithgow"
+            },
+            "timeToExplore": null,
+            "tipsTitle": "Outlander film location",
+            "ctaLink": {
+                "label": "Find out more about Linlithgow Palace",
+                "link": "http://172.28.81.65:8089/info/see-do/linlithgow-palace-p252271",
+                "type": "INTERNAL"
+            },
+            "tipsBody": {
+                "contentType": "hippostd:html",
+                "value": "<p>The majestic ruins of Linlithgow Palace stands in for the prison entrance and corridors in the scene where Jamie was imprisoned.</p>"
+            },
+            "facilities": [
+                { "id": "parking", "name": "Parking" },
+                { "id": "pubtranrte", "name": "On Public Transport Route" },
+                {
+                    "id": "accessparkdrop",
+                    "name": "Accessible Parking Or Drop-off Point"
+                },
+                { "id": "dsblaccess", "name": "Level Access" }
+            ],
+            "address": {
+                "line1": "Kirkgate",
+                "city": "Linlithgow",
+                "county": "Edinburgh & The Lothians",
+                "postCode": "EH49 7AL",
+                "shortAddress": "Linlithgow, Edinburgh & The Lothians",
+                "streetAddress": "Kirkgate",
+                "empty": false
+            },
+            "price": "Admission charge",
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": { "latitude": 55.9776, "longitude": -3.6009 },
+            "identifier": "c4709ddf-0a80-4f80-ad7f-cdcfb333679e",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/linlithgow-palace/linlithgow-palace"
+        },
+        {
+            "hippoBean": { "$ref": "/page/u7bd9fe86c2514846ab1cd617a1de80ca" },
+            "anchor": null,
+            "errorMessages": null,
+            "marketoId": null,
+            "index": 6,
+            "title": "Drum Castle",
+            "subTitle": "Banchory",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Begin the trail at the spectacular Drum Castle, located in Drumoak just outside Aberdeen, which combines a 13th century tower, a Jacobean mansion house and Victorian architecture. Take a tour of the castle and marvel at the fascinating combination of Scottish history and Victorian fashion, and wander the grounds and the magnificent historic rose garden.&#160;&#160;</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": {
+                    "$ref": "/page/u8d4f503664ca4e5daa89b348ae38b081"
+                },
+                "externalImage": null,
+                "altText": "",
+                "credit": "VisitScotland Staff",
+                "description": "Man looking forward to finish this itinerary",
+                "coordinates": {
+                    "latitude": 55.869118,
+                    "longitude": -4.289846
+                },
+                "source": null,
+                "postUrl": null,
+                "location": "Glasgow"
+            },
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": {
+                "label": "Find out more about Drum Castle",
+                "link": "http://172.28.81.65:8089/info/see-do/drum-castle-garden-estate-p254211",
+                "type": "INTERNAL"
+            },
+            "tipsBody": null,
+            "facilities": [
+                { "id": "parking", "name": "Parking" },
+                {
+                    "id": "accessparkdrop",
+                    "name": "Accessible Parking Or Drop-off Point"
+                }
+            ],
+            "address": {
+                "line1": "Drum Castle",
+                "line2": "Drumoak",
+                "city": "Banchory",
+                "county": "Aberdeen & Aberdeenshire",
+                "postCode": "AB31 5EY",
+                "shortAddress": "Banchory, Aberdeen & Aberdeenshire",
+                "streetAddress": "Drum Castle, Drumoak",
+                "empty": false
+            },
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": { "latitude": 57.09521, "longitude": -2.33788 },
+            "identifier": "a6a166e2-d96e-4f7e-b6cf-03da38e4b435",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/drum-castle/drum-castle"
+        },
+        {
+            "hippoBean": { "$ref": "/page/ue8202d3f3d3e43e280753cf9b212df05" },
+            "anchor": null,
+            "errorMessages": null,
+            "marketoId": null,
+            "index": 7,
+            "title": "Crathes Castle",
+            "subTitle": "Banchory",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Pick up the trail again and head on a five minute drive to the spooky Crathes Castle, a favourite place of Queen Victoria and one where she often stayed. Explore the wonderland grounds and marvel at the ornate gargoyles and fairytale turrets. On your tour of the castle you&#39;ll learn about the castle&#39;s intriguing history along with the story of its resident ghosts, the Green Lady and her infant child. It is even said that Queen Victoria witnessed the ghostly pair herself.</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": null,
+                "externalImage": "http://www.visitscotland.com/wsimgs/Crathes_623569832.jpg",
+                "altText": "Crathes Castle, Garden & Estate",
+                "credit": "National Trust for Scotland",
+                "description": "Crathes Castle, Garden & Estate",
+                "coordinates": { "latitude": 57.06153, "longitude": -2.43984 },
+                "source": null,
+                "postUrl": null,
+                "location": "Banchory"
+            },
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": {
+                "label": "Find out more about Crathes Castle",
+                "link": "http://172.28.81.65:8089/info/see-do/crathes-castle-garden-estate-p254191",
+                "type": "INTERNAL"
+            },
+            "tipsBody": null,
+            "facilities": [
+                { "id": "parking", "name": "Parking" },
+                {
+                    "id": "accessparkdrop",
+                    "name": "Accessible Parking Or Drop-off Point"
+                },
+                { "id": "cafereston", "name": "Cafe or Restaurant" }
+            ],
+            "address": {
+                "line1": "Crathes Castle",
+                "line2": "Crathes",
+                "city": "Banchory",
+                "county": "Aberdeen & Aberdeenshire",
+                "postCode": "AB31 5QJ",
+                "shortAddress": "Banchory, Aberdeen & Aberdeenshire",
+                "streetAddress": "Crathes Castle, Crathes",
+                "empty": false
+            },
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": { "latitude": 57.06153, "longitude": -2.43984 },
+            "identifier": "b230c028-e521-4360-85be-83b44e226c10",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/crathes-castle/crathes-castle"
+        }
+    ],
+    "introduction": {
+        "contentType": "hippostd:html",
+        "value": "<p>If &#39;apparating&#39; isn&#39;t an option for you, it&#39;s possible to travel by train from Edinburgh to Glasgow and from there, take the West Highland Line to&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/destinations-maps/fort-william/\" title=\"Fort William\">Fort William</vs-link>. This is a great way to see some famous spots from the window, including the mystical&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/info/towns-villages/great-moor-of-rannoch-p246531\">Rannoch Moor</vs-link>, the place where Death Eaters board the train in the movie&#160;Harry Potter and The Deathly Hallows: Part 1.&#160;</p>\n\n<p>If you&#39;d prefer to drive, you could also hire a car in Edinburgh.&#160;Drive to the&#160;<vs-link type=\"default\" href=\"https://www.bonessmotormuseum.co.uk/\" title=\"Bo&#39;ness Motor Museum\" target=\"_blank\">Bo&#39;ness Motor Museum</vs-link>, where you can see Ron Weasley&#39;s Ford Anglia or drop in to the&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/info/see-do/scottish-owl-centre-p1195521\" title=\"Scottish Owl Centre\">Scottish Owl Centre</vs-link>&#160;in West Lothian to say hello to some of Hedwig&#39;s friends and other exotic owl species.</p>"
+    },
+    "translationPriority": null,
+    "translationDeadline": null,
+    "localeString": "en",
+    "contentType": "visitscotland:Day",
+    "id": "201dfb45-0524-4275-8b78-be61d0628c8a"
+}

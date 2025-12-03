@@ -1,0 +1,128 @@
+{
+    "model": {
+        "type": "imageset",
+        "links": {},
+        "meta": {},
+        "data": {
+            "name": "visitscotland_49386435364-1.jpg",
+            "displayName": "visitscotland_49386435364 (1).jpg",
+            "location": "Glasgow",
+            "altText": "",
+            "nl": {
+                "name": "visitscotland:nl",
+                "displayName": "visitscotland:nl",
+                "altText": "",
+                "caption": "Test Dutch",
+                "contentType": "visitscotland:ImageData"
+            },
+            "credit": "VisitScotland Staff",
+            "de": {
+                "name": "visitscotland:de",
+                "displayName": "visitscotland:de",
+                "altText": "",
+                "caption": "",
+                "contentType": "visitscotland:ImageData"
+            },
+            "fr": {
+                "name": "visitscotland:fr",
+                "displayName": "visitscotland:fr",
+                "altText": "",
+                "caption": "",
+                "contentType": "visitscotland:ImageData"
+            },
+            "es": {
+                "name": "visitscotland:es",
+                "displayName": "visitscotland:es",
+                "altText": "",
+                "caption": "Hombre deseando llegar a la meta del itinerario",
+                "contentType": "visitscotland:ImageData"
+            },
+            "it": {
+                "name": "visitscotland:it",
+                "displayName": "visitscotland:it",
+                "altText": "",
+                "caption": "",
+                "contentType": "visitscotland:ImageData"
+            },
+            "fileName": "visitscotland_49386435364 (1).jpg",
+            "description": "Man looking forward to finish this itinerary",
+            "original": {
+                "name": "hippogallery:original",
+                "displayName": "hippogallery:original",
+                "width": 1920,
+                "height": 1281,
+                "lastModified": 1576063904652,
+                "filename": null,
+                "mimeType": "image/jpeg",
+                "contentType": "hippogallery:image",
+                "size": 1007991,
+                "links": {
+                    "site": {
+                        "href": "http://localhost:8080/site/binaries/content/gallery/visitscotland/default/visitscotland_49386435364-1.jpg",
+                        "type": "resource"
+                    }
+                }
+            },
+            "thumbnail": {
+                "name": "hippogallery:thumbnail",
+                "displayName": "hippogallery:thumbnail",
+                "width": 60,
+                "height": 40,
+                "lastModified": 1576063904652,
+                "filename": "visitscotland_49386435364 (1).jpg",
+                "mimeType": "image/jpeg",
+                "contentType": "hippogallery:image",
+                "size": 3453,
+                "links": {
+                    "site": {
+                        "href": "http://localhost:8080/site/binaries/thumbnail/content/gallery/visitscotland/default/visitscotland_49386435364-1.jpg",
+                        "type": "resource"
+                    }
+                }
+            },
+            "contentType": "visitscotland:Image",
+            "localeString": null,
+            "id": "8d4f5036-64ca-4e5d-aa89-b348ae38b081"
+        }
+    },
+    "original": {
+        "model": {
+            "name": "hippogallery:original",
+            "displayName": "hippogallery:original",
+            "width": 1920,
+            "height": 1281,
+            "lastModified": 1576063904652,
+            "filename": null,
+            "mimeType": "image/jpeg",
+            "contentType": "hippogallery:image",
+            "size": 1007991,
+            "links": {
+                "site": {
+                    "href": "http://localhost:8080/site/binaries/content/gallery/visitscotland/default/visitscotland_49386435364-1.jpg",
+                    "type": "resource"
+                }
+            }
+        },
+        "linkFactory": { "mapping": { "Map(1)": {} } }
+    },
+    "thumbnail": {
+        "model": {
+            "name": "hippogallery:thumbnail",
+            "displayName": "hippogallery:thumbnail",
+            "width": 60,
+            "height": 40,
+            "lastModified": 1576063904652,
+            "filename": "visitscotland_49386435364 (1).jpg",
+            "mimeType": "image/jpeg",
+            "contentType": "hippogallery:image",
+            "size": 3453,
+            "links": {
+                "site": {
+                    "href": "http://localhost:8080/site/binaries/thumbnail/content/gallery/visitscotland/default/visitscotland_49386435364-1.jpg",
+                    "type": "resource"
+                }
+            }
+        },
+        "linkFactory": { "mapping": { "Map(1)": {} } }
+    }
+}
