@@ -1,14 +1,111 @@
 <template>
-    <VsBrHeroSection
-        :content="documentData"
-        :image="heroImage"
-        inset
-    />
-    <VsBrDaySection
-        v-for="(day, index) in itinerary.days"
-        :key="`day-${index}`"
-        :day="day"
-    />
+    <div class="d-flex flex-column gap-500">
+        <VsBrHeroSection
+            :content="documentData"
+            :image="heroImage"
+            inset
+        />
+        <!-- <VsContainer>
+            <VsRow class="mt-500">
+                <VsCol
+                    cols="12"
+                    lg="8"
+                >
+                    <VsPanel>
+                        <VsContainer>
+                            <VsRow class="align-items-center">
+                                <VsCol cols="12" md="9" class="mb-175 mb-md-0">
+                                    <VsHeading 
+                                        heading-style="heading-xs"
+                                        level="3"
+                                        no-margins
+                                        class="mb-125"
+                                    >
+                                        Trip highlights
+                                    </VsHeading>
+
+                                    <div class="d-flex flex-wrap column-gap-300 row-gap-150 align-items-end">
+                                        <VsDetail
+                                            no-margins
+                                            color="tertiary"
+                                            icon="fa-regular fa-binoculars"
+                                            icon-variant="tertiary"
+                                        >
+                                            Sightseeing
+                                        </VsDetail>
+
+                                        <VsDetail
+                                            no-margins
+                                            color="tertiary"
+                                            icon="fa-regular fa-route"
+                                            icon-variant="tertiary"
+                                        >
+                                            295 miles (472km)
+                                        </VsDetail>
+
+                                        <VsDetail
+                                            no-margins
+                                            color="tertiary"
+                                            icon="fa-regular fa-calendar-range"
+                                            icon-variant="tertiary"
+                                        >
+                                            6 days
+                                        </VsDetail>
+
+                                        <VsDetail
+                                            no-margins 
+                                            color="tertiary"
+                                            icon="fa-regular fa-taxi"
+                                            icon-variant="tertiary"
+                                        >
+                                            Car
+                                        </VsDetail>
+
+                                        <VsDetail
+                                            no-margins
+                                            color="tertiary"
+                                            icon="fa-regular fa-location-dot"
+                                            icon-variant="tertiary"
+                                        >
+                                            Edinburgh & The Lothians, Fife, Dundee & Angus
+                                        </VsDetail>
+                                    </div>
+                                </VsCol>
+                                <VsCol cols="12" md="3">
+                                    <VsIllustratedMap
+                                        width="145px"
+                                        class="d-block mx-auto"
+                                        :highlighted-regions="['edinburgh', 'fife', 'dundee']"
+                                    />
+                                </VsCol>
+                            </VsRow>
+                        </VsContainer>
+                    </VsPanel>
+                </VsCol>
+            </VsRow>
+        </VsContainer> -->
+        <!-- <VsContainer>
+        <VsRow>
+            <VsCol>
+                <div class="p-175 bg-heather-10 rounded-75" style="background-color: #e5e5f0;">
+                    <ul>
+                        <li
+                            v-for="(highlight, i) in documentData.highlights"
+                            :key="i"
+                        >
+                            {{ highlight }}
+                        </li>
+                    </ul>
+                </div>
+            </VsCol>
+        </VsRow>
+    </VsContainer> -->
+        <VsBrDaySection
+            v-for="(day, index) in itinerary.days"
+            :key="`day-${index}`"
+            :day="day"
+        />
+    </div>
 
     <!-- <VsItinerary>
         <template #list>
@@ -114,6 +211,8 @@ import {
     VsRow,
     VsCol,
     VsImg,
+    VsPanel,
+    VsDetail,
 } from '@visitscotland/component-library/components';
 
 import VsBrHeroSection from '../Modules/VsBrHeroSection.vue';
