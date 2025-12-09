@@ -52,6 +52,8 @@
         />
     </NuxtLazyHydrate>
 
+    <VsBrSearchResults :modules="pageItems" />
+
     <VsBrModuleBuilder
         v-if="pageItems"
         :modules="pageItems"
@@ -108,6 +110,7 @@ import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
+import VsBrSearchResults from '~/components/Modules/VsBrSearchResults.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
