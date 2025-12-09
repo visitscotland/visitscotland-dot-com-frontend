@@ -1,6 +1,4 @@
 <template>
-    <!-- {{ imageValue }} -->
-    <!-- {{ content }} -->
     <VsHeroSection
         :heading="content.title"
         :lede="content.teaser"

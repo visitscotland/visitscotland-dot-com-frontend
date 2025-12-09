@@ -1,8 +1,6 @@
 <template>
     <VsContainer>
-        <VsRow
-            class="mt-500"
-        >
+        <div class="row gap-175 gap-lg-0">
             <VsCol
                 cols="12"
                 lg="4"
@@ -11,7 +9,6 @@
                     level="2"
                     heading-style="heading-l"
                     no-margins
-                    class="mb-175 mb-lg-0"
                 >
                     {{ day.title }}
                 </VsHeading>
@@ -19,20 +16,25 @@
             <VsCol
                 cols="12"
                 lg="8"
+                class="d-flex flex-column gap-300"
             >
-                <VsBody class="mb-400">
+                <VsBody>
                     <VsBrRichText :input-content="day.introduction.value" />
                 </VsBody>
+
+                <!-- STOPS -->
+
                 <div
                     v-for="(stop, i) in day.stops"
                     :key="i"
-                    class="mb-400"
+                    class="d-flex flex-column gap-125"
                 >
-                    <div class="d-flex flex-column-reverse">
-                        <VsRow class="mb-125">
+                    <div class="d-flex flex-column-reverse gap-175">
+                        <VsRow>
                             <VsCol
                                 cols="12"
                                 md="8"
+                                class="d-flex flex-column gap-050"
                             >
                                 <VsHeading
                                     heading-style="heading-xs"
@@ -50,15 +52,20 @@
                             v-if="stop.image && stop.image.imageSrc"
                             :src="stop.image.imageSrc"
                             use-lazy-loading
-                            class="rounded-2 w-100 mb-175"
+                            class="rounded-2 w-100"
                             :alt="stop.image.altText"
                         />
                     </div>
-                    <VsBody class="mb-150">
+                    <!-- <VsBody> -->
+                    <div class="d-flex flex-column gap-075">
                         <VsBrRichText :input-content="stop.description.value" />
-                    </VsBody>
-
-                    <div class="d-flex flex-wrap gap-125">
+                    </div>
+                    <!-- </VsBody> -->
+                    <!-- Need to ensure there's a CTA / map link or we get an empty div that might be given margin by VsBody -->
+                    <div
+                        v-if="stop.ctaLink || stop.coordinates"
+                        class="d-flex flex-wrap gap-125"
+                    >
                         <VsButton
                             v-if="stop.ctaLink && stop.ctaLink.link"
                             :href="stop.ctaLink.link"
@@ -77,7 +84,7 @@
                     </div>
                 </div>
             </VsCol>
-        </VsRow>
+        </div>
     </VsContainer>
 </template>
 
