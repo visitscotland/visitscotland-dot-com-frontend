@@ -27,7 +27,10 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
+// eslint-disable-next-line import/no-unresolved
+import { VsEmbedWrapper } from '@visitscotland/component-library/components';
+
 import useConfigStore from '~/stores/configStore.ts';
 
 const configStore = useConfigStore();
