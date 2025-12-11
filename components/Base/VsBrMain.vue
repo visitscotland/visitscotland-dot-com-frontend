@@ -4,13 +4,13 @@
         :class="{ 'has-edit-button': page.isPreview() }"
     >
         <BrManageContentButton
-            :content="document"
+            :content="pageDocument"
         />
 
         <VsBrGtm />
 
         <VsBrPageViewEvent
-            :data="document.model.data"
+            :data="pageDocument.model.data"
             :page-type="pageName"
         />
 
@@ -79,7 +79,7 @@ let pageComponent : any = {
 };
 let pageName : string = '';
 
-let document : any = {
+let pageDocument : any = {
 };
 
 const configStore = useConfigStore();
@@ -128,9 +128,11 @@ if (page.value) {
         configStore.isLocalVideoheader = true;
     }
 
-    document = page.value.getDocument();
+    pageDocument = page.value.getDocument();
 
-    configStore.locale = document.model.data.localeString;
+    configStore.locale = pageDocument.model.data.localeString;
+
+    configStore.globalSearchUrl = componentModels.cludo['global-search-url'];
 
     let langString = '';
 
@@ -159,19 +161,19 @@ if (page.value) {
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        title: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+        title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
         meta: [
             {
                 name: 'title',
-                content: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+                content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
             },
             {
                 name: 'description',
-                content: document.model.data.seoDescription,
+                content: pageDocument.model.data.seoDescription,
             },
             {
                 name: 'robots',
-                content: document.model.data.noIndex ? 'noindex' : '',
+                content: pageDocument.model.data.noIndex ? 'noindex' : '',
             },
         ],
         htmlAttrs: {
@@ -197,6 +199,26 @@ if (page.value) {
             {
                 rel: 'canonical',
                 href: useRequestURL().toString(),
+            },
+        ],
+        script: [
+            {
+                innerHTML: `
+                    var cludo_engineId = ${componentModels.cludo['engine-id']};
+                    var cludo_language = '${componentModels.cludo.language}';
+                    var cludo_searchUrl = '${componentModels.cludo['global-search-url']}';
+                `,
+                tagPosition: 'head',
+            },
+            {
+                src: 'https://customer.cludo.com/scripts/bundles/search-script.js',
+                onload: () => {
+                    const helperScript = document.createElement('script');
+                    helperScript.src = 'https://customer.cludo.com/assets/623/12809/cludo-helper.js';
+                    document.head.appendChild(helperScript);
+                },
+                async: false,
+                defer: false,
             },
         ],
     });
