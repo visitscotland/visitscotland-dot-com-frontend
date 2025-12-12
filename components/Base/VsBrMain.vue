@@ -132,7 +132,15 @@ if (page.value) {
 
     configStore.locale = pageDocument.model.data.localeString;
 
-    configStore.globalSearchUrl = componentModels.cludo['global-search-url'];
+    if (componentModels.cludo) {
+        configStore.globalSearchUrl = componentModels.cludo['global-search-url'];
+    } else {
+        configStore.globalSearchUrl = '/site-search-results';
+    }
+
+    configStore.cludoEngineId = componentModels.cludoEngineId;
+    configStore.cludoExperienceId = componentModels.cludoExperienceId;
+    configStore.cludoCustomerId = componentModels.cludoCustomerId;
 
     let langString = '';
 
@@ -199,26 +207,6 @@ if (page.value) {
             {
                 rel: 'canonical',
                 href: useRequestURL().toString(),
-            },
-        ],
-        script: [
-            {
-                innerHTML: `
-                    var cludo_engineId = ${componentModels.cludo['engine-id']};
-                    var cludo_language = '${componentModels.cludo.language}';
-                    var cludo_searchUrl = '${componentModels.cludo['global-search-url']}';
-                `,
-                tagPosition: 'head',
-            },
-            {
-                src: 'https://customer.cludo.com/scripts/bundles/search-script.js',
-                onload: () => {
-                    const helperScript = document.createElement('script');
-                    helperScript.src = 'https://customer.cludo.com/assets/623/12809/cludo-helper.js';
-                    document.head.appendChild(helperScript);
-                },
-                async: false,
-                defer: false,
             },
         ],
     });

@@ -63,8 +63,6 @@ export default defineNuxtConfig({
 
     css: [
         '@visitscotland/component-library/style.css',
-        '@visitscotland/component-library/cludo-autocomplete.css',
-        '@visitscotland/component-library/cludo-search-results.css',
     ],
 
     build: {

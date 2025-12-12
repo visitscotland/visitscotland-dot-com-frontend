@@ -14,6 +14,10 @@ interface IConfigState {
     heroVideo: any,
     isLocalVideoheader: boolean,
     globalSearchUrl: string,
+    cludoEngineId: number,
+    cludoExperienceId: number,
+    cludoCustomerId: number,
+    eventsApiUrl: string,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -35,6 +39,10 @@ const useConfigStore = defineStore('configStore', {
         heroVideo: null,
         isLocalVideoheader: false,
         globalSearchUrl: '',
+        cludoEngineId: 0,
+        cludoExperienceId: 0,
+        cludoCustomerId: 0,
+        eventsApiUrl: '',
     }),
     actions: {
         getLabel(section: string, key: string) {

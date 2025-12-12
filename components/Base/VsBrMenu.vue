@@ -57,7 +57,7 @@
                 :search-clear-button-text="configStore.getLabel('search', 'clear-form')"
                 :search-close-button-text="configStore.getLabel('search', 'close-form')"
                 :logo-alt-text="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
-                search-link="/site-search-results"
+                :search-link="configStore.globalSearchUrl"
                 :is-static="true"
             >
                 <template #mega-nav-top-menu-items>
