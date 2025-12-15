@@ -1,0 +1,160 @@
+{
+    "accommodation": {
+        "id": "accommodation",
+        "icon": "fa-regular fa-bed",
+        "subCategory": [
+            {
+                "id": "self-catering",
+                "type": [
+                    "cottage"
+                ]
+            },
+            {
+                "id": "bed-breakfast",
+                "type": [
+                    "bed_and_breakfast", "guest_house"
+                ]
+            },
+            {
+                "id": "caravan-camping",
+                "type": [
+                    "campground", "camping_cabin", "mobile_home_park", "rv_park"
+                ]
+            },
+            {
+                "id": "hotel",
+                "type": [
+                    "hotel", "inn", "motel", "resort_hotel", "extended_stay_hotel"
+                ]
+            },
+            {
+                "id": "farmstay",
+                "type": [
+                    "farmstay"
+                ]
+            },
+            {
+                "id": "hostel",
+                "type": [
+                    "hostel"
+                ]
+            }
+        ]
+    },
+    "food-drink": {
+        "id": "food-drink",
+        "icon": "fa-regular fa-cutlery",
+        "subCategory": [
+            {
+                "id": "restaurants",
+                "type": [
+                    "afghani_restaurant", "african_restaurant", "american_restaurant",
+                    "asian_restaurant", "barbecue_restaurant", "brazilian_restaurant",
+                    "breakfast_restaurant", "brunch_restaurant", "buffet_restaurant",
+                    "chinese_restaurant", "dessert_restaurant", "fast_food_restaurant",
+                    "fine_dining_restaurant", "french_restaurant", "greek_restaurant",
+                    "hamburger_restaurant", "indian_restaurant", "indonesian_restaurant",
+                    "italian_restaurant", "japanese_restaurant", "korean_restaurant",
+                    "lebanese_restaurant", "mediterranean_restaurant", "mexican_restaurant",
+                    "middle_eastern_restaurant", "pizza_restaurant", "ramen_restaurant",
+                    "restaurant", "seafood_restaurant", "spanish_restaurant", "steak_house",
+                    "sushi_restaurant", "thai_restaurant", "turkish_restaurant",
+                    "vegan_restaurant", "vegetarian_restaurant", "vietnamese_restaurant"
+                ]
+            },
+            {
+                "id": "cafes",
+                "type": [
+                    "bagel_shop", "cafe", "coffee_shop", "deli", "dessert_shop", "dog_cafe",
+                    "ice_cream_shop", "sandwich_shop", "tea_house"
+                ]
+            },
+            {
+                "id": "bars-pubs",
+                "type": [
+                    "bar", "bar_and_grill", "pub", "wine_bar"
+                ]
+            }
+        ]
+    },
+    "things-to-do": {
+        "id": "things-to-do",
+        "icon": "fa-kit fa-vs-landscape",
+        "subCategory": [
+            {
+                "id": "nature-outdoors",
+                "type": [
+                    "national_park", "beach", "hiking_area", "garden", "botanical_garden",
+                    "wildlife_park", "wildlife_refuge", "park"
+                ]
+            },
+            {
+                "id": "culture-history",
+                "type": [
+                    "museum", "art_gallery", "historical_place", "monument", "sculpture",
+                    "cultural_landmark", "church"
+                ]
+            },
+            {
+                "id": "entertainment",
+                "type": [
+                    "aquarium", "zoo", "amusement_park", "concert_hall", "performing_arts_theater", 
+                    "planetarium", "movie_theater", "comedy_club", "bowling_alley", "roller_coaster"
+                ]
+            },
+            {
+                "id": "active-adventure",
+                "type": [
+                    "skateboard_park", "ice_skating_rink", "adventure_sports_center", 
+                    "cycling_park", "ski_resort", "golf_course", "sports_complex", "stadium", 
+                    "fishing_pond", "fishing_charter", "fitness_center", "gym"
+                ]
+            },
+            {
+                "id": "shopping",
+                "type": [
+                    "shopping_mall", "gift_shop", "book_store", "clothing_store", "department_store", 
+                    "market", "jewelry_store"
+                ]
+            },
+            {
+                "id": "health-wellness",
+                "type": [
+                    "spa", "wellness_center", "massage", "yoga_studio"
+                ]
+            },
+            {
+                "id": "tours",
+                "type": [
+                    "tour_agency", "travel_agency"
+                ]
+            }
+        ]
+    },
+    "travel-information": {
+        "id": "travel-information",
+        "icon": "fa-regular fa-circle-info",
+        "subCategory": [
+            {
+                "id": "transport",
+                "type": [
+                    "airport", "airstrip", "bus_station", "bus_stop", "car_rental",
+                    "ferry_terminal", "heliport", "international_airport", "light_rail_station",
+                    "subway_station", "taxi_stand", "train_station"
+                ]
+            },
+            {
+                "id": "charging-points",
+                "type": [
+                    "electric_vehicle_charging_station"
+                ]
+            },
+            {
+                "id": "facilities",
+                "type": [
+                    "park_and_ride", "parking", "public_bathroom", "visitor_center", "atm"
+                ]
+            }
+        ]
+    }
+}

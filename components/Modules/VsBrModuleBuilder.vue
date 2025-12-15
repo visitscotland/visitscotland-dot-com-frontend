@@ -117,6 +117,12 @@
         >
             <Suspense>
                 <component
+                    v-if="item.googleMap"
+                    :is="VsBrMainMap"
+                    :module="item"
+                />
+                <component
+                    v-else
                     :is="VsBrMapWithSidebar"
                     :module="item"
                 />
@@ -229,6 +235,7 @@ import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 import themeCalculator from '~/composables/themeCalculator.ts';
 
 const VsBrMapWithSidebar = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSidebar.vue'));
+const VsBrMainMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMainMap.vue'));
 
 const props = defineProps<{
     modules: any[],
