@@ -13,6 +13,7 @@ interface IConfigState {
     pageMetaData: any,
     heroVideo: any,
     isLocalVideoheader: boolean,
+    globalSearchUrl: string,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -33,6 +34,7 @@ const useConfigStore = defineStore('configStore', {
         },
         heroVideo: null,
         isLocalVideoheader: false,
+        globalSearchUrl: '',
     }),
     actions: {
         getLabel(section: string, key: string) {

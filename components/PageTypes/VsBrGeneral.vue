@@ -61,10 +61,19 @@
         />
     </NuxtLazyHydrate>
 
-    <VsBrModuleBuilder
-        v-if="pageItems"
-        :modules="pageItems"
-    />
+    <template
+        v-if="isSearchResultsPage"
+    >
+        <VsBrSearchResults />
+    </template>
+    <template
+        v-else
+    >
+        <VsBrModuleBuilder
+            v-if="pageItems"
+            :modules="pageItems"
+        />
+    </template>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -139,6 +148,8 @@ const configStore = useConfigStore();
 
 let firstModuleIsLink = false;
 
+let isSearchResultsPage = false;
+
 if (page.value) {
     document = page.value.getDocument();
     documentData = document.getData();
@@ -166,6 +177,10 @@ if (page.value) {
         ) {
             firstModuleIsLink = true;
         }
+    }
+
+    if (window && window.location.pathname === configStore.globalSearchUrl) {
+        isSearchResultsPage = true;
     }
 }
 </script>
