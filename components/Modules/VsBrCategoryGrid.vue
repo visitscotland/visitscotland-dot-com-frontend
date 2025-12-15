@@ -16,11 +16,11 @@
                                     heading-style="heading-m"
                                 >
                                     <VsLink
-                                        :href="card.link"
+                                        :href="card.links.site.href"
                                         class="stretched-link text-decoration-none"
                                         variant="on-dark"
                                     >
-                                        {{ card.label }}
+                                        {{ card.data.breadcrumb }}
                                     </VsLink>
                                 </VsHeading>
                             </div>
@@ -68,18 +68,22 @@ const { links } = props;
 const outLinks = [];
 
 for (let x = 0; x < links.length; x++) {
-    const nextLink = page?.getContent(links[x]);
+    let nextLink = page?.getContent(links[x]);
 
-    let image: any = '';
+    if (nextLink) {
+        nextLink = nextLink.model;
 
-    if (nextLink.image.cmsImage) {
-        image = page.getContent(nextLink.image.cmsImage.$ref);
-        image = image.getOriginal().getUrl();
+        let image: any = '';
+
+        if (nextLink.data.image) {
+            image = page?.getContent(nextLink.data.image.$ref);
+            image = image.getOriginal().getUrl();
+        }
+
+        nextLink.imageUrl = image;
+
+        outLinks.push(nextLink);
     }
-
-    nextLink.imageUrl = image;
-
-    outLinks.push(nextLink);
 }
 
 </script>

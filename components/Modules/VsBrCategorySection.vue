@@ -19,6 +19,4 @@ const props = defineProps<{
 
 const { categories } = props;
 
-console.log(categories);
-
 </script>
