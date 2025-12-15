@@ -5,7 +5,7 @@
             :image="heroImage"
             inset
         />
-        <!-- <VsContainer>
+        <VsContainer>
             <VsRow class="mt-500">
                 <VsCol
                     cols="12"
@@ -83,23 +83,8 @@
                     </VsPanel>
                 </VsCol>
             </VsRow>
-        </VsContainer> -->
-        <!-- <VsContainer>
-        <VsRow>
-            <VsCol>
-                <div class="p-175 bg-heather-10 rounded-75" style="background-color: #e5e5f0;">
-                    <ul>
-                        <li
-                            v-for="(highlight, i) in documentData.highlights"
-                            :key="i"
-                        >
-                            {{ highlight }}
-                        </li>
-                    </ul>
-                </div>
-            </VsCol>
-        </VsRow>
-    </VsContainer> -->
+        </VsContainer>
+
         <VsBrDaySection
             v-for="(day, index) in itinerary.days"
             :key="`day-${index}`"
@@ -212,7 +197,7 @@ import {
     VsCol,
     VsImg,
     VsPanel,
-    VsDetail,
+    VsIllustratedMap,
 } from '@visitscotland/component-library/components';
 
 import VsBrHeroSection from '../Modules/VsBrHeroSection.vue';
