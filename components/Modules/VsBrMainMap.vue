@@ -1,6 +1,6 @@
 <template>
     <VsMainMap
-        api-key="AIzaSyAVCyqirI1432Qo4TrDJz26_OVi4BYRsNE"
+        api-key=""
         map-id="b55b94a250e70307420a5743"
         map-type-vector
         :center="{
