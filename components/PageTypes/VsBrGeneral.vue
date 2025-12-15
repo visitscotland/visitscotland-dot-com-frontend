@@ -46,6 +46,15 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
+        <VsBrCategorySection
+            v-if="documentData && documentData.categoryLinks"
+            :categories="documentData.categoryLinks"
+        />
+    </NuxtLazyHydrate>
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
         <VsBrProductSearch
             v-if="productSearch && productSearch.position === 'Top'"
             class="mb-300 mb-lg-600 pt-300"
@@ -108,6 +117,7 @@ import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
+import VsBrCategorySection from '~/components/Modules/VsBrCategorySection.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
