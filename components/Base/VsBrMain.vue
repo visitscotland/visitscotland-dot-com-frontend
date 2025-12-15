@@ -4,13 +4,13 @@
         :class="{ 'has-edit-button': page.isPreview() }"
     >
         <BrManageContentButton
-            :content="document"
+            :content="pageDocument"
         />
 
         <VsBrGtm />
 
         <VsBrPageViewEvent
-            :data="document.model.data"
+            :data="pageDocument.model.data"
             :page-type="pageName"
         />
 
@@ -79,7 +79,7 @@ let pageComponent : any = {
 };
 let pageName : string = '';
 
-let document : any = {
+let pageDocument : any = {
 };
 
 const configStore = useConfigStore();
@@ -128,9 +128,19 @@ if (page.value) {
         configStore.isLocalVideoheader = true;
     }
 
-    document = page.value.getDocument();
+    pageDocument = page.value.getDocument();
 
-    configStore.locale = document.model.data.localeString;
+    configStore.locale = pageDocument.model.data.localeString;
+
+    if (componentModels.cludo) {
+        configStore.globalSearchUrl = componentModels.cludo['global-search-url'];
+    } else {
+        configStore.globalSearchUrl = '/site-search-results';
+    }
+
+    configStore.cludoEngineId = componentModels.cludoEngineId;
+    configStore.cludoExperienceId = componentModels.cludoExperienceId;
+    configStore.cludoCustomerId = componentModels.cludoCustomerId;
 
     let langString = '';
 
@@ -159,19 +169,19 @@ if (page.value) {
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        title: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+        title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
         meta: [
             {
                 name: 'title',
-                content: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+                content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
             },
             {
                 name: 'description',
-                content: document.model.data.seoDescription,
+                content: pageDocument.model.data.seoDescription,
             },
             {
                 name: 'robots',
-                content: document.model.data.noIndex ? 'noindex' : '',
+                content: pageDocument.model.data.noIndex ? 'noindex' : '',
             },
         ],
         htmlAttrs: {
