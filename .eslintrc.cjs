@@ -16,6 +16,7 @@ module.exports = {
                 ],
             },
         ],
+        'import/no-unresolved': 'off',
         'import/no-extraneous-dependencies': 'off',
         'template-curly-spacing': 'off',
         'vue/attributes-order': 'off',
