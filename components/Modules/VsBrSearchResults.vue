@@ -45,19 +45,36 @@
                 eventError: configStore.getLabel('search', 'error.events'),
             }"
             :from-text="configStore.getLabel('search', 'price.from')"
-        />
+        >
+            <!-- <template
+                v-for="(index, item) in modules"
+                :key="index"
+                #:[`federated-search__spotlight-${module.hippoBean.name}`]
+            >
+                <VsBrModuleBuilder
+                    :modules="item"
+                />
+            </template> -->
+        </VsFederatedSearch>
     </VsContainer>
 </template>
 
-<script setup>
-// eslint-disable-next-line import/no-unresolved
+<script setup lang="ts">
 import {
     VsContainer,
     VsFederatedSearch,
 } from '@visitscotland/component-library/components';
 
+// import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
+
 import useConfigStore from '~/stores/configStore.ts';
 
 const configStore = useConfigStore();
+
+// const props = defineProps<{
+//     modules: any[],
+// }>();
+
+// const { modules } = props;
 
 </script>

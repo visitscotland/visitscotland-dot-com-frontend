@@ -79,6 +79,13 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="showSiteSearchWidget"
+    >
+        <VsBrSiteSearchWidget />
+    </NuxtLazyHydrate>
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
     >
         <VsBrSocialShare
             :no-js="true"
@@ -120,6 +127,7 @@ import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksM
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
 import VsBrSearchResults from '~/components/Modules/VsBrSearchResults.vue';
+import VsBrSiteSearchWidget from '~/components/Modules/VsBrSiteSearchWidget.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
@@ -142,6 +150,7 @@ const configStore = useConfigStore();
 let firstModuleIsLink = false;
 
 let isSearchResultsPage = false;
+const showSiteSearchWidget = false;
 
 if (page.value) {
     document = page.value.getDocument();
