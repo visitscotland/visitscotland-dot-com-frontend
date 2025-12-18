@@ -1,1 +1,335 @@
-[ { "name": "edinburgh", "displayName": "Edinburgh", "translationFlag": null, "translation": "", "diff": null, "stops": [ { "hippoBean": { "$ref": "/page/u9830f174d0eb47bf9b1a02f86f43e17f" }, "anchor": null, "errorMessages": null, "marketoId": null, "index": 1, "title": "Edinburgh castle", "subTitle": "Edinburgh - City Centre", "description": { "contentType": "hippostd:html", "value": "<p>Make Edinburgh Castle your first port of call. It sits at the top of the historic Royal Mile on a volcanic plug, and is perhaps the most famous landmark on the Edinburgh skyline. Beat the crowds and get there for opening at 9.30am. The views over the city are pretty spectacular, and there is so much to take in, including the National Museum of War, the National War Monument and the Honours of Scotland, the county&#39;s Crown Jewels.</p>" }, "image": { "errorMessages": [], "cmsImage": null, "externalImage": "http://www.visitscotland.com/wsimgs/EC%20Graphic%202%20low%20res.jpg", "altText": "Edinburgh Castle", "credit": null, "description": "Edinburgh Castle", "coordinates": { "latitude": 55.9486, "longitude": -3.19994 }, "source": null, "postUrl": null, "location": "Edinburgh - City Centre" }, "timeToExplore": null, "tipsTitle": "Covid information", "ctaLink": { "label": "Discover Edinburgh castle", "link": "http://172.28.81.65:8089/info/see-do/edinburgh-castle-p245821", "type": "INTERNAL" }, "tipsBody": { "contentType": "hippostd:html", "value": "<p>Edinburgh Castle is now open and we are delighted to welcome you back.&#160;<vs-link type=\"external\" rel=\"nofollow\" href=\"http://www.restarthistory.scot/\">Find out more about our re-opening plans</vs-link>.</p>" }, "facilities": [ { "id": "pubtranrte", "name": "On Public Transport Route" }, { "id": "accessparkdrop", "name": "Accessible Parking Or Drop-off Point" }, { "id": "dsblaccess", "name": "Level Access" }, { "id": "cafereston", "name": "Cafe or Restaurant" } ], "address": { "line1": "Castle Hill", "city": "Edinburgh - City Centre", "county": "Edinburgh & The Lothians", "postCode": "EH1 2NG", "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians", "streetAddress": "Castle Hill", "empty": false }, "price": "Admission charge", "opening": null, "openLink": null, "distance": null, "coordinates": { "latitude": 55.9486, "longitude": -3.19994 }, "identifier": "e10310a1-8c67-47e0-9b5b-8bc049f3bf3d", "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/edinburgh-castle/edinburgh-castle", "type": "ItineraryStopModule" }, { "hippoBean": { "$ref": "/page/u98ec3739fc6745b3bbdbe21478facbb7" }, "anchor": null, "errorMessages": null, "marketoId": null, "index": 2, "title": "Old Town", "subTitle": "Edinburgh - City Centre", "description": { "contentType": "hippostd:html", "value": "<p>Edinburgh&#39;s Old Town is part of a <vs-link type=\"external\" rel=\"noopener noreferrer\" href=\"http://www.ewht.org.uk/\" target=\"_blank\">UNESCO World Heritage Site</vs-link>, together with the Georgian era New Town on the north side of the city centre. The buildings you&#8217;ll see remain largely unchanged from how they would have looked centuries ago.</p>\n\n<p>The Old Town and Royal Mile is home to three filming locations from <em>Outlander</em>. If you&#8217;re looking for a memorable souvenir while you&#8217;re there, pop into <vs-link type=\"external\" rel=\"noopener noreferrer\" href=\"http://www.hamiltonandyoung.co.uk/\" title=\"Hamilton &#38; Young Jewellery Designers\" target=\"_blank\">Hamilton &#38; Young Jewellery Designers</vs-link> on the Royal Mile to browse Celtic and Outlander inspired items.</p>" }, "image": { "errorMessages": [], "cmsImage": null, "externalImage": "http://www.visitscotland.com/wsimgs/john-knox-min_400602568.jpg", "altText": "Groups of sightseers outside John Knox House on Edinburgh's cobbled Royal mile. The architecture dates from the 1490s with upper storeys overhanging.", "credit": "VisitScotland / Kenny Lam, all rights reserved.", "description": "Groups of sightseers outside John Knox House on Edinburgh's cobbled Royal mile. The architecture dates from the 1490s with upper storeys overhanging.", "coordinates": { "latitude": 55.95217, "longitude": -3.19774 }, "source": null, "postUrl": null, "location": "Edinburgh - City Centre" }, "timeToExplore": null, "tipsTitle": null, "ctaLink": { "label": "Explore Edinburgh’s beautifully Old Town", "link": "http://172.28.81.65:8089/info/towns-villages/old-town-and-new-town-p918411", "type": "INTERNAL" }, "tipsBody": null, "facilities": [], "address": { "city": "Edinburgh - City Centre", "county": "Edinburgh & The Lothians", "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians", "empty": false }, "price": null, "opening": null, "openLink": null, "distance": null, "coordinates": { "latitude": 55.95217, "longitude": -3.19774 }, "identifier": "b6fef35d-70c2-45ba-b104-cd300e8201b7", "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/old-town/old-town", "type": "ItineraryStopModule" }, { "hippoBean": { "$ref": "/page/ue67cca0b469d428188150612f856f316" }, "anchor": null, "errorMessages": null, "marketoId": null, "index": 3, "title": "Greyfriars Kirkyard", "subTitle": "Edinburgh - City Centre", "description": { "contentType": "hippostd:html", "value": "<p>Only a short walk away from The Elephant House you&#39;ll find this infamous, spine-tingling graveyard, and burial place of several notable Edinburgh academics and writers of the past. However, also buried here are a few other notable residents: Thomas Riddell, William McGonagall and Elizabeth Moodie. A coincidence? We think not.</p>" }, "image": { "errorMessages": [], "cmsImage": null, "externalImage": "http://www.visitscotland.com/wsimgs/03%20Museum%20on%20the%20Mound%2c%20Edinburgh%20low-res_1904926619.jpg", "altText": "Museum on the Mound sign", "credit": null, "description": "Museum on the Mound sign", "coordinates": { "latitude": 55.9505, "longitude": -3.194 }, "source": null, "postUrl": null, "location": "Edinburgh - City Centre" }, "timeToExplore": null, "tipsTitle": null, "ctaLink": { "label": "Find out more about Greyfriars Kirkyard", "link": "http://172.28.81.65:8089/info/see-do/museum-on-the-mound-p246891", "type": "INTERNAL" }, "tipsBody": null, "facilities": [ { "id": "pubtranrte", "name": "On Public Transport Route" }, { "id": "audioloop", "name": "Hearing Loop" }, { "id": "dsblaccess", "name": "Level Access" }, { "id": "accesstoliet", "name": "Accessible toilets" } ], "address": { "line1": "Museum On The Mound", "line2": "Lloyds Banking Group, The Mound", "city": "Edinburgh - City Centre", "county": "Edinburgh & The Lothians", "postCode": "EH1 1YZ", "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians", "streetAddress": "Museum On The Mound, Lloyds Banking Group, The Mound", "empty": false }, "price": null, "opening": null, "openLink": null, "distance": null, "coordinates": { "latitude": 55.9505, "longitude": -3.194 }, "identifier": "47a289e7-13dd-4bd4-98d4-2fc128951806", "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/greyfriars-kirkyard/greyfriars-kirkyard", "type": "ItineraryStopModule" }, { "hippoBean": { "$ref": "/page/u030dde7974ad441bb7f2731cb0312e3c" }, "anchor": null, "errorMessages": null, "marketoId": null, "index": 4, "title": "Palace of Holyroodhouse", "subTitle": "Edinburgh - City Centre", "description": { "contentType": "hippostd:html", "value": "<p>Book location and Jacobite connection</p>\n\n<p>Located at the foot of the Royal Mile, the Palace of Holyroodhouse is an elegant royal residence with links to monarchs from throughout the centuries. Today it is the official Scottish residence of Her Majesty The Queen.</p>\n\n<p>In September 1745 Bonnie Prince Charlie established his court at Holyroodhouse for six weeks. This is portrayed in the <em>Outlander</em> novels when Claire and Jamie visit the Prince at the palace and beg him to abandon his hopeless cause.</p>" }, "image": { "errorMessages": [], "cmsImage": null, "externalImage": "http://www.visitscotland.com/wsimgs/RS211268_8170158__Holyrood38_515096165.JPG", "altText": "The Palace of Holyroodhouse", "credit": "Royal Collection Trust / © His Majesty King Charles III 2022.", "description": "The Palace of Holyroodhouse", "coordinates": { "latitude": 55.95276, "longitude": -3.17211 }, "source": null, "postUrl": null, "location": "Edinburgh - City Centre" }, "timeToExplore": "2 hours", "tipsTitle": null, "ctaLink": { "label": "Find out more about Palace of Holyroodhouse", "link": "http://172.28.81.65:8089/info/see-do/palace-of-holyroodhouse-p247111", "type": "INTERNAL" }, "tipsBody": null, "facilities": [ { "id": "pubtranrte", "name": "On Public Transport Route" }, { "id": "audioloop", "name": "Hearing Loop" }, { "id": "accessparkdrop", "name": "Accessible Parking Or Drop-off Point" }, { "id": "dsblaccess", "name": "Level Access" }, { "id": "accesstoliet", "name": "Accessible toilets" }, { "id": "wifi", "name": "WiFi" }, { "id": "cafereston", "name": "Cafe or Restaurant" } ], "address": { "line1": "Palace of Holyroodhouse", "line2": "Canongate, Royal Mile", "city": "Edinburgh - City Centre", "county": "Edinburgh & The Lothians", "postCode": "EH8 8DX", "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians", "streetAddress": "Palace of Holyroodhouse, Canongate, Royal Mile", "empty": false }, "price": null, "opening": { "openNewYear": "Open over New Year", "extraDescription": "April - October\t09:30-18:00\n\n(last admission 16:30)\n\nNovember - March\t09:30-16:30\n(last admission 15:15)\n\nThe Palace of Holyroodhouse is closed on Tuesdays and Wednesdays, except 24 May - 7 September when we are open 7 days a week.\n\nAs a working royal palace, opening arrangements may chance at short notice. Please check our website before planning a visit.", "period": { "startDay": "2025-01-01", "endDay": "2025-12-31" }, "days": [ { "key": "tuesday", "day": "Tuesdays", "state": "closed", "provisional": false }, { "key": "wednesday", "day": "Wednesdays", "state": "closed", "provisional": false } ] }, "openLink": { "label": "Check opening times", "link": "http://172.28.81.65:8089/info/see-do/palace-of-holyroodhouse-p247111#opening", "type": null }, "distance": null, "coordinates": { "latitude": 55.95276, "longitude": -3.17211 }, "identifier": "442aa35c-52e7-4db6-b44a-3c2d18f9f581", "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/palace-of-holyroodhouse/palace-of-holyroodhouse", "type": "ItineraryStopModule" } ], "transports": [ "car", "public", "walking" ], "introduction": { "contentType": "hippostd:html", "value": "<p>It was in Scotland&#39;s capital city that JK Rowling started to plot the adventures of Harry and his friends. With cobbled streets, winding alleys and medieval architecture, the city certainly has a few things in common with the settings from the books and films. She wrote the early chapters in various caf&#233;s around the city&#39;s Old Town, before coming back to finish off the series from a peaceful suite in The Balmoral Hotel. It is also said that Hogwarts School was styled on Edinburgh&#8217;s Fettes College, a private school on the outskirts of Edinburgh&#8217;s west end new town. You could also try the Wizarding World of Edinburgh tour.</p>" }, "translationDeadline": null, "translationPriority": null, "title": "Explore Edinburgh", "localeString": "en", "contentType": "visitscotland:Day", "id": "806448db-18e1-4a25-81c3-777a76f530d2" }, { "name": "edinburgh-city-centre", "displayName": "Edinburgh city centre", "translationFlag": null, "translation": "", "diff": null, "stops": [ { "hippoBean": { "$ref": "/page/uf0c435ec14f248a081b705507be62018" }, "anchor": null, "errorMessages": null, "marketoId": null, "index": 5, "title": "Linlithgow Palace", "subTitle": "Linlithgow", "description": { "contentType": "hippostd:html", "value": "<p>Jacobite connection and filming location &#8211; season 1</p>\n\n<p>Explore the nooks and towers of this sizeable ruined, yet still beautiful palace. The various floors are still accessible via the intact turret staircases, and beautiful views can be observed from the roof. In 1745 Bonnie Prince Charlie visited the palace on his journey south. Its elaborate courtyard fountain is said to have flowed with red wine to mark the occasion! In <em>Outlander</em>, the majestic entrance and corridors feature as Wentworth Prison where Jamie was imprisoned.</p>\n\n<p>You could also take a refreshing walk around Linlithgow Loch, the shores of which the palace sits upon.</p>\n\n<p>Linlithgow has a direct rail connection to Edinburgh which takes just 20 minutes.</p>\n\n<p>Stay in&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/destinations-maps/edinburgh/accommodation/\" title=\"Accommodation\">Edinburgh</vs-link>&#160;or&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/info/accommodation/search-results?prodtypes=acco&#38;loc=Linlithgow&#38;locplace=4571&#38;locprox=1&#38;areaproxdist=10&#38;stay=&#38;endDate=&#38;r1a=2&#38;r1children=0&#38;r1infants=0&#38;r1c=0&#38;avail=off\" title=\"Accommodation in Linlithgow\">Linlithgow</vs-link>.</p>" }, "image": { "errorMessages": [], "cmsImage": null, "externalImage": "http://www.visitscotland.com/wsimgs/lin.1-000022.jpg", "altText": "Linlithgow Palace", "credit": null, "description": "Linlithgow Palace", "coordinates": { "latitude": 55.9776, "longitude": -3.6009 }, "source": null, "postUrl": null, "location": "Linlithgow" }, "timeToExplore": null, "tipsTitle": "Outlander film location", "ctaLink": { "label": "Find out more about Linlithgow Palace", "link": "http://172.28.81.65:8089/info/see-do/linlithgow-palace-p252271", "type": "INTERNAL" }, "tipsBody": { "contentType": "hippostd:html", "value": "<p>The majestic ruins of Linlithgow Palace stands in for the prison entrance and corridors in the scene where Jamie was imprisoned.</p>" }, "facilities": [ { "id": "parking", "name": "Parking" }, { "id": "pubtranrte", "name": "On Public Transport Route" }, { "id": "accessparkdrop", "name": "Accessible Parking Or Drop-off Point" }, { "id": "dsblaccess", "name": "Level Access" } ], "address": { "line1": "Kirkgate", "city": "Linlithgow", "county": "Edinburgh & The Lothians", "postCode": "EH49 7AL", "shortAddress": "Linlithgow, Edinburgh & The Lothians", "streetAddress": "Kirkgate", "empty": false }, "price": "Admission charge", "opening": null, "openLink": null, "distance": null, "coordinates": { "latitude": 55.9776, "longitude": -3.6009 }, "identifier": "c4709ddf-0a80-4f80-ad7f-cdcfb333679e", "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/linlithgow-palace/linlithgow-palace", "type": "ItineraryStopModule" }, { "hippoBean": { "$ref": "/page/u7bd9fe86c2514846ab1cd617a1de80ca" }, "anchor": null, "errorMessages": null, "marketoId": null, "index": 6, "title": "Drum Castle", "subTitle": "Banchory", "description": { "contentType": "hippostd:html", "value": "<p>Begin the trail at the spectacular Drum Castle, located in Drumoak just outside Aberdeen, which combines a 13th century tower, a Jacobean mansion house and Victorian architecture. Take a tour of the castle and marvel at the fascinating combination of Scottish history and Victorian fashion, and wander the grounds and the magnificent historic rose garden.&#160;&#160;</p>" }, "image": { "errorMessages": [], "cmsImage": { "$ref": "/page/u8d4f503664ca4e5daa89b348ae38b081" }, "externalImage": null, "altText": "", "credit": "VisitScotland Staff", "description": "Man looking forward to finish this itinerary", "coordinates": { "latitude": 55.869118, "longitude": -4.289846 }, "source": null, "postUrl": null, "location": "Glasgow" }, "timeToExplore": null, "tipsTitle": null, "ctaLink": { "label": "Find out more about Drum Castle", "link": "http://172.28.81.65:8089/info/see-do/drum-castle-garden-estate-p254211", "type": "INTERNAL" }, "tipsBody": null, "facilities": [ { "id": "parking", "name": "Parking" }, { "id": "accessparkdrop", "name": "Accessible Parking Or Drop-off Point" } ], "address": { "line1": "Drum Castle", "line2": "Drumoak", "city": "Banchory", "county": "Aberdeen & Aberdeenshire", "postCode": "AB31 5EY", "shortAddress": "Banchory, Aberdeen & Aberdeenshire", "streetAddress": "Drum Castle, Drumoak", "empty": false }, "price": null, "opening": null, "openLink": null, "distance": null, "coordinates": { "latitude": 57.09521, "longitude": -2.33788 }, "identifier": "a6a166e2-d96e-4f7e-b6cf-03da38e4b435", "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/drum-castle/drum-castle", "type": "ItineraryStopModule" }, { "hippoBean": { "$ref": "/page/ue8202d3f3d3e43e280753cf9b212df05" }, "anchor": null, "errorMessages": null, "marketoId": null, "index": 7, "title": "Crathes Castle", "subTitle": "Banchory", "description": { "contentType": "hippostd:html", "value": "<p>Pick up the trail again and head on a five minute drive to the spooky Crathes Castle, a favourite place of Queen Victoria and one where she often stayed. Explore the wonderland grounds and marvel at the ornate gargoyles and fairytale turrets. On your tour of the castle you&#39;ll learn about the castle&#39;s intriguing history along with the story of its resident ghosts, the Green Lady and her infant child. It is even said that Queen Victoria witnessed the ghostly pair herself.</p>" }, "image": { "errorMessages": [], "cmsImage": null, "externalImage": "http://www.visitscotland.com/wsimgs/Crathes_623569832.jpg", "altText": "Crathes Castle, Garden & Estate", "credit": "National Trust for Scotland", "description": "Crathes Castle, Garden & Estate", "coordinates": { "latitude": 57.06153, "longitude": -2.43984 }, "source": null, "postUrl": null, "location": "Banchory" }, "timeToExplore": null, "tipsTitle": null, "ctaLink": { "label": "Find out more about Crathes Castle", "link": "http://172.28.81.65:8089/info/see-do/crathes-castle-garden-estate-p254191", "type": "INTERNAL" }, "tipsBody": null, "facilities": [ { "id": "parking", "name": "Parking" }, { "id": "accessparkdrop", "name": "Accessible Parking Or Drop-off Point" }, { "id": "cafereston", "name": "Cafe or Restaurant" } ], "address": { "line1": "Crathes Castle", "line2": "Crathes", "city": "Banchory", "county": "Aberdeen & Aberdeenshire", "postCode": "AB31 5QJ", "shortAddress": "Banchory, Aberdeen & Aberdeenshire", "streetAddress": "Crathes Castle, Crathes", "empty": false }, "price": null, "opening": null, "openLink": null, "distance": null, "coordinates": { "latitude": 57.06153, "longitude": -2.43984 }, "identifier": "b230c028-e521-4360-85be-83b44e226c10", "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/crathes-castle/crathes-castle", "type": "ItineraryStopModule" } ], "transports": [ "boat", "bus", "car", "cycling", "ferry", "public", "train", "walking" ], "introduction": { "contentType": "hippostd:html", "value": "<p>If &#39;apparating&#39; isn&#39;t an option for you, it&#39;s possible to travel by train from Edinburgh to Glasgow and from there, take the West Highland Line to&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/destinations-maps/fort-william/\" title=\"Fort William\">Fort William</vs-link>. This is a great way to see some famous spots from the window, including the mystical&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/info/towns-villages/great-moor-of-rannoch-p246531\">Rannoch Moor</vs-link>, the place where Death Eaters board the train in the movie&#160;Harry Potter and The Deathly Hallows: Part 1.&#160;</p>\n\n<p>If you&#39;d prefer to drive, you could also hire a car in Edinburgh.&#160;Drive to the&#160;<vs-link type=\"default\" href=\"https://www.bonessmotormuseum.co.uk/\" title=\"Bo&#39;ness Motor Museum\" target=\"_blank\">Bo&#39;ness Motor Museum</vs-link>, where you can see Ron Weasley&#39;s Ford Anglia or drop in to the&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/info/see-do/scottish-owl-centre-p1195521\" title=\"Scottish Owl Centre\">Scottish Owl Centre</vs-link>&#160;in West Lothian to say hello to some of Hedwig&#39;s friends and other exotic owl species.</p>" }, "translationDeadline": null, "translationPriority": null, "title": "Travel to Fort William", "localeString": "en", "contentType": "visitscotland:Day", "id": "201dfb45-0524-4275-8b78-be61d0628c8a" } ] 
+[
+    {
+        "name": "first-day",
+        "displayName": "First day",
+        "translationFlag": null,
+        "translation": "",
+        "title": "Day 1 - Dunkeld",
+        "diff": null,
+        "transports": ["bus"],
+        "stops": [
+            {
+                "hippoBean": {
+                    "$ref": "/page/uc0eab65d6e6a4087bd160409994fe977"
+                },
+                "anchor": null,
+                "errorMessages": null,
+                "marketoId": null,
+                "index": 1,
+                "title": "Dunkeld to Oban",
+                "subTitle": "Dunkeld",
+                "description": {
+                    "contentType": "hippostd:html",
+                    "value": "<p>This is a beautiful but popular spot with locals and visitors alike, home to a majestic but partly ruined Dunkeld Cathedral and several brightly coloured houses which date back to the early 1700s.<br />\n<br />\nDunkeld sits within Big Tree Country, and has a number of accessible outdoor spots.</p>\n\n<p>- <vs-link type=\"external\" href=\"https://www.google.com/search?safe=active&#38;sca_esv=59038b22a1d9f5de&#38;cs=0&#38;output=search&#38;kgmid=/m/02pl82y&#38;q=The+Hermitage+(National+Trust+for+Scotland)&#38;shndl=30&#38;shem=damc,lcuae,uaasie,shrtsdl&#38;source=sh/x/loc/uni/m1/1&#38;kgs=ee9c5ec7bb99d91c&#38;utm_source=damc,lcuae,uaasie,shrtsdl,sh/x/loc/uni/m1/1\">The Hermitage</vs-link> &#8211; follow the woodland trails to Black Linn Falls and Ossian Hall.<br />\n- <vs-link type=\"external\" href=\"https://www.google.com/search?safe=active&#38;sca_esv=59038b22a1d9f5de&#38;cs=0&#38;output=search&#38;kgmid=/m/0gmgf5y&#38;q=Birnam+Oak&#38;shndl=30&#38;shem=damc,lcuae,uaasie,shrtsdl&#38;source=sh/x/loc/uni/m1/1&#38;kgs=15552a0efff2ae0b&#38;utm_source=damc,lcuae,uaasie,shrtsdl,sh/x/loc/uni/m1/1\">Birnam Wood</vs-link> &#8211; see the remaining trees from the ancient wood depicted in Shakespeare&#8217;s Macbeth.<br />\n- <vs-link type=\"external\" href=\"https://www.google.com/search?safe=active&#38;sca_esv=59038b22a1d9f5de&#38;cs=0&#38;output=search&#38;kgmid=/g/1w3w2m57&#38;q=Scottish+Wildlife+Trust+-+Loch+of+the+Lowes+Visitor+Centre+%26+Wildlife+Reserve&#38;shndl=30&#38;shem=damc,lcuae,uaasie,shrtsdl&#38;source=sh/x/loc/uni/m1/1&#38;kgs=376f1835d9c623c6&#38;utm_source=damc,lcuae,uaasie,shrtsdl,sh/x/loc/uni/m1/1\">Loch of the Lowes</vs-link> &#8211; a large nature reserve home to ospreys, squirrels and more.</p>"
+                },
+                "image": {
+                    "errorMessages": [],
+                    "cmsImage": {
+                        "$ref": "/page/u7caf2b616a5e49c98c8cced0d2ba1115"
+                    },
+                    "externalImage": null,
+                    "altText": "Alt text placeholder here",
+                    "credit": "",
+                    "description": "The caption is mandatory in the CMS despite not being rendered",
+                    "coordinates": null,
+                    "source": null,
+                    "postUrl": null,
+                    "location": null,
+                    "imageSrc": "http://localhost:8080/site/binaries/content/gallery/dunkeld.jpg"
+                },
+                "timeToExplore": null,
+                "tipsTitle": "This is the \"Aside\" data, I think",
+                "ctaLink": {
+                    "label": "Explore Dunkeld",
+                    "link": "http://172.28.81.65:8089/info/see-do/kirbuster-farm-museum-p256071",
+                    "type": "INTERNAL"
+                },
+                "tipsBody": {
+                    "contentType": "hippostd:html",
+                    "value": "<p>Blah blah blah</p>"
+                },
+                "facilities": [
+                    { "id": "parking", "name": "Parking" },
+                    {
+                        "id": "accessparkdrop",
+                        "name": "Accessible Parking Or Drop-off Point"
+                    },
+                    { "id": "accesstoliet", "name": "Accessible toilets" }
+                ],
+                "address": {
+                    "line1": "Kirbuster Museum",
+                    "line2": "Hundland Road",
+                    "city": "Birsay",
+                    "county": "Orkney",
+                    "postCode": "KW17 2LR",
+                    "shortAddress": "Birsay, Orkney",
+                    "streetAddress": "Kirbuster Museum, Hundland Road",
+                    "empty": false
+                },
+                "price": null,
+                "opening": null,
+                "openLink": null,
+                "distance": null,
+                "coordinates": { "latitude": 59.12095, "longitude": -3.27082 },
+                "identifier": "c250af92-0ff2-4e45-b6ea-6ea1b855c677",
+                "type": "ItineraryStopModule",
+                "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/example-two-openings-per-day/example-two-openings-per-day"
+            }
+        ],
+        "introduction": {
+            "contentType": "hippostd:html",
+            "value": "<p>Dunkeld is a small but charming historic town, just north of Perth on the banks of the flowing River Tay.</p>"
+        },
+        "translationPriority": null,
+        "translationDeadline": null,
+        "localeString": "en",
+        "contentType": "visitscotland:Day",
+        "id": "0e642a54-f65a-4f97-97ea-548c77e3455c"
+    },
+    {
+        "name": "second-day",
+        "displayName": "Second day",
+        "translationFlag": null,
+        "translation": "",
+        "title": "Your second day in scotland",
+        "diff": null,
+        "transports": ["public"],
+        "stops": [
+            {
+                "hippoBean": {
+                    "$ref": "/page/ua558e2084cd94c1ca311a11c8bc01df9"
+                },
+                "anchor": null,
+                "errorMessages": null,
+                "marketoId": null,
+                "index": 2,
+                "title": "Camera Obscura and World of Illusions",
+                "subTitle": "Edinburgh - City Centre",
+                "description": {
+                    "contentType": "hippostd:html",
+                    "value": "<p>Camera Obscura and World of Illusions - Britain&#39;s most fun attraction! Welcome to Edinburgh&#39;s oldest visitor attraction, delighting visitors since 1853. Rated a top Attraction in Scotland on TripAdvisor. Temporary Changes To Keep You Safe: Reduced Capacity: We are welcoming a smaller amount of people at scheduled entry time slots. Please book in advance on our website.&#160;</p>"
+                },
+                "image": {
+                    "errorMessages": [],
+                    "cmsImage": null,
+                    "externalImage": "http://www.visitscotland.com/wsimgs/Vortex_artworked_2019_-_small_1659168302.jpg",
+                    "altText": "Vortex Tunnel at Camera Obscura & World of Illusions, Edinburgh",
+                    "credit": "Camera Obscura & World of Illusions, Edinburgh",
+                    "description": "Vortex Tunnel at Camera Obscura & World of Illusions, Edinburgh",
+                    "coordinates": {
+                        "latitude": 55.94904,
+                        "longitude": -3.19533
+                    },
+                    "source": null,
+                    "postUrl": null,
+                    "location": "Edinburgh - City Centre",
+                    "imageSrc": "http://www.visitscotland.com/wsimgs/Vortex_artworked_2019_-_small_1659168302.jpg"
+                },
+                "timeToExplore": "2 hours",
+                "tipsTitle": null,
+                "ctaLink": {
+                    "label": "Find out more about Camera Obscura and World of Illusions",
+                    "link": "http://172.28.81.65:8089/info/see-do/camera-obscura-and-world-of-illusions-p245621",
+                    "type": "INTERNAL"
+                },
+                "tipsBody": null,
+                "facilities": [
+                    { "id": "petswelcom", "name": "Pets Welcome" },
+                    { "id": "audioloop", "name": "Hearing Loop" },
+                    { "id": "wifi", "name": "WiFi" }
+                ],
+                "address": {
+                    "line1": "549 Castlehill",
+                    "line2": "The Royal Mile",
+                    "city": "Edinburgh - City Centre",
+                    "county": "Edinburgh & The Lothians",
+                    "postCode": "EH1 2ND",
+                    "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+                    "streetAddress": "549 Castlehill, The Royal Mile",
+                    "empty": false
+                },
+                "price": "Admission charge",
+                "opening": null,
+                "openLink": null,
+                "distance": null,
+                "coordinates": { "latitude": 55.94904, "longitude": -3.19533 },
+                "identifier": "711830ec-496d-4270-b4ce-c0468ad0a167",
+                "type": "ItineraryStopModule",
+                "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/openings-bad-format/openings-bad-format"
+            },
+            {
+                "hippoBean": {
+                    "$ref": "/page/ub8ff4274668b4f3b9b9064b7aa8689bf"
+                },
+                "anchor": null,
+                "errorMessages": [
+                    "The DMS product added to 'Bank Street' was not found, please review the DMS Product id field at: /content/documents/visitscotland/sandbox/shared/itinerary-stops/openings-default-value/openings-default-value/visitscotland:product "
+                ],
+                "marketoId": null,
+                "index": 3,
+                "title": "Bank Street",
+                "subTitle": "",
+                "description": {
+                    "contentType": "hippostd:html",
+                    "value": "<p>Traditional first floor apartment with exciting design features including roof sun deck with stunning sea views. Open plan living dining kitchen and contemporary bathrooms. Centrally located just a few yards from Elie beach.</p>"
+                },
+                "image": null,
+                "timeToExplore": null,
+                "tipsTitle": null,
+                "ctaLink": null,
+                "tipsBody": null,
+                "facilities": null,
+                "address": null,
+                "price": null,
+                "opening": null,
+                "openLink": null,
+                "distance": null,
+                "coordinates": null,
+                "identifier": "8d496e3e-09e4-48f0-b618-9357b4851934",
+                "type": "ItineraryStopModule",
+                "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/openings-default-value/openings-default-value"
+            },
+            {
+                "hippoBean": {
+                    "$ref": "/page/u178cc6ee9b6a409580b29026263d173e"
+                },
+                "anchor": null,
+                "errorMessages": null,
+                "marketoId": null,
+                "index": 4,
+                "title": "National Museum of Scotland",
+                "subTitle": "Edinburgh - City Centre",
+                "description": {
+                    "contentType": "hippostd:html",
+                    "value": "<p>Explore the diversity of the natural world, world cultures, science and technology, art, design and fashion, and Scottish history, all under one roof. A range of new safety measures have been put in place along with timed entry to ensure that we can manage numbers and maintain physical distancing. Please book a timed entry ticket online at www.nms.ac.uk/scotland in advance of your visit. This includes National Museums Scotland members.</p>"
+                },
+                "image": {
+                    "errorMessages": [],
+                    "cmsImage": null,
+                    "externalImage": "http://www.visitscotland.com/wsimgs/External%20View%20Media%20Res%20c%20Andrew%20Lee.jpg",
+                    "altText": "National Museum of Scotland entance (c) Andrew Lee",
+                    "credit": "Andrew Lee",
+                    "description": "National Museum of Scotland entance (c) Andrew Lee",
+                    "coordinates": {
+                        "latitude": 55.94707,
+                        "longitude": -3.18924
+                    },
+                    "source": null,
+                    "postUrl": null,
+                    "location": "Edinburgh - City Centre",
+                    "imageSrc": "http://www.visitscotland.com/wsimgs/External%20View%20Media%20Res%20c%20Andrew%20Lee.jpg"
+                },
+                "timeToExplore": null,
+                "tipsTitle": null,
+                "ctaLink": {
+                    "label": "Find out more about National Museum of Scotland",
+                    "link": "http://172.28.81.65:8089/info/see-do/national-museum-of-scotland-p246591",
+                    "type": "INTERNAL"
+                },
+                "tipsBody": null,
+                "facilities": [
+                    { "id": "pubtranrte", "name": "On Public Transport Route" },
+                    { "id": "audioloop", "name": "Hearing Loop" },
+                    { "id": "dsblaccess", "name": "Level Access" },
+                    { "id": "accesstoliet", "name": "Accessible toilets" },
+                    { "id": "wifi", "name": "WiFi" },
+                    { "id": "cafereston", "name": "Cafe or Restaurant" }
+                ],
+                "address": {
+                    "line1": "Chambers Street",
+                    "city": "Edinburgh - City Centre",
+                    "county": "Edinburgh & The Lothians",
+                    "postCode": "EH1 1JF",
+                    "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+                    "streetAddress": "Chambers Street",
+                    "empty": false
+                },
+                "price": "Free entry",
+                "opening": {
+                    "extraDescription": "Closed 25 December",
+                    "period": {
+                        "startDay": "2025-01-01",
+                        "endDay": "2025-12-31"
+                    },
+                    "days": [
+                        {
+                            "key": "monday",
+                            "day": "Mondays",
+                            "startTime": "10:00",
+                            "endTime": "17:00",
+                            "state": "open",
+                            "provisional": false
+                        },
+                        {
+                            "key": "tuesday",
+                            "day": "Tuesdays",
+                            "startTime": "10:00",
+                            "endTime": "17:00",
+                            "state": "open",
+                            "provisional": false
+                        },
+                        {
+                            "key": "wednesday",
+                            "day": "Wednesdays",
+                            "startTime": "10:00",
+                            "endTime": "17:00",
+                            "state": "open",
+                            "provisional": false
+                        },
+                        {
+                            "key": "thursday",
+                            "day": "Thursdays",
+                            "startTime": "10:00",
+                            "endTime": "17:00",
+                            "state": "open",
+                            "provisional": false
+                        },
+                        {
+                            "key": "friday",
+                            "day": "Fridays",
+                            "startTime": "10:00",
+                            "endTime": "17:00",
+                            "state": "open",
+                            "provisional": false
+                        },
+                        {
+                            "key": "saturday",
+                            "day": "Saturdays",
+                            "startTime": "10:00",
+                            "endTime": "17:00",
+                            "state": "open",
+                            "provisional": false
+                        },
+                        {
+                            "key": "sunday",
+                            "day": "Sundays",
+                            "startTime": "10:00",
+                            "endTime": "17:00",
+                            "state": "open",
+                            "provisional": false
+                        }
+                    ]
+                },
+                "openLink": {
+                    "label": "Check opening times",
+                    "link": "http://172.28.81.65:8089/info/see-do/national-museum-of-scotland-p246591#opening",
+                    "type": null
+                },
+                "distance": null,
+                "coordinates": { "latitude": 55.94707, "longitude": -3.18924 },
+                "identifier": "bb5ac1b1-22a9-4c06-9f7b-707738d3e412",
+                "type": "ItineraryStopModule",
+                "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/national-musseum---free-example/national-musseum---free-example"
+            }
+        ],
+        "introduction": {
+            "contentType": "hippostd:html",
+            "value": "<p>Some ideas for your second day in Scotland</p>"
+        },
+        "translationPriority": null,
+        "translationDeadline": null,
+        "localeString": "en",
+        "contentType": "visitscotland:Day",
+        "id": "7e9aea42-9872-4333-acc7-bc7538df09a5"
+    }
+]

@@ -1,0 +1,637 @@
+{
+    "document": { "$ref": "/page/ua2ca775b0df54e2c900cc51c9f2e5d47" },
+    "firstStopLocation": "Dunkeld",
+    "lastStopLocation": "Edinburgh - City Centre",
+    "days": [
+        {
+            "name": "first-day",
+            "displayName": "First day",
+            "translationFlag": null,
+            "translation": "",
+            "title": "Day 1 - Dunkeld",
+            "diff": null,
+            "transports": ["bus"],
+            "stops": [
+                {
+                    "hippoBean": {
+                        "$ref": "/page/uc0eab65d6e6a4087bd160409994fe977"
+                    },
+                    "anchor": null,
+                    "errorMessages": null,
+                    "marketoId": null,
+                    "index": 1,
+                    "title": "Dunkeld to Oban",
+                    "subTitle": "Dunkeld",
+                    "description": {
+                        "contentType": "hippostd:html",
+                        "value": "<p>This is a beautiful but popular spot with locals and visitors alike, home to a majestic but partly ruined Dunkeld Cathedral and several brightly coloured houses which date back to the early 1700s.<br />\n<br />\nDunkeld sits within Big Tree Country, and has a number of accessible outdoor spots.</p>\n\n<p>- <vs-link type=\"external\" href=\"https://www.google.com/search?safe=active&#38;sca_esv=59038b22a1d9f5de&#38;cs=0&#38;output=search&#38;kgmid=/m/02pl82y&#38;q=The+Hermitage+(National+Trust+for+Scotland)&#38;shndl=30&#38;shem=damc,lcuae,uaasie,shrtsdl&#38;source=sh/x/loc/uni/m1/1&#38;kgs=ee9c5ec7bb99d91c&#38;utm_source=damc,lcuae,uaasie,shrtsdl,sh/x/loc/uni/m1/1\">The Hermitage</vs-link> &#8211; follow the woodland trails to Black Linn Falls and Ossian Hall.<br />\n- <vs-link type=\"external\" href=\"https://www.google.com/search?safe=active&#38;sca_esv=59038b22a1d9f5de&#38;cs=0&#38;output=search&#38;kgmid=/m/0gmgf5y&#38;q=Birnam+Oak&#38;shndl=30&#38;shem=damc,lcuae,uaasie,shrtsdl&#38;source=sh/x/loc/uni/m1/1&#38;kgs=15552a0efff2ae0b&#38;utm_source=damc,lcuae,uaasie,shrtsdl,sh/x/loc/uni/m1/1\">Birnam Wood</vs-link> &#8211; see the remaining trees from the ancient wood depicted in Shakespeare&#8217;s Macbeth.<br />\n- <vs-link type=\"external\" href=\"https://www.google.com/search?safe=active&#38;sca_esv=59038b22a1d9f5de&#38;cs=0&#38;output=search&#38;kgmid=/g/1w3w2m57&#38;q=Scottish+Wildlife+Trust+-+Loch+of+the+Lowes+Visitor+Centre+%26+Wildlife+Reserve&#38;shndl=30&#38;shem=damc,lcuae,uaasie,shrtsdl&#38;source=sh/x/loc/uni/m1/1&#38;kgs=376f1835d9c623c6&#38;utm_source=damc,lcuae,uaasie,shrtsdl,sh/x/loc/uni/m1/1\">Loch of the Lowes</vs-link> &#8211; a large nature reserve home to ospreys, squirrels and more.</p>"
+                    },
+                    "image": {
+                        "errorMessages": [],
+                        "cmsImage": {
+                            "$ref": "/page/u7caf2b616a5e49c98c8cced0d2ba1115"
+                        },
+                        "externalImage": null,
+                        "altText": "Alt text placeholder here",
+                        "credit": "",
+                        "description": "The caption is mandatory in the CMS despite not being rendered",
+                        "coordinates": null,
+                        "source": null,
+                        "postUrl": null,
+                        "location": null,
+                        "imageSrc": "http://localhost:8080/site/binaries/content/gallery/dunkeld.jpg"
+                    },
+                    "timeToExplore": null,
+                    "tipsTitle": "This is the \"Aside\" data, I think",
+                    "ctaLink": {
+                        "label": "Explore Dunkeld",
+                        "link": "http://172.28.81.65:8089/info/see-do/kirbuster-farm-museum-p256071",
+                        "type": "INTERNAL"
+                    },
+                    "tipsBody": {
+                        "contentType": "hippostd:html",
+                        "value": "<p>Blah blah blah</p>"
+                    },
+                    "facilities": [
+                        { "id": "parking", "name": "Parking" },
+                        {
+                            "id": "accessparkdrop",
+                            "name": "Accessible Parking Or Drop-off Point"
+                        },
+                        { "id": "accesstoliet", "name": "Accessible toilets" }
+                    ],
+                    "address": {
+                        "line1": "Kirbuster Museum",
+                        "line2": "Hundland Road",
+                        "city": "Birsay",
+                        "county": "Orkney",
+                        "postCode": "KW17 2LR",
+                        "shortAddress": "Birsay, Orkney",
+                        "streetAddress": "Kirbuster Museum, Hundland Road",
+                        "empty": false
+                    },
+                    "price": null,
+                    "opening": null,
+                    "openLink": null,
+                    "distance": null,
+                    "coordinates": {
+                        "latitude": 59.12095,
+                        "longitude": -3.27082
+                    },
+                    "identifier": "c250af92-0ff2-4e45-b6ea-6ea1b855c677",
+                    "type": "ItineraryStopModule",
+                    "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/example-two-openings-per-day/example-two-openings-per-day"
+                }
+            ],
+            "introduction": {
+                "contentType": "hippostd:html",
+                "value": "<p>Dunkeld is a small but charming historic town, just north of Perth on the banks of the flowing River Tay.</p>"
+            },
+            "translationPriority": null,
+            "translationDeadline": null,
+            "localeString": "en",
+            "contentType": "visitscotland:Day",
+            "id": "0e642a54-f65a-4f97-97ea-548c77e3455c"
+        },
+        {
+            "name": "second-day",
+            "displayName": "Second day",
+            "translationFlag": null,
+            "translation": "",
+            "title": "Your second day in scotland",
+            "diff": null,
+            "transports": ["public"],
+            "stops": [
+                {
+                    "hippoBean": {
+                        "$ref": "/page/ua558e2084cd94c1ca311a11c8bc01df9"
+                    },
+                    "anchor": null,
+                    "errorMessages": null,
+                    "marketoId": null,
+                    "index": 2,
+                    "title": "Camera Obscura and World of Illusions",
+                    "subTitle": "Edinburgh - City Centre",
+                    "description": {
+                        "contentType": "hippostd:html",
+                        "value": "<p>Camera Obscura and World of Illusions - Britain&#39;s most fun attraction! Welcome to Edinburgh&#39;s oldest visitor attraction, delighting visitors since 1853. Rated a top Attraction in Scotland on TripAdvisor. Temporary Changes To Keep You Safe: Reduced Capacity: We are welcoming a smaller amount of people at scheduled entry time slots. Please book in advance on our website.&#160;</p>"
+                    },
+                    "image": {
+                        "errorMessages": [],
+                        "cmsImage": null,
+                        "externalImage": "http://www.visitscotland.com/wsimgs/Vortex_artworked_2019_-_small_1659168302.jpg",
+                        "altText": "Vortex Tunnel at Camera Obscura & World of Illusions, Edinburgh",
+                        "credit": "Camera Obscura & World of Illusions, Edinburgh",
+                        "description": "Vortex Tunnel at Camera Obscura & World of Illusions, Edinburgh",
+                        "coordinates": {
+                            "latitude": 55.94904,
+                            "longitude": -3.19533
+                        },
+                        "source": null,
+                        "postUrl": null,
+                        "location": "Edinburgh - City Centre",
+                        "imageSrc": "http://www.visitscotland.com/wsimgs/Vortex_artworked_2019_-_small_1659168302.jpg"
+                    },
+                    "timeToExplore": "2 hours",
+                    "tipsTitle": null,
+                    "ctaLink": {
+                        "label": "Find out more about Camera Obscura and World of Illusions",
+                        "link": "http://172.28.81.65:8089/info/see-do/camera-obscura-and-world-of-illusions-p245621",
+                        "type": "INTERNAL"
+                    },
+                    "tipsBody": null,
+                    "facilities": [
+                        { "id": "petswelcom", "name": "Pets Welcome" },
+                        { "id": "audioloop", "name": "Hearing Loop" },
+                        { "id": "wifi", "name": "WiFi" }
+                    ],
+                    "address": {
+                        "line1": "549 Castlehill",
+                        "line2": "The Royal Mile",
+                        "city": "Edinburgh - City Centre",
+                        "county": "Edinburgh & The Lothians",
+                        "postCode": "EH1 2ND",
+                        "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+                        "streetAddress": "549 Castlehill, The Royal Mile",
+                        "empty": false
+                    },
+                    "price": "Admission charge",
+                    "opening": null,
+                    "openLink": null,
+                    "distance": null,
+                    "coordinates": {
+                        "latitude": 55.94904,
+                        "longitude": -3.19533
+                    },
+                    "identifier": "711830ec-496d-4270-b4ce-c0468ad0a167",
+                    "type": "ItineraryStopModule",
+                    "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/openings-bad-format/openings-bad-format"
+                },
+                {
+                    "hippoBean": {
+                        "$ref": "/page/ub8ff4274668b4f3b9b9064b7aa8689bf"
+                    },
+                    "anchor": null,
+                    "errorMessages": [
+                        "The DMS product added to 'Bank Street' was not found, please review the DMS Product id field at: /content/documents/visitscotland/sandbox/shared/itinerary-stops/openings-default-value/openings-default-value/visitscotland:product "
+                    ],
+                    "marketoId": null,
+                    "index": 3,
+                    "title": "Bank Street",
+                    "subTitle": "",
+                    "description": {
+                        "contentType": "hippostd:html",
+                        "value": "<p>Traditional first floor apartment with exciting design features including roof sun deck with stunning sea views. Open plan living dining kitchen and contemporary bathrooms. Centrally located just a few yards from Elie beach.</p>"
+                    },
+                    "image": null,
+                    "timeToExplore": null,
+                    "tipsTitle": null,
+                    "ctaLink": null,
+                    "tipsBody": null,
+                    "facilities": null,
+                    "address": null,
+                    "price": null,
+                    "opening": null,
+                    "openLink": null,
+                    "distance": null,
+                    "coordinates": null,
+                    "identifier": "8d496e3e-09e4-48f0-b618-9357b4851934",
+                    "type": "ItineraryStopModule",
+                    "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/openings-default-value/openings-default-value"
+                },
+                {
+                    "hippoBean": {
+                        "$ref": "/page/u178cc6ee9b6a409580b29026263d173e"
+                    },
+                    "anchor": null,
+                    "errorMessages": null,
+                    "marketoId": null,
+                    "index": 4,
+                    "title": "National Museum of Scotland",
+                    "subTitle": "Edinburgh - City Centre",
+                    "description": {
+                        "contentType": "hippostd:html",
+                        "value": "<p>Explore the diversity of the natural world, world cultures, science and technology, art, design and fashion, and Scottish history, all under one roof. A range of new safety measures have been put in place along with timed entry to ensure that we can manage numbers and maintain physical distancing. Please book a timed entry ticket online at www.nms.ac.uk/scotland in advance of your visit. This includes National Museums Scotland members.</p>"
+                    },
+                    "image": {
+                        "errorMessages": [],
+                        "cmsImage": null,
+                        "externalImage": "http://www.visitscotland.com/wsimgs/External%20View%20Media%20Res%20c%20Andrew%20Lee.jpg",
+                        "altText": "National Museum of Scotland entance (c) Andrew Lee",
+                        "credit": "Andrew Lee",
+                        "description": "National Museum of Scotland entance (c) Andrew Lee",
+                        "coordinates": {
+                            "latitude": 55.94707,
+                            "longitude": -3.18924
+                        },
+                        "source": null,
+                        "postUrl": null,
+                        "location": "Edinburgh - City Centre",
+                        "imageSrc": "http://www.visitscotland.com/wsimgs/External%20View%20Media%20Res%20c%20Andrew%20Lee.jpg"
+                    },
+                    "timeToExplore": null,
+                    "tipsTitle": null,
+                    "ctaLink": {
+                        "label": "Find out more about National Museum of Scotland",
+                        "link": "http://172.28.81.65:8089/info/see-do/national-museum-of-scotland-p246591",
+                        "type": "INTERNAL"
+                    },
+                    "tipsBody": null,
+                    "facilities": [
+                        {
+                            "id": "pubtranrte",
+                            "name": "On Public Transport Route"
+                        },
+                        { "id": "audioloop", "name": "Hearing Loop" },
+                        { "id": "dsblaccess", "name": "Level Access" },
+                        { "id": "accesstoliet", "name": "Accessible toilets" },
+                        { "id": "wifi", "name": "WiFi" },
+                        { "id": "cafereston", "name": "Cafe or Restaurant" }
+                    ],
+                    "address": {
+                        "line1": "Chambers Street",
+                        "city": "Edinburgh - City Centre",
+                        "county": "Edinburgh & The Lothians",
+                        "postCode": "EH1 1JF",
+                        "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+                        "streetAddress": "Chambers Street",
+                        "empty": false
+                    },
+                    "price": "Free entry",
+                    "opening": {
+                        "extraDescription": "Closed 25 December",
+                        "period": {
+                            "startDay": "2025-01-01",
+                            "endDay": "2025-12-31"
+                        },
+                        "days": [
+                            {
+                                "key": "monday",
+                                "day": "Mondays",
+                                "startTime": "10:00",
+                                "endTime": "17:00",
+                                "state": "open",
+                                "provisional": false
+                            },
+                            {
+                                "key": "tuesday",
+                                "day": "Tuesdays",
+                                "startTime": "10:00",
+                                "endTime": "17:00",
+                                "state": "open",
+                                "provisional": false
+                            },
+                            {
+                                "key": "wednesday",
+                                "day": "Wednesdays",
+                                "startTime": "10:00",
+                                "endTime": "17:00",
+                                "state": "open",
+                                "provisional": false
+                            },
+                            {
+                                "key": "thursday",
+                                "day": "Thursdays",
+                                "startTime": "10:00",
+                                "endTime": "17:00",
+                                "state": "open",
+                                "provisional": false
+                            },
+                            {
+                                "key": "friday",
+                                "day": "Fridays",
+                                "startTime": "10:00",
+                                "endTime": "17:00",
+                                "state": "open",
+                                "provisional": false
+                            },
+                            {
+                                "key": "saturday",
+                                "day": "Saturdays",
+                                "startTime": "10:00",
+                                "endTime": "17:00",
+                                "state": "open",
+                                "provisional": false
+                            },
+                            {
+                                "key": "sunday",
+                                "day": "Sundays",
+                                "startTime": "10:00",
+                                "endTime": "17:00",
+                                "state": "open",
+                                "provisional": false
+                            }
+                        ]
+                    },
+                    "openLink": {
+                        "label": "Check opening times",
+                        "link": "http://172.28.81.65:8089/info/see-do/national-museum-of-scotland-p246591#opening",
+                        "type": null
+                    },
+                    "distance": null,
+                    "coordinates": {
+                        "latitude": 55.94707,
+                        "longitude": -3.18924
+                    },
+                    "identifier": "bb5ac1b1-22a9-4c06-9f7b-707738d3e412",
+                    "type": "ItineraryStopModule",
+                    "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/national-musseum---free-example/national-musseum---free-example"
+                }
+            ],
+            "introduction": {
+                "contentType": "hippostd:html",
+                "value": "<p>Some ideas for your second day in Scotland</p>"
+            },
+            "translationPriority": null,
+            "translationDeadline": null,
+            "localeString": "en",
+            "contentType": "visitscotland:Day",
+            "id": "7e9aea42-9872-4333-acc7-bc7538df09a5"
+        }
+    ],
+    "distance": 30,
+    "stops": {
+        "c250af92-0ff2-4e45-b6ea-6ea1b855c677": {
+            "hippoBean": { "$ref": "/page/uc0eab65d6e6a4087bd160409994fe977" },
+            "anchor": null,
+            "errorMessages": null,
+            "marketoId": null,
+            "index": 1,
+            "title": "Dunkeld to Oban",
+            "subTitle": "Dunkeld",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>This is a beautiful but popular spot with locals and visitors alike, home to a majestic but partly ruined Dunkeld Cathedral and several brightly coloured houses which date back to the early 1700s.<br />\n<br />\nDunkeld sits within Big Tree Country, and has a number of accessible outdoor spots.</p>\n\n<p>- <vs-link type=\"external\" href=\"https://www.google.com/search?safe=active&#38;sca_esv=59038b22a1d9f5de&#38;cs=0&#38;output=search&#38;kgmid=/m/02pl82y&#38;q=The+Hermitage+(National+Trust+for+Scotland)&#38;shndl=30&#38;shem=damc,lcuae,uaasie,shrtsdl&#38;source=sh/x/loc/uni/m1/1&#38;kgs=ee9c5ec7bb99d91c&#38;utm_source=damc,lcuae,uaasie,shrtsdl,sh/x/loc/uni/m1/1\">The Hermitage</vs-link> &#8211; follow the woodland trails to Black Linn Falls and Ossian Hall.<br />\n- <vs-link type=\"external\" href=\"https://www.google.com/search?safe=active&#38;sca_esv=59038b22a1d9f5de&#38;cs=0&#38;output=search&#38;kgmid=/m/0gmgf5y&#38;q=Birnam+Oak&#38;shndl=30&#38;shem=damc,lcuae,uaasie,shrtsdl&#38;source=sh/x/loc/uni/m1/1&#38;kgs=15552a0efff2ae0b&#38;utm_source=damc,lcuae,uaasie,shrtsdl,sh/x/loc/uni/m1/1\">Birnam Wood</vs-link> &#8211; see the remaining trees from the ancient wood depicted in Shakespeare&#8217;s Macbeth.<br />\n- <vs-link type=\"external\" href=\"https://www.google.com/search?safe=active&#38;sca_esv=59038b22a1d9f5de&#38;cs=0&#38;output=search&#38;kgmid=/g/1w3w2m57&#38;q=Scottish+Wildlife+Trust+-+Loch+of+the+Lowes+Visitor+Centre+%26+Wildlife+Reserve&#38;shndl=30&#38;shem=damc,lcuae,uaasie,shrtsdl&#38;source=sh/x/loc/uni/m1/1&#38;kgs=376f1835d9c623c6&#38;utm_source=damc,lcuae,uaasie,shrtsdl,sh/x/loc/uni/m1/1\">Loch of the Lowes</vs-link> &#8211; a large nature reserve home to ospreys, squirrels and more.</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": {
+                    "$ref": "/page/u7caf2b616a5e49c98c8cced0d2ba1115"
+                },
+                "externalImage": null,
+                "altText": "Alt text placeholder here",
+                "credit": "",
+                "description": "The caption is mandatory in the CMS despite not being rendered",
+                "coordinates": null,
+                "source": null,
+                "postUrl": null,
+                "location": null,
+                "imageSrc": "http://localhost:8080/site/binaries/content/gallery/dunkeld.jpg"
+            },
+            "timeToExplore": null,
+            "tipsTitle": "This is the \"Aside\" data, I think",
+            "ctaLink": {
+                "label": "Explore Dunkeld",
+                "link": "http://172.28.81.65:8089/info/see-do/kirbuster-farm-museum-p256071",
+                "type": "INTERNAL"
+            },
+            "tipsBody": {
+                "contentType": "hippostd:html",
+                "value": "<p>Blah blah blah</p>"
+            },
+            "facilities": [
+                { "id": "parking", "name": "Parking" },
+                {
+                    "id": "accessparkdrop",
+                    "name": "Accessible Parking Or Drop-off Point"
+                },
+                { "id": "accesstoliet", "name": "Accessible toilets" }
+            ],
+            "address": {
+                "line1": "Kirbuster Museum",
+                "line2": "Hundland Road",
+                "city": "Birsay",
+                "county": "Orkney",
+                "postCode": "KW17 2LR",
+                "shortAddress": "Birsay, Orkney",
+                "streetAddress": "Kirbuster Museum, Hundland Road",
+                "empty": false
+            },
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": { "latitude": 59.12095, "longitude": -3.27082 },
+            "identifier": "c250af92-0ff2-4e45-b6ea-6ea1b855c677",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/example-two-openings-per-day/example-two-openings-per-day"
+        },
+        "bb5ac1b1-22a9-4c06-9f7b-707738d3e412": {
+            "hippoBean": { "$ref": "/page/u178cc6ee9b6a409580b29026263d173e" },
+            "anchor": null,
+            "errorMessages": null,
+            "marketoId": null,
+            "index": 4,
+            "title": "National Museum of Scotland",
+            "subTitle": "Edinburgh - City Centre",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Explore the diversity of the natural world, world cultures, science and technology, art, design and fashion, and Scottish history, all under one roof. A range of new safety measures have been put in place along with timed entry to ensure that we can manage numbers and maintain physical distancing. Please book a timed entry ticket online at www.nms.ac.uk/scotland in advance of your visit. This includes National Museums Scotland members.</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": null,
+                "externalImage": "http://www.visitscotland.com/wsimgs/External%20View%20Media%20Res%20c%20Andrew%20Lee.jpg",
+                "altText": "National Museum of Scotland entance (c) Andrew Lee",
+                "credit": "Andrew Lee",
+                "description": "National Museum of Scotland entance (c) Andrew Lee",
+                "coordinates": { "latitude": 55.94707, "longitude": -3.18924 },
+                "source": null,
+                "postUrl": null,
+                "location": "Edinburgh - City Centre",
+                "imageSrc": "http://www.visitscotland.com/wsimgs/External%20View%20Media%20Res%20c%20Andrew%20Lee.jpg"
+            },
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": {
+                "label": "Find out more about National Museum of Scotland",
+                "link": "http://172.28.81.65:8089/info/see-do/national-museum-of-scotland-p246591",
+                "type": "INTERNAL"
+            },
+            "tipsBody": null,
+            "facilities": [
+                { "id": "pubtranrte", "name": "On Public Transport Route" },
+                { "id": "audioloop", "name": "Hearing Loop" },
+                { "id": "dsblaccess", "name": "Level Access" },
+                { "id": "accesstoliet", "name": "Accessible toilets" },
+                { "id": "wifi", "name": "WiFi" },
+                { "id": "cafereston", "name": "Cafe or Restaurant" }
+            ],
+            "address": {
+                "line1": "Chambers Street",
+                "city": "Edinburgh - City Centre",
+                "county": "Edinburgh & The Lothians",
+                "postCode": "EH1 1JF",
+                "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+                "streetAddress": "Chambers Street",
+                "empty": false
+            },
+            "price": "Free entry",
+            "opening": {
+                "extraDescription": "Closed 25 December",
+                "period": { "startDay": "2025-01-01", "endDay": "2025-12-31" },
+                "days": [
+                    {
+                        "key": "monday",
+                        "day": "Mondays",
+                        "startTime": "10:00",
+                        "endTime": "17:00",
+                        "state": "open",
+                        "provisional": false
+                    },
+                    {
+                        "key": "tuesday",
+                        "day": "Tuesdays",
+                        "startTime": "10:00",
+                        "endTime": "17:00",
+                        "state": "open",
+                        "provisional": false
+                    },
+                    {
+                        "key": "wednesday",
+                        "day": "Wednesdays",
+                        "startTime": "10:00",
+                        "endTime": "17:00",
+                        "state": "open",
+                        "provisional": false
+                    },
+                    {
+                        "key": "thursday",
+                        "day": "Thursdays",
+                        "startTime": "10:00",
+                        "endTime": "17:00",
+                        "state": "open",
+                        "provisional": false
+                    },
+                    {
+                        "key": "friday",
+                        "day": "Fridays",
+                        "startTime": "10:00",
+                        "endTime": "17:00",
+                        "state": "open",
+                        "provisional": false
+                    },
+                    {
+                        "key": "saturday",
+                        "day": "Saturdays",
+                        "startTime": "10:00",
+                        "endTime": "17:00",
+                        "state": "open",
+                        "provisional": false
+                    },
+                    {
+                        "key": "sunday",
+                        "day": "Sundays",
+                        "startTime": "10:00",
+                        "endTime": "17:00",
+                        "state": "open",
+                        "provisional": false
+                    }
+                ]
+            },
+            "openLink": {
+                "label": "Check opening times",
+                "link": "http://172.28.81.65:8089/info/see-do/national-museum-of-scotland-p246591#opening",
+                "type": null
+            },
+            "distance": null,
+            "coordinates": { "latitude": 55.94707, "longitude": -3.18924 },
+            "identifier": "bb5ac1b1-22a9-4c06-9f7b-707738d3e412",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/national-musseum---free-example/national-musseum---free-example"
+        },
+        "711830ec-496d-4270-b4ce-c0468ad0a167": {
+            "hippoBean": { "$ref": "/page/ua558e2084cd94c1ca311a11c8bc01df9" },
+            "anchor": null,
+            "errorMessages": null,
+            "marketoId": null,
+            "index": 2,
+            "title": "Camera Obscura and World of Illusions",
+            "subTitle": "Edinburgh - City Centre",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Camera Obscura and World of Illusions - Britain&#39;s most fun attraction! Welcome to Edinburgh&#39;s oldest visitor attraction, delighting visitors since 1853. Rated a top Attraction in Scotland on TripAdvisor. Temporary Changes To Keep You Safe: Reduced Capacity: We are welcoming a smaller amount of people at scheduled entry time slots. Please book in advance on our website.&#160;</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": null,
+                "externalImage": "http://www.visitscotland.com/wsimgs/Vortex_artworked_2019_-_small_1659168302.jpg",
+                "altText": "Vortex Tunnel at Camera Obscura & World of Illusions, Edinburgh",
+                "credit": "Camera Obscura & World of Illusions, Edinburgh",
+                "description": "Vortex Tunnel at Camera Obscura & World of Illusions, Edinburgh",
+                "coordinates": { "latitude": 55.94904, "longitude": -3.19533 },
+                "source": null,
+                "postUrl": null,
+                "location": "Edinburgh - City Centre",
+                "imageSrc": "http://www.visitscotland.com/wsimgs/Vortex_artworked_2019_-_small_1659168302.jpg"
+            },
+            "timeToExplore": "2 hours",
+            "tipsTitle": null,
+            "ctaLink": {
+                "label": "Find out more about Camera Obscura and World of Illusions",
+                "link": "http://172.28.81.65:8089/info/see-do/camera-obscura-and-world-of-illusions-p245621",
+                "type": "INTERNAL"
+            },
+            "tipsBody": null,
+            "facilities": [
+                { "id": "petswelcom", "name": "Pets Welcome" },
+                { "id": "audioloop", "name": "Hearing Loop" },
+                { "id": "wifi", "name": "WiFi" }
+            ],
+            "address": {
+                "line1": "549 Castlehill",
+                "line2": "The Royal Mile",
+                "city": "Edinburgh - City Centre",
+                "county": "Edinburgh & The Lothians",
+                "postCode": "EH1 2ND",
+                "shortAddress": "Edinburgh - City Centre, Edinburgh & The Lothians",
+                "streetAddress": "549 Castlehill, The Royal Mile",
+                "empty": false
+            },
+            "price": "Admission charge",
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": { "latitude": 55.94904, "longitude": -3.19533 },
+            "identifier": "711830ec-496d-4270-b4ce-c0468ad0a167",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/openings-bad-format/openings-bad-format"
+        },
+        "8d496e3e-09e4-48f0-b618-9357b4851934": {
+            "hippoBean": { "$ref": "/page/ub8ff4274668b4f3b9b9064b7aa8689bf" },
+            "anchor": null,
+            "errorMessages": [
+                "The DMS product added to 'Bank Street' was not found, please review the DMS Product id field at: /content/documents/visitscotland/sandbox/shared/itinerary-stops/openings-default-value/openings-default-value/visitscotland:product "
+            ],
+            "marketoId": null,
+            "index": 3,
+            "title": "Bank Street",
+            "subTitle": "",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Traditional first floor apartment with exciting design features including roof sun deck with stunning sea views. Open plan living dining kitchen and contemporary bathrooms. Centrally located just a few yards from Elie beach.</p>"
+            },
+            "image": null,
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": null,
+            "tipsBody": null,
+            "facilities": null,
+            "address": null,
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": null,
+            "identifier": "8d496e3e-09e4-48f0-b618-9357b4851934",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/openings-default-value/openings-default-value"
+        }
+    },
+    "errorMessages": [],
+    "transports": [{ "key": "public", "displayName": "Public Transport" }],
+    "areas": [{ "key": "all", "displayName": "All" }],
+    "theme": { "key": "spahealth", "displayName": "Wellness" },
+    "lastStopNearbyEat": "http://172.28.81.65:8089/info/food-drink/search-results?prodtypes=cate&lat=55.94707&lng=-3.18924&locprox=1&areaproxdist=5.0",
+    "lastStopNearbyStay": "http://172.28.81.65:8089/info/accommodation/search-results?prodtypes=acco&avail=off&lat=55.94707&lng=-3.18924&locprox=1&areaproxdist=5.0"
+}

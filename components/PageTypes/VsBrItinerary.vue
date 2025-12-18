@@ -6,11 +6,29 @@
             inset
         />
         <VsContainer>
-            <VsRow class="mt-500">
+            <div class="row gap-175 gap-lg-0">
+                <VsCol
+                    cols="12"
+                    lg="4"
+                >
+                    <VsHeading
+                        level="2"
+                        heading-style="heading-l"
+                        no-margins
+                        class="field-needed"
+                    >
+                        Initerary intro section header
+                    </VsHeading>
+                </VsCol>
                 <VsCol
                     cols="12"
                     lg="8"
                 >
+                    <VsBody>
+                        <VsBrRichText
+                            :input-content="documentData.introduction.value"
+                        />
+                    </VsBody>
                     <VsPanel>
                         <VsContainer>
                             <VsRow class="align-items-center">
@@ -19,19 +37,19 @@
                                         heading-style="heading-xs"
                                         level="3"
                                         no-margins
-                                        class="mb-125"
+                                        class="mb-125 field-needed"
                                     >
-                                        Trip highlights
+                                        {{ CmsData.boxoutHeading }}
                                     </VsHeading>
-
                                     <div class="d-flex flex-wrap column-gap-300 row-gap-150 align-items-end">
                                         <VsDetail
-                                            no-margins
-                                            color="tertiary"
-                                            icon="fa-regular fa-binoculars"
-                                            icon-variant="tertiary"
+                                        no-margins
+                                        color="tertiary"
+                                        icon="fa-regular fa-binoculars"
+                                        icon-variant="tertiary"
+                                        class="field-needed"
                                         >
-                                            Sightseeing
+                                        Sightseeing
                                         </VsDetail>
 
                                         <VsDetail
@@ -39,6 +57,7 @@
                                             color="tertiary"
                                             icon="fa-regular fa-route"
                                             icon-variant="tertiary"
+                                            class="field-needed"
                                         >
                                             295 miles (472km)
                                         </VsDetail>
@@ -48,15 +67,18 @@
                                             color="tertiary"
                                             icon="fa-regular fa-calendar-range"
                                             icon-variant="tertiary"
+
+                                            class="field-needed"
                                         >
                                             6 days
                                         </VsDetail>
 
                                         <VsDetail
-                                            no-margins 
+                                            no-margins
                                             color="tertiary"
                                             icon="fa-regular fa-taxi"
                                             icon-variant="tertiary"
+                                            class="field-needed"
                                         >
                                             Car
                                         </VsDetail>
@@ -66,6 +88,7 @@
                                             color="tertiary"
                                             icon="fa-regular fa-location-dot"
                                             icon-variant="tertiary"
+                                            class="field-needed"
                                         >
                                             Edinburgh & The Lothians, Fife, Dundee & Angus
                                         </VsDetail>
@@ -75,87 +98,21 @@
                                     <VsIllustratedMap
                                         width="145px"
                                         class="d-block mx-auto"
-                                        :highlighted-regions="['edinburgh', 'fife', 'dundee']"
+                                        :highlighted-regions="CmsData.regions"
                                     />
                                 </VsCol>
                             </VsRow>
                         </VsContainer>
                     </VsPanel>
                 </VsCol>
-            </VsRow>
+            </div>
         </VsContainer>
-
         <VsBrDaySection
             v-for="(day, index) in itinerary.days"
             :key="`day-${index}`"
             :day="day"
         />
     </div>
-
-    <!-- <VsItinerary>
-        <template #list>
-            <VsItineraryDay
-                v-for="(day, index) in itinerary.days"
-                :key="index"
-                :day-number="`${index + 1}`"
-                :day-label="configStore.getLabel('itinerary', 'day')"
-                :day-title="day.ttle"
-            >
-                <template
-                    #day-introduction
-                    v-if="day.introduction"
-                >
-                    <div
-                        v-html="day.introduction.value"
-                    />
-                </template>
-
-<template #day-transport v-if="day.transports">
-                    <VsDescriptionList
-                        class="text-center justify-content-center mb-075 has-edit-button"
-                        inline
-                    >
-                        <VsDescriptionListItem
-                            title
-                            class="col-auto px-0"
-                        >
-                            {{ configStore.getLabel("itinerary", "transport") }}
-                        </VsDescriptionListItem>
-
-                        <VsDescriptionListItem
-                            class="col-auto px-0"
-                            v-for="(transport, transportIndex) in day.transports"
-                            :key="transportIndex"
-                        >
-                            <VsTooltip
-                                :title="configStore.getLabel('transports', '${transport}')"
-                                href="#"
-                                :icon="getDMSIconName(transport)"
-                                size="sm"
-                                icon-only
-                                variant="transparent"
-                            >
-                                <span class="visually-hidden">
-                                    {{ configStore.getLabel("transports", "${transport}") }}
-                                </span>
-                            </VsTooltip>
-                        </VsDescriptionListItem>
-                    </VsDescriptionList>
-                </template>
-
-<template #stops v-if="day.stops">
-                    <VsBrItineraryStop
-                        v-for="(stop, stopsIndex) in day.stops"
-                        :key="stopsIndex"
-                        :stop="stop"
-                        :is-last-stop="stopsIndex === day.stops.length - 1"
-                        :nearby-eat-link="nearbyEatLink"
-                        :nearby-stay-link="nearbyStayLink"
-                    />
-                </template>
-</VsItineraryDay>
-</VsItinerary> -->
-
     <NuxtLazyHydrate :when-visible="{ rootMargin: '50px' }">
         <VsBrSocialShare :no-js="true" />
     </NuxtLazyHydrate>
@@ -198,6 +155,8 @@ import {
     VsImg,
     VsPanel,
     VsIllustratedMap,
+    VsDetail,
+    VsIcon,
 } from '@visitscotland/component-library/components';
 
 import VsBrHeroSection from '../Modules/VsBrHeroSection.vue';
@@ -233,6 +192,26 @@ let nearbyEatLink = '';
 let nearbyStayLink = '';
 
 const itineraryPlaces: any[] = [];
+const CmsData = {
+    boxoutHeading: 'CMS label',
+    regions: [
+        // 'aberdeen',
+        // 'argyll',
+        // 'arranayr',
+        // 'borders',
+        // 'dumfries',
+        'dundee',
+        'edinburgh',
+        'fife',
+        // 'glasgow',
+        // 'highlands',
+        // 'lomond',
+        // 'orkney',
+        // 'outerhebs',
+        // 'perth',
+        // 'shetland',
+    ],
+};
 
 if (page.value) {
     document = page.value.getDocument();
@@ -303,3 +282,14 @@ if (page.value) {
     }
 }
 </script>
+
+<style>
+    .field-needed {
+        border: solid red 1px;
+        /* background-color: red;
+        opacity: 0.5; */
+    }
+    .changes-needed {
+       /* border: solid orange 1px;  */
+    }
+</style>

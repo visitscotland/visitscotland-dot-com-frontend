@@ -18,9 +18,9 @@
                 lg="8"
                 class="d-flex flex-column gap-300"
             >
-                <VsBody>
+                <!-- <VsBody>
                     <VsBrRichText :input-content="day.introduction.value" />
-                </VsBody>
+                </VsBody> -->
 
                 <!-- STOPS -->
 
@@ -43,9 +43,9 @@
                                 >
                                     {{ stop.title }}
                                 </VsHeading>
-                                <VsDetail size="small">
+                                <!-- <VsDetail size="small">
                                     {{ stop.subTitle }}
-                                </VsDetail>
+                                </VsDetail> -->
                             </VsCol>
                         </VsRow>
                         <VsImg
@@ -57,7 +57,7 @@
                         />
                     </div>
                     <!-- <VsBody> -->
-                    <div class="d-flex flex-column gap-075">
+                    <div class="d-flex flex-column gap-075 changes-needed">
                         <VsBrRichText :input-content="stop.description.value" />
                     </div>
                     <!-- </VsBody> -->
