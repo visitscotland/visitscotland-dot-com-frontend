@@ -14,8 +14,8 @@
             <VsRow>
                 <VsCol cols="12" sm="10" offset-sm="1">
                     <VsTabs>
-                        <VsBrTravelInformationTab :tab="module.gettingTo" />
-                        <VsBrTravelInformationTab :tab="module.gettingAround" />
+                        <VsBrTravelInformationTab :tab="module.gettingTo" :tab-index="0" />
+                        <VsBrTravelInformationTab :tab="module.gettingAround" :tab-index="1" />
                     </VsTabs>
                 </VsCol>
             </VsRow>
