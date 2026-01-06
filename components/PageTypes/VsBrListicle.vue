@@ -51,7 +51,7 @@
                                     :key="linkIndex"
                                 >
                                     <VsLink
-                                        :href="cta.link"
+                                        :href="formatLink(cta.link)"
                                         :type="cta.type.toLowerCase()"
                                     >
                                         {{ cta.label }}<span class="visually-hidden">: {{ item.title }}</span>
@@ -148,6 +148,8 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
+
+import formatLink from '~/composables/formatLink.ts';
 
 import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';

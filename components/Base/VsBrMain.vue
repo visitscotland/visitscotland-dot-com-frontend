@@ -38,12 +38,6 @@
             :component="component"
         />
 
-        <VsBr404
-            v-else-if="pageName === 'pagenotfound'"
-            :page="page"
-            :component="component"
-        />
-
         <VsBr500
             v-else-if="pageName === 'servererror'"
             :page="page"
@@ -64,7 +58,6 @@ import useConfigStore from '~/stores/configStore.ts';
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
-import VsBr404 from '~/components/PageTypes/VsBr404.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
 import VsBrGtm from '~/components/Modules/VsBrGtm.vue';

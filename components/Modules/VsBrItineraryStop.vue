@@ -13,9 +13,9 @@
         <template
             #stop-description
         >
-            <div
-                v-html="stop.description.value"
-            />
+            <VsBody>
+                <VsBrRichText :input-content="stop.description.value" />
+            </VsBody>
 
             <VsLink
                 v-if="stop.ctaLink"
@@ -125,6 +125,7 @@
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
     VsItineraryStop,
@@ -138,6 +139,7 @@ import {
     VsIconList,
     VsIconListItem,
     VsSvg,
+    VsBody,
 } from '@visitscotland/component-library/components';
 
 const props = defineProps<{

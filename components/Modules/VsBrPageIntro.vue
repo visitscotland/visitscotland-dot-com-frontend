@@ -119,7 +119,7 @@
         >
             <VsContainer>
                 <VsRow>
-                    <VsCol cols="12" lg="5" xl="6" offset-lg="1">
+                    <VsCol cols="12" xxl="6" offset-lg="1">
                         <VsDescriptionList class="mb-150">
                             <VsDescriptionListItem title>
                                 {{ configStore.getLabel("itinerary", "highlights") }}
@@ -128,6 +128,7 @@
                             <VsDescriptionListItem
                                 v-for="(highlight, index) in highlights"
                                 :key="index"
+                                :class="index === 0 ? 'mt-050' : ''"
                             >
                                 {{ highlight }}
                             </VsDescriptionListItem>
@@ -141,6 +142,7 @@
                             <VsDescriptionListItem
                                 v-for="(area, index) in allAreas"
                                 :key="index"
+                                :class="index === 0 ? 'mt-050' : ''"
                             >
                                 {{ area.displayName }}
                             </VsDescriptionListItem>
