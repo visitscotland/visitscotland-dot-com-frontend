@@ -61,10 +61,19 @@
         />
     </NuxtLazyHydrate>
 
-    <VsBrModuleBuilder
-        v-if="pageItems"
-        :modules="pageItems"
-    />
+    <template
+        v-if="isSearchResultsPage"
+    >
+        <VsBrSearchResults />
+    </template>
+    <template
+        v-else
+    >
+        <VsBrModuleBuilder
+            v-if="pageItems"
+            :modules="pageItems"
+        />
+    </template>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -73,6 +82,15 @@
             v-if="productSearch && productSearch.position === 'Bottom'"
             class="mt-300 mt-lg-600"
         />
+    </NuxtLazyHydrate>
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+        v-if="configStore.showSearchWidget"
+    >
+        <div class="mt-175 mt-md-500 mb-175 mb-md-500">
+            <VsBrSiteSearchWidget />
+        </div>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
@@ -118,6 +136,8 @@ import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksM
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
 import VsBrCategorySection from '~/components/Modules/VsBrCategorySection.vue';
+import VsBrSearchResults from '~/components/Modules/VsBrSearchResults.vue';
+import VsBrSiteSearchWidget from '~/components/Modules/VsBrSiteSearchWidget.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
@@ -138,6 +158,7 @@ let otyml : any = null;
 const configStore = useConfigStore();
 
 let firstModuleIsLink = false;
+let isSearchResultsPage = false;
 
 if (page.value) {
     document = page.value.getDocument();
@@ -166,6 +187,10 @@ if (page.value) {
         ) {
             firstModuleIsLink = true;
         }
+    }
+
+    if (window && window.location.pathname === configStore.globalSearchPath) {
+        isSearchResultsPage = true;
     }
 }
 </script>
