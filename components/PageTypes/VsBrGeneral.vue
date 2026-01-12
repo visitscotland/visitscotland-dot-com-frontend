@@ -64,7 +64,9 @@
     <template
         v-if="isSearchResultsPage"
     >
-        <VsBrSearchResults />
+        <VsBrSearchResults
+            :modules="pageItems"
+        />
     </template>
     <template
         v-else

@@ -78,28 +78,38 @@
             }"
             :from-text="configStore.getLabel('search', 'price.from')"
         >
-            <!-- <template
-                v-for="(index, item) in modules"
-                :key="index"
-                #:[`federated-search__spotlight-${module.hippoBean.name}`]
+            <template
+                v-for="(module, index) in modules"
+                :key="module.id"
+                #[`federated-search__spotlight-${moduleNames[index]}`]
             >
-                <VsBrModuleBuilder
-                    :modules="item"
-                />
-            </template> -->
+                <VsBrModuleBuilder :modules="[module]" />
+            </template>
         </VsFederatedSearch>
     </VsContainer>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { Page } from '@bloomreach/spa-sdk';
+
+import { inject } from 'vue';
 
 import {
     VsEmbedWrapper, VsContainer, VsFederatedSearch,
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
+import VsBrModuleBuilder from './VsBrModuleBuilder.vue';
+
+const page: Page | undefined = inject('page');
 
 const configStore = useConfigStore();
+
+const props = defineProps<{
+    modules: any[],
+}>();
+
+const { modules } = props;
 
 let engineId = 0;
 let customerId = 0;
@@ -128,5 +138,13 @@ Object.keys(filters).forEach((key) => {
         Label: filters[key],
     });
 });
+
+const moduleNames = [];
+
+for (let x = 0; x < modules.length; x++) {
+    const hippoBean = page?.getContent(modules[x].hippoBean.$ref);
+
+    moduleNames.push(hippoBean.model.data.name);
+}
 
 </script>
