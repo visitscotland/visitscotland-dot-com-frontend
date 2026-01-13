@@ -4,7 +4,7 @@
         :key="index"
     >
         <VsMegaNavDropdownContainer
-            :href="`${menuItem.getUrl() ? menuItem.getUrl() : menuItem.model.name}`"
+            :href="getNavLink(menuItem)"
             :cta-text="menuItem.model.cta ? menuItem.model.cta : ''"
         >
             <template #button-content>
@@ -23,7 +23,7 @@
                             v-for="(gChildItem, gChildIndex) in childItem.children"
                             :key="gChildIndex"
                             v-show="gChildItem.model.title"
-                            :href="`${gChildItem.getUrl() ? gChildItem.getUrl() : gChildItem.model.name}`"
+                            :href="getNavLink(gChildItem)"
                         >
                             {{ gChildItem.model.title }}
                         </VsMegaNavListItem>
@@ -34,7 +34,7 @@
                         v-if="childItem.model.cta"
                     >
                         <VsMegaNavListItem
-                            :href="`${childItem.getUrl() ? childItem.getUrl() : childItem.model.name}`"
+                            :href="getNavLink(childItem)"
                             subheading-link
                         >
                             {{ childItem.model.cta }}
@@ -84,6 +84,8 @@ import {
     VsMegaNavListItem,
     VsMegaNavFeaturedEvent,
 } from '@visitscotland/component-library/components';
+
+import getNavLink from '~/composables/getNavLink.ts';
 
 import VsBrMegaNavFeaturedItem from '~/components/Modules/VsBrMegaNavFeaturedItem.vue';
 
