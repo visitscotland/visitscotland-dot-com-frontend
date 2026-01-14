@@ -189,7 +189,7 @@ if (page.value) {
             },
             {
                 rel: 'canonical',
-                href: useRequestURL().toString(),
+                href: useRequestURL().toString().split('?')[0],
             },
         ],
     });
