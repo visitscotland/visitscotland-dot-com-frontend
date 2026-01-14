@@ -1,0 +1,260 @@
+{
+    "hippoBean": { "$ref": "/page/u8b4a3c118b844aa0bccff407d18c1c44" },
+    "anchor": null,
+    "errorMessages": [],
+    "marketoId": null,
+    "categorySection": null,
+    "distance": 0,
+    "transports": [
+        { "key": "car", "displayName": "Car" },
+        { "key": "public", "displayName": "Public Transport" },
+        { "key": "train", "displayName": "Train" }
+    ],
+    "areas": [{ "key": "all", "displayName": "All" }],
+    "theme": { "key": "filmev", "displayName": "TV & Film" },
+    "firstStopLocation": "",
+    "lastStopLocation": "",
+    "days": [
+        { "$ref": "/page/u806448db18e14a2581c3777a76f530d2" },
+        { "$ref": "/page/u201dfb45052442758b78be61d0628c8a" }
+    ],
+    "stops": {
+        "b6fef35d-70c2-45ba-b104-cd300e8201b7": {
+            "hippoBean": { "$ref": "/page/u98ec3739fc6745b3bbdbe21478facbb7" },
+            "anchor": null,
+            "errorMessages": [
+                "The DMS product added to 'Old Town' was not found, please review the DMS Product id field at: /content/documents/visitscotland/sandbox/shared/itinerary-stops/old-town/old-town/visitscotland:product "
+            ],
+            "marketoId": null,
+            "index": 2,
+            "title": "Old Town",
+            "subTitle": "",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Edinburgh&#39;s Old Town is part of a <vs-link type=\"external\" rel=\"noopener noreferrer\" href=\"http://www.ewht.org.uk/\" target=\"_blank\">UNESCO World Heritage Site</vs-link>, together with the Georgian era New Town on the north side of the city centre. The buildings you&#8217;ll see remain largely unchanged from how they would have looked centuries ago.</p>\n\n<p>The Old Town and Royal Mile is home to three filming locations from <em>Outlander</em>. If you&#8217;re looking for a memorable souvenir while you&#8217;re there, pop into <vs-link type=\"external\" rel=\"noopener noreferrer\" href=\"http://www.hamiltonandyoung.co.uk/\" title=\"Hamilton &#38; Young Jewellery Designers\" target=\"_blank\">Hamilton &#38; Young Jewellery Designers</vs-link> on the Royal Mile to browse Celtic and Outlander inspired items.</p>"
+            },
+            "image": null,
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": null,
+            "tipsBody": null,
+            "facilities": null,
+            "address": null,
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": null,
+            "identifier": "b6fef35d-70c2-45ba-b104-cd300e8201b7",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/old-town/old-town"
+        },
+        "47a289e7-13dd-4bd4-98d4-2fc128951806": {
+            "hippoBean": { "$ref": "/page/ue67cca0b469d428188150612f856f316" },
+            "anchor": null,
+            "errorMessages": [
+                "The DMS product added to 'Greyfriars Kirkyard' was not found, please review the DMS Product id field at: /content/documents/visitscotland/sandbox/shared/itinerary-stops/greyfriars-kirkyard/greyfriars-kirkyard/visitscotland:product "
+            ],
+            "marketoId": null,
+            "index": 3,
+            "title": "Greyfriars Kirkyard",
+            "subTitle": "",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Only a short walk away from The Elephant House you&#39;ll find this infamous, spine-tingling graveyard, and burial place of several notable Edinburgh academics and writers of the past. However, also buried here are a few other notable residents: Thomas Riddell, William McGonagall and Elizabeth Moodie. A coincidence? We think not.</p>"
+            },
+            "image": null,
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": null,
+            "tipsBody": null,
+            "facilities": null,
+            "address": null,
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": null,
+            "identifier": "47a289e7-13dd-4bd4-98d4-2fc128951806",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/greyfriars-kirkyard/greyfriars-kirkyard"
+        },
+        "a6a166e2-d96e-4f7e-b6cf-03da38e4b435": {
+            "hippoBean": { "$ref": "/page/u7bd9fe86c2514846ab1cd617a1de80ca" },
+            "anchor": null,
+            "errorMessages": [
+                "The DMS product added to 'Drum Castle' was not found, please review the DMS Product id field at: /content/documents/visitscotland/sandbox/shared/itinerary-stops/drum-castle/drum-castle/visitscotland:product "
+            ],
+            "marketoId": null,
+            "index": 6,
+            "title": "Drum Castle",
+            "subTitle": "",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Begin the trail at the spectacular Drum Castle, located in Drumoak just outside Aberdeen, which combines a 13th century tower, a Jacobean mansion house and Victorian architecture. Take a tour of the castle and marvel at the fascinating combination of Scottish history and Victorian fashion, and wander the grounds and the magnificent historic rose garden.&#160;&#160;</p>"
+            },
+            "image": {
+                "errorMessages": [],
+                "cmsImage": {
+                    "$ref": "/page/u8d4f503664ca4e5daa89b348ae38b081"
+                },
+                "externalImage": null,
+                "altText": "",
+                "credit": "VisitScotland Staff",
+                "description": "Man looking forward to finish this itinerary",
+                "coordinates": {
+                    "latitude": 55.869118,
+                    "longitude": -4.289846
+                },
+                "source": null,
+                "postUrl": null,
+                "location": "Glasgow"
+            },
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": null,
+            "tipsBody": null,
+            "facilities": null,
+            "address": null,
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": null,
+            "identifier": "a6a166e2-d96e-4f7e-b6cf-03da38e4b435",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/drum-castle/drum-castle"
+        },
+        "442aa35c-52e7-4db6-b44a-3c2d18f9f581": {
+            "hippoBean": { "$ref": "/page/u030dde7974ad441bb7f2731cb0312e3c" },
+            "anchor": null,
+            "errorMessages": [
+                "The DMS product added to 'Palace of Holyroodhouse' was not found, please review the DMS Product id field at: /content/documents/visitscotland/sandbox/shared/itinerary-stops/palace-of-holyroodhouse/palace-of-holyroodhouse/visitscotland:product "
+            ],
+            "marketoId": null,
+            "index": 4,
+            "title": "Palace of Holyroodhouse",
+            "subTitle": "",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Book location and Jacobite connection</p>\n\n<p>Located at the foot of the Royal Mile, the Palace of Holyroodhouse is an elegant royal residence with links to monarchs from throughout the centuries. Today it is the official Scottish residence of Her Majesty The Queen.</p>\n\n<p>In September 1745 Bonnie Prince Charlie established his court at Holyroodhouse for six weeks. This is portrayed in the <em>Outlander</em> novels when Claire and Jamie visit the Prince at the palace and beg him to abandon his hopeless cause.</p>"
+            },
+            "image": null,
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": null,
+            "tipsBody": null,
+            "facilities": null,
+            "address": null,
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": null,
+            "identifier": "442aa35c-52e7-4db6-b44a-3c2d18f9f581",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/palace-of-holyroodhouse/palace-of-holyroodhouse"
+        },
+        "b230c028-e521-4360-85be-83b44e226c10": {
+            "hippoBean": { "$ref": "/page/ue8202d3f3d3e43e280753cf9b212df05" },
+            "anchor": null,
+            "errorMessages": [
+                "The DMS product added to 'Crathes Castle' was not found, please review the DMS Product id field at: /content/documents/visitscotland/sandbox/shared/itinerary-stops/crathes-castle/crathes-castle/visitscotland:product "
+            ],
+            "marketoId": null,
+            "index": 7,
+            "title": "Crathes Castle",
+            "subTitle": "",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Pick up the trail again and head on a five minute drive to the spooky Crathes Castle, a favourite place of Queen Victoria and one where she often stayed. Explore the wonderland grounds and marvel at the ornate gargoyles and fairytale turrets. On your tour of the castle you&#39;ll learn about the castle&#39;s intriguing history along with the story of its resident ghosts, the Green Lady and her infant child. It is even said that Queen Victoria witnessed the ghostly pair herself.</p>"
+            },
+            "image": null,
+            "timeToExplore": null,
+            "tipsTitle": null,
+            "ctaLink": null,
+            "tipsBody": null,
+            "facilities": null,
+            "address": null,
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": null,
+            "identifier": "b230c028-e521-4360-85be-83b44e226c10",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/crathes-castle/crathes-castle"
+        },
+        "c4709ddf-0a80-4f80-ad7f-cdcfb333679e": {
+            "hippoBean": { "$ref": "/page/uf0c435ec14f248a081b705507be62018" },
+            "anchor": null,
+            "errorMessages": [
+                "The DMS product added to 'Linlithgow Palace' was not found, please review the DMS Product id field at: /content/documents/visitscotland/sandbox/shared/itinerary-stops/linlithgow-palace/linlithgow-palace/visitscotland:product "
+            ],
+            "marketoId": null,
+            "index": 5,
+            "title": "Linlithgow Palace",
+            "subTitle": "",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Jacobite connection and filming location &#8211; season 1</p>\n\n<p>Explore the nooks and towers of this sizeable ruined, yet still beautiful palace. The various floors are still accessible via the intact turret staircases, and beautiful views can be observed from the roof. In 1745 Bonnie Prince Charlie visited the palace on his journey south. Its elaborate courtyard fountain is said to have flowed with red wine to mark the occasion! In <em>Outlander</em>, the majestic entrance and corridors feature as Wentworth Prison where Jamie was imprisoned.</p>\n\n<p>You could also take a refreshing walk around Linlithgow Loch, the shores of which the palace sits upon.</p>\n\n<p>Linlithgow has a direct rail connection to Edinburgh which takes just 20 minutes.</p>\n\n<p>Stay in&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/destinations-maps/edinburgh/accommodation/\" title=\"Accommodation\">Edinburgh</vs-link>&#160;or&#160;<vs-link type=\"default\" href=\"https://www.visitscotland.com/info/accommodation/search-results?prodtypes=acco&#38;loc=Linlithgow&#38;locplace=4571&#38;locprox=1&#38;areaproxdist=10&#38;stay=&#38;endDate=&#38;r1a=2&#38;r1children=0&#38;r1infants=0&#38;r1c=0&#38;avail=off\" title=\"Accommodation in Linlithgow\">Linlithgow</vs-link>.</p>"
+            },
+            "image": null,
+            "timeToExplore": null,
+            "tipsTitle": "Outlander film location",
+            "ctaLink": null,
+            "tipsBody": {
+                "contentType": "hippostd:html",
+                "value": "<p>The majestic ruins of Linlithgow Palace stands in for the prison entrance and corridors in the scene where Jamie was imprisoned.</p>"
+            },
+            "facilities": null,
+            "address": null,
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": null,
+            "identifier": "c4709ddf-0a80-4f80-ad7f-cdcfb333679e",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/linlithgow-palace/linlithgow-palace"
+        },
+        "e10310a1-8c67-47e0-9b5b-8bc049f3bf3d": {
+            "hippoBean": { "$ref": "/page/u9830f174d0eb47bf9b1a02f86f43e17f" },
+            "anchor": null,
+            "errorMessages": [
+                "The DMS product added to 'Edinburgh castle' was not found, please review the DMS Product id field at: /content/documents/visitscotland/sandbox/shared/itinerary-stops/edinburgh-castle/edinburgh-castle/visitscotland:product "
+            ],
+            "marketoId": null,
+            "index": 1,
+            "title": "Edinburgh castle",
+            "subTitle": "",
+            "description": {
+                "contentType": "hippostd:html",
+                "value": "<p>Make Edinburgh Castle your first port of call. It sits at the top of the historic Royal Mile on a volcanic plug, and is perhaps the most famous landmark on the Edinburgh skyline. Beat the crowds and get there for opening at 9.30am. The views over the city are pretty spectacular, and there is so much to take in, including the National Museum of War, the National War Monument and the Honours of Scotland, the county&#39;s Crown Jewels.</p>"
+            },
+            "image": null,
+            "timeToExplore": null,
+            "tipsTitle": "Covid information",
+            "ctaLink": null,
+            "tipsBody": {
+                "contentType": "hippostd:html",
+                "value": "<p>Edinburgh Castle is now open and we are delighted to welcome you back.&#160;<vs-link type=\"external\" rel=\"nofollow\" href=\"http://www.restarthistory.scot/\">Find out more about our re-opening plans</vs-link>.</p>"
+            },
+            "facilities": null,
+            "address": null,
+            "price": null,
+            "opening": null,
+            "openLink": null,
+            "distance": null,
+            "coordinates": null,
+            "identifier": "e10310a1-8c67-47e0-9b5b-8bc049f3bf3d",
+            "type": "ItineraryStopModule",
+            "documentPath": "/content/documents/visitscotland/sandbox/shared/itinerary-stops/edinburgh-castle/edinburgh-castle"
+        }
+    },
+    "lastStopNearbyEat": null,
+    "lastStopNearbyStay": null,
+    "subHeading": null,
+    "type": "ItineraryPage",
+    "documentPath": "/content/documents/visitscotland/sandbox/pages/itinerary/demo-itinerary/content/content"
+}

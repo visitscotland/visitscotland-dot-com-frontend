@@ -5,8 +5,17 @@
             :image="heroImage"
             inset
         />
+        <!-- {{  document }} -->
+        {{  documentData }}
+        <!-- {{ pageIntro }} -->
+        <!-- {{ introSection.model.data }} -->
         <VsContainer>
             <div class="row gap-175 gap-lg-0">
+                <VsRow>
+                    <VsCol>
+                        <span class="vs-section-header__divider" />
+                    </VsCol>
+                </VsRow>
                 <VsCol
                     cols="12"
                     lg="4"
@@ -15,9 +24,8 @@
                         level="2"
                         heading-style="heading-l"
                         no-margins
-                        class="field-needed"
                     >
-                        Initerary intro section header
+                        {{ introSection.model.data.subheading }}
                     </VsHeading>
                 </VsCol>
                 <VsCol
@@ -181,6 +189,12 @@ const configStore = useConfigStore();
 let itinerary = {
 };
 
+let pageIntro = {
+};
+
+let introSection = {
+};
+
 let allTransports = [];
 
 let allAreas = [];
@@ -224,7 +238,9 @@ if (page.value) {
     }
 
     if (component.value) {
-        itinerary = component.value.model.models.itinerary;
+        itinerary = component.value.model.models.itinerary; // replaced by pageIntro
+        pageIntro = component.value.model.models.pageIntro;
+        introSection = page.value.getDocument(pageIntro.$ref);
 
         allTransports = itinerary.transports;
         allAreas = itinerary.areas;

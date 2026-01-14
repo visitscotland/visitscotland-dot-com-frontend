@@ -1,0 +1,75 @@
+{
+    "model": {
+        "type": "document",
+        "links": {
+            "site": {
+                "href": "/sandbox/pages/itinerary/opening-times-itinerary-test",
+                "type": "internal"
+            }
+        },
+        "meta": {},
+        "data": {
+            "name": "content",
+            "displayName": "Itineray Openings",
+            "theme": "spahealth",
+            "start": "",
+            "distance": 30,
+            "heroVideo": null,
+            "otherThings": {
+                "name": "visitscotland:otherThings",
+                "displayName": "visitscotland:otherThings",
+                "links": [
+                    { "$ref": "/page/u5e022ff4230f494883c16a0ba11d8cf9" },
+                    { "$ref": "/page/uc088baf8010f42d3895e9dacb75f9e39" },
+                    { "$ref": "/page/uf0b648479027460097fb91fc90cf8fb4" },
+                    { "$ref": "/page/u0b869fa28234412793e288085ebd3563" },
+                    { "$ref": "/page/ufabc4de3d0954240aad38802f4f6830a" }
+                ],
+                "title": "",
+                "megalinkItems": [
+                    { "$ref": "/page/ue16bdb89c27146f1851f2d2b82d631d4" },
+                    { "$ref": "/page/u17a3588b6cee439bacd8186ceb2067aa" },
+                    { "$ref": "/page/u6fc80c0ff4a64ef586a724345eb08ae8" },
+                    { "$ref": "/page/ub3a031846cf74186bf5f2c7f4e8c64b6" },
+                    { "$ref": "/page/uaf7bc15dbc334b84ad01e77eb5acde61" }
+                ],
+                "introduction": { "contentType": "hippostd:html", "value": "" },
+                "contentType": "visitscotland:OTYML"
+            },
+            "popular": true,
+            "highlights": [
+                "1. Sightseeing",
+                "2. 295 miles (472km)",
+                "3. 6 days",
+                "4. Car"
+            ],
+            "transports": ["public"],
+            "finish": "",
+            "areas": ["all"],
+            "translationPriority": null,
+            "translationDeadline": null,
+            "translationFlag": null,
+            "translation": "",
+            "title": "MULL & iona west coast island ITINERARY",
+            "diff": null,
+            "hideNewsletter": false,
+            "heroImage": { "$ref": "/page/ub9d613041b644995bea9af40d165e8d1" },
+            "seoDescription": "Openings",
+            "seoTitle": "Openings",
+            "blog": null,
+            "image": { "$ref": "/page/ub9d613041b644995bea9af40d165e8d1" },
+            "breadcrumb": "",
+            "teaser": "Teaser: Take a trip around Mull and Iona in this 5-day itinerary, and discover a beautiful set of islands on Scotland’s west coast.",
+            "introduction": {
+                "contentType": "hippostd:html",
+                "value": "<p>This journey was enjoyed by Frida and Leo, a young couple from X with their two dogs, Henry and Wally. Check out their adventure on our YouTube channel. Frida and Leo love road tripping in their Land Rover and going on long hikes with their two dogs, Henry and Wally.<br />\n<br />\nYou&#8217;ll find them camping in the middle of nowhere so they can wake up early to take photographs of the sunrise over a cup of coffee. Then it&#8217;s time to cook something delicious up on the two burner hob, before heading off for the next Scottish adventure.</p>\n\n<p>&#160;</p>"
+            },
+            "seoNoIndex": false,
+            "localeString": "en",
+            "contentType": "visitscotland:Itinerary",
+            "id": "a2ca775b-0df5-4e2c-900c-c51c9f2e5d47"
+        }
+    },
+    "linkFactory": { "mapping": { "Map(1)": {} } },
+    "meta": []
+}

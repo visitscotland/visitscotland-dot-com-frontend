@@ -5,8 +5,9 @@
         :img-src="imageSrc"
         :video-src="video ? video.link : null"
         :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
-        :img-caption="imageValue.caption"
-        :img-credit="imageValue.credit"
+        :img-caption="imageCaption"
+        :img-alt="imageAlt"
+        :img-credit="imageCredit"
         :inset
     />
 </template>
@@ -36,11 +37,18 @@ const {
 } = toRefs(props);
 
 let imageValue = null;
+let imageAlt = null;
+let imageCaption = null;
+let imageCredit = null;
+
 let imageSrc = '';
 
 if (image.value) {
     imageValue = page.getContent(image.value.$ref);
     imageSrc = imageValue.getOriginal().getUrl();
+    imageCaption = imageValue.model.data.description;
+    imageAlt = imageValue.model.data.altText;
+    imageCredit = imageValue.model.data.credit;
 }
 
 </script>
