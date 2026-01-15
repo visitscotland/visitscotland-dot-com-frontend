@@ -38,7 +38,7 @@
     </template>
 
     <VsBrPageIntro
-        v-else-if="documentData.theme === 'Simple'"
+        v-else-if="documentData.theme === 'Simple' && !configStore.isMainMapPageFlag"
         :content="documentData"
         :light-background="true"
     />
@@ -59,6 +59,7 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="!configStore.isMainMapPageFlag"
     >
         <VsBrProductSearch
             v-if="productSearch && productSearch.position === 'Bottom'"
@@ -68,6 +69,7 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="!configStore.isMainMapPageFlag"
     >
         <VsBrSocialShare
             :no-js="true"
@@ -76,6 +78,7 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="!configStore.isMainMapPageFlag"
     >
         <VsBrHorizontalLinksModule
             v-if="otyml"
@@ -86,6 +89,7 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="!configStore.isMainMapPageFlag"
     >
         <VsBrNewsletterSignpost
             v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
