@@ -115,14 +115,13 @@
             :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'MapsModule'"
         >
-            <Suspense>
+            <component
+                v-if="item.googleMap"
+                :is="VsBrMainMap"
+                :module="item"
+            />
+            <Suspense v-else>
                 <component
-                    v-if="item.googleMap"
-                    :is="VsBrMainMap"
-                    :module="item"
-                />
-                <component
-                    v-else
                     :is="VsBrMapWithSidebar"
                     :module="item"
                 />

@@ -13,6 +13,8 @@ interface IConfigState {
     pageMetaData: any,
     heroVideo: any,
     isLocalVideoheader: boolean,
+    googleMapApiKey: string,
+    isMainMapPageFlag: boolean,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -33,6 +35,8 @@ const useConfigStore = defineStore('configStore', {
         },
         heroVideo: null,
         isLocalVideoheader: false,
+        googleMapApiKey: '',
+        isMainMapPageFlag: false,
     }),
     actions: {
         getLabel(section: string, key: string) {
