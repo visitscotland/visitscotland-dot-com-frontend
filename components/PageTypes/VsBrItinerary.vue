@@ -6,7 +6,7 @@
             inset
         />
         <!-- {{  document }} -->
-        {{  documentData }}
+        <!-- {{ documentData }} -->
         <!-- {{ pageIntro }} -->
         <!-- {{ introSection.model.data }} -->
         <VsContainer>
@@ -25,7 +25,7 @@
                         heading-style="heading-l"
                         no-margins
                     >
-                        {{ introSection.model.data.subheading }}
+                        {{ documentData.subheading }}
                     </VsHeading>
                 </VsCol>
                 <VsCol
