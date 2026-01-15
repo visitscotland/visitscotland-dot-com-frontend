@@ -128,6 +128,7 @@ if (page.value) {
         configStore.cludoEngineId = componentModels.pageConfiguration['cludo.engine-id'];
         configStore.cludoLanguage = componentModels.pageConfiguration.language;
         configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
+        configStore.cludoApiOperator = componentModels.pageConfiguration.cludoApiOperator;
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
