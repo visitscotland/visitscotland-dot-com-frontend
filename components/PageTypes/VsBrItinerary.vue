@@ -1,14 +1,9 @@
 <template>
-    <VsBrPageIntro
+    <VsBrHeroSection
         :content="documentData"
-        :hero-image="heroImage"
-        :light-background="true"
-        :itinerary="itinerary"
-        :theme="theme"
-        :all-transports="allTransports"
-        :all-areas="allAreas"
+        :image="heroImage"
+        inset
     />
-
     <VsItinerary>
         <template #map>
             <component
