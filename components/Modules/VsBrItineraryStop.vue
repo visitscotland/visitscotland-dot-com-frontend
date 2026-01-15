@@ -83,6 +83,7 @@
 
         <template
             #stop-facilities
+            v-if="stop.facilities && stop.facilities.length"
         >
             <VsIconList
                 :title="configStore.getLabel('itinerary', 'keyfacilities.title')"
