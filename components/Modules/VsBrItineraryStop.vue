@@ -100,12 +100,13 @@
             #stop-buttons
             v-if="isLastStop"
         >
-            <VsItineraryBorderOverlapWrapper>
+            <VsItineraryBorderOverlapWrapper v-if="nearbyEatLink || nearbyStayLink">
                 <VsButton
                     class="mb-075"
                     variant="secondary"
                     icon="food"
                     :href="nearbyEatLink"
+                    v-if="nearbyEatLink"
                 >
                     {{ configStore.getLabel("itinerary", "stop.nearby-eat") }}
                 </VsButton>
@@ -113,6 +114,7 @@
                     variant="secondary"
                     icon="product-accommodation"
                     :href="nearbyStayLink"
+                    v-if="nearbyStayLink"
                 >
                     {{ configStore.getLabel("itinerary", "stop.nearby-stay") }}
                 </VsButton>
