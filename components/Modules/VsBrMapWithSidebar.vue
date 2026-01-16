@@ -29,7 +29,7 @@
             :panel-message="
                 module.mapType === 'regional'
                     ? configStore.getLabel('map', 'map.panel-bottom-msg')
-                    : ''
+                    : null
             "
             :load-branding-immediately="true"
         >
