@@ -1,86 +1,18 @@
 <template>
-    <VsBrHeroSection
-        :content="documentData"
-        :image="heroImage"
-        inset
-    />
-    <VsItinerary>
-        <template #map>
-            <component
-                :is="VsBrItineraryMap"
-                :places="itineraryPlaces"
-            />
-        </template>
-        <template #list>
-            <VsItineraryDay
-                v-for="(day, index) in itinerary.days"
-                :key="index"
-                :day-number="`${index + 1}`"
-                :day-label="configStore.getLabel('itinerary', 'day')"
-                :day-title="day.title"
-            >
-                <template
-                    #day-introduction
-                    v-if="day.introduction"
-                >
-                    <VsBody>
-                        <VsBrRichText :input-content="day.introduction.value" />
-                    </VsBody>
-                </template>
-
-                <template
-                    #day-transport
-                    v-if="day.transports"
-                >
-                    <VsDescriptionList
-                        class="text-center justify-content-center mb-075 has-edit-button"
-                        inline
-                    >
-                        <VsDescriptionListItem
-                            title
-                            class="col-auto px-0"
-                        >
-                            {{ configStore.getLabel("itinerary", "transport") }}
-                        </VsDescriptionListItem>
-
-                        <VsDescriptionListItem
-                            class="col-auto px-0"
-                            v-for="(transport, transportIndex) in day.transports"
-                            :key="transportIndex"
-                        >
-                            <VsTooltip
-                                :title="configStore.getLabel('transports', '${transport}')"
-                                href="#"
-                                :icon="getDMSIconName(transport)"
-                                size="sm"
-                                icon-only
-                                variant="transparent"
-                            >
-                                <span class="visually-hidden">
-                                    {{ configStore.getLabel("transports", "${transport}") }}
-                                </span>
-                            </VsTooltip>
-                        </VsDescriptionListItem>
-                    </VsDescriptionList>
-                </template>
-
-                <template
-                    #stops
-                    v-if="day.stops"
-                >
-                    <VsBrItineraryStop
-                        v-for="(stop, stopsIndex) in day.stops"
-                        :key="stopsIndex"
-                        :stop="stop"
-                        :is-last-stop="stopsIndex === day.stops.length - 1"
-                        :nearby-eat-link="nearbyEatLink"
-                        :nearby-stay-link="nearbyStayLink"
-                    />
-                </template>
-            </VsItineraryDay>
-        </template>
-    </VsItinerary>
-
+    <div class="d-flex flex-column gap-500">
+        <VsBrHeroSection
+            :content="documentData"
+            :image="heroImage"
+            img-credit="Creddy McCredface"
+            inset
+        />
+        <VsBrDaySection
+            v-for="(item, index) in pageItems"
+            :key="`item-${index}`"
+            :day="item"
+            :day-number="index + 1"
+        />
+    </div>
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
@@ -124,16 +56,13 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
-import VsBrItineraryStop from '~/components/Modules/VsBrItineraryStop.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 
 import {
-    VsItinerary,
-    VsItineraryDay,
     VsDescriptionList,
     VsDescriptionListItem,
     VsTooltip,
@@ -160,6 +89,8 @@ const configStore = useConfigStore();
 
 let itinerary = {
 };
+let pageItems = {
+};
 
 let allTransports = [];
 
@@ -184,7 +115,7 @@ if (page.value) {
     }
 
     if (component.value) {
-        itinerary = component.value.model.models.itinerary;
+        pageItems = component.value.model.models.pageItems;
 
         allTransports = itinerary.transports;
         allAreas = itinerary.areas;
