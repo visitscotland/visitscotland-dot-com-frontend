@@ -4,82 +4,112 @@
         :image="heroImage"
         inset
     />
-    <VsItinerary>
-        <template #map>
-            <component
-                :is="VsBrItineraryMap"
-                :places="itineraryPlaces"
-            />
-        </template>
-        <template #list>
-            <VsItineraryDay
-                v-for="(day, index) in itinerary.days"
-                :key="index"
-                :day-number="`${index + 1}`"
-                :day-label="configStore.getLabel('itinerary', 'day')"
-                :day-title="day.title"
+    <VsContainer>
+        <div class="row gap-175 gap-lg-0">
+            <VsRow>
+                <VsCol>
+                    <span class="vs-section-header__divider" />
+                </VsCol>
+            </VsRow>
+            <VsCol
+                cols="12"
+                lg="4"
             >
-                <template
-                    #day-introduction
-                    v-if="day.introduction"
+                <VsHeading
+                    level="2"
+                    heading-style="heading-l"
+                    no-margins
                 >
-                    <VsBody>
-                        <VsBrRichText :input-content="day.introduction.value" />
-                    </VsBody>
-                </template>
-
-                <template
-                    #day-transport
-                    v-if="day.transports"
-                >
-                    <VsDescriptionList
-                        class="text-center justify-content-center mb-075 has-edit-button"
-                        inline
-                    >
-                        <VsDescriptionListItem
-                            title
-                            class="col-auto px-0"
-                        >
-                            {{ configStore.getLabel("itinerary", "transport") }}
-                        </VsDescriptionListItem>
-
-                        <VsDescriptionListItem
-                            class="col-auto px-0"
-                            v-for="(transport, transportIndex) in day.transports"
-                            :key="transportIndex"
-                        >
-                            <VsTooltip
-                                :title="configStore.getLabel('transports', '${transport}')"
-                                href="#"
-                                :icon="getDMSIconName(transport)"
-                                size="sm"
-                                icon-only
-                                variant="transparent"
-                            >
-                                <span class="visually-hidden">
-                                    {{ configStore.getLabel("transports", "${transport}") }}
-                                </span>
-                            </VsTooltip>
-                        </VsDescriptionListItem>
-                    </VsDescriptionList>
-                </template>
-
-                <template
-                    #stops
-                    v-if="day.stops"
-                >
-                    <VsBrItineraryStop
-                        v-for="(stop, stopsIndex) in day.stops"
-                        :key="stopsIndex"
-                        :stop="stop"
-                        :is-last-stop="stopsIndex === day.stops.length - 1"
-                        :nearby-eat-link="nearbyEatLink"
-                        :nearby-stay-link="nearbyStayLink"
+                    {{ documentData.subheading }}
+                </VsHeading>
+            </VsCol>
+            <VsCol
+                cols="12"
+                lg="8"
+            >
+                <VsBody>
+                    <VsBrRichText
+                        :input-content="documentData.introduction.value"
                     />
-                </template>
-            </VsItineraryDay>
-        </template>
-    </VsItinerary>
+                </VsBody>
+                <VsPanel>
+                    <VsContainer>
+                        <VsRow class="align-items-center">
+                            <VsCol cols="12" md="9" class="mb-175 mb-md-0">
+                                <VsHeading
+                                    heading-style="heading-xs"
+                                    level="3"
+                                    no-margins
+                                    class="mb-125 field-needed"
+                                >
+                                    Placeholder - label needed
+                                </VsHeading>
+                                <div class="d-flex flex-wrap column-gap-300 row-gap-150 align-items-end">
+                                    <VsDetail
+                                        no-margins
+                                        color="tertiary"
+                                        icon="fa-regular fa-binoculars"
+                                        icon-variant="tertiary"
+                                        class="field-needed"
+                                    >
+                                        Sightseeing
+                                    </VsDetail>
+
+                                    <VsDetail
+                                        no-margins
+                                        color="tertiary"
+                                        icon="fa-regular fa-route"
+                                        icon-variant="tertiary"
+                                        class="field-needed"
+                                    >
+                                        295 miles (472km)
+                                    </VsDetail>
+
+                                    <VsDetail
+                                        no-margins
+                                        color="tertiary"
+                                        icon="fa-regular fa-calendar-range"
+                                        icon-variant="tertiary"
+
+                                        class="field-needed"
+                                    >
+                                        {{ pageIntro.days.length }}
+                                    </VsDetail>
+
+                                    <VsDetail
+                                        no-margins
+                                        color="tertiary"
+                                        icon="fa-regular fa-taxi"
+                                        icon-variant="tertiary"
+                                        class="field-needed"
+                                    >
+                                        {{ pageIntro.transports[0].displayName }}
+                                    </VsDetail>
+
+                                    <VsDetail
+                                        no-margins
+                                        color="tertiary"
+                                        icon="fa-regular fa-location-dot"
+                                        icon-variant="tertiary"
+                                        class="field-needed"
+                                    >
+                                        {{ pageIntro.areas[0].displayName }}
+                                    </VsDetail>
+                                </div>
+                            </VsCol>
+                            <VsCol cols="12" md="3">
+                                <VsIllustratedMap
+                                    width="145px"
+                                    class="d-block mx-auto"
+                                    :highlighted-regions="mapAreas"
+                                />
+                            </VsCol>
+                        </VsRow>
+                    </VsContainer>
+                </VsPanel>
+            </VsCol>
+        </div>
+    </VsContainer>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -124,23 +154,21 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
-import VsBrItineraryStop from '~/components/Modules/VsBrItineraryStop.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
-    VsItinerary,
-    VsItineraryDay,
-    VsDescriptionList,
-    VsDescriptionListItem,
-    VsTooltip,
     VsBody,
+    VsHeading,
+    VsContainer,
+    VsRow,
+    VsCol,
+    VsPanel,
+    VsIllustratedMap,
+    VsDetail,
 } from '@visitscotland/component-library/components';
-
-const VsBrItineraryMap = defineAsyncComponent(() => import('~/components/Modules/VsBrItineraryMap.vue'));
 
 const props = defineProps<{ component: Component, page: Page }>();
 
@@ -155,23 +183,13 @@ let productSearch : any = {
 let heroImage = {
 };
 let otyml : any = null;
+let pageIntro = {
+};
+let introSection = {
+};
+let mapAreas = null;
 
 const configStore = useConfigStore();
-
-let itinerary = {
-};
-
-let allTransports = [];
-
-let allAreas = [];
-
-let theme = {
-};
-
-let nearbyEatLink = '';
-let nearbyStayLink = '';
-
-const itineraryPlaces : any[] = [];
 
 if (page.value) {
     document = page.value.getDocument();
@@ -184,54 +202,9 @@ if (page.value) {
     }
 
     if (component.value) {
-        itinerary = component.value.model.models.itinerary;
-
-        allTransports = itinerary.transports;
-        allAreas = itinerary.areas;
-        theme = itinerary.theme;
-
-        nearbyEatLink = itinerary.lastStopNearbyEat;
-        nearbyStayLink = itinerary.lastStopNearbyStay;
-
-        if (itinerary.days) {
-            const allStops = [];
-
-            for (let x = 0; x < Object.keys(itinerary.stops).length; x++) {
-                const nextStop = itinerary.stops[Object.keys(itinerary.stops)[x]];
-
-                allStops[nextStop.hippoBean.$ref] = nextStop;
-            }
-
-            for (let x = 0; x < itinerary.days.length; x++) {
-                if (itinerary.days[x].$ref) {
-                    itinerary.days[x] = page.value.getContent(itinerary.days[x]);
-                }
-                if (itinerary.days[x].model) {
-                    itinerary.days[x] = itinerary.days[x].model.data;
-                }
-
-                if (itinerary.days[x].stops) {
-                    for (let y = 0; y < itinerary.days[x].stops.length; y++) {
-                        if (itinerary.days[x].stops[y].$ref) {
-                            itinerary.days[x].stops[y] = allStops[itinerary.days[x].stops[y].$ref];
-                        }
-
-                        const stop = itinerary.days[x].stops[y];
-
-                        if (stop.coordinates) {
-                            itineraryPlaces.push({
-                                title: stop.title,
-                                latitude: stop.coordinates.latitude,
-                                longitude: stop.coordinates.longitude,
-                                stopCount: stop.index,
-                                imageSrc: '', // TODO - currently no examples to work from
-                                altText: stop.title,
-                            });
-                        }
-                    }
-                }
-            }
-        }
+        pageIntro = component.value.model.models.pageIntro;
+        introSection = page.value.getDocument(pageIntro.$ref);
+        mapAreas = pageIntro.areas.map((region) => region.key);
     }
 }
 
