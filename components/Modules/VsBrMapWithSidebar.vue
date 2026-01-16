@@ -6,9 +6,8 @@
 
         <template
             #vs-module-wrapper-intro
-            v-if="module.introduction"
         >
-            <VsBrRichText :input-content="module.introduction.value" />
+            <VsBrRichText :input-content="module.introduction ? module.introduction.value : ''" />
         </template>
 
         <VsMapWithSidebar
