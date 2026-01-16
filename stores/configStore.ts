@@ -13,6 +13,14 @@ interface IConfigState {
     pageMetaData: any,
     heroVideo: any,
     isLocalVideoheader: boolean,
+    globalSearchPath: string,
+    cludoCustomerId: string,
+    cludoExperienceId: string,
+    cludoEngineId: string,
+    cludoLanguage: string,
+    searchDmsBased: boolean,
+    eventsApiUrl: string,
+    showSearchWidget: boolean,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -33,6 +41,14 @@ const useConfigStore = defineStore('configStore', {
         },
         heroVideo: null,
         isLocalVideoheader: false,
+        globalSearchPath: '',
+        cludoCustomerId: '',
+        cludoExperienceId: '',
+        cludoEngineId: '',
+        cludoLanguage: '',
+        searchDmsBased: false,
+        eventsApiUrl: '',
+        showSearchWidget: false,
     }),
     actions: {
         getLabel(section: string, key: string) {
