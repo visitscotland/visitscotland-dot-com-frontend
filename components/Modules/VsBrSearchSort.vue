@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 
 import {
     VsCol,
@@ -76,8 +76,6 @@ import useSearchStore from '~/stores/searchStore.ts';
 
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
-
-const route = useRoute();
 
 type SortOption = {
     key: string;
@@ -120,12 +118,6 @@ function updateSortBy(value: string) {
     searchStore.sortBy = value;
     searchStore.navigationSomething();
 }
-
-onMounted(() => {
-    searchStore.fromDate = route.query['from-date'] as string;
-    searchStore.toDate = route.query['to-date'] as string;
-    searchStore.sortBy = route.query['sort-by'] as string;
-});
 </script>
 
 <style lang="scss">
