@@ -32,6 +32,8 @@
     <VsContainer
         v-else
     >
+        <VsBrSearch />
+        <hr>
         <VsFederatedSearch
             :cludo-api-key="configStore.cludoExperienceId "
             :cludo-customer-id="customerId"
