@@ -2,6 +2,11 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 const useSearchStore = defineStore('search', () => {
+    // General
+    const isLoading = ref(false);
+
+    const searchTerm = ref<string>();
+
     // Filter
     const categoryKey = ref<string>();
     const subcategoryKeys = ref<string[]>([]);
@@ -10,6 +15,9 @@ const useSearchStore = defineStore('search', () => {
     const fromDate = ref<string>();
     const sortBy = ref<string>();
     const toDate = ref<string>();
+
+    // Search results
+    const currentPage = ref(1);
 
     function getSearchResults() {
         console.log('searching...');
@@ -23,6 +31,9 @@ const useSearchStore = defineStore('search', () => {
         await navigateTo({
             path: route.path,
             query: {
+                ...(searchTerm.value && {
+                    'search-term': searchTerm.value,
+                }),
                 ...(categoryKey.value && {
                     category: categoryKey.value,
                 }),
@@ -46,7 +57,10 @@ const useSearchStore = defineStore('search', () => {
 
     return {
         categoryKey,
+        currentPage,
         fromDate,
+        isLoading,
+        searchTerm,
         sortBy,
         subcategoryKeys,
         toDate,
