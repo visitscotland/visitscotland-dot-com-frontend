@@ -27,7 +27,7 @@
                 cols="12"
                 lg="8"
             >
-                <div class="d-flex flex-column gap-150 gap-md-200">
+                <div class="d-flex flex-column gap-150 gap-md-300">
                     <VsBody>
                         <VsBrRichText
                             :input-content="documentData.introduction.value"
@@ -108,7 +108,6 @@
                             icon="fa-regular fa-binoculars"
                             size="md"
                         >
-                            <!-- default text should not come from frontend? -->
                             {{ itineraryMap.label || "View itinerary in Google Maps" }}
                         </VsButton>
                         <!-- <VsBrSocialShare /> -->
