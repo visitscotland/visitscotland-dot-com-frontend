@@ -46,10 +46,14 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrCategorySection
+        <div
             v-if="documentData && documentData.categoryLinks"
-            :categories="documentData.categoryLinks"
-        />
+            class="mt-175 mt-md-500 mb-175 mb-md-500"
+        >
+            <VsBrCategorySection
+                :categories="documentData.categoryLinks"
+            />
+        </div>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
