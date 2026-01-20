@@ -20,12 +20,12 @@
                 class="d-flex flex-column gap-150"
             >
                 <figure>
-                    <VsImg
-                        src="http://localhost:8080/site/binaries/content/gallery/visitscotland/static/placeholder-logo.jpg?size=lg"
+                    <!-- <VsImg
+                        :src=""
                         use-lazy-loading
                         class="rounded-2 w-100"
-                        alt="day.image.altText"
-                    />
+                        :alt="day.image.altText"
+                    /> -->
                     <!-- <figcaption>
                         <VsMediaCaption>
                             <template #caption>
