@@ -10,7 +10,7 @@
         <VsBreadcrumbItem
             v-for="(item, index) in definedBreadcrumb"
             :key="index"
-            :href="item.link.href"
+            :href="getNavLink(item)"
             :text="item.title"
             :active="index === definedBreadcrumb.length - 1"
         />
@@ -26,6 +26,8 @@ import {
     VsBreadcrumb,
     VsBreadcrumbItem,
 } from '@visitscotland/component-library/components';
+
+import getNavLink from '~/composables/getNavLink.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 
