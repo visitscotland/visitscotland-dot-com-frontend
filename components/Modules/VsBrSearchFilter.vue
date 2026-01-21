@@ -30,10 +30,11 @@
                     v-for="item in sortedItems"
                     :key="item.Key"
                     class="vs-search-filter__category-button"
+                    :href="isSearchWidget ? `${configStore.globalSearchPath}?category=${item.Key}` : null"
                     :icon="variant === 'primary' ? itemIconMap[item.Key] : null"
                     :size="variant === 'secondary' ? 'sm' : 'md'"
                     :variant="isActive(item.Key) ? 'primary' : 'secondary'"
-                    @click="$emit('filter-updated', item)"
+                    @click="!isSearchWidget ? $emit('filter-updated', item) : null"
                 >
                     {{ item.Label || item.Key }}
                 </VsButton>
@@ -58,6 +59,10 @@
 import { ref, computed } from 'vue';
 import { VsBody, VsButton } from '@visitscotland/component-library/components';
 
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
+
 type FilterCategory = {
     Key: string;
     Label: string;
@@ -69,6 +74,7 @@ type Props = {
     displayScrollButtons?: boolean;
     filterCategories: FilterCategory[];
     heading?: string;
+    isSearchWidget?: boolean;
     scrollButtonLeftText?: string;
     scrollButtonRightText?: string;
     variant?: 'primary' | 'secondary';
@@ -80,6 +86,7 @@ const {
     displayScrollButtons = false,
     filterCategories,
     heading,
+    isSearchWidget = false,
     scrollButtonLeftText,
     scrollButtonRightText,
     variant = 'primary',

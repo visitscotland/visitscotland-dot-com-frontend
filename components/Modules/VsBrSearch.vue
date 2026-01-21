@@ -19,7 +19,7 @@
                     {{ configStore.getLabel('search', 'results.second-sentence') }}
                 </VsDetail>
             </div>
-            <VsBrSearchSort />
+            <VsBrSearchSort v-if="searchStore.categoryKey === 'events'" />
         </div>
 
         <VsLoadingSpinner v-if="searchStore.isLoading" />
@@ -60,6 +60,7 @@ onMounted(() => {
         searchStore.subcategoryKeys = routeSubcategories.split(',');
     }
 
+    searchStore.currentPage = Number(route.query.page);
     searchStore.fromDate = route.query['from-date'] as string;
     searchStore.toDate = route.query['to-date'] as string;
     searchStore.sortBy = route.query['sort-by'] as string;

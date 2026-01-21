@@ -100,6 +100,9 @@ const useSearchStore = defineStore('search', () => {
                 ...(subcategoryKeys.value.length > 0 && {
                     subcategories: subcategoryKeys.value.join(','),
                 }),
+                ...(currentPage.value && {
+                    page: currentPage.value,
+                }),
                 ...(fromDate.value && {
                     'from-date': fromDate.value,
                 }),

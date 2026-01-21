@@ -22,14 +22,14 @@
                     :placeholder="configStore.getLabel('search', 'search-label')"
                     type="search"
                     :value="searchStore.searchTerm"
-                    debounce="500"
-                    @updated="updateSearchTerm"
+                    @input="updateSearchTerm($event.target.value)"
                     @keyup.enter="search"
                 />
             </div>
             <VsButton
                 class="d-none d-lg-block px-200"
                 :disabled="isLoading"
+                :href="searchLink"
                 @click="search"
             >
                 {{ configStore.getLabel('search', 'search') }}
@@ -59,12 +59,13 @@
             :active-filter="searchStore.categoryKey"
             class="mt-200"
             :filter-categories="orderedCategories"
+            :is-search-widget
             wrap
             @filter-updated="updateCategoryKey"
         />
 
         <VsBrSearchFilter
-            v-if="searchStore.categoryKey === 'events'"
+            v-if="searchStore.categoryKey === 'events' && !isSearchWidget"
             :active-filter="searchStore.subcategoryKeys"
             class="mt-200"
             :filter-categories="orderedSubcategories"
@@ -76,7 +77,10 @@
 
 <script setup lang="ts">
 import {
-    onMounted, ref, watch,
+    computed,
+    onMounted,
+    ref,
+    watch,
 } from 'vue';
 import { storeToRefs } from 'pinia';
 
@@ -122,10 +126,8 @@ const searchSuggestions = ref([]);
 // const categoryFilter = ref(null);
 // const subcategoryFilter = ref(null);
 
-async function updateSearchTerm(event: { field: string; value: string }) {
-    // Should the page be reset here??
-    searchStore.currentPage = 1;
-    searchStore.searchTerm = event.value.trim();
+async function updateSearchTerm(term: string) {
+    searchStore.searchTerm = term.trim();
 
     if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm) {
         searchSuggestions.value = await $fetch('/api/search/cludo-autocomplete', {
@@ -153,6 +155,11 @@ async function updateSearchTerm(event: { field: string; value: string }) {
 
 async function search() {
     searchSuggestions.value = [];
+    searchStore.currentPage = 1;
+    searchStore.fromDate = undefined;
+    searchStore.toDate = undefined;
+    searchStore.sortBy = undefined;
+
     await searchStore.navigationSomething();
 
     // dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
@@ -176,8 +183,19 @@ function autoSuggestAnalytics(suggestion) {
     // });
 }
 
-function suggestedSearch(query) {
-    console.log('suggestedSearch');
+async function suggestedSearch(suggestion: string) {
+    searchStore.searchTerm = suggestion;
+    searchSuggestions.value = [];
+
+    if (isSearchWidget) {
+        // `external: true` is required here to force a full page reload.
+        await navigateTo(`${configStore.globalSearchPath}?search-term=${suggestion}`, {
+            external: true,
+        });
+    } else {
+        searchStore.navigationSomething();
+    }
+
     // federatedSearchStore.searchTerm = query;
     // searchSuggestions.value = null;
     // federatedSearchStore.navigateToResultsPage(false, true);
@@ -267,6 +285,14 @@ function updateSubcategoryKey(category: FilterCategory) {
     }
     searchStore.navigationSomething();
 }
+
+const searchLink = computed(() => {
+    if (!isSearchWidget) return null;
+
+    return searchStore.searchTerm
+        ? `${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`
+        : configStore.globalSearchPath;
+});
 
 // async function updateSelectedCategory(category) {
 //     const url = new URL(window.location);
@@ -395,6 +421,8 @@ onMounted(() => {
 
 <style lang="scss">
 .vs-search-input {
+    margin-bottom: 2rem;
+
     .vs-search__input {
         display: flex;
         position: relative;
