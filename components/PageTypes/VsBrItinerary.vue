@@ -59,12 +59,8 @@ import useConfigStore from '~/stores/configStore.ts';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
-import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
-import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 
-import {
-    VsBody,
-} from '@visitscotland/component-library/components';
+import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 

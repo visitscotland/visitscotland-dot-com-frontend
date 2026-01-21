@@ -20,26 +20,27 @@
                 class="d-flex flex-column gap-150"
             >
                 <figure>
-                    <!-- <VsImg
-                        :src=""
+                    <VsImg
+                        :src="imageSrc"
                         use-lazy-loading
                         class="rounded-2 w-100"
-                        :alt="day.image.altText"
-                    /> -->
-                    <!-- <figcaption>
+                        :alt="imageAlt"
+                    />
+                    <figcaption v-if="imageCredit || imageCaption">
                         <VsMediaCaption>
                             <template #caption>
-                                Caption placeholder
+                                {{ imageCaption }}
                             </template>
-                            <template #credit>
-                                Credit placeholder
+                            <template v-if="imageCredit" #credit>
+                                {{ imageCredit }}
                             </template>
                         </VsMediaCaption>
-                    </figcaption> -->
+                    </figcaption>
                 </figure>
                 <div>
-                    <!-- All VsBody does is add my I don't want  -->
-                    <VsBrRichText :input-content="day.introduction.value" />
+                    <VsBody>
+                        <VsBrRichText :input-content="day.introduction.value" />
+                    </VsBody>
                 </div>
                 <div
                     class="d-flex flex-wrap gap-125"
@@ -57,8 +58,6 @@
                         variant="subtle"
                         icon="fa-regular fa-map"
                     >
-                        <!-- "Explore on Google Maps"
-                        default value set in back end -->
                         {{ day.mapLink.label }}
                     </VsButton>
                 </div>
@@ -68,15 +67,16 @@
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue';
+
 import {
     VsImg,
     VsHeading,
     VsButton,
     VsContainer,
     VsCol,
-    VsRow,
     VsBody,
-    // VsMediaCaption,
+    VsMediaCaption,
 } from '@visitscotland/component-library/components';
 import VsBrRichText from './VsBrRichText.vue';
 
@@ -84,7 +84,14 @@ const props = defineProps<{
     day: any,
     dayNumber: any,
 }>();
+
+const page: any = inject('page');
 const day: any = props.day;
 const dayNumber: any = props.dayNumber;
+const imageValue = page.getContent(day.media[0].$ref);
+const imageSrc = imageValue.getOriginal().getUrl();
+const imageCaption = imageValue.model.data.description;
+const imageAlt = imageValue.model.data.altText;
+const imageCredit = imageValue.model.data.credit;
 
 </script>
