@@ -38,7 +38,11 @@ const props = defineProps<{
     isHome: boolean,
 }>();
 
-const rootUrl = window ? window.location.origin : '';
+let rootUrl = window ? window.location.origin : '';
+
+if (configStore.langString) {
+    rootUrl = `${rootUrl}/${configStore.langString}`;
+}
 
 const { breadcrumb, isHome } = toRefs(props);
 

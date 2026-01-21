@@ -166,6 +166,10 @@ if (page.value) {
         break;
     }
 
+    if (langString !== 'en-gb') {
+        configStore.langString = langString;
+    }
+
     const runtimeConfig = useRuntimeConfig();
 
     useHead({

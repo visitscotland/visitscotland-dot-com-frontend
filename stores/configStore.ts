@@ -10,6 +10,7 @@ interface IConfigState {
     newsletterSignpost: any,
     gtm: any,
     locale: string,
+    langString: string,
     pageMetaData: any,
     heroVideo: any,
     isLocalVideoheader: boolean,
@@ -37,6 +38,7 @@ const useConfigStore = defineStore('configStore', {
         },
         gtm: null,
         locale: '',
+        langString: '',
         pageMetaData: {
         },
         heroVideo: null,
