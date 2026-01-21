@@ -38,6 +38,10 @@ export default defineEventHandler(async(event) => {
     url = body.endDate ? `${url}&endDate=${body.endDate}` : url;
     url = body.sortBy ? `${url}&sort=${body.sortBy}` : url;
     url = body.categoryKey === 'events' ? `${url}&pageSize=12` : `${url}&pageSize=6`;
+    url = body.location ? `${url}&location=${body.location}` : url;
+    url = body.postcode ? `${url}&postcode=${body.postcode}` : url;
+    url = body.postcodeareas ? `${url}&postcodeareas=${body.postcodeareas}` : url;
+    url = body.radius ? `${url}&radius=${body.radius}` : url;
 
     body.subcategoryKeys.forEach((category: any) => {
         url += `&category=${category}`;

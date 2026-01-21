@@ -20,6 +20,12 @@ const useSearchStore = defineStore('search', () => {
     const sortBy = ref<string>();
     const toDate = ref<string>();
 
+    // Event specific parameters.
+    const location = ref<string>();
+    const postcode = ref<string>();
+    const postcodeareas = ref<string>();
+    const radius = ref<number>();
+
     // Search results
     const currentPage = ref(1);
     const searchResults = ref<any>([]);
@@ -52,15 +58,19 @@ const useSearchStore = defineStore('search', () => {
         const eventsResults: any = await $fetch('/api/search/events-search', {
             method: 'post',
             body: {
-                eventsApiUrl: configStore.eventsApiUrl,
-                searchTerm: searchTerm.value,
-                page: currentPage.value,
                 categoryKey: categoryKey.value,
-                subcategoryKeys: subcategoryKeys.value,
-                startDate: fromDate.value,
                 endDate: toDate.value,
-                sortBy: sortBy.value,
+                eventsApiUrl: configStore.eventsApiUrl,
+                location: location.value,
+                page: currentPage.value,
+                postcode: postcode.value,
+                postcodeareas: postcodeareas.value,
+                radius: radius.value,
+                searchTerm: searchTerm.value,
                 siteLanguage: configStore.locale,
+                sortBy: sortBy.value,
+                startDate: fromDate.value,
+                subcategoryKeys: subcategoryKeys.value,
             },
         });
 
@@ -99,6 +109,18 @@ const useSearchStore = defineStore('search', () => {
                 ...(toDate.value && {
                     'to-date': toDate.value,
                 }),
+                ...(location.value && {
+                    location: location.value,
+                }),
+                ...(postcode.value && {
+                    postcode: postcode.value,
+                }),
+                ...(postcodeareas.value && {
+                    postcodeareas: postcodeareas.value,
+                }),
+                ...(radius.value && {
+                    radius: radius.value,
+                }),
             },
         });
 
@@ -111,6 +133,10 @@ const useSearchStore = defineStore('search', () => {
         fromDate,
         getSearchResults,
         isLoading,
+        location,
+        postcode,
+        postcodeareas,
+        radius,
         searchResults,
         searchTerm,
         sortBy,

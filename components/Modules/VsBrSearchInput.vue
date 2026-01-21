@@ -412,13 +412,10 @@ onMounted(() => {
                 top: 50%;
                 left: 0.75rem;
                 transform: translate(0, -50%);
+                z-index: 2;
 
                 @media (min-width: 992px) {
                     left: 1.5rem;
-
-                    // .vs-icon {
-                    //     font-size: $icon-size-sm;
-                    // }
                 }
             }
         }

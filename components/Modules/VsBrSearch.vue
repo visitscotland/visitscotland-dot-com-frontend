@@ -50,6 +50,7 @@ const searchStore = useSearchStore();
 const route = useRoute();
 
 onMounted(() => {
+    // Set API query parameters using the URL parameters.
     searchStore.searchTerm = route.query['search-term'] as string;
     searchStore.categoryKey = route.query.category as string;
 
@@ -62,6 +63,10 @@ onMounted(() => {
     searchStore.fromDate = route.query['from-date'] as string;
     searchStore.toDate = route.query['to-date'] as string;
     searchStore.sortBy = route.query['sort-by'] as string;
+    searchStore.location = route.query.location as string;
+    searchStore.postcode = route.query.postcode as string;
+    searchStore.postcodeareas = route.query.postcodeareas as string;
+    searchStore.radius = Number(route.query.radius);
 
     searchStore.getSearchResults();
 });

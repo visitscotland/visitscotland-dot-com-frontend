@@ -261,7 +261,7 @@ function pageCloseAnalytics() {
 .vs-search__pagination {
     margin: 4rem 0 3rem 0;
 
-    @media (max-width: 994px) {
+    @media (max-width: 992px) {
         margin: 1rem 0 2rem 0;
     }
 }
