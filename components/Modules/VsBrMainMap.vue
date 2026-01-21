@@ -5,7 +5,7 @@
         map-type-vector
         :center="{
             lat: 56.490153,
-            lng: 4.10959,
+            lng: -4.10959,
         }"
         :zoom="6"
         :radius="6000"
@@ -15,7 +15,7 @@
         :no-results-message="`${configStore.getLabel('map', 'map.no-results-message')}`"
         :reset-map-no-results-message="`Reset the map`"
         :category-labels="module.filters"
-        categories-location="http://127.0.0.1:3000/map-categories.json"
+        categories-location="https://static.visitscotland.com/maps-resources/main-map/map-categories.json"
         :labels="labels"
         language-code="EN"
     />
