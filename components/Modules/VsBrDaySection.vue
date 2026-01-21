@@ -10,8 +10,7 @@
                     heading-style="heading-l"
                     no-margins
                 >
-                    <!-- Presumably "Day" here will need to come from the label so it will be translated. Capitalise with CSS -->
-                    Day {{ dayNumber }} - {{ day.title }}
+                    {{ dayLabel }} {{ dayNumber }} - {{ day.title }}
                 </VsHeading>
             </VsCol>
             <VsCol
@@ -68,6 +67,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue';
+import useConfigStore from '~/stores/configStore.ts';
 
 import {
     VsImg,
@@ -79,6 +79,8 @@ import {
     VsMediaCaption,
 } from '@visitscotland/component-library/components';
 import VsBrRichText from './VsBrRichText.vue';
+
+const configStore = useConfigStore();
 
 const props = defineProps<{
     day: any,
@@ -93,5 +95,6 @@ const imageSrc = imageValue.getOriginal().getUrl();
 const imageCaption = imageValue.model.data.description;
 const imageAlt = imageValue.model.data.altText;
 const imageCredit = imageValue.model.data.credit;
+const dayLabel = configStore.getLabel('itinerary', 'day');
 
 </script>
