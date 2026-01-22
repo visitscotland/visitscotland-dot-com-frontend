@@ -110,7 +110,6 @@
                         >
                             {{ itineraryMap.label || "View itinerary in Google Maps" }}
                         </VsButton>
-                        <!-- <VsBrSocialShare /> -->
                     </div>
                 </div>
             </VsCol>
