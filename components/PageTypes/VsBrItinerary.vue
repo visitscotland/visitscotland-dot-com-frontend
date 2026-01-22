@@ -1,4 +1,5 @@
 <template>
+    <div class="d-flex flex-column gap-500">
     <VsBrHeroSection
         :content="documentData"
         :image="heroImage"
@@ -102,7 +103,7 @@
                             </VsRow>
                         </VsContainer>
                     </VsPanel>
-                    <div class="d-flex flex-column flex-md-row gap-075 gap-md-150">
+                    <div class="d-flex flex-column flex-md-row gap-075 gap-md-150 justify-content-between">
                         <VsButton
                             :href="itineraryMap.link"
                             icon="fa-regular fa-binoculars"
@@ -110,6 +111,7 @@
                         >
                             {{ itineraryMap.label || "View itinerary in Google Maps" }}
                         </VsButton>
+                        <VsButton icon-only icon="fa-regular fa-star" variant="subtle" />
                         <!-- <VsBrSocialShare /> -->
                     </div>
                 </div>
@@ -117,6 +119,20 @@
         </div>
     </VsContainer>
 
+    
+        <!-- <VsBrHeroSection
+            :content="documentData"
+            :image="heroImage"
+            img-credit="Creddy McCredface"
+            inset
+        /> -->
+        <VsBrDaySection
+            v-for="(item, index) in pageItems"
+            :key="`item-${index}`"
+            :day="item"
+            :day-number="index + 1"
+        />
+    </div>
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
@@ -179,6 +195,8 @@ import {
 
 const configStore = useConfigStore();
 
+import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
+
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { page, component } = toRefs(props);
@@ -232,6 +250,9 @@ const themeIcon = {
     sightseeing: 'fa-regular fa-binoculars',
 };
 
+let pageItems = {
+};
+
 if (page.value) {
     document = page.value.getDocument();
     documentData = document.getData();
@@ -249,6 +270,7 @@ if (page.value) {
         numberOfDays = pageIntro.days.length;
         numberOfMiles = Math.round(pageIntro.distance);
         numberOfKm = Math.round(numberOfMiles * 1.6093);
+        pageItems = component.value.model.models.pageItems;
     }
 }
 </script>
