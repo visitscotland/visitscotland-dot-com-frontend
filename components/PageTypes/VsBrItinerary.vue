@@ -111,7 +111,7 @@
                         >
                             {{ itineraryMap.label || "View itinerary in Google Maps" }}
                         </VsButton>
-                        <VsButton icon-only icon="fa-regular fa-star" variant="subtle" />
+                        <!-- <VsButton icon-only icon="fa-regular fa-star" variant="subtle" /> -->
                         <!-- <VsBrSocialShare /> -->
                     </div>
                 </div>
