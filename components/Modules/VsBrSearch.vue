@@ -4,6 +4,16 @@
 
         <VsBrDivider />
 
+        <template
+            v-for="(module, index) in modules"
+            :key="module.id"
+        >
+            <VsBrModuleBuilder
+                v-if="moduleNames[index] === searchStore.categoryKey"
+                :modules="[module]"
+            />
+        </template>
+
         <div class="vs-search__results">
             <div>
                 <VsHeading
@@ -29,7 +39,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import type { Page } from '@bloomreach/spa-sdk';
+
+import { inject, onMounted } from 'vue';
 import {
     VsDetail,
     VsHeading,
@@ -40,14 +52,30 @@ import useConfigStore from '~/stores/configStore.ts';
 import useSearchStore from '~/stores/searchStore.ts';
 
 import VsBrDivider from './VsBrDivider.vue';
+import VsBrModuleBuilder from './VsBrModuleBuilder.vue';
 import VsBrSearchInput from './VsBrSearchInput.vue';
 import VsBrSearchResultsDisplay from './VsBrSearchResultsDisplay.vue';
 import VsBrSearchSort from './VsBrSearchSort.vue';
 
+const page: Page | undefined = inject('page');
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
 
 const route = useRoute();
+
+type Props = {
+    modules: any[];
+};
+
+const { modules } = defineProps<Props>();
+
+const moduleNames = [];
+
+for (let x = 0; x < modules.length; x++) {
+    const hippoBean = page?.getContent(modules[x].hippoBean.$ref);
+
+    moduleNames.push(hippoBean.model.data.name);
+}
 
 onMounted(() => {
     // Set API query parameters using the URL parameters.

@@ -60,6 +60,7 @@
             class="mt-200"
             :filter-categories="orderedCategories"
             :is-search-widget
+            ref="categoryFilter"
             wrap
             @filter-updated="updateCategoryKey"
         />
@@ -70,6 +71,7 @@
             class="mt-200"
             :filter-categories="orderedSubcategories"
             :heading="configStore.getLabel('search', 'refine')"
+            ref="subcategoryFilter"
             @filter-updated="updateSubcategoryKey"
         />
     </div>
@@ -103,6 +105,8 @@ const configStore = useConfigStore();
 const searchStore = useSearchStore();
 
 const route = useRoute();
+const categoryFilter = ref(null);
+const subcategoryFilter = ref(null);
 
 type Props = {
     cludoApiKey?: string;
@@ -411,12 +415,12 @@ onMounted(() => {
 });
 
 // Reset the filter scroll when a search has run (isLoading is set from true to false).
-// watch(isLoading, (newValue) => {
-//     if (!newValue) {
-//         categoryFilter.value?.resetScroll();
-//         subCategoryFilter.value?.resetScroll();
-//     }
-// });
+watch(isLoading, (newValue) => {
+    if (!newValue) {
+        categoryFilter.value?.resetScroll();
+        subcategoryFilter.value?.resetScroll();
+    }
+});
 </script>
 
 <style lang="scss">

@@ -32,7 +32,7 @@
     <VsContainer
         v-else
     >
-        <VsBrSearch />
+        <VsBrSearch :modules="modules" />
         <hr>
         <VsFederatedSearch
             :cludo-api-key="configStore.cludoExperienceId "
