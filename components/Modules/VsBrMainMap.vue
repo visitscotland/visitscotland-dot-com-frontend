@@ -15,7 +15,7 @@
         :no-results-message="`${configStore.getLabel('map', 'map.no-results-message')}`"
         :reset-map-no-results-message="`${configStore.getLabel('map', 'map.reset')}`"
         :category-labels="module.filters"
-        categories-location="http://127.0.0.1:3000/map-categories.json"
+        categories-location="https://static.visitscotland.com/maps-resources/main-map/map-categories.json"
         :labels="labels"
         language-code="EN"
     />
