@@ -1,40 +1,46 @@
 <template>
-    <div>
-        <VsBrSearchInput />
+    <div class="vs-search">
+        <div class="vs-search__container">
+            <VsBrSearchInput />
 
-        <VsBrDivider />
+            <VsBrDivider />
 
-        <template
-            v-for="(module, index) in modules"
-            :key="module.id"
-        >
-            <VsBrModuleBuilder
-                v-if="moduleNames[index] === searchStore.categoryKey"
-                :modules="[module]"
-            />
-        </template>
+            <template
+                v-for="(module, index) in modules"
+                :key="module.id"
+            >
+                <VsBrModuleBuilder
+                    v-if="moduleNames[index] === searchStore.categoryKey"
+                    :modules="[module]"
+                />
+            </template>
 
-        <div class="vs-search__results">
-            <div>
-                <VsHeading
-                    class="my-0"
-                    heading-style="heading-m"
-                    :level="2"
-                >
-                    {{ configStore.getLabel('search', 'search.results') }}
-                </VsHeading>
-                <VsDetail>
-                    {{ configStore.getLabel('search', 'results.first-sentence') }}
-                    {{ searchStore.totalResults }}
-                    {{ configStore.getLabel('search', 'results.second-sentence') }}
-                </VsDetail>
+            <div class="vs-search__results">
+                <div>
+                    <VsHeading
+                        class="my-0"
+                        heading-style="heading-m"
+                        :level="2"
+                    >
+                        {{ configStore.getLabel('search', 'search.results') }}
+                    </VsHeading>
+                    <VsDetail>
+                        {{ configStore.getLabel('search', 'results.first-sentence') }}
+                        {{ searchStore.totalResults }}
+                        {{ configStore.getLabel('search', 'results.second-sentence') }}
+                    </VsDetail>
+                </div>
+                <VsBrSearchSort v-if="searchStore.categoryKey === 'events'" />
             </div>
-            <VsBrSearchSort v-if="searchStore.categoryKey === 'events'" />
+
+            <VsLoadingSpinner v-if="searchStore.isLoading" />
+
+            <VsBrSearchResultsDisplay v-else />   
         </div>
 
-        <VsLoadingSpinner v-if="searchStore.isLoading" />
-
-        <VsBrSearchResultsDisplay v-else />
+        <VsWarning class="vs-search__error--no-js mb-300">
+            {{ configStore.getLabel('search', 'no-js') }}
+        </VsWarning>
     </div>
 </template>
 
@@ -46,6 +52,7 @@ import {
     VsDetail,
     VsHeading,
     VsLoadingSpinner,
+    VsWarning,
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
@@ -111,6 +118,22 @@ onMounted(() => {
         @media (max-width: 768px) {
             flex-direction: column;
             gap: 2rem;
+        }
+    }
+
+    &__error--no-js {
+        display: none;
+    }
+}
+
+.no-js {
+    .vs-search {
+        &__container {
+            display: none;
+        }
+
+        &__error--no-js {
+            display: block;
         }
     }
 }
