@@ -13,7 +13,7 @@
         :no-cookies-message="`${configStore.getLabel('map', 'map.cookies-message')}`"
         :cookie-btn-message="`${configStore.getLabel('essentials.global', 'cookie.link-message')}`"
         :no-results-message="`${configStore.getLabel('map', 'map.no-results-message')}`"
-        :reset-map-no-results-message="`Reset the map`"
+        :reset-map-no-results-message="`${configStore.getLabel('map', 'map.reset')}`"
         :category-labels="module.filters"
         categories-location="https://static.visitscotland.com/maps-resources/main-map/map-categories.json"
         :labels="labels"
@@ -39,7 +39,7 @@ const labels: Object = computed(() => ({
     closeSidebarBtn: configStore.getLabel('map', 'map.close-panel'),
     inputPlaceholder: configStore.getLabel('map', 'map.placeholder'),
     searchButton: configStore.getLabel('map', 'map.search'),
-    clearMap: 'Clear Map', // configStore.getLabel('map', 'map.clear'),
+    clearMap: configStore.getLabel('map', 'map.clear'),
     subFilterHeader: configStore.getLabel('map', 'map.sub-filter'),
     searchResults: configStore.getLabel('map', 'map.search-results'),
     openSidebarButton: configStore.getLabel('map', 'map.open-panel'),
