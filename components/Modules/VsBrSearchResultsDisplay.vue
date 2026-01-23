@@ -1,10 +1,7 @@
 <template>
-    <div
-        v-if="!searchStore.isLoading
-            && searchStore.searchResults
-            && !searchStore.eventsApiError"
-    >
+    <div v-if="!searchStore.isLoading">
         <VsCardGroup
+            v-if="!errorMessage"
             :cards-per-row="3"
             :class="searchStore.searchResults && totalPages <= 1 ? 'mb-300' : null"
         >
@@ -115,6 +112,13 @@
             v-model="searchStore.currentPage"
             @page-click="loadPage"
         />
+
+        <div
+            v-if="errorMessage"
+            class="vs-federated-search__warning mb-300"
+        >
+            <VsWarning>{{ errorMessage }}</VsWarning>
+        </div>
     </div>
 </template>
 
@@ -131,6 +135,7 @@ import {
     VsImg,
     VsLink,
     VsPagination,
+    VsWarning,
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
@@ -212,6 +217,28 @@ function loadPage(pageNumber: number) {
     // eslint-disable-next-line no-use-before-define
     paginationClickAnalytics(paginatingForward);
 }
+
+const errorMessage = computed(() => {
+    if (searchStore.dateError && !searchStore.isLoading) {
+        return configStore.getLabel('search', 'error.date');
+    }
+
+    if (searchStore.cludoApiError && searchStore.eventsApiError) {
+        return configStore.getLabel('search', 'error.cludo');
+    }
+
+    if (searchStore.eventsApiError && searchStore.categoryKey === 'events') {
+        // Display events error]
+        return configStore.getLabel('search', 'error.events');
+    }
+
+    if (searchStore.totalResults === 0 && !searchStore.isLoading) {
+        // Display no results error.
+        return configStore.getLabel('search', 'no-results');
+    }
+
+    return null;
+});
 
 function eventClickAnalytics(result) {
     // eventHasBeenClicked.value = true;

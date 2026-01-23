@@ -126,7 +126,7 @@ const {
 
 const { isLoading } = storeToRefs(searchStore);
 
-const searchSuggestions = ref([]);
+const searchSuggestions = ref<string[]>([]);
 // const categoryFilter = ref(null);
 // const subcategoryFilter = ref(null);
 
@@ -134,7 +134,7 @@ async function updateSearchTerm(term: string) {
     searchStore.searchTerm = term.trim();
 
     if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm) {
-        searchSuggestions.value = await $fetch('/api/search/cludo-autocomplete', {
+        const response: { suggestions: string[], error: any } = await $fetch('/api/search/cludo-autocomplete', {
             method: 'post',
             body: {
                 searchTerm: searchStore.searchTerm,
@@ -143,6 +143,16 @@ async function updateSearchTerm(term: string) {
                 cludoEngineId: parseInt(configStore.cludoEngineId, 10),
             },
         });
+
+        searchSuggestions.value = response.suggestions;
+
+        if (response.error) {
+            console.error(response.error.message);
+        }
+    }
+
+    if (!searchStore.searchTerm) {
+        searchSuggestions.value = [];
     }
 
     // const url = window.location.search;

@@ -88,14 +88,14 @@ onMounted(() => {
         searchStore.subcategoryKeys = routeSubcategories.split(',');
     }
 
-    searchStore.currentPage = Number(route.query.page);
-    searchStore.fromDate = route.query['from-date'] as string;
+    searchStore.currentPage = Number(route.query.page) || 1;
+    searchStore.fromDate = route.query['from-date'] as string || new Date().toJSON().slice(0, 10);
     searchStore.toDate = route.query['to-date'] as string;
     searchStore.sortBy = route.query['sort-by'] as string;
     searchStore.location = route.query.location as string;
     searchStore.postcode = route.query.postcode as string;
     searchStore.postcodeareas = route.query.postcodeareas as string;
-    searchStore.radius = Number(route.query.radius);
+    searchStore.radius = Number(route.query.radius) || 0;
 
     searchStore.getSearchResults();
 });

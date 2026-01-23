@@ -27,10 +27,6 @@ export default defineEventHandler(async(event) => {
     // eslint-disable-next-line no-undef
     const body = await readBody(event);
 
-    // const federatedSearchStore = useFederatedSearchStore();
-    // federatedSearchStore.eventsApiError = false;
-    // federatedSearchStore.cludoError = false;
-
     let url = `${body.eventsApiUrl}?lang=${body.siteLanguage}`;
     url = body.searchTerm ? `${url}&query=${body.searchTerm}` : url;
     url = body.page > 1 ? `${url}&page=${body.page}` : url;
@@ -51,9 +47,7 @@ export default defineEventHandler(async(event) => {
         const response = await fetch(url);
 
         if (!response.ok) {
-            // federatedSearchStore.isLoading = false;
-            // federatedSearchStore.eventsApiError = true;
-            throw new Error(`Events response message: ${response.status}`);
+            throw new Error(`Events search error: ${response.status}`);
         }
 
         const results = await response.json();
@@ -61,13 +55,18 @@ export default defineEventHandler(async(event) => {
         return {
             results: cleanData(results),
             totalResults: results.totalResults,
+            error: null,
         };
-    } catch (error) {
-        // federatedSearchStore.isLoading = false;
-        // federatedSearchStore.eventsApiError = true;
+    } catch (error: any) {
+        console.error('Events search error', error);
+
         return {
             results: [],
             totalResults: 0,
+            error: {
+                message: 'Events search error.',
+                status: error?.status || 500,
+            },
         };
     }
 });

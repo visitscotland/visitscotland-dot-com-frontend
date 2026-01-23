@@ -20,11 +20,24 @@ export default defineEventHandler(async(event) => {
         });
 
         if (!response.ok) {
-            throw new Error(`Autocomplete search error ${response.status}`);
+            throw new Error(`Cludo autocomplete search error ${response.status}`);
         }
 
-        return await response.json();
-    } catch (error) {
-        throw new Error(`Autocomplete search error: ${error}`);
+        const suggestions = await response.json();
+
+        return {
+            suggestions,
+            error: null,
+        };
+    } catch (error: any) {
+        console.error('Cludo autocomplete error', error);
+
+        return {
+            suggestions: null,
+            error: {
+                message: 'Cludo autocomplete search error.',
+                status: error?.status || 500,
+            },
+        };
     }
 });

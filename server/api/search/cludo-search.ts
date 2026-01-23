@@ -35,20 +35,6 @@ export default defineEventHandler(async(event) => {
     const cludoApiCallUrl = `${cludoBaseURL}/${body.cludoCustomerId}/${body.cludoEngineId}/search`;
     const cludoAuth = `${body.cludoCustomerId}:${body.cludoApiKey}`;
 
-    // const federatedSearchStore = useFederatedSearchStore();
-    // federatedSearchStore.eventsApiError = false;
-    // federatedSearchStore.cludoError = false;
-
-    // If no Cludo Credentials passed, show error message instead.
-    // if (!cludoCredentials) {
-    //     federatedSearchStore.cludoError = true;
-    //     federatedSearchStore.isLoading = false;
-    //     return {
-    //         results: [],
-    //         totalResults: 0,
-    //     };
-    // }
-
     // Don't query the Cludo API when the "Events & Festivals" is selected
     // as this data only comes from the Events API (DataThistle).
     if (body.categoryKey === 'events') {
@@ -78,8 +64,6 @@ export default defineEventHandler(async(event) => {
         });
 
         if (!response.ok) {
-            // federatedSearchStore.cludoError = true;
-            // federatedSearchStore.isLoading = false;
             throw new Error(`Cludo response message: ${response.status}`);
         }
 
@@ -90,13 +74,17 @@ export default defineEventHandler(async(event) => {
         return {
             results: cleanResults,
             totalResults: results.TotalDocument,
+            error: null,
         };
-    } catch (error) {
-        // federatedSearchStore.cludoError = true;
-        // federatedSearchStore.isLoading = false;
+    } catch (error: any) {
+        console.error('Cludo search error', error);
         return {
             results: [],
             totalResults: 0,
+            error: {
+                message: 'Cludo search error.',
+                status: error?.status || 500,
+            },
         };
     }
 });

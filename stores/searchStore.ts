@@ -1,12 +1,15 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 import useConfigStore from './configStore.ts';
 
 const useSearchStore = defineStore('search', () => {
     // General
+    const cludoApiError = ref(false);
+    const eventsApiError = ref(false);
     const configStore = useConfigStore();
     const isLoading = ref(false);
+    const dateError = ref(false);
 
     // Search input
     const searchTerm = ref<string>();
@@ -36,6 +39,13 @@ const useSearchStore = defineStore('search', () => {
     // Analytics
     const searchInSessionCount = ref(-1);
 
+    watchEffect(() => {
+        // Validate dates.
+        if (fromDate.value && toDate.value) {
+            dateError.value = fromDate.value > toDate.value;
+        }
+    });
+
     async function getSearchResults(isAutoSearch = false) {
         isLoading.value = true;
 
@@ -55,6 +65,11 @@ const useSearchStore = defineStore('search', () => {
             },
         });
 
+        if (cludoResults.error) {
+            cludoApiError.value = true;
+            console.error(cludoResults.error);
+        }
+
         const eventsResults: any = await $fetch('/api/search/events-search', {
             method: 'post',
             body: {
@@ -73,6 +88,11 @@ const useSearchStore = defineStore('search', () => {
                 subcategoryKeys: subcategoryKeys.value,
             },
         });
+
+        if (eventsResults.error) {
+            eventsApiError.value = true;
+            console.error(eventsResults.error);
+        }
 
         searchResults.value = [...cludoResults.results, ...eventsResults.results];
 
@@ -132,7 +152,10 @@ const useSearchStore = defineStore('search', () => {
 
     return {
         categoryKey,
+        cludoApiError,
         currentPage,
+        dateError,
+        eventsApiError,
         fromDate,
         getSearchResults,
         isLoading,
