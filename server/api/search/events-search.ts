@@ -1,9 +1,9 @@
-// import useFederatedSearchStore from '~/stores/federatedSearch.store.ts';
+import type { SearchApiResult } from '~/types/types';
 
 function cleanData(data: any) {
     const events = data.events;
 
-    const results: any[] = events.map((event:any) => ({
+    const results: SearchApiResult[] = events.map((event: any) => ({
         id: event.id,
         parentId: event.parentId,
         title: event.name,

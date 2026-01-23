@@ -78,6 +78,8 @@
 </template>
 
 <script setup lang="ts">
+import type { SearchApiError, SearchFilterCategory } from '~/types/types';
+
 import {
     computed,
     onMounted,
@@ -104,25 +106,16 @@ import VsBrSearchFilter from './VsBrSearchFilter.vue';
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
 
+// eslint-disable-next-line no-undef
 const route = useRoute();
-const categoryFilter = ref(null);
-const subcategoryFilter = ref(null);
+const categoryFilter = ref<any>(null);
+const subcategoryFilter = ref<any>(null);
 
 type Props = {
-    cludoApiKey?: string;
-    cludoCustomerId?: number;
-    cludoEngineId?: number;
     isSearchWidget?: boolean;
-    searchUrl?: string;
 }
 
-const {
-    cludoApiKey,
-    cludoCustomerId,
-    cludoEngineId,
-    isSearchWidget = false,
-    searchUrl,
-} = defineProps<Props>();
+const { isSearchWidget = false } = defineProps<Props>();
 
 const { isLoading } = storeToRefs(searchStore);
 
@@ -134,7 +127,8 @@ async function updateSearchTerm(term: string) {
     searchStore.searchTerm = term.trim();
 
     if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm) {
-        const response: { suggestions: string[], error: any } = await $fetch('/api/search/cludo-autocomplete', {
+        // eslint-disable-next-line no-undef
+        const response: { suggestions: string[], error: SearchApiError } = await $fetch('/api/search/cludo-autocomplete', {
             method: 'post',
             body: {
                 searchTerm: searchStore.searchTerm,
@@ -247,14 +241,8 @@ function categoryClickAnalytics(category) {
     // });
 }
 
-type FilterCategory = {
-    Key: string;
-    Label: string;
-    icon?: string;
-};
-
 const categories = configStore.getLabelMap('search-categories');
-const orderedCategories = ref<FilterCategory[]>([]);
+const orderedCategories = ref<SearchFilterCategory[]>([]);
 
 Object.keys(categories).forEach((key) => {
     orderedCategories.value.push({
@@ -264,7 +252,7 @@ Object.keys(categories).forEach((key) => {
 });
 
 const subcategories = configStore.getLabelMap('search-events-filters');
-const orderedSubcategories = ref<FilterCategory[]>([]);
+const orderedSubcategories = ref<SearchFilterCategory[]>([]);
 
 Object.keys(subcategories).forEach((key) => {
     orderedSubcategories.value.push({
@@ -273,7 +261,7 @@ Object.keys(subcategories).forEach((key) => {
     });
 });
 
-function updateCategoryKey(category: FilterCategory) {
+function updateCategoryKey(category: SearchFilterCategory) {
     searchStore.currentPage = 1;
     searchStore.subcategoryKeys = [];
     searchStore.fromDate = undefined;
@@ -287,7 +275,7 @@ function updateCategoryKey(category: FilterCategory) {
     searchStore.navigationSomething();
 }
 
-function updateSubcategoryKey(category: FilterCategory) {
+function updateSubcategoryKey(category: SearchFilterCategory) {
     if (!searchStore.subcategoryKeys.includes(category.Key)) {
         searchStore.subcategoryKeys.push(category.Key);
     } else {

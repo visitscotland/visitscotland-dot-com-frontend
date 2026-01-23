@@ -123,7 +123,10 @@
 </template>
 
 <script setup lang="ts">
+import type { SearchApiResult } from '~/types/types';
+
 import { computed } from 'vue';
+
 import {
     VsBadge,
     VsBody,
@@ -163,7 +166,7 @@ const totalPages = computed(() => {
     return pageCount;
 });
 
-function formattedPrice(price: number) {
+function formattedPrice(price: string | number) {
     if (price === null) return '';
 
     const priceStr = price.toString();
@@ -171,20 +174,18 @@ function formattedPrice(price: number) {
     return priceStr.match(/\b\d+\.\d\b/) ? `£${price}0` : `£${price}`;
 };
 
-function setEventDate(startDate: string, endDate: string) {
+function setEventDate(startDate: string, endDate: string | undefined) {
     return (startDate === endDate)
         ? startDate
         : `${startDate} - ${endDate}`;
 }
 
-function setCardLink(result: any) {
-    if (result.url) {
-        return result.url;
-    }
+function setCardLink(result: SearchApiResult) {
+    if (result.url) return result.url;
 
-    if (result.placeUrl) {
-        return result.placeUrl;
-    }
+    if (result.placeUrl) return result.placeUrl;
+
+    if (!result.title) return null;
 
     const dataThistleBase = 'https://www.datathistle.com/event/';
     const title = encodeURIComponent(

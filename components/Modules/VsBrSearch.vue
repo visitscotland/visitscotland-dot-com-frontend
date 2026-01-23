@@ -35,7 +35,7 @@
 
             <VsLoadingSpinner v-if="searchStore.isLoading" />
 
-            <VsBrSearchResultsDisplay v-else />   
+            <VsBrSearchResultsDisplay v-else />
         </div>
 
         <VsWarning class="vs-search__error--no-js mb-300">
@@ -68,6 +68,7 @@ const page: Page | undefined = inject('page');
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
 
+// eslint-disable-next-line no-undef
 const route = useRoute();
 
 type Props = {
@@ -81,7 +82,7 @@ const moduleNames = [];
 for (let x = 0; x < modules.length; x++) {
     const hippoBean = page?.getContent(modules[x].hippoBean.$ref);
 
-    moduleNames.push(hippoBean.model.data.name);
+    moduleNames.push(hippoBean?.model.data.name);
 }
 
 onMounted(() => {

@@ -56,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import type { SearchFilterCategory } from '~/types/types';
 import { ref, computed } from 'vue';
 import { VsBody, VsButton } from '@visitscotland/component-library/components';
 
@@ -63,16 +64,10 @@ import useConfigStore from '~/stores/configStore.ts';
 
 const configStore = useConfigStore();
 
-type FilterCategory = {
-    Key: string;
-    Label: string;
-    icon?: string;
-};
-
 type Props = {
     activeFilter?: string | string[];
     displayScrollButtons?: boolean;
-    filterCategories: FilterCategory[];
+    filterCategories: SearchFilterCategory[];
     heading?: string;
     isSearchWidget?: boolean;
     scrollButtonLeftText?: string;
@@ -96,7 +91,7 @@ const {
 defineEmits(['filter-updated']);
 
 // Defines the scroll rail from the Template
-const scrollRail = ref(null);
+const scrollRail = ref<HTMLDivElement | null>(null);
 
 // Map filter categories to an icon.
 const itemIconMap: { [key: string]: string; } = {

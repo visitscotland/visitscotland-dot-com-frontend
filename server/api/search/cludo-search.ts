@@ -1,19 +1,9 @@
-// import useFederatedSearchStore from '~/stores/federatedSearch.store.ts';
-
-type CludoSearchResult = {
-    id: string;
-    title: string;
-    description: string;
-    imgSrc: string;
-    url: string;
-    dataSrc: 'cludo' | 'events';
-    categoryCard: string;
-}
+import type { SearchApiResult } from '~/types/types.ts';
 
 function cleanData(data: any) {
     const documents = data.TypedDocuments;
 
-    const results: CludoSearchResult[] = documents.map((document: any) => ({
+    const results: SearchApiResult[] = documents.map((document: any) => ({
         id: document.Fields.Id.Value || '',
         title: document.Fields.Title.Value || '',
         description: document.Fields.Description.Value || '',
@@ -35,15 +25,6 @@ export default defineEventHandler(async(event) => {
     const cludoApiCallUrl = `${cludoBaseURL}/${body.cludoCustomerId}/${body.cludoEngineId}/search`;
     const cludoAuth = `${body.cludoCustomerId}:${body.cludoApiKey}`;
 
-    // Don't query the Cludo API when the "Events & Festivals" is selected
-    // as this data only comes from the Events API (DataThistle).
-    if (body.categoryKey === 'events') {
-        return {
-            results: [],
-            totalResults: 0,
-        };
-    }
-
     try {
         const response = await fetch(cludoApiCallUrl, {
             method: 'POST',
@@ -51,7 +32,7 @@ export default defineEventHandler(async(event) => {
                 query: body.searchTerm || '*',
                 operator: 'or',
                 responseType: 'JsonObject',
-                perPage: body.categoryKey ? 12 : 6,
+                perPage: 6,
                 page: body.page,
                 facets: {
                     Category: body.categoryKey ? [body.categoryKey] : null,

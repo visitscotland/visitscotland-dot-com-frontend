@@ -1,3 +1,4 @@
+import type { SearchApiResults, SearchApiResult } from '~/types/types.ts';
 import { defineStore } from 'pinia';
 import { ref, watchEffect } from 'vue';
 
@@ -31,7 +32,7 @@ const useSearchStore = defineStore('search', () => {
 
     // Search results
     const currentPage = ref(1);
-    const searchResults = ref<any>([]);
+    const searchResults = ref<SearchApiResult[]>([]);
     const totalResults = ref(0);
     const totalResultsCludo = ref(0);
     const totalResultsEvents = ref(0);
@@ -53,7 +54,8 @@ const useSearchStore = defineStore('search', () => {
             searchInSessionCount.value += 1;
         }
 
-        const cludoResults: any = await $fetch('/api/search/cludo-search', {
+        // eslint-disable-next-line no-undef
+        const cludoResults: SearchApiResults = await $fetch('/api/search/cludo-search', {
             method: 'post',
             body: {
                 categoryKey: categoryKey.value,
@@ -70,7 +72,8 @@ const useSearchStore = defineStore('search', () => {
             console.error(cludoResults.error);
         }
 
-        const eventsResults: any = await $fetch('/api/search/events-search', {
+        // eslint-disable-next-line no-undef
+        const eventsResults: SearchApiResults = await $fetch('/api/search/events-search', {
             method: 'post',
             body: {
                 categoryKey: categoryKey.value,
@@ -104,10 +107,13 @@ const useSearchStore = defineStore('search', () => {
     }
 
     async function navigationSomething() {
+        // eslint-disable-next-line no-undef
         const route = useRoute();
 
-        delete route.query;
+        // eslint-disable-next-line object-curly-newline
+        route.query = {};
 
+        // eslint-disable-next-line no-undef
         await navigateTo({
             path: route.path,
             query: {

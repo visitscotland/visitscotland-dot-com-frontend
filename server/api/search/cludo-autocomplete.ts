@@ -23,7 +23,7 @@ export default defineEventHandler(async(event) => {
             throw new Error(`Cludo autocomplete search error ${response.status}`);
         }
 
-        const suggestions = await response.json();
+        const suggestions: string[] = await response.json();
 
         return {
             suggestions,
