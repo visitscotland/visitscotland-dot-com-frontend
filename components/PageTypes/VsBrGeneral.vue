@@ -195,7 +195,8 @@ if (page.value) {
         }
     }
 
-    if (window && window.location.pathname === configStore.globalSearchPath) {
+    if (window
+        && window.location.pathname.includes(configStore.globalSearchPath)) {
         isSearchResultsPage = true;
     }
 }
