@@ -36,13 +36,25 @@ const page: Page | undefined = inject('page');
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;
 
-let image: any = module.image.cmsImage
-    ? page.getContent(module.image.cmsImage.$ref)
-    : page.getContent(module.image.externalImage.$ref);
+let image: any = null;
 
-image = image?.getOriginal().getUrl();
+if (module.image.cmsImage) {
+    image = page.getContent(module.image.cmsImage.$ref);
+    image = image.getOriginal().getUrl();
+} else if (module.image.externalImage) {
+    if (module.image.externalImage.$ref) {
+        image = page.getContent(module.image.externalImage.$ref);
+        image = image.getOriginal().getUrl();
+    } else {
+        image = module.image.externalImage;
+    }
+}
 
-const description = module.copy.value.replace(/<[^>]+>/g, '');
+let description = module.copy.value.replace(/<[^>]+>/g, '');
+
+const decoder = document.createElement('textarea');
+decoder.innerHTML = description;
+description = decoder.value;
 
 </script>
 
