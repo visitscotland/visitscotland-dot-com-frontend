@@ -17,7 +17,7 @@
         :category-labels="module.filters"
         categories-location="https://static.visitscotland.com/maps-resources/main-map/map-categories.json"
         :labels="labels"
-        language-code="EN"
+        :language-code="`${configStore.locale}`"
     />
 </template>
 
