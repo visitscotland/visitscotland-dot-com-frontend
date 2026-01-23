@@ -22,6 +22,8 @@ interface IConfigState {
     searchDmsBased: boolean,
     eventsApiUrl: string,
     showSearchWidget: boolean,
+    googleMapApiKey: string,
+    isMainMapPageFlag: boolean,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -51,6 +53,8 @@ const useConfigStore = defineStore('configStore', {
         searchDmsBased: false,
         eventsApiUrl: '',
         showSearchWidget: false,
+        googleMapApiKey: '',
+        isMainMapPageFlag: false,
     }),
     actions: {
         getLabel(section: string, key: string) {
