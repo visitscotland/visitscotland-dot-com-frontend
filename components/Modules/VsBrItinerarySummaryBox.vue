@@ -7,7 +7,7 @@
             />
             <VsSummaryBoxDistanceListItem
                 :miles="`${itinerary.distance}`"
-                :kilometres="`${(itinerary.distance * 1.6).toFixed(0)}`"
+                :kilometres="`${(itinerary.distance * 1.6).toLocaleString(undefined, { maximumFractionDigits: 0 })}`"
                 :miles-label="configStore.getLabel('itinerary', 'miles')"
                 :kilometres-label="configStore.getLabel('itinerary', 'kilometres-abbreviation')"
                 :distance-label="configStore.getLabel('itinerary', 'distance')"
@@ -15,12 +15,12 @@
             <VsSummaryBoxListItem
                 :icon="getDMSIconName(allTransports[0]?.key || '')"
                 :icon-label="allTransports[0]?.displayName || ''"
-                :label="allTransports[0]?.displayName || ''"
+                :label="configStore.getLabel('itinerary', 'transport')"
             />
             <VsSummaryBoxListItem
                 :icon="getDMSIconName(theme.key)"
                 :icon-label="theme.displayName"
-                :label="theme.displayName"
+                :label="configStore.getLabel('itinerary', 'theme')"
             />
         </VsSummaryBoxList>
     </VsCol>

@@ -39,7 +39,7 @@
                         >
                             <VsFooterNavListItem
                                 v-if="childItem.model.title"
-                                :href="childItem.getUrl()"
+                                :href="getNavLink(childItem)"
                                 :link-text="childItem.model.title"
                                 :type="childItem.model.links.site && childItem.model.links.site.type === 'external'
                                     ? childItem.model.links.site.type
@@ -79,7 +79,7 @@
                 <VsFooterNavListItem
                     v-for="(utilityItem, childIndex) in utilityMenu.children"
                     :key="childIndex"
-                    :href="utilityItem.getUrl()"
+                    :href="getNavLink(utilityItem)"
                     :link-text="utilityItem.model.title"
                     :type="utilityItem.model.links.site && utilityItem.model.links.site.type === 'external'
                         ? utilityItem.model.links.site.type
@@ -107,6 +107,8 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
+
+import getNavLink from '~/composables/getNavLink.ts';
 
 import {
     VsFooter,

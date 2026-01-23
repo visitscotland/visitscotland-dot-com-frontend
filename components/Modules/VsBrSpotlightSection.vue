@@ -8,7 +8,7 @@
                     :cta-link="formatLink(module.cta.link)"
                     :cta-text="module.cta.label"
                     :description="description"
-                    :compact="module.layout === compact ? true : false"
+                    :compact="module.layout === 'compact' ? true : false"
                 />
             </VsCol>
         </VsRow>

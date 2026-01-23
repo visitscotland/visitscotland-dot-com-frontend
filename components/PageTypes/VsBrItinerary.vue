@@ -28,9 +28,9 @@
                     #day-introduction
                     v-if="day.introduction"
                 >
-                    <div
-                        v-html="day.introduction.value"
-                    />
+                    <VsBody>
+                        <VsBrRichText :input-content="day.introduction.value" />
+                    </VsBody>
                 </template>
 
                 <template
@@ -134,6 +134,7 @@ import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrItineraryStop from '~/components/Modules/VsBrItineraryStop.vue';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
     VsItinerary,
@@ -141,6 +142,7 @@ import {
     VsDescriptionList,
     VsDescriptionListItem,
     VsTooltip,
+    VsBody,
 } from '@visitscotland/component-library/components';
 
 const VsBrItineraryMap = defineAsyncComponent(() => import('~/components/Modules/VsBrItineraryMap.vue'));

@@ -46,16 +46,40 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
+        <div
+            v-if="documentData && documentData.categoryLinks"
+            class="mt-175 mt-md-500 mb-175 mb-md-500"
+        >
+            <VsBrCategorySection
+                :categories="documentData.categoryLinks"
+            />
+        </div>
+    </NuxtLazyHydrate>
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
         <VsBrProductSearch
             v-if="productSearch && productSearch.position === 'Top'"
             class="mb-300 mb-lg-600 pt-300"
         />
     </NuxtLazyHydrate>
 
-    <VsBrModuleBuilder
-        v-if="pageItems"
-        :modules="pageItems"
-    />
+    <template
+        v-if="isSearchResultsPage"
+    >
+        <VsBrSearchResults
+            :modules="pageItems"
+        />
+    </template>
+    <template
+        v-else
+    >
+        <VsBrModuleBuilder
+            v-if="pageItems"
+            :modules="pageItems"
+        />
+    </template>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -69,7 +93,15 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
-        v-if="!configStore.isMainMapPageFlag"
+        v-if="configStore.showSearchWidget"
+    >
+        <div class="mt-175 mt-md-500 mb-175 mb-md-500">
+            <VsBrSiteSearchWidget />
+        </div>
+    </NuxtLazyHydrate>
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
     >
         <VsBrSocialShare
             :no-js="true"
@@ -112,6 +144,9 @@ import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
+import VsBrCategorySection from '~/components/Modules/VsBrCategorySection.vue';
+import VsBrSearchResults from '~/components/Modules/VsBrSearchResults.vue';
+import VsBrSiteSearchWidget from '~/components/Modules/VsBrSiteSearchWidget.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
@@ -132,6 +167,7 @@ let otyml : any = null;
 const configStore = useConfigStore();
 
 let firstModuleIsLink = false;
+let isSearchResultsPage = false;
 
 if (page.value) {
     document = page.value.getDocument();
@@ -160,6 +196,10 @@ if (page.value) {
         ) {
             firstModuleIsLink = true;
         }
+    }
+
+    if (window && window.location.pathname === configStore.globalSearchPath) {
+        isSearchResultsPage = true;
     }
 }
 </script>

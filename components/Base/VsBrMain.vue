@@ -38,12 +38,6 @@
             :component="component"
         />
 
-        <VsBr404
-            v-else-if="pageName === 'pagenotfound'"
-            :page="page"
-            :component="component"
-        />
-
         <VsBr500
             v-else-if="pageName === 'servererror'"
             :page="page"
@@ -64,7 +58,6 @@ import useConfigStore from '~/stores/configStore.ts';
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
-import VsBr404 from '~/components/PageTypes/VsBr404.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
 import VsBrGtm from '~/components/Modules/VsBrGtm.vue';
@@ -129,9 +122,23 @@ if (page.value) {
     }
 
     if (componentModels.pageConfiguration) {
+        configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
+        configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];
+        configStore.cludoExperienceId = componentModels.pageConfiguration['cludo.experience-id'];
+        configStore.cludoEngineId = componentModels.pageConfiguration['cludo.engine-id'];
+        configStore.cludoLanguage = componentModels.pageConfiguration.language;
+        configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
         configStore.googleMapApiKey = componentModels.pageConfiguration['mapsAPI'];
         configStore.isMainMapPageFlag = componentModels.pageConfiguration['mainMapPage'];
-    };
+
+        if (componentModels.pageConfiguration['dms-based']) {
+            configStore.searchDmsBased = true;
+        }
+
+        if (componentModels.pageConfiguration.searchWidget) {
+            configStore.showSearchWidget = true;
+        }
+    }
 
     pageDocument = page.value.getDocument();
 
@@ -159,6 +166,10 @@ if (page.value) {
     default:
         langString = 'en-gb';
         break;
+    }
+
+    if (langString !== 'en-gb') {
+        configStore.langString = langString;
     }
 
     const runtimeConfig = useRuntimeConfig();
@@ -201,10 +212,35 @@ if (page.value) {
             },
             {
                 rel: 'canonical',
-                href: useRequestURL().toString(),
+                href: useRequestURL().toString().split('?')[0],
             },
         ],
     });
+
+    if (configStore.searchDmsBased) {
+        useHead({
+            script: [
+                {
+                    innerHTML: `
+                        var cludo_engineId = ${configStore.cludoEngineId};
+                        var cludo_language = '${configStore.cludoLanguage}';
+                        var cludo_searchUrl = '${configStore.globalSearchPath}';
+                    `,
+                    tagPosition: 'head',
+                },
+                {
+                    src: 'https://customer.cludo.com/scripts/bundles/search-script.js',
+                    onload: () => {
+                        const helperScript = document.createElement('script');
+                        helperScript.src = 'https://customer.cludo.com/assets/623/12809/cludo-helper.js';
+                        document.head.appendChild(helperScript);
+                    },
+                    async: false,
+                    defer: false,
+                },
+            ],
+        });
+    }
 }
 
 provide('page', page.value);

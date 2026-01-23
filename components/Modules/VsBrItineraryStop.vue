@@ -13,9 +13,9 @@
         <template
             #stop-description
         >
-            <div
-                v-html="stop.description.value"
-            />
+            <VsBody>
+                <VsBrRichText :input-content="stop.description.value" />
+            </VsBody>
 
             <VsLink
                 v-if="stop.ctaLink"
@@ -83,6 +83,7 @@
 
         <template
             #stop-facilities
+            v-if="stop.facilities && stop.facilities.length"
         >
             <VsIconList
                 :title="configStore.getLabel('itinerary', 'keyfacilities.title')"
@@ -100,12 +101,13 @@
             #stop-buttons
             v-if="isLastStop"
         >
-            <VsItineraryBorderOverlapWrapper>
+            <VsItineraryBorderOverlapWrapper v-if="nearbyEatLink || nearbyStayLink">
                 <VsButton
                     class="mb-075"
                     variant="secondary"
                     icon="food"
                     :href="nearbyEatLink"
+                    v-if="nearbyEatLink"
                 >
                     {{ configStore.getLabel("itinerary", "stop.nearby-eat") }}
                 </VsButton>
@@ -113,6 +115,7 @@
                     variant="secondary"
                     icon="product-accommodation"
                     :href="nearbyStayLink"
+                    v-if="nearbyStayLink"
                 >
                     {{ configStore.getLabel("itinerary", "stop.nearby-stay") }}
                 </VsButton>
@@ -125,6 +128,7 @@
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
     VsItineraryStop,
@@ -138,6 +142,7 @@ import {
     VsIconList,
     VsIconListItem,
     VsSvg,
+    VsBody,
 } from '@visitscotland/component-library/components';
 
 const props = defineProps<{
