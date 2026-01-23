@@ -10,7 +10,7 @@
         <VsBreadcrumbItem
             v-for="(item, index) in definedBreadcrumb"
             :key="index"
-            :href="item.link.href"
+            :href="getNavLink(item)"
             :text="item.title"
             :active="index === definedBreadcrumb.length - 1"
         />
@@ -27,6 +27,8 @@ import {
     VsBreadcrumbItem,
 } from '@visitscotland/component-library/components';
 
+import getNavLink from '~/composables/getNavLink.ts';
+
 import useConfigStore from '~/stores/configStore.ts';
 
 const configStore = useConfigStore();
@@ -36,7 +38,11 @@ const props = defineProps<{
     isHome: boolean,
 }>();
 
-const rootUrl = window ? window.location.origin : '';
+let rootUrl = window ? window.location.origin : '';
+
+if (configStore.langString) {
+    rootUrl = `${rootUrl}/${configStore.langString}`;
+}
 
 const { breadcrumb, isHome } = toRefs(props);
 

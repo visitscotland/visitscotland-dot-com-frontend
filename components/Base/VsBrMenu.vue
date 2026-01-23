@@ -48,7 +48,7 @@
             <BrManageMenuButton :menu="menuData" />
 
             <VsMeganav
-                href="/"
+                :href="`/${configStore.langString}`"
                 :menu-toggle-alt-text="configStore.getLabel('navigation.static', 'meganav-toggle-btn-alt-text')"
                 :search-button-text="configStore.getLabel('search', 'search')"
                 :search-label-text="configStore.getLabel('search', 'search-label')"
@@ -56,6 +56,7 @@
                 :search-close-button-text="configStore.getLabel('search', 'close-form')"
                 :logo-alt-text="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
                 :is-static="true"
+                :search-link="configStore.searchDmsBased ? '' : configStore.globalSearchPath"
             >
                 <template #mega-nav-top-menu-items>
                     <VsBrMegaNav

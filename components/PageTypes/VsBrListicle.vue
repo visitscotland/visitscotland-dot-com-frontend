@@ -52,7 +52,7 @@
                                 >
                                     <VsLink
                                         :href="formatLink(cta.link)"
-                                        :type="cta.type.toLowerCase()"
+                                        :type="cta.type.toLowerCase() === 'internal' ? null : cta.type.toLowerCase()"
                                     >
                                         {{ cta.label }}<span class="visually-hidden">: {{ item.title }}</span>
                                     </VsLink>
