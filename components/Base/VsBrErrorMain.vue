@@ -6,7 +6,7 @@
         <VsBrGtm />
 
         <VsBrPageViewEvent
-            :data="configStore.pageDocument.model.data"
+            :data="pageDocument.model.data"
             :page-type="pageName"
         />
 
@@ -68,9 +68,9 @@ if (page.value) {
     const pageModels : any = pageContent.models;
     pageDocument = page.value.getContent(pageModels.document);
 
-    configStore.pageDocument = pageDocument;
+    configStore.pageDocument = pageModels.document;
 
-    configStore.locale = configStore.pageDocument.model.data.localeString;
+    configStore.locale = pageDocument.model.data.localeString;
 
     let langString = '';
 

@@ -187,7 +187,9 @@ let listicleItems = [];
 let listicleClosing = null;
 
 if (page.value) {
-    documentData = configStore.pageDocument.getData();
+    const pageDocument = page.value.getContent(configStore.pageDocument);
+
+    documentData = pageDocument.getData();
     productSearch = configStore.productSearch;
     if (configStore.otyml) {
         otyml = configStore.otyml;

@@ -144,7 +144,7 @@ if (page.value) {
     const pageModels : any = pageContent.models;
     pageDocument = page.value.getContent(pageModels.document);
 
-    configStore.pageDocument = pageDocument;
+    configStore.pageDocument = pageModels.document;
 
     configStore.locale = pageDocument.model.data.localeString;
 
