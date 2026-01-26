@@ -61,6 +61,12 @@ if (page.value) {
 
     errorData.introduction.value = `<p>${configStore.getLabel('essentials.global', 'third-party-error')}</p>`;
 
+    const pageContent : any = page.value.getContent(page.value.model.root);
+    const pageModels : any = pageContent.models;
+    pageDocument = page.value.getContent(pageModels.document);
+
+    configStore.pageDocument = pageDocument;
+
     configStore.locale = configStore.pageDocument.model.data.localeString;
 
     let langString = '';
