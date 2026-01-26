@@ -216,7 +216,6 @@ let heroVideo : any;
 let youtubeId : string = '';
 let videoCta : string = '';
 
-let document : any = null;
 let highlights : [];
 
 if (page) {
@@ -268,10 +267,8 @@ if (page) {
         }
     }
 
-    document = page.getDocument();
-
-    if (document) {
-        highlights = document.model.data.highlights;
+    if (configStore.pageDocument) {
+        highlights = configStore.pageDocument.model.data.highlights;
     }
 }
 </script>
