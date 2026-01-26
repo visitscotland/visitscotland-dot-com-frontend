@@ -1,6 +1,6 @@
 <template>
     <VsContainer>
-        <div class="row gap-175 gap-lg-0">
+        <div class="row gap-300 gap-lg-0">
             <VsCol
                 cols="12"
                 lg="4"
@@ -98,3 +98,14 @@ const imageCredit = imageValue.model.data.credit;
 const dayLabel = configStore.getLabel('itinerary', 'day');
 
 </script>
+
+<style lang="scss">
+    h3 {
+        margin-bottom: 1.25rem !important;
+        margin-top: 0 !important;
+    }
+
+    figure {
+        margin: 0;
+    }
+</style>
