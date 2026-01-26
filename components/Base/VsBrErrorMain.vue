@@ -38,6 +38,9 @@ let pageComponent : any = {
 };
 let pageName : string = '';
 
+let pageDocument : any = {
+};
+
 const errorData = {
     introduction: {
     },
