@@ -52,9 +52,11 @@ if (module.image.cmsImage) {
 
 let description = module.copy.value.replace(/<[^>]+>/g, '');
 
-const decoder = document.createElement('textarea');
-decoder.innerHTML = description;
-description = decoder.value;
+if (window && window.location) {
+    const decoder = document.createElement('textarea');
+    decoder.innerHTML = description;
+    description = decoder.value;
+}
 
 </script>
 
