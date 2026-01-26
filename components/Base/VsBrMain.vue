@@ -128,8 +128,8 @@ if (page.value) {
         configStore.cludoEngineId = componentModels.pageConfiguration['cludo.engine-id'];
         configStore.cludoLanguage = componentModels.pageConfiguration.language;
         configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
-        configStore.googleMapApiKey = componentModels.pageConfiguration['mapsAPI'];
-        configStore.isMainMapPageFlag = componentModels.pageConfiguration['mainMapPage'];
+        configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
+        configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
@@ -140,7 +140,11 @@ if (page.value) {
         }
     }
 
-    pageDocument = page.value.getDocument();
+    const pageContent : any = page.value.getContent(page.value.model.root);
+    const pageModels : any = pageContent.models;
+    pageDocument = page.value.getContent(pageModels.document);
+
+    configStore.pageDocument = pageDocument;
 
     configStore.locale = pageDocument.model.data.localeString;
 

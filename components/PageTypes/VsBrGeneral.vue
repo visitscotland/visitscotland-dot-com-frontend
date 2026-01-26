@@ -152,8 +152,6 @@ const props = defineProps<{ component: Component, page: Page }>();
 
 const { page } = toRefs(props);
 
-let document : any = {
-};
 let documentData : any = {
 };
 let pageItems : any[] = [];
@@ -170,8 +168,7 @@ let firstModuleIsLink = false;
 let isSearchResultsPage = false;
 
 if (page.value) {
-    document = page.value.getDocument();
-    documentData = document.getData();
+    documentData = configStore.pageDocument.getData();
     pageItems = configStore.pageItems;
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;

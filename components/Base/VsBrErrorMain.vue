@@ -6,7 +6,7 @@
         <VsBrGtm />
 
         <VsBrPageViewEvent
-            :data="document.model.data"
+            :data="configStore.pageDocument.model.data"
             :page-type="pageName"
         />
 
@@ -38,9 +38,6 @@ let pageComponent : any = {
 };
 let pageName : string = '';
 
-let document : any = {
-};
-
 const errorData = {
     introduction: {
     },
@@ -62,11 +59,9 @@ if (page.value) {
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
-    document = page.value.getDocument();
-
     errorData.introduction.value = `<p>${configStore.getLabel('essentials.global', 'third-party-error')}</p>`;
 
-    configStore.locale = document.model.data.localeString;
+    configStore.locale = configStore.pageDocument.model.data.localeString;
 
     let langString = '';
 
