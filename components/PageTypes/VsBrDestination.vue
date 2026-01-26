@@ -77,7 +77,9 @@ const configStore = useConfigStore();
 let firstModuleIsLink = false;
 
 if (page.value) {
-    documentData = configStore.pageDocument.getData();
+    const pageDocument = page.value.getContent(configStore.pageDocument);
+
+    documentData = pageDocument.getData();
     pageItems = configStore.pageItems;
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;

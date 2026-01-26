@@ -268,7 +268,9 @@ if (page) {
     }
 
     if (configStore.pageDocument) {
-        highlights = configStore.pageDocument.model.data.highlights;
+        const pageDocument = page.getContent(configStore.pageDocument);
+
+        highlights = pageDocument.model.data.highlights;
     }
 }
 </script>

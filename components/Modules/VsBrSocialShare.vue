@@ -66,7 +66,7 @@ let pageDocument;
 let pageTitle = '';
 
 if (page) {
-    pageDocument = configStore.pageDocument;
+    pageDocument = page.getContent(configStore.pageDocument);
 
     if (pageDocument) {
         pageTitle = pageDocument.model.data.title;
