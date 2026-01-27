@@ -26,11 +26,16 @@
             :component="component"
         />
 
-        <VsBrItinerary
-            v-if="pageName === 'itinerary-page'"
+        <VsBrItineraryLegacy
+            v-if="pageName === 'itinerary-page' && hasStops"
             :page="page"
             :component="component"
         />
+        <div
+            v-else-if="pageName === 'itinerary-page' && !hasStops"
+        >
+            NEW ITINERARY TEMPLATE
+        </div>
 
         <VsBrListicle
             v-if="pageName === 'listicle-page'"
@@ -56,7 +61,7 @@ import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
-import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
+import VsBrItineraryLegacy from '~/components/PageTypes/VsBrItineraryLegacy.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
@@ -74,6 +79,8 @@ let pageName : string = '';
 
 let pageDocument : any = {
 };
+
+let hasStops = null;
 
 const configStore = useConfigStore();
 
@@ -123,6 +130,7 @@ if (page.value) {
     }
 
     if (componentModels.pageConfiguration) {
+        hasStops = componentModels.pageConfiguration.hasStops;
         configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
         configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];
         configStore.cludoExperienceId = componentModels.pageConfiguration['cludo.experience-id'];
