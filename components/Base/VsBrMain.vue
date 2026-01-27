@@ -26,7 +26,7 @@
             :component="component"
         />
 
-        <VsBrItinerary
+        <VsBrItineraryLegacy
             v-if="pageName === 'itinerary-page' && hasStops"
             :page="page"
             :component="component"
@@ -61,7 +61,7 @@ import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
-import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
+import VsBrItineraryLegacy from '~/components/PageTypes/VsBrItineraryLegacy.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
