@@ -113,7 +113,7 @@ onMounted(() => {
     }
 
     searchStore.currentPage = Number(route.query.page) || 1;
-    searchStore.fromDate = route.query['from-date'] as string || new Date().toJSON().slice(0, 10);
+    searchStore.fromDate = route.query['from-date'] as string;
     searchStore.toDate = route.query['to-date'] as string;
     searchStore.sortBy = route.query['sort-by'] as string;
     searchStore.location = route.query.location as string;

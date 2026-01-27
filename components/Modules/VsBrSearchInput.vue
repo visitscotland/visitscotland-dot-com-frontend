@@ -150,7 +150,9 @@ async function updateSearchTerm(term: string) {
 async function search() {
     searchSuggestions.value = [];
     searchStore.currentPage = 1;
-    searchStore.fromDate = new Date().toJSON().slice(0, 10);
+    searchStore.fromDate = searchStore.categoryKey === 'events'
+        ? new Date().toJSON().slice(0, 10)
+        : undefined;
     searchStore.toDate = undefined;
     searchStore.sortBy = undefined;
 
@@ -247,7 +249,9 @@ Object.keys(subcategories).forEach((key) => {
 async function updateCategoryKey(category: SearchFilterCategory) {
     searchStore.currentPage = 1;
     searchStore.subcategoryKeys = [];
-    searchStore.fromDate = new Date().toJSON().slice(0, 10);
+    searchStore.fromDate = category.Key === 'events'
+        ? new Date().toJSON().slice(0, 10)
+        : undefined;
     searchStore.toDate = undefined;
     searchStore.sortBy = undefined;
 
