@@ -14,7 +14,7 @@
             :main-heading-exists="module.title ? true : false"
             :category-heading="module.tabTitle"
             :filters="module.filters"
-            :places-data="module.geoJson.features"
+            :places-data="filteredFeatures"
             :map-id="`vs-map-${module.id}`"
             :region-bounds="module.mapPosition"
             :buttons-label="configStore.getLabel('map', 'map.buttons-label')"
@@ -86,6 +86,10 @@ const configStore = useConfigStore();
 
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;
+
+const filteredFeatures = module.geoJson.features.filter(
+    (feature: any) => feature.geometry && feature.geometry.type,
+);
 
 let toggleValues = [];
 
