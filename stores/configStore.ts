@@ -21,6 +21,7 @@ interface IConfigState {
     searchDmsBased: boolean,
     eventsApiUrl: string,
     showSearchWidget: boolean,
+    cludoApiOperator: string,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -49,6 +50,7 @@ const useConfigStore = defineStore('configStore', {
         searchDmsBased: false,
         eventsApiUrl: '',
         showSearchWidget: false,
+        cludoApiOperator: 'or',
     }),
     actions: {
         getLabel(section: string, key: string) {

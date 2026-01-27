@@ -30,7 +30,7 @@ export default defineEventHandler(async(event) => {
             method: 'POST',
             body: JSON.stringify({
                 query: body.searchTerm || '*',
-                operator: 'or',
+                operator: body.apiOperator,
                 responseType: 'JsonObject',
                 perPage: 6,
                 page: body.page,
