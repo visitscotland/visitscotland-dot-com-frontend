@@ -50,6 +50,10 @@ if (module.image.cmsImage) {
     }
 }
 
+if (image.startsWith('assets')) {
+    image = `/${image}`;
+}
+
 let description = module.copy.value.replace(/<[^>]+>/g, '');
 
 if (window && window.location) {
