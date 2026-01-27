@@ -66,8 +66,6 @@ const props = defineProps<{ component: Component, page: Page }>();
 
 const { page, component } = toRefs(props);
 
-let document : any = {
-};
 let documentData : any = {
 };
 let productSearch : any = {
@@ -82,8 +80,9 @@ let pageItems = {
 };
 
 if (page.value) {
-    document = page.value.getDocument();
-    documentData = document.getData();
+    const pageDocument = page.value.getContent(configStore.pageDocument);
+
+    documentData = pageDocument.getData();
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
 
