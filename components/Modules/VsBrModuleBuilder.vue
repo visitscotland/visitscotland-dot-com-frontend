@@ -115,7 +115,12 @@
             :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'MapsModule'"
         >
-            <Suspense>
+            <component
+                v-if="item.googleMap"
+                :is="VsBrMainMap"
+                :module="item"
+            />
+            <Suspense v-else>
                 <component
                     :is="VsBrMapWithSidebar"
                     :module="item"
@@ -229,6 +234,7 @@ import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 import themeCalculator from '~/composables/themeCalculator.ts';
 
 const VsBrMapWithSidebar = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSidebar.vue'));
+const VsBrMainMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMainMap.vue'));
 
 const props = defineProps<{
     modules: any[],

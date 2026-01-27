@@ -10,6 +10,7 @@ interface IConfigState {
     newsletterSignpost: any,
     gtm: any,
     locale: string,
+    langString: string,
     pageMetaData: any,
     heroVideo: any,
     isLocalVideoheader: boolean,
@@ -22,6 +23,9 @@ interface IConfigState {
     eventsApiUrl: string,
     showSearchWidget: boolean,
     cludoApiOperator: string,
+    googleMapApiKey: string,
+    isMainMapPageFlag: boolean,
+    pageDocument: any,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -38,6 +42,7 @@ const useConfigStore = defineStore('configStore', {
         },
         gtm: null,
         locale: '',
+        langString: '',
         pageMetaData: {
         },
         heroVideo: null,
@@ -51,6 +56,9 @@ const useConfigStore = defineStore('configStore', {
         eventsApiUrl: '',
         showSearchWidget: false,
         cludoApiOperator: 'or',
+        googleMapApiKey: '',
+        isMainMapPageFlag: false,
+        pageDocument: null,
     }),
     actions: {
         getLabel(section: string, key: string) {
