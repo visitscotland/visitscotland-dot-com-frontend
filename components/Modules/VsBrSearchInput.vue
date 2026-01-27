@@ -82,7 +82,6 @@ import type { SearchApiError, SearchFilterCategory } from '~/types/types';
 
 import {
     computed,
-    onMounted,
     ref,
     watch,
 } from 'vue';
@@ -90,6 +89,8 @@ import { storeToRefs } from 'pinia';
 
 import useConfigStore from '~/stores/configStore.ts';
 import useSearchStore from '~/stores/searchStore.ts';
+
+import dataLayerComposable from '~/composables/dataLayer.ts';
 
 import {
     VsButton,
@@ -100,11 +101,9 @@ import {
 
 import VsBrSearchFilter from './VsBrSearchFilter.vue';
 
-// import dataLayerComposable from '../composables/dataLayerComposable';
-
-// const dataLayerHelper = dataLayerComposable();
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
+const dataLayerHelper = dataLayerComposable();
 
 // eslint-disable-next-line no-undef
 const route = useRoute();
@@ -120,8 +119,6 @@ const { isSearchWidget = false } = defineProps<Props>();
 const { isLoading } = storeToRefs(searchStore);
 
 const searchSuggestions = ref<string[]>([]);
-// const categoryFilter = ref(null);
-// const subcategoryFilter = ref(null);
 
 async function updateSearchTerm(term: string) {
     searchStore.searchTerm = term.trim();
@@ -148,47 +145,36 @@ async function updateSearchTerm(term: string) {
     if (!searchStore.searchTerm) {
         searchSuggestions.value = [];
     }
-
-    // const url = window.location.search;
-    // const params = new URLSearchParams(url);
-
-    // if (federatedSearchStore.searchTerm && params.get('search-term') !== federatedSearchStore.searchTerm) {
-    //     searchSuggestions.value = await federatedSearchStore.getAutoComplete();
-    // }
-
-    // if (!federatedSearchStore.searchTerm) {
-    //     searchSuggestions.value = null;
-    // }
 }
 
 async function search() {
     searchSuggestions.value = [];
     searchStore.currentPage = 1;
-    searchStore.fromDate = undefined;
+    searchStore.fromDate = new Date().toJSON().slice(0, 10);
     searchStore.toDate = undefined;
     searchStore.sortBy = undefined;
 
-    await searchStore.navigationSomething();
+    await searchStore.setUrlParameters();
 
-    // dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
-    //     search_query: federatedSearchStore.searchTerm,
-    //     query_input: federatedSearchStore.queryInput,
-    //     results_count: federatedSearchStore.totalResults,
-    //     search_usage_index: federatedSearchStore.searchInSessionCount,
-    //     search_type: federatedSearchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
-    // });
+    dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
+        search_query: searchStore.searchTerm,
+        query_input: searchStore.queryInput,
+        results_count: searchStore.totalResults,
+        search_usage_index: searchStore.searchInSessionCount,
+        search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
+    });
 }
 
-function autoSuggestAnalytics(suggestion) {
-    // dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
-    //     interaction_type: 'search_autosuggest',
-    //     search_query: federatedSearchStore.searchTerm,
-    //     page_number: federatedSearchStore.currentPage,
-    //     search_usage_index: federatedSearchStore.searchInSessionCount,
-    //     results_count: federatedSearchStore.totalResults,
-    //     click_text: suggestion,
-    //     query_input: federatedSearchStore.queryInput,
-    // });
+function autoSuggestAnalytics(suggestion: string) {
+    dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
+        interaction_type: 'search_autosuggest',
+        search_query: searchStore.searchTerm,
+        page_number: searchStore.currentPage,
+        search_usage_index: searchStore.searchInSessionCount,
+        results_count: searchStore.totalResults,
+        click_text: suggestion,
+        query_input: searchStore.queryInput,
+    });
 }
 
 async function suggestedSearch(suggestion: string) {
@@ -201,13 +187,10 @@ async function suggestedSearch(suggestion: string) {
             external: true,
         });
     } else {
-        searchStore.navigationSomething();
+        searchStore.setUrlParameters(true);
     }
 
-    // federatedSearchStore.searchTerm = query;
-    // searchSuggestions.value = null;
-    // federatedSearchStore.navigateToResultsPage(false, true);
-    // autoSuggestAnalytics(query);
+    autoSuggestAnalytics(suggestion);
 }
 
 function escapeRegExp(str: string) {
@@ -230,15 +213,15 @@ function highlightAutocompleteSuggestion(suggestion: string) {
     return escapeHtml(suggestion).replace(reg, '<strong>$1</strong>');
 }
 
-function categoryClickAnalytics(category) {
-    // dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
-    //     interaction_type: 'facet_click',
-    //     search_query: federatedSearchStore.searchTerm,
-    //     page_number: federatedSearchStore.currentPage,
-    //     search_usage_index: federatedSearchStore.searchInSessionCount,
-    //     results_count: federatedSearchStore.totalResults,
-    //     click_text: category.Label || category.Key,
-    // });
+function categoryClickAnalytics(category: SearchFilterCategory) {
+    dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
+        interaction_type: 'facet_click',
+        search_query: searchStore.searchTerm,
+        page_number: searchStore.currentPage,
+        search_usage_index: searchStore.searchInSessionCount,
+        results_count: searchStore.totalResults,
+        click_text: category.Label || category.Key,
+    });
 }
 
 const categories = configStore.getLabelMap('search-categories');
@@ -261,10 +244,10 @@ Object.keys(subcategories).forEach((key) => {
     });
 });
 
-function updateCategoryKey(category: SearchFilterCategory) {
+async function updateCategoryKey(category: SearchFilterCategory) {
     searchStore.currentPage = 1;
     searchStore.subcategoryKeys = [];
-    searchStore.fromDate = undefined;
+    searchStore.fromDate = new Date().toJSON().slice(0, 10);
     searchStore.toDate = undefined;
     searchStore.sortBy = undefined;
 
@@ -272,10 +255,12 @@ function updateCategoryKey(category: SearchFilterCategory) {
         ? category.Key
         : undefined;
 
-    searchStore.navigationSomething();
+    await searchStore.setUrlParameters();
+
+    categoryClickAnalytics(category);
 }
 
-function updateSubcategoryKey(category: SearchFilterCategory) {
+async function updateSubcategoryKey(category: SearchFilterCategory) {
     if (!searchStore.subcategoryKeys.includes(category.Key)) {
         searchStore.subcategoryKeys.push(category.Key);
     } else {
@@ -285,7 +270,9 @@ function updateSubcategoryKey(category: SearchFilterCategory) {
             searchStore.subcategoryKeys.splice(index, 1);
         }
     }
-    searchStore.navigationSomething();
+    await searchStore.setUrlParameters();
+
+    categoryClickAnalytics(category);
 }
 
 const searchLink = computed(() => {
@@ -294,122 +281,6 @@ const searchLink = computed(() => {
     return searchStore.searchTerm
         ? `${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`
         : configStore.globalSearchPath;
-});
-
-// async function updateSelectedCategory(category) {
-//     const url = new URL(window.location);
-
-//     // Reset to page 1
-//     url.searchParams.delete('page');
-//     federatedSearchStore.currentPage = 1;
-
-//     // Reset dates
-//     url.searchParams.delete('start-date');
-//     url.searchParams.delete('end-date');
-//     federatedSearchStore.startDate = '';
-//     federatedSearchStore.endDate = '';
-
-//     // Reset sort options
-//     federatedSearchStore.sortBy = undefined;
-
-//     // Reset sub category
-//     federatedSearchStore.selectedSubCategory = [];
-//     federatedSearchStore.selectedSubCategoryKey = [];
-
-//     federatedSearchStore.selectedCategory = (federatedSearchStore.selectedCategory
-//         !== category.Label)
-//         ? category.Label
-//         : '';
-
-//     federatedSearchStore.selectedCategoryKey = (federatedSearchStore.selectedCategoryKey
-//         !== category.Key)
-//         ? category.Key
-//         : '';
-
-//     await federatedSearchStore.navigateToResultsPage(true);
-
-//     categoryClickAnalytics(category);
-// }
-
-// function updateSelectedSubCategoryKey(category) {
-//     if (!federatedSearchStore.selectedSubCategoryKey.includes(category.Key)) {
-//         federatedSearchStore.selectedSubCategory.push(category.Label);
-//         federatedSearchStore.selectedSubCategoryKey.push(category.Key);
-//     } else {
-//         const index = federatedSearchStore.selectedSubCategoryKey.indexOf(category.Key);
-
-//         if (index >= 0) {
-//             federatedSearchStore.selectedSubCategory.splice(index, 1);
-//             federatedSearchStore.selectedSubCategoryKey.splice(index, 1);
-//         }
-//     }
-
-//     federatedSearchStore.navigateToResultsPage(true);
-
-//     categoryClickAnalytics(category);
-// }
-
-onMounted(() => {
-    // federatedSearchStore.cludoCredentials = {
-    //     apiKey: props.cludoApiKey,
-    //     customerId: props.cludoCustomerId,
-    //     engineId: props.cludoEngineId,
-    // };
-    // federatedSearchStore.isHomePage = props.isHomePage;
-
-    // if (props.searchUrl) {
-    //     federatedSearchStore.searchUrl = props.searchUrl;
-    // }
-
-    // const url = window.location.search;
-    // const params = new URLSearchParams(url);
-
-    // if (params.has('search-term')) {
-    //     federatedSearchStore.searchTerm = params.get('search-term');
-    // }
-
-    // if (params.has('category')) {
-    //     federatedSearchStore.selectedCategoryKey = decodeURIComponent(params.get('category'));
-    // }
-
-    // if (params.has('sub-category')) {
-    //     const subCategories = decodeURIComponent(params.get('sub-category')).split(',');
-    //     subCategories.forEach((subCategory) => (
-    //         federatedSearchStore.selectedSubCategoryKey.push(subCategory)
-    //     ));
-    // }
-
-    // if (params.has('category') && params.get('category') === 'events' && params.has('sort-by')) {
-    //     federatedSearchStore.sortBy = params.get('sort-by');
-    // }
-
-    // if (params.has('start-date')) {
-    //     federatedSearchStore.startDate = params.get('start-date');
-    // }
-
-    // if (params.has('end-date')) {
-    //     federatedSearchStore.endDate = params.get('end-date');
-    // }
-
-    // if (params.has('postcode')) {
-    //     federatedSearchStore.postcode = params.get('postcode');
-    // }
-
-    // if (params.has('location')) {
-    //     federatedSearchStore.location = params.get('location');
-    // }
-
-    // if (params.has('radius')) {
-    //     federatedSearchStore.radius = params.get('radius');
-    // }
-
-    // if (params.has('postcodeareas')) {
-    //     federatedSearchStore.postcodeareas = params.get('postcodeareas');
-    // }
-
-    // if (params.has('search-term') || params.has('category')) {
-    //     federatedSearchStore.getSearchResults();
-    // }
 });
 
 // Reset the filter scroll when a search has run (isLoading is set from true to false).

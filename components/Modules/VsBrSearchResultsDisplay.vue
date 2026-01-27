@@ -143,9 +143,11 @@ import {
 
 import useConfigStore from '~/stores/configStore.ts';
 import useSearchStore from '~/stores/searchStore.ts';
+import dataLayerComposable from '~/composables/dataLayer.ts';
 
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
+const dataLayerHelper = dataLayerComposable();
 
 const fallbackImg = 'https://static.visitscotland.com/img/fallback-img.png';
 
@@ -213,7 +215,7 @@ function loadPage(pageNumber: number) {
         });
     }
 
-    searchStore.navigationSomething();
+    searchStore.setUrlParameters();
 
     // eslint-disable-next-line no-use-before-define
     paginationClickAnalytics(paginatingForward);
@@ -241,47 +243,34 @@ const errorMessage = computed(() => {
     return null;
 });
 
-function eventClickAnalytics(result) {
-    // eventHasBeenClicked.value = true;
+function eventClickAnalytics(result: SearchApiResult) {
+    searchStore.eventHasBeenClicked = true;
 
-    // dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
-    //     interaction_type: 'search_link_click',
-    //     search_query: federatedSearchStore.searchTerm,
-    //     page_number: federatedSearchStore.currentPage,
-    //     click_text: result.title,
-    //     click_url: setCardLink(result),
-    //     click_category: result.categoryCard && props.cardCategoryLabels[result.categoryCard]
-    //         ? props.cardCategoryLabels[result.categoryCard]
-    //         : '',
-    //     search_usage_index: federatedSearchStore.searchInSessionCount,
-    //     results_count: federatedSearchStore.totalResults,
-    //     query_input: federatedSearchStore.queryInput,
-    // });
+    dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
+        interaction_type: 'search_link_click',
+        search_query: searchStore.searchTerm,
+        page_number: searchStore.currentPage,
+        click_text: result.title,
+        click_url: setCardLink(result),
+        click_category: result.categoryCard && cardCategoryLabels[result.categoryCard]
+            ? cardCategoryLabels[result.categoryCard]
+            : '',
+        search_usage_index: searchStore.searchInSessionCount,
+        results_count: searchStore.totalResults,
+        query_input: searchStore.queryInput,
+    });
 }
 
-function paginationClickAnalytics(isForward) {
-    // dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
-    //     interaction_type: 'search_link_click',
-    //     search_query: federatedSearchStore.searchTerm,
-    //     page_number: federatedSearchStore.currentPage,
-    //     page_navigation_direction: isForward ? 'forward' : 'back',
-    //     search_usage_index: federatedSearchStore.searchInSessionCount,
-    //     results_count: federatedSearchStore.totalResults,
-    //     query_input: federatedSearchStore.queryInput,
-    // });
-}
-
-function pageCloseAnalytics() {
-    // This event should only be fired if the user is leaving search without clicking a result.
-    // if (eventHasBeenClicked.value) return;
-
-    // dataLayerHelper.createDataLayerObject('siteSearchCloseEvent', {
-    //     search_query: federatedSearchStore.searchTerm,
-    //     search_usage_index: federatedSearchStore.searchInSessionCount,
-    //     query_input: federatedSearchStore.queryInput,
-    //     page_number: federatedSearchStore.currentPage,
-    //     results_count: federatedSearchStore.totalResults,
-    // });
+function paginationClickAnalytics(isForward: boolean) {
+    dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
+        interaction_type: 'search_link_click',
+        search_query: searchStore.searchTerm,
+        page_number: searchStore.currentPage,
+        page_navigation_direction: isForward ? 'forward' : 'back',
+        search_usage_index: searchStore.searchInSessionCount,
+        results_count: searchStore.totalResults,
+        query_input: searchStore.queryInput,
+    });
 }
 </script>
 

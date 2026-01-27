@@ -38,7 +38,9 @@ const useSearchStore = defineStore('search', () => {
     const totalResultsEvents = ref(0);
 
     // Analytics
+    const eventHasBeenClicked = ref(false);
     const searchInSessionCount = ref(-1);
+    const queryInput = ref('');
 
     watchEffect(() => {
         // Validate dates.
@@ -64,6 +66,7 @@ const useSearchStore = defineStore('search', () => {
                 cludoEngineId: parseInt(configStore.cludoEngineId, 10),
                 searchTerm: searchTerm.value,
                 page: currentPage.value,
+                apiOperator: configStore.cludoApiOperator,
             },
         });
 
@@ -106,9 +109,11 @@ const useSearchStore = defineStore('search', () => {
         isLoading.value = false;
     }
 
-    async function navigationSomething() {
+    async function setUrlParameters(fromAutosuggest?: boolean) {
         // eslint-disable-next-line no-undef
         const route = useRoute();
+
+        queryInput.value = (fromAutosuggest) ? 'Autosuggestion' : 'User input';
 
         // eslint-disable-next-line object-curly-newline
         route.query = {};
@@ -162,22 +167,25 @@ const useSearchStore = defineStore('search', () => {
         currentPage,
         dateError,
         eventsApiError,
+        eventHasBeenClicked,
         fromDate,
         getSearchResults,
         isLoading,
         location,
         postcode,
         postcodeareas,
+        queryInput,
         radius,
+        searchInSessionCount,
         searchResults,
         searchTerm,
+        setUrlParameters,
         sortBy,
         subcategoryKeys,
         toDate,
         totalResults,
         totalResultsCludo,
         totalResultsEvents,
-        navigationSomething,
     };
 });
 

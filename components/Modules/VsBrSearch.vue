@@ -58,6 +58,8 @@ import {
 import useConfigStore from '~/stores/configStore.ts';
 import useSearchStore from '~/stores/searchStore.ts';
 
+import dataLayerComposable from '~/composables/dataLayer.ts';
+
 import VsBrDivider from './VsBrDivider.vue';
 import VsBrModuleBuilder from './VsBrModuleBuilder.vue';
 import VsBrSearchInput from './VsBrSearchInput.vue';
@@ -67,6 +69,7 @@ import VsBrSearchSort from './VsBrSearchSort.vue';
 const page: Page | undefined = inject('page');
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
+const dataLayerHelper = dataLayerComposable();
 
 // eslint-disable-next-line no-undef
 const route = useRoute();
@@ -83,6 +86,19 @@ for (let x = 0; x < modules.length; x++) {
     const hippoBean = page?.getContent(modules[x].hippoBean.$ref);
 
     moduleNames.push(hippoBean?.model.data.name);
+}
+
+function pageCloseAnalytics() {
+    // This event should only be fired if the user is leaving search without clicking a result.
+    if (searchStore.eventHasBeenClicked) return;
+
+    dataLayerHelper.createDataLayerObject('siteSearchCloseEvent', {
+        search_query: searchStore.searchTerm,
+        search_usage_index: searchStore.searchInSessionCount,
+        query_input: searchStore.queryInput,
+        page_number: searchStore.currentPage,
+        results_count: searchStore.totalResults,
+    });
 }
 
 onMounted(() => {
@@ -106,6 +122,21 @@ onMounted(() => {
     searchStore.radius = Number(route.query.radius) || 0;
 
     searchStore.getSearchResults();
+
+    window.onbeforeunload = () => {
+        pageCloseAnalytics();
+    };
+
+    if (route.query['search-term']) {
+        dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
+            search_query: searchStore.searchTerm,
+            query_input: searchStore.queryInput,
+            results_count: searchStore.totalResults,
+            search_usage_index: searchStore.searchInSessionCount,
+            search_type: 'initial',
+            search_origin: 'home_page',
+        });
+    }
 });
 </script>
 
