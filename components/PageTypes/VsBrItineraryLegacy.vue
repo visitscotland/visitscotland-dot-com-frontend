@@ -1,10 +1,12 @@
 <template>
-    <VsBrHeroSection
-        :content="documentData"
-        :image="heroImage"
-        inset
-    />
-    <VsContainer>
+    <div class="d-flex flex-column gap-500">
+        <VsBrHeroSection
+            :content="documentData"
+            :image="heroImage"
+            img-credit="Creddy McCredface"
+            inset
+        />
+        <VsContainer>
         <VsRow>
             <VsCol>
                 <span class="vs-section-header__divider" />
@@ -114,8 +116,14 @@
                 </div>
             </VsCol>
         </div>
-    </VsContainer>
-
+        </VsContainer>
+        <VsBrDaySection
+                v-for="(item, index) in pageItems"
+                :key="`item-${index}`"
+                :day="item"
+                :day-number="index + 1"
+            />
+    </div>
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
@@ -162,6 +170,8 @@ import useConfigStore from '~/stores/configStore.ts';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
+
+import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
@@ -196,6 +206,9 @@ let itineraryMap = null;
 
 let numberOfMiles = null;
 let numberOfKm = null;
+
+let pageItems = {
+};
 
 let numberOfDays = null;
 const daySingular = configStore.getLabel('itinerary', 'day').toLowerCase();
@@ -242,6 +255,7 @@ if (page.value) {
     }
 
     if (component.value) {
+        pageItems = component.value.model.models.pageItems;
         pageIntro = component.value.model.models.pageIntro;
         mapAreas = pageIntro.areas.map((region) => region.key);
         numberOfDays = pageIntro.days.length;
