@@ -16,11 +16,11 @@
                                     heading-style="heading-m"
                                 >
                                     <VsLink
-                                        :href="card.links.site.href"
+                                        :href="formatLink(card.link)"
                                         class="stretched-link text-decoration-none"
                                         variant="on-dark"
                                     >
-                                        {{ card.data.displayName }}
+                                        {{ card.label }}
                                     </VsLink>
                                 </VsHeading>
                             </div>
@@ -46,6 +46,8 @@ import type { Page } from '@bloomreach/spa-sdk';
 
 import { inject } from 'vue';
 
+import formatLink from '~/composables/formatLink.ts';
+
 import {
     VsContainer,
     VsRow,
@@ -68,22 +70,18 @@ const { links } = props;
 const outLinks = [];
 
 for (let x = 0; x < links.length; x++) {
-    let nextLink = page?.getContent(links[x]);
+    const nextLink = links[x];
 
-    if (nextLink) {
-        nextLink = nextLink.model;
+    let image: any = '';
 
-        let image: any = '';
-
-        if (nextLink.data.image) {
-            image = page?.getContent(nextLink.data.image.$ref);
-            image = image.getOriginal().getUrl();
-        }
-
-        nextLink.imageUrl = image;
-
-        outLinks.push(nextLink);
+    if (nextLink.image) {
+        image = page?.getContent(nextLink.image.cmsImage.$ref);
+        image = image.getOriginal().getUrl();
     }
+
+    nextLink.imageUrl = image;
+
+    outLinks.push(nextLink);
 }
 
 </script>

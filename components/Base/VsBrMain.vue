@@ -110,6 +110,7 @@ if (page.value) {
     configStore.heroImage = componentModels.heroImage;
     configStore.labels = componentModels.labels;
     configStore.newsletterSignpost = componentModels.newsletterSignpost;
+    configStore.pageIntro = componentModels.pageIntro;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
