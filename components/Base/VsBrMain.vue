@@ -27,10 +27,15 @@
         />
 
         <VsBrItinerary
-            v-if="pageName === 'itinerary-page'"
+            v-if="pageName === 'itinerary-page' && hasStops"
             :page="page"
             :component="component"
         />
+        <div
+            v-else-if="pageName === 'itinerary-page' && !hasStops"
+        >
+            NEW ITINERARY TEMPLATE
+        </div>
 
         <VsBrListicle
             v-if="pageName === 'listicle-page'"
@@ -74,6 +79,8 @@ let pageName : string = '';
 
 let pageDocument : any = {
 };
+
+let hasStops = null;
 
 const configStore = useConfigStore();
 
@@ -122,6 +129,7 @@ if (page.value) {
     }
 
     if (componentModels.pageConfiguration) {
+        hasStops = componentModels.pageConfiguration.hasStops;
         configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
         configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];
         configStore.cludoExperienceId = componentModels.pageConfiguration['cludo.experience-id'];
