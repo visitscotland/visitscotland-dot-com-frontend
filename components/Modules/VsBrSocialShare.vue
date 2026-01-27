@@ -66,7 +66,7 @@ let pageDocument;
 let pageTitle = '';
 
 if (page) {
-    pageDocument = page.getDocument();
+    pageDocument = page.getContent(configStore.pageDocument);
 
     if (pageDocument) {
         pageTitle = pageDocument.model.data.title;
@@ -74,3 +74,9 @@ if (page) {
 }
 
 </script>
+
+<style>
+    .vs-social-share__close-btn.btn {
+        position: absolute;
+    }
+</style>
