@@ -20,7 +20,7 @@
                                         class="stretched-link text-decoration-none"
                                         variant="on-dark"
                                     >
-                                        {{ card.data.breadcrumb }}
+                                        {{ card.data.displayName }}
                                     </VsLink>
                                 </VsHeading>
                             </div>
