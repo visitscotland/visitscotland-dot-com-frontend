@@ -8,11 +8,24 @@ interface IConfigState {
     heroImage: any,
     labels: any,
     newsletterSignpost: any,
+    pageIntro: any,
     gtm: any,
     locale: string,
+    langString: string,
     pageMetaData: any,
     heroVideo: any,
     isLocalVideoheader: boolean,
+    globalSearchPath: string,
+    cludoCustomerId: string,
+    cludoExperienceId: string,
+    cludoEngineId: string,
+    cludoLanguage: string,
+    searchDmsBased: boolean,
+    eventsApiUrl: string,
+    showSearchWidget: boolean,
+    googleMapApiKey: string,
+    isMainMapPageFlag: boolean,
+    pageDocument: any,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -27,12 +40,26 @@ const useConfigStore = defineStore('configStore', {
         },
         newsletterSignpost: {
         },
+        pageIntro: {
+        },
         gtm: null,
         locale: '',
+        langString: '',
         pageMetaData: {
         },
         heroVideo: null,
         isLocalVideoheader: false,
+        globalSearchPath: '',
+        cludoCustomerId: '',
+        cludoExperienceId: '',
+        cludoEngineId: '',
+        cludoLanguage: '',
+        searchDmsBased: false,
+        eventsApiUrl: '',
+        showSearchWidget: false,
+        googleMapApiKey: '',
+        isMainMapPageFlag: false,
+        pageDocument: null,
     }),
     actions: {
         getLabel(section: string, key: string) {

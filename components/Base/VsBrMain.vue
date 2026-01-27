@@ -4,13 +4,13 @@
         :class="{ 'has-edit-button': page.isPreview() }"
     >
         <BrManageContentButton
-            :content="document"
+            :content="pageDocument"
         />
 
         <VsBrGtm />
 
         <VsBrPageViewEvent
-            :data="document.model.data"
+            :data="pageDocument.model.data"
             :page-type="pageName"
         />
 
@@ -26,11 +26,16 @@
             :component="component"
         />
 
-        <VsBrItinerary
-            v-if="pageName === 'itinerary-page'"
+        <VsBrItineraryLegacy
+            v-if="pageName === 'itinerary-page' && hasStops"
             :page="page"
             :component="component"
         />
+        <div
+            v-else-if="pageName === 'itinerary-page' && !hasStops"
+        >
+            NEW ITINERARY TEMPLATE
+        </div>
 
         <VsBrListicle
             v-if="pageName === 'listicle-page'"
@@ -56,7 +61,7 @@ import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
-import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
+import VsBrItineraryLegacy from '~/components/PageTypes/VsBrItineraryLegacy.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
@@ -72,8 +77,10 @@ let pageComponent : any = {
 };
 let pageName : string = '';
 
-let document : any = {
+let pageDocument : any = {
 };
+
+let hasStops = null;
 
 const configStore = useConfigStore();
 
@@ -110,6 +117,7 @@ if (page.value) {
     configStore.heroImage = componentModels.heroImage;
     configStore.labels = componentModels.labels;
     configStore.newsletterSignpost = componentModels.newsletterSignpost;
+    configStore.pageIntro = componentModels.pageIntro;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
@@ -121,9 +129,33 @@ if (page.value) {
         configStore.isLocalVideoheader = true;
     }
 
-    document = page.value.getDocument();
+    if (componentModels.pageConfiguration) {
+        hasStops = componentModels.pageConfiguration.hasStops;
+        configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
+        configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];
+        configStore.cludoExperienceId = componentModels.pageConfiguration['cludo.experience-id'];
+        configStore.cludoEngineId = componentModels.pageConfiguration['cludo.engine-id'];
+        configStore.cludoLanguage = componentModels.pageConfiguration.language;
+        configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
+        configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
+        configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
 
-    configStore.locale = document.model.data.localeString;
+        if (componentModels.pageConfiguration['dms-based']) {
+            configStore.searchDmsBased = true;
+        }
+
+        if (componentModels.pageConfiguration.searchWidget) {
+            configStore.showSearchWidget = true;
+        }
+    }
+
+    const pageContent : any = page.value.getContent(page.value.model.root);
+    const pageModels : any = pageContent.models;
+    pageDocument = page.value.getContent(pageModels.document);
+
+    configStore.pageDocument = pageModels.document;
+
+    configStore.locale = pageDocument.model.data.localeString;
 
     let langString = '';
 
@@ -149,22 +181,26 @@ if (page.value) {
         break;
     }
 
+    if (langString !== 'en-gb') {
+        configStore.langString = langString;
+    }
+
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        title: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+        title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
         meta: [
             {
                 name: 'title',
-                content: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+                content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
             },
             {
                 name: 'description',
-                content: document.model.data.seoDescription,
+                content: pageDocument.model.data.seoDescription,
             },
             {
                 name: 'robots',
-                content: document.model.data.noIndex ? 'noindex' : '',
+                content: pageDocument.model.data.noIndex ? 'noindex' : '',
             },
         ],
         htmlAttrs: {
@@ -193,6 +229,31 @@ if (page.value) {
             },
         ],
     });
+
+    if (configStore.searchDmsBased) {
+        useHead({
+            script: [
+                {
+                    innerHTML: `
+                        var cludo_engineId = ${configStore.cludoEngineId};
+                        var cludo_language = '${configStore.cludoLanguage}';
+                        var cludo_searchUrl = '${configStore.globalSearchPath}';
+                    `,
+                    tagPosition: 'head',
+                },
+                {
+                    src: 'https://customer.cludo.com/scripts/bundles/search-script.js',
+                    onload: () => {
+                        const helperScript = document.createElement('script');
+                        helperScript.src = 'https://customer.cludo.com/assets/623/12809/cludo-helper.js';
+                        document.head.appendChild(helperScript);
+                    },
+                    async: false,
+                    defer: false,
+                },
+            ],
+        });
+    }
 }
 
 provide('page', page.value);

@@ -1,13 +1,25 @@
 const getNavLink = (input: any) : string => {
+    let plainLink = '';
+
     if (input.model && input.model.plainLink) {
-        if (input.model.plainLink === '/resourceapi') {
+        plainLink = input.model.plainLink;
+    } else if (input.plainLink) {
+        plainLink = input.plainLink;
+    }
+
+    if (plainLink) {
+        if (plainLink === '/resourceapi') {
             return '/';
         }
 
-        return input.model.plainLink.replace('/resourceapi', '');
+        return plainLink.replace('/resourceapi', '');
     }
 
-    return input.getUrl();
+    if (input.getUrl) {
+        return input.getUrl();
+    }
+
+    return '';
 };
 
 export default getNavLink;
