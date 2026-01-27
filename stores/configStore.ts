@@ -8,6 +8,7 @@ interface IConfigState {
     heroImage: any,
     labels: any,
     newsletterSignpost: any,
+    pageIntro: any,
     gtm: any,
     locale: string,
     langString: string,
@@ -38,6 +39,8 @@ const useConfigStore = defineStore('configStore', {
         labels: {
         },
         newsletterSignpost: {
+        },
+        pageIntro: {
         },
         gtm: null,
         locale: '',
