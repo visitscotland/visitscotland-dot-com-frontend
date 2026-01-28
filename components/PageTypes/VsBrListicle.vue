@@ -33,6 +33,7 @@
                                 <VsBrImageWithCaption
                                     :image="item.image.cmsImage ? item.image.cmsImage : null"
                                     :image-string="!item.image.cmsImage ? item.image.externalImage : ''"
+                                    :image-data-set="!item.image.cmsImage ? item.image : null"
                                     variant="fullwidth"
                                     :no-alt-text="true"
                                     :use-lazy-loading="index !== 0"

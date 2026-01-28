@@ -9,10 +9,12 @@
                     <VsBrRichText :input-content="module.introduction.value" />
                 </template>
 
-                <VsBrSectionHeader
-                    :heading="module.title"
-                    :lede="module.introduction?.value"
-                />
+                <div class="mb-250">
+                    <VsBrSectionHeader
+                        :heading="module.title"
+                        :lede="module.introduction?.value"
+                    />
+                </div>
 
                 <VsContainer>
                     <VsRow>
