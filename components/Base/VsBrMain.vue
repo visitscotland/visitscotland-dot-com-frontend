@@ -110,6 +110,7 @@ if (page.value) {
     configStore.heroImage = componentModels.heroImage;
     configStore.labels = componentModels.labels;
     configStore.newsletterSignpost = componentModels.newsletterSignpost;
+    configStore.pageIntro = componentModels.pageIntro;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
@@ -129,6 +130,8 @@ if (page.value) {
         configStore.cludoLanguage = componentModels.pageConfiguration.language;
         configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
         configStore.cludoApiOperator = componentModels.pageConfiguration.cludoApiOperator;
+        configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
+        configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
@@ -139,7 +142,11 @@ if (page.value) {
         }
     }
 
-    pageDocument = page.value.getDocument();
+    const pageContent : any = page.value.getContent(page.value.model.root);
+    const pageModels : any = pageContent.models;
+    pageDocument = page.value.getContent(pageModels.document);
+
+    configStore.pageDocument = pageModels.document;
 
     configStore.locale = pageDocument.model.data.localeString;
 
@@ -165,6 +172,10 @@ if (page.value) {
     default:
         langString = 'en-gb';
         break;
+    }
+
+    if (langString !== 'en-gb') {
+        configStore.langString = langString;
     }
 
     const runtimeConfig = useRuntimeConfig();

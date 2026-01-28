@@ -32,6 +32,8 @@
                             <div>
                                 <VsBrImageWithCaption
                                     :image="item.image.cmsImage ? item.image.cmsImage : null"
+                                    :image-string="!item.image.cmsImage ? item.image.externalImage : ''"
+                                    :image-data-set="!item.image.cmsImage ? item.image : null"
                                     variant="fullwidth"
                                     :no-alt-text="true"
                                     :use-lazy-loading="index !== 0"
@@ -52,7 +54,7 @@
                                 >
                                     <VsLink
                                         :href="formatLink(cta.link)"
-                                        :type="cta.type.toLowerCase()"
+                                        :type="cta.type.toLowerCase() === 'internal' ? null : cta.type.toLowerCase()"
                                     >
                                         {{ cta.label }}<span class="visually-hidden">: {{ item.title }}</span>
                                     </VsLink>
@@ -175,8 +177,6 @@ const props = defineProps<{ component: Component, page: Page }>();
 
 const { page, component } = toRefs(props);
 
-let document : any = {
-};
 let documentData : any = {
 };
 let productSearch : any = {
@@ -189,8 +189,9 @@ let listicleItems = [];
 let listicleClosing = null;
 
 if (page.value) {
-    document = page.value.getDocument();
-    documentData = document.getData();
+    const pageDocument = page.value.getContent(configStore.pageDocument);
+
+    documentData = pageDocument.getData();
     productSearch = configStore.productSearch;
     if (configStore.otyml) {
         otyml = configStore.otyml;

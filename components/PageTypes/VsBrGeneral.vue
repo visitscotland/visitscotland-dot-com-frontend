@@ -38,7 +38,7 @@
     </template>
 
     <VsBrPageIntro
-        v-else-if="documentData.theme === 'Simple'"
+        v-else-if="documentData.theme === 'Simple' && !configStore.isMainMapPageFlag"
         :content="documentData"
         :light-background="true"
     />
@@ -46,10 +46,14 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrCategorySection
+        <div
             v-if="documentData && documentData.categoryLinks"
-            :categories="documentData.categoryLinks"
-        />
+            class="mt-175 mt-md-500 mb-175 mb-md-500"
+        >
+            <VsBrCategorySection
+                :categories="documentData.categoryLinks"
+            />
+        </div>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
@@ -79,6 +83,7 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="!configStore.isMainMapPageFlag"
     >
         <VsBrProductSearch
             v-if="productSearch && productSearch.position === 'Bottom'"
@@ -105,6 +110,7 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="!configStore.isMainMapPageFlag"
     >
         <VsBrHorizontalLinksModule
             v-if="otyml"
@@ -115,6 +121,7 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="!configStore.isMainMapPageFlag"
     >
         <VsBrNewsletterSignpost
             v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
@@ -145,8 +152,6 @@ const props = defineProps<{ component: Component, page: Page }>();
 
 const { page } = toRefs(props);
 
-let document : any = {
-};
 let documentData : any = {
 };
 let pageItems : any[] = [];
@@ -163,8 +168,9 @@ let firstModuleIsLink = false;
 let isSearchResultsPage = false;
 
 if (page.value) {
-    document = page.value.getDocument();
-    documentData = document.getData();
+    const pageDocument = page.value.getContent(configStore.pageDocument);
+
+    documentData = pageDocument.getData();
     pageItems = configStore.pageItems;
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
@@ -191,7 +197,8 @@ if (page.value) {
         }
     }
 
-    if (window && window.location.pathname === configStore.globalSearchPath) {
+    if (window
+        && window.location.pathname.includes(configStore.globalSearchPath)) {
         isSearchResultsPage = true;
     }
 }
