@@ -65,6 +65,15 @@
         />
     </NuxtLazyHydrate>
 
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+        v-if="configStore.showSearchWidget"
+    >
+        <div class="mt-175 mt-md-500 mb-175 mb-md-500">
+            <VsBrSiteSearchWidget />
+        </div>
+    </NuxtLazyHydrate>
+
     <template
         v-if="isSearchResultsPage"
     >
@@ -89,15 +98,6 @@
             v-if="productSearch && productSearch.position === 'Bottom'"
             class="mt-300 mt-lg-600"
         />
-    </NuxtLazyHydrate>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-        v-if="configStore.showSearchWidget"
-    >
-        <div class="mt-175 mt-md-500 mb-175 mb-md-500">
-            <VsBrSiteSearchWidget />
-        </div>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
