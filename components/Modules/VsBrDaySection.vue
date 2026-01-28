@@ -1,5 +1,10 @@
 <template>
     <VsContainer>
+        <VsRow>
+            <VsCol>
+                <span class="vs-section-header__divider" />
+            </VsCol>
+        </VsRow>
         <div class="row gap-300 gap-lg-0">
             <VsCol
                 cols="12"
@@ -42,7 +47,7 @@
                     </VsBody>
                 </div>
                 <div
-                    class="d-flex flex-wrap gap-125"
+                    class="d-flex flex-wrap gap-075"
                 >
                     <VsButton
                         v-if="day.ctaLink.link && day.ctaLink.label"
@@ -74,6 +79,7 @@ import {
     VsHeading,
     VsButton,
     VsContainer,
+    VsRow,
     VsCol,
     VsBody,
     VsMediaCaption,
