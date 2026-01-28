@@ -55,18 +55,21 @@
                         >
                             {{ configStore.getLabel('search', 'search.results') }}
                         </VsHeading>
-                        <VsDetail>
+                        <VsDetail v-if="!searchStore.isLoading">
                             {{ configStore.getLabel('search', 'results.first-sentence') }}
                             {{ searchStore.totalResults }}
                             {{ configStore.getLabel('search', 'results.second-sentence') }}
                         </VsDetail>
                     </div>
-                    <VsBrSearchSort v-if="searchStore.categoryKey === 'events'" />
+                    <VsBrSearchSort
+                        v-if="!searchStore.isLoading
+                            && searchStore.categoryKey === 'events'"
+                    />
                 </div>
 
                 <VsLoadingSpinner v-if="searchStore.isLoading" />
 
-                <VsBrSearchResultsDisplay v-else />
+                <VsBrSearchResults v-else />
             </div>
 
             <VsWarning class="vs-search__error--no-js mb-300">
@@ -97,7 +100,7 @@ import dataLayerComposable from '~/composables/dataLayer.ts';
 import VsBrDivider from './VsBrDivider.vue';
 import VsBrModuleBuilder from './VsBrModuleBuilder.vue';
 import VsBrSearchInput from './VsBrSearchInput.vue';
-import VsBrSearchResultsDisplay from './VsBrSearchResultsDisplay.vue';
+import VsBrSearchResults from './VsBrSearchResults.vue';
 import VsBrSearchSort from './VsBrSearchSort.vue';
 
 const page: Page | undefined = inject('page');
