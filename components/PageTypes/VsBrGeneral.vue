@@ -64,7 +64,7 @@
     <template
         v-if="isSearchResultsPage"
     >
-        <VsBrSearchResults
+        <VsBrSearch
             :modules="pageItems"
         />
     </template>
@@ -91,7 +91,7 @@
         v-if="configStore.showSearchWidget"
     >
         <div class="mt-175 mt-md-500 mb-175 mb-md-500">
-            <VsBrSiteSearchWidget />
+            <VsBrSearchWidget />
         </div>
     </NuxtLazyHydrate>
 
@@ -138,8 +138,8 @@ import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksM
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
 import VsBrCategorySection from '~/components/Modules/VsBrCategorySection.vue';
-import VsBrSearchResults from '~/components/Modules/VsBrSearchResults.vue';
-import VsBrSiteSearchWidget from '~/components/Modules/VsBrSiteSearchWidget.vue';
+import VsBrSearch from '~/components/Modules/VsBrSearch.vue';
+import VsBrSearchWidget from '~/components/Modules/VsBrSearchWidget.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 

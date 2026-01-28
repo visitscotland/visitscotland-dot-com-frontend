@@ -43,6 +43,10 @@ export default defineEventHandler(async(event) => {
         url += `&category=${category}`;
     });
 
+    if (body.categoryKey && body.categoryKey !== 'events') {
+        url += `&category=${body.categoryKey}`;
+    }
+
     try {
         const response = await fetch(url);
 

@@ -1,47 +1,79 @@
 <template>
-    <div class="vs-search">
-        <div class="vs-search__container">
-            <VsBrSearchInput />
-
-            <VsBrDivider />
-
-            <template
-                v-for="(module, index) in modules"
-                :key="module.id"
+    <div
+        v-if="configStore.searchDmsBased"
+        id="cludo-search-results"
+        class="cludo-search-results"
+    >
+        <div class="cludo-search-results__layout mb-300 mb-md-500">
+            <VsEmbedWrapper
+                no-cookies-required
+                no-cookie-text="You need cookies enabled to view this content"
+                :error-text="configStore.getLabel('essentials.global', 'third-party-error')"
+                :no-js-text="configStore.getLabel('search', 'no-js')"
             >
-                <VsBrModuleBuilder
-                    v-if="moduleNames[index] === searchStore.categoryKey"
-                    :modules="[module]"
-                />
-            </template>
+                <template #embed-widget>
+                    <div class="row">
+                        <div class="col-12 col-lg-10 offset-lg-1 mb-100 mb-lg-200">
+                            <div class="cludo-search-results__search-result-count search-result-count" role="status" />
+                            <div class="cludo-search-results__did-you-mean search-did-you-mean" role="Complementary" />
+                            <div class="cludo-search-results__facets search-filters" aria-controls="search-results" />
+                        </div>
 
-            <div class="vs-search__results">
-                <div>
-                    <VsHeading
-                        class="my-0"
-                        heading-style="heading-m"
-                        :level="2"
-                    >
-                        {{ configStore.getLabel('search', 'search.results') }}
-                    </VsHeading>
-                    <VsDetail>
-                        {{ configStore.getLabel('search', 'results.first-sentence') }}
-                        {{ searchStore.totalResults }}
-                        {{ configStore.getLabel('search', 'results.second-sentence') }}
-                    </VsDetail>
+                        <div class="col-12 col-lg-10 offset-lg-1" role="main">
+                            <div class="cludo-search-results__results-wrapper">
+                                <div class="cludo-search-results__results search-results" role="region" id="search-results" aria-live="polite" />
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </VsEmbedWrapper>
+        </div>
+    </div>
+    <VsContainer v-else>
+        <div class="vs-search">
+            <div class="vs-search__container">
+                <VsBrSearchInput />
+
+                <VsBrDivider />
+
+                <template
+                    v-for="(module, index) in modules"
+                    :key="module.id"
+                >
+                    <VsBrModuleBuilder
+                        v-if="moduleNames[index] === searchStore.categoryKey"
+                        :modules="[module]"
+                    />
+                </template>
+
+                <div class="vs-search__results">
+                    <div>
+                        <VsHeading
+                            class="my-0"
+                            heading-style="heading-m"
+                            :level="2"
+                        >
+                            {{ configStore.getLabel('search', 'search.results') }}
+                        </VsHeading>
+                        <VsDetail>
+                            {{ configStore.getLabel('search', 'results.first-sentence') }}
+                            {{ searchStore.totalResults }}
+                            {{ configStore.getLabel('search', 'results.second-sentence') }}
+                        </VsDetail>
+                    </div>
+                    <VsBrSearchSort v-if="searchStore.categoryKey === 'events'" />
                 </div>
-                <VsBrSearchSort v-if="searchStore.categoryKey === 'events'" />
+
+                <VsLoadingSpinner v-if="searchStore.isLoading" />
+
+                <VsBrSearchResultsDisplay v-else />
             </div>
 
-            <VsLoadingSpinner v-if="searchStore.isLoading" />
-
-            <VsBrSearchResultsDisplay v-else />
+            <VsWarning class="vs-search__error--no-js mb-300">
+                {{ configStore.getLabel('search', 'no-js') }}
+            </VsWarning>
         </div>
-
-        <VsWarning class="vs-search__error--no-js mb-300">
-            {{ configStore.getLabel('search', 'no-js') }}
-        </VsWarning>
-    </div>
+    </VsContainer>
 </template>
 
 <script setup lang="ts">
@@ -49,7 +81,9 @@ import type { Page } from '@bloomreach/spa-sdk';
 
 import { inject, onMounted } from 'vue';
 import {
+    VsContainer,
     VsDetail,
+    VsEmbedWrapper,
     VsHeading,
     VsLoadingSpinner,
     VsWarning,
