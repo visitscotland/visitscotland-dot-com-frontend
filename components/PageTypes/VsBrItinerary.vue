@@ -3,7 +3,6 @@
         <VsBrHeroSection
             :content="documentData"
             :image="heroImage"
-            img-credit="Creddy McCredface"
             inset
         />
         <VsContainer>
@@ -135,15 +134,6 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrProductSearch
-            v-if="productSearch"
-            class="mt-300 mt-lg-600"
-        />
-    </NuxtLazyHydrate>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
         <VsBrHorizontalLinksModule
             v-if="otyml"
             :module="otyml"
@@ -167,8 +157,6 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
-import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 
 import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
@@ -198,7 +186,6 @@ let productSearch : any = {
 };
 let heroImage = {
 };
-let otyml : any = null;
 let pageIntro = {
 };
 let mapAreas = null;
@@ -249,10 +236,6 @@ if (page.value) {
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
     itineraryMap = documentData.mapLink;
-
-    if (configStore.otyml) {
-        otyml = configStore.otyml;
-    }
 
     if (component.value) {
         pageItems = component.value.model.models.pageItems;
