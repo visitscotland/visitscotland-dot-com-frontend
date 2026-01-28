@@ -1,10 +1,12 @@
 <template>
     <VsSkipTo
         :skip-to-text="configStore.getLabel('skip-to', 'skip-to.label')"
-        :has-search-link="false"
     >
         <template #main-menu-text>
             {{ configStore.getLabel('skip-to', 'skip-to.main-menu') }}
+        </template>
+        <template #search-text>
+            {{ configStore.getLabel('skip-to', 'skip-to.search') }}
         </template>
         <template #main-content-text>
             {{ configStore.getLabel('skip-to', 'skip-to.main-content') }}
