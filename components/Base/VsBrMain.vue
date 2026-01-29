@@ -150,7 +150,7 @@ if (page.value) {
 
     configStore.pageDocument = pageModels.document;
 
-    configStore.locale = pageDocument.model.data.localeString;
+    configStore.locale = componentModels.pageConfiguration.language;
 
     let langString = '';
 
