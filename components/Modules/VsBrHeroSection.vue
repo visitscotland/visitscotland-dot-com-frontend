@@ -21,8 +21,8 @@ const page: any = inject('page');
 
 const props = defineProps<{
     content: any,
-    video: any,
-    image: any,
+    video?: any,
+    image?: any,
 }>();
 
 const {
