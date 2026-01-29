@@ -53,6 +53,8 @@ import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 
+import forceHttps from '~/composables/forceHttps.ts';
+
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
@@ -148,7 +150,7 @@ if (page.value) {
 
     configStore.pageDocument = pageModels.document;
 
-    configStore.locale = pageDocument.model.data.localeString;
+    configStore.locale = componentModels.pageConfiguration.language;
 
     let langString = '';
 
@@ -176,6 +178,23 @@ if (page.value) {
 
     if (langString !== 'en-gb') {
         configStore.langString = langString;
+    }
+
+    const hrefLangs = [];
+
+    if (pageModels.orderedTranslations) {
+        for (let x = 0; x < pageModels.orderedTranslations.length; x++) {
+            const translation = page.value.getContent(pageModels.orderedTranslations[x].$ref);
+            const translationLocale = translation?.model?.data?.localeString;
+
+            if (translationLocale !== configStore.locale) {
+                hrefLangs.push({
+                    rel: 'alternate',
+                    href: forceHttps(translation?.model?.links?.site?.href),
+                    hreflang: translationLocale,
+                });
+            }
+        }
     }
 
     const runtimeConfig = useRuntimeConfig();
@@ -218,9 +237,13 @@ if (page.value) {
             },
             {
                 rel: 'canonical',
-                href: useRequestURL().toString().split('?')[0],
+                href: forceHttps(useRequestURL().toString().split('?')[0]),
             },
         ],
+    });
+
+    useHead({
+        link: hrefLangs,
     });
 
     if (configStore.searchDmsBased) {

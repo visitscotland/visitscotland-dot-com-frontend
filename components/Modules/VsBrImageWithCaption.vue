@@ -171,6 +171,10 @@ if (page) {
             imageData.coordinates = configStore.heroImage.coordinates;
         }
 
+        if (isHero.value) {
+            imageData.description = configStore.heroImage.description;
+        }
+
         if (imageData.coordinates) {
             if (imageData.coordinates.longitude) {
                 longitude = imageData.coordinates.longitude.toString();
