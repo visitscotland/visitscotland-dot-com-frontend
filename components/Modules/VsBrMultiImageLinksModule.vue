@@ -1,7 +1,7 @@
 <template>
     <VsMegalinks
         :title="module.title"
-        variant="single-image"
+        variant="multi-image"
         :theme="theme"
         :cookie-link-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
         :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
