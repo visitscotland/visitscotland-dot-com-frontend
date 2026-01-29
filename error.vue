@@ -46,7 +46,7 @@ import mitt from 'mitt';
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
-import VsBrErrorMain from '~/components/Base/VsBrErrorMain.vue';
+import VsBrMain from '~/components/Base/VsBrMain.vue';
 
 const app = getCurrentInstance();
 const emitter = mitt();
@@ -81,7 +81,7 @@ if (process.server && xForwardedhost.value) {
 }
 
 const configuration = {
-    path: '/',
+    path: '/servererror',
     endpoint: endpoint.value,
     httpClient: axios,
     ...(authorizationToken ? {
@@ -98,7 +98,7 @@ const configuration = {
 
 const mapping = {
     menu: VsBrMenu,
-    main: VsBrErrorMain,
+    main: VsBrMain,
     footer: VsBrFooter,
 };
 </script>
