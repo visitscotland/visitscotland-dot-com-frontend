@@ -131,6 +131,7 @@ if (page.value) {
         configStore.cludoEngineId = componentModels.pageConfiguration['cludo.engine-id'];
         configStore.cludoLanguage = componentModels.pageConfiguration.language;
         configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
+        configStore.cludoApiOperator = componentModels.pageConfiguration.cludoApiOperator;
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
 

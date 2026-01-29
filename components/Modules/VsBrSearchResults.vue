@@ -36,6 +36,7 @@
             :cludo-api-key="configStore.cludoExperienceId "
             :cludo-customer-id="customerId"
             :cludo-engine-id="engineId"
+            :cludo-api-operator="configStore.cludoApiOperator"
             :events-api="configStore.eventsApiUrl"
             :filters="orderedCategories"
             :sub-filters="orderedFilters"
