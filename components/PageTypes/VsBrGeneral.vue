@@ -37,6 +37,11 @@
         />
     </template>
 
+    <VsBrHeroSection
+        v-else-if="documentData.theme === 'Simple' && isSearchResultsPage"
+        :content="documentData"
+    />
+
     <VsBrPageIntro
         v-else-if="documentData.theme === 'Simple' && !configStore.isMainMapPageFlag"
         :content="documentData"
