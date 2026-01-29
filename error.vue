@@ -52,6 +52,16 @@ const app = getCurrentInstance();
 const emitter = mitt();
 app.appContext.config.globalProperties.emitter = emitter;
 
+const route = useRoute().path;
+
+const localeStrings = [
+    'fr-fr',
+    'es-es',
+    'it-it',
+    'nl-nl',
+    'de-de',
+];
+
 // Get API endpoint from the server side.
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
@@ -80,9 +90,19 @@ if (process.server && xForwardedhost.value) {
     axios.defaults.headers.common.Host = xForwardedhost.value;
 }
 
+let locale = 'resourceapi';
+
+for (let x = 0; x < localeStrings.length; x++) {
+    if (route.includes(localeStrings[x])) {
+        locale = `${localeStrings[x]}/resourceapi`;
+    }
+}
+
+const localisedEndpoint = endpoint.value.replace('resourceapi', locale);
+
 const configuration = {
     path: '/servererror',
-    endpoint: endpoint.value,
+    endpoint: localisedEndpoint,
     httpClient: axios,
     ...(authorizationToken ? {
         authorizationToken,
