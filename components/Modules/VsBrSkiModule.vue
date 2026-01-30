@@ -20,7 +20,7 @@
                 >
                     <VsSkiScotlandStatus
                         :ski-status-url="module.feedURL"
-                        :locale="configStore.locale"
+                        :locale="configStore.langString || 'en-gb'"
                         :runs-lifts-status-label="configStore.getLabel('ski', 'ski-centre.run-lift-status')"
                         :status-label="configStore.getLabel('ski', 'ski-centre.status')"
                         :runs-label="configStore.getLabel('ski', 'ski-centre.runs')"
@@ -110,8 +110,10 @@
                                             class="me-050"
                                         />
                                         <span>
-                                            <!-- TODO - ADDRESS -->
-                                            <!-- <@address module.address true /> -->
+                                            <VsBrAddress
+                                                :address="module.address"
+                                                :same-line="true"
+                                            />
                                         </span>
                                     </li>
                                     <li class="mb-050" v-if="module.pisteMap">
@@ -122,7 +124,7 @@
                                         />
                                         <VsLink
                                             type="download"
-                                            href="${module.pisteMap}"
+                                            :href="module.pisteMap"
                                         >
                                             {{ configStore.getLabel('ski', 'ski-centre.view-piste-map') }}
                                         </VsLink>
@@ -191,6 +193,7 @@ import {
 } from '@visitscotland/component-library/components';
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrAddress from '~/components/Modules/VsBrAddress.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
