@@ -2,13 +2,14 @@
     <VsContainer>
         <VsRow>
             <VsCol>
-                <span class="vs-section-header__divider" />
+                <span class="vs-section-header__divider mb-0" />
             </VsCol>
         </VsRow>
         <div class="row gap-300 gap-lg-0">
             <VsCol
                 cols="12"
                 lg="4"
+                class="mt-150"
             >
                 <VsHeading
                     level="2"

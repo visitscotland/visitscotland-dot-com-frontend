@@ -6,29 +6,30 @@
             inset
         />
         <VsContainer>
-        <VsRow>
-            <VsCol>
-                <span class="vs-section-header__divider" />
-            </VsCol>
-        </VsRow>
-        <div class="row gap-175 gap-lg-0">
-            <VsCol
-                cols="12"
-                lg="4"
-            >
-                <VsHeading
-                    level="2"
-                    heading-style="heading-l"
-                    no-margins
-                >
-                    {{ documentData.subheading }}
-                </VsHeading>
-            </VsCol>
-            <VsCol
-                cols="12"
-                lg="8"
-            >
-                <div class="d-flex flex-column gap-150 gap-md-300">
+            <VsRow>
+                <VsCol>
+                    <span class="vs-section-header__divider mb-0" />
+                </VsCol>
+            </VsRow>
+                <div class="row gap-175 gap-lg-0">
+                    <VsCol
+                        cols="12"
+                        lg="4"
+                        class="mt-150"
+                    >
+                        <VsHeading
+                            level="2"
+                            heading-style="heading-l"
+                            no-margins
+                        >
+                            {{ documentData.subheading }}
+                        </VsHeading>
+                    </VsCol>
+                    <VsCol
+                        cols="12"
+                        lg="8"
+                    >
+                    <div class="d-flex flex-column gap-150 gap-md-300">
                     <VsBody>
                         <VsBrRichText
                             :input-content="documentData.introduction.value"
@@ -103,7 +104,13 @@
                             </VsRow>
                         </VsContainer>
                     </VsPanel>
-                    <div class="d-flex flex-column flex-md-row gap-075 gap-md-150">
+                    <div 
+                        class="
+                            d-flex flex-column
+                            flex-md-row
+                            gap-075 gap-md-150
+                        "
+                    >
                         <VsButton
                             :href="itineraryMap.link"
                             icon="fa-regular fa-binoculars"
@@ -117,11 +124,11 @@
         </div>
         </VsContainer>
         <VsBrDaySection
-                v-for="(item, index) in pageItems"
-                :key="`item-${index}`"
-                :day="item"
-                :day-number="index + 1"
-            />
+            v-for="(item, index) in pageItems"
+            :key="`item-${index}`"
+            :day="item"
+            :day-number="index + 1"
+        />
     </div>
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
