@@ -3,6 +3,15 @@
         :content="documentData"
         :light-background="true"
     />
+
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
+        <VsBrNewsletterSignpost
+            v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
+            :data="configStore.newsletterSignpost"
+        />
+    </NuxtLazyHydrate>
 </template>
 
 <script lang="ts" setup>

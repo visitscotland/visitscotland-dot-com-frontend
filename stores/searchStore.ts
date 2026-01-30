@@ -57,7 +57,7 @@ const useSearchStore = defineStore('search', () => {
         }
 
         // eslint-disable-next-line no-undef
-        const cludoResults: SearchApiResults = await $fetch('/api/search/cludo-search', {
+        const cludoResults: SearchApiResults = await $fetch('/api/frontend/search/cludo-search', {
             method: 'post',
             body: {
                 categoryKey: categoryKey.value,
@@ -76,7 +76,7 @@ const useSearchStore = defineStore('search', () => {
         }
 
         // eslint-disable-next-line no-undef
-        const eventsResults: SearchApiResults = await $fetch('/api/search/events-search', {
+        const eventsResults: SearchApiResults = await $fetch('/api/frontend/search/events-search', {
             method: 'post',
             body: {
                 categoryKey: categoryKey.value,

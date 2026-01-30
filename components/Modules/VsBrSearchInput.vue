@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-search-input">
+    <div class="vs-search-input my-200">
         <div class="vs-search__input">
             <div class="vs-search__text-input">
                 <label
@@ -125,7 +125,7 @@ async function updateSearchTerm(term: string) {
 
     if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm) {
         // eslint-disable-next-line no-undef
-        const response: { suggestions: string[], error: SearchApiError } = await $fetch('/api/search/cludo-autocomplete', {
+        const response: { suggestions: string[], error: SearchApiError } = await $fetch('/api/frontend/search/cludo-autocomplete', {
             method: 'post',
             body: {
                 searchTerm: searchStore.searchTerm,
@@ -298,8 +298,6 @@ watch(isLoading, (newValue) => {
 
 <style lang="scss">
 .vs-search-input {
-    margin-bottom: 2rem;
-
     .vs-search__input {
         display: flex;
         position: relative;
