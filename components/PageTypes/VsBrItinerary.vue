@@ -90,7 +90,7 @@
                                             icon="fa-regular fa-location-dot"
                                             icon-variant="tertiary"
                                         >
-                                            {{ pageIntro.areas[0].displayName }}
+                                            {{ areaList }}
                                         </VsDetail>
                                     </div>
                                 </VsCol>
@@ -203,6 +203,7 @@ let numberOfKm = null;
 
 let pageItems = {
 };
+let areaList = null;
 
 let numberOfDays = null;
 const daySingular = configStore.getLabel('itinerary', 'day').toLowerCase();
@@ -247,7 +248,8 @@ if (page.value) {
     if (component.value) {
         pageItems = component.value.model.models.pageItems;
         pageIntro = component.value.model.models.pageIntro;
-        mapAreas = pageIntro.areas.map((region) => region.key);
+        mapAreas = pageIntro.areas.map((area) => area.key);
+        areaList = pageIntro.areas.map((area) => area.displayName).join('; ');
         numberOfDays = pageIntro.days.length;
         numberOfMiles = Math.round(pageIntro.distance);
         numberOfKm = Math.round(numberOfMiles * 1.6093);
