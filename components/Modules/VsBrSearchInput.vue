@@ -156,7 +156,14 @@ async function search() {
     searchStore.toDate = undefined;
     searchStore.sortBy = undefined;
 
-    await searchStore.setUrlParameters();
+    if (isSearchWidget) {
+        // `external: true` is required here to force a full page reload.
+        await navigateTo(`${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, {
+            external: true,
+        });
+    } else {
+        await searchStore.setUrlParameters();
+    }
 
     dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
         search_query: searchStore.searchTerm,
