@@ -164,6 +164,10 @@ onMounted(() => {
         pageCloseAnalytics();
     };
 
+    dataLayerHelper.createDataLayerObject('siteSearchOpenEvent', {
+        referrer_page: document.referrer,
+    });
+
     if (route.query['search-term']) {
         dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
             search_query: searchStore.searchTerm,
