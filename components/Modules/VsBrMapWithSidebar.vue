@@ -94,7 +94,10 @@ const filteredFeatures = module.geoJson.features.filter(
 );
 
 for (let x = 0; x < filteredFeatures.length; x++) {
-    filteredFeatures[x].properties.link.link = formatLink(filteredFeatures[x].properties.link.link);
+    if (filteredFeatures[x].properties && filteredFeatures[x].properties.link) {
+        filteredFeatures[x].properties.link.link =
+            formatLink(filteredFeatures[x].properties.link.link);
+    }
 }
 
 let toggleValues = [];
