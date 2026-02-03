@@ -18,7 +18,7 @@
                     :messaging-url="configStore.getLabel('forms', 'form.messaging-url')"
                     :country-list-url="configStore.getLabel('forms', 'form.country-url')"
                     :recaptcha-key="module.config.recaptcha"
-                    language="en"
+                    :language="configStore.locale"
                     :is-prod="module.config.production ? module.config.production : false"
                     :recaptcha-textarea-label="configStore.getLabel('forms', 'form.recaptcha-textarea-label')"
                 >
