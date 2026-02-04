@@ -1,44 +1,67 @@
 <template>
     <div>
-        <VsBrSkeleton
-            v-show="!hideSkeleton"
-        />
-        <div
-            class="hydrate"
-            v-show="isMounted"
-        >
+        <div v-if="!isInternalResource">
+            <VsBrSkeleton
+                v-show="!hideSkeleton"
+            />
+            <div
+                class="hydrate"
+                v-show="isMounted"
+            >
+                <br-page
+                    :configuration="configuration"
+                    :mapping="mapping"
+                >
+                    <template #default>
+                        <div
+                            :class="!isMounted ? 'no-js' : ''"
+                        >
+                            <CssHeader v-if="isInternalResource && internalResourceName === 'css-header'" />
+
+                            <br-component
+                                component="menu"
+                                v-if="!isInternalResource || internalResourceName === 'header'"
+                            />
+                            <br-component
+                                component="main"
+                                v-if="!isInternalResource"
+                            />
+                            <br-component
+                                component="footer"
+                                v-if="!isInternalResource || internalResourceName === 'footer'"
+                            />
+                        </div>
+                    </template>
+                </br-page>
+            </div>
+            <noscript>
+                <component :is="'style'">
+                .skeleton-site { display: none !important }
+                .hydrate { display: block !important }
+                </component>
+            </noscript>
+        </div>
+        <div v-if="isInternalResource">
             <br-page
                 :configuration="configuration"
                 :mapping="mapping"
             >
                 <template #default>
-                    <div
-                        :class="!isMounted ? 'no-js' : ''"
-                    >
-                        <CssHeader v-if="isInternalResource && internalResourceName === 'css-header'" />
+                    START_FRAGMENT_MARKER
+                    <CssHeader v-if="isInternalResource && internalResourceName === 'css-header'" />
 
-                        <br-component
-                            component="menu"
-                            v-if="!isInternalResource || internalResourceName === 'header'"
-                        />
-                        <br-component
-                            component="main"
-                            v-if="!isInternalResource"
-                        />
-                        <br-component
-                            component="footer"
-                            v-if="!isInternalResource || internalResourceName === 'footer'"
-                        />
-                    </div>
+                    <br-component
+                        component="menu"
+                        v-if="internalResourceName === 'header'"
+                    />
+                    <br-component
+                        component="footer"
+                        v-if="internalResourceName === 'footer'"
+                    />
+                    END_FRAGMENT_MARKER
                 </template>
             </br-page>
         </div>
-        <noscript>
-            <component :is="'style'">
-            .skeleton-site { display: none !important }
-            .hydrate { display: block !important }
-            </component>
-        </noscript>
     </div>
 </template>
 
