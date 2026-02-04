@@ -35,7 +35,7 @@ const props = defineProps<{ module: Object }>();
 const module: any = props.module;
 
 const labels: Object = computed(() => ({
-    heading: module.title,
+    heading: module.tabTitle ? module.tabTitle : module.title,
     closeSidebarBtn: configStore.getLabel('map', 'map.close-panel'),
     inputPlaceholder: configStore.getLabel('map', 'map.placeholder'),
     searchButton: configStore.getLabel('map', 'map.search'),
