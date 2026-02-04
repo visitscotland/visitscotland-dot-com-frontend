@@ -37,8 +37,13 @@
         />
     </template>
 
+    <VsBrHeroSection
+        v-else-if="documentData.theme === 'Simple' && isSearchResultsPage"
+        :content="documentData"
+    />
+
     <VsBrPageIntro
-        v-else-if="documentData.theme === 'Simple'"
+        v-else-if="documentData.theme === 'Simple' && !configStore.isMainMapPageFlag"
         :content="documentData"
         :light-background="true"
     />
@@ -46,10 +51,14 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrCategorySection
+        <div
             v-if="documentData && documentData.categoryLinks"
-            :categories="documentData.categoryLinks"
-        />
+            class="mt-175 mt-md-500 mb-175 mb-md-500"
+        >
+            <VsBrCategorySection
+                :categories="documentData.categoryLinks"
+            />
+        </div>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
@@ -61,13 +70,34 @@
         />
     </NuxtLazyHydrate>
 
-    <VsBrModuleBuilder
-        v-if="pageItems"
-        :modules="pageItems"
-    />
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+        v-if="configStore.showSearchWidget"
+    >
+        <div class="mt-175 mt-md-500 mb-175 mb-md-500">
+            <VsBrSearchWidget />
+        </div>
+    </NuxtLazyHydrate>
+
+    <template
+        v-if="isSearchResultsPage"
+    >
+        <VsBrSearch
+            :modules="pageItems"
+        />
+    </template>
+    <template
+        v-else
+    >
+        <VsBrModuleBuilder
+            v-if="pageItems"
+            :modules="pageItems"
+        />
+    </template>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="!configStore.isMainMapPageFlag"
     >
         <VsBrProductSearch
             v-if="productSearch && productSearch.position === 'Bottom'"
@@ -85,6 +115,7 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="!configStore.isMainMapPageFlag"
     >
         <VsBrHorizontalLinksModule
             v-if="otyml"
@@ -95,6 +126,7 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
+        v-if="!configStore.isMainMapPageFlag"
     >
         <VsBrNewsletterSignpost
             v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
@@ -118,13 +150,13 @@ import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksM
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
 import VsBrCategorySection from '~/components/Modules/VsBrCategorySection.vue';
+import VsBrSearch from '~/components/Modules/VsBrSearch.vue';
+import VsBrSearchWidget from '~/components/Modules/VsBrSearchWidget.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { page } = toRefs(props);
 
-let document : any = {
-};
 let documentData : any = {
 };
 let pageItems : any[] = [];
@@ -138,10 +170,12 @@ let otyml : any = null;
 const configStore = useConfigStore();
 
 let firstModuleIsLink = false;
+let isSearchResultsPage = false;
 
 if (page.value) {
-    document = page.value.getDocument();
-    documentData = document.getData();
+    const pageDocument = page.value.getContent(configStore.pageDocument);
+
+    documentData = pageDocument.getData();
     pageItems = configStore.pageItems;
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
@@ -166,6 +200,12 @@ if (page.value) {
         ) {
             firstModuleIsLink = true;
         }
+    }
+
+    // Remove trailing slashes from the global search path to remove path ambiguity
+    if (window
+        && window.location.pathname.includes(configStore.globalSearchPath.replace(/\/+$/, ''))) {
+        isSearchResultsPage = true;
     }
 }
 </script>

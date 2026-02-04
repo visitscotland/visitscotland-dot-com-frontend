@@ -46,11 +46,21 @@ import mitt from 'mitt';
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
-import VsBrErrorMain from '~/components/Base/VsBrErrorMain.vue';
+import VsBrMain from '~/components/Base/VsBrMain.vue';
 
 const app = getCurrentInstance();
 const emitter = mitt();
 app.appContext.config.globalProperties.emitter = emitter;
+
+const route = useRoute().path;
+
+const localeStrings = [
+    'fr-fr',
+    'es-es',
+    'it-it',
+    'nl-nl',
+    'de-de',
+];
 
 // Get API endpoint from the server side.
 const { data: endpoint } = await useFetch('/api/getEndpoint');
@@ -80,9 +90,19 @@ if (process.server && xForwardedhost.value) {
     axios.defaults.headers.common.Host = xForwardedhost.value;
 }
 
+let locale = 'resourceapi';
+
+for (let x = 0; x < localeStrings.length; x++) {
+    if (route.includes(localeStrings[x])) {
+        locale = `${localeStrings[x]}/resourceapi`;
+    }
+}
+
+const localisedEndpoint = endpoint.value.replace('resourceapi', locale);
+
 const configuration = {
-    path: '/',
-    endpoint: endpoint.value,
+    path: '/servererror',
+    endpoint: localisedEndpoint,
     httpClient: axios,
     ...(authorizationToken ? {
         authorizationToken,
@@ -98,7 +118,7 @@ const configuration = {
 
 const mapping = {
     menu: VsBrMenu,
-    main: VsBrErrorMain,
+    main: VsBrMain,
     footer: VsBrFooter,
 };
 </script>

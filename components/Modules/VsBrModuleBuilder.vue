@@ -4,7 +4,7 @@
         v-for="(item, index) in modules"
         :key="index"
         :id="`section-${index}`"
-        :class="{ 'has-edit-button': page.isPreview() }"
+        :class="`vs-module-wrapper__outer--${item.themeValue} ${page.isPreview() ? 'has-edit-button' : ''}`"
     >
         <BrManageContentButton
             v-if="item.hippoBean && page"
@@ -115,7 +115,12 @@
             :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'MapsModule'"
         >
-            <Suspense>
+            <component
+                v-if="item.googleMap"
+                :is="VsBrMainMap"
+                :module="item"
+            />
+            <Suspense v-else>
                 <component
                     :is="VsBrMapWithSidebar"
                     :module="item"
@@ -165,6 +170,7 @@
         >
             <VsBrSpotlightSection
                 :module="item"
+                :theme="item.themeValue"
             />
         </NuxtLazyHydrate>
 
@@ -229,6 +235,7 @@ import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 import themeCalculator from '~/composables/themeCalculator.ts';
 
 const VsBrMapWithSidebar = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSidebar.vue'));
+const VsBrMainMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMainMap.vue'));
 
 const props = defineProps<{
     modules: any[],
@@ -253,6 +260,7 @@ if (modules) {
             modules[x].type === 'ListLinksModule'
             || modules[x].type === 'MultiImageLinksModule'
             || modules[x].type === 'SingleImageLinksModule'
+            || modules[x].type === 'CardGroupModule'
         ) {
             if (modules[x].title || currentMegaLinkSection === -1) {
                 currentMegaLinkSection += 1;

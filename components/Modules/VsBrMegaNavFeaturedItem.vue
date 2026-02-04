@@ -1,5 +1,6 @@
 <template>
     <VsMegaNavFeaturedItem
+        v-if="link"
         :link="link.link"
         :alt="link.image.altText"
         :img-url="imageUrl"
@@ -33,7 +34,7 @@ const link: any = props.link;
 let imageUrl = '';
 
 if (page) {
-    const imageContent = page.getContent(link.image.cmsImage.$ref);
+    const imageContent = page.getContent(link?.image?.cmsImage?.$ref);
 
     if (imageContent) {
         imageUrl = imageContent.getOriginal().getUrl();

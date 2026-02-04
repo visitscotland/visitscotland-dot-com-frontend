@@ -4,13 +4,13 @@
         :class="{ 'has-edit-button': page.isPreview() }"
     >
         <BrManageContentButton
-            :content="document"
+            :content="pageDocument"
         />
 
         <VsBrGtm />
 
         <VsBrPageViewEvent
-            :data="document.model.data"
+            :data="pageDocument.model.data"
             :page-type="pageName"
         />
 
@@ -38,12 +38,6 @@
             :component="component"
         />
 
-        <VsBr404
-            v-else-if="pageName === 'pagenotfound'"
-            :page="page"
-            :component="component"
-        />
-
         <VsBr500
             v-else-if="pageName === 'servererror'"
             :page="page"
@@ -59,12 +53,13 @@ import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 
+import forceHttps from '~/composables/forceHttps.ts';
+
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
-import VsBr404 from '~/components/PageTypes/VsBr404.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
 import VsBrGtm from '~/components/Modules/VsBrGtm.vue';
@@ -79,7 +74,7 @@ let pageComponent : any = {
 };
 let pageName : string = '';
 
-let document : any = {
+let pageDocument : any = {
 };
 
 const configStore = useConfigStore();
@@ -117,6 +112,7 @@ if (page.value) {
     configStore.heroImage = componentModels.heroImage;
     configStore.labels = componentModels.labels;
     configStore.newsletterSignpost = componentModels.newsletterSignpost;
+    configStore.pageIntro = componentModels.pageIntro;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
@@ -128,9 +124,33 @@ if (page.value) {
         configStore.isLocalVideoheader = true;
     }
 
-    document = page.value.getDocument();
+    if (componentModels.pageConfiguration) {
+        configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
+        configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];
+        configStore.cludoExperienceId = componentModels.pageConfiguration['cludo.experience-id'];
+        configStore.cludoEngineId = componentModels.pageConfiguration['cludo.engine-id'];
+        configStore.cludoLanguage = componentModels.pageConfiguration.language;
+        configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
+        configStore.cludoApiOperator = componentModels.pageConfiguration.cludoApiOperator;
+        configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
+        configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
 
-    configStore.locale = document.model.data.localeString;
+        if (componentModels.pageConfiguration['dms-based']) {
+            configStore.searchDmsBased = true;
+        }
+
+        if (componentModels.pageConfiguration.searchWidget) {
+            configStore.showSearchWidget = true;
+        }
+    }
+
+    const pageContent : any = page.value.getContent(page.value.model.root);
+    const pageModels : any = pageContent.models;
+    pageDocument = page.value.getContent(pageModels.document);
+
+    configStore.pageDocument = pageModels.document;
+
+    configStore.locale = componentModels.pageConfiguration.language;
 
     let langString = '';
 
@@ -156,22 +176,43 @@ if (page.value) {
         break;
     }
 
+    if (langString !== 'en-gb') {
+        configStore.langString = langString;
+    }
+
+    const hrefLangs = [];
+
+    if (pageModels.orderedTranslations) {
+        for (let x = 0; x < pageModels.orderedTranslations.length; x++) {
+            const translation = page.value.getContent(pageModels.orderedTranslations[x].$ref);
+            const translationLocale = translation?.model?.data?.localeString;
+
+            if (translationLocale !== configStore.locale) {
+                hrefLangs.push({
+                    rel: 'alternate',
+                    href: forceHttps(translation?.model?.links?.site?.href),
+                    hreflang: translationLocale,
+                });
+            }
+        }
+    }
+
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        title: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+        title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
         meta: [
             {
                 name: 'title',
-                content: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+                content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
             },
             {
                 name: 'description',
-                content: document.model.data.seoDescription,
+                content: pageDocument.model.data.seoDescription,
             },
             {
                 name: 'robots',
-                content: document.model.data.noIndex ? 'noindex' : '',
+                content: pageDocument.model.data.noIndex ? 'noindex' : '',
             },
         ],
         htmlAttrs: {
@@ -187,7 +228,7 @@ if (page.value) {
             },
             {
                 rel: 'icon',
-                href: '/icons/favicon.svg',
+                href: '/favicon.svg',
                 type: 'image/svg+xml',
             },
             {
@@ -196,10 +237,39 @@ if (page.value) {
             },
             {
                 rel: 'canonical',
-                href: useRequestURL().toString(),
+                href: forceHttps(useRequestURL().toString().split('?')[0]),
             },
         ],
     });
+
+    useHead({
+        link: hrefLangs,
+    });
+
+    if (configStore.searchDmsBased) {
+        useHead({
+            script: [
+                {
+                    innerHTML: `
+                        var cludo_engineId = ${configStore.cludoEngineId};
+                        var cludo_language = '${configStore.cludoLanguage}';
+                        var cludo_searchUrl = '${configStore.globalSearchPath}';
+                    `,
+                    tagPosition: 'head',
+                },
+                {
+                    src: 'https://customer.cludo.com/scripts/bundles/search-script.js',
+                    onload: () => {
+                        const helperScript = document.createElement('script');
+                        helperScript.src = 'https://customer.cludo.com/assets/623/12809/cludo-helper.js';
+                        document.head.appendChild(helperScript);
+                    },
+                    async: false,
+                    defer: false,
+                },
+            ],
+        });
+    }
 }
 
 provide('page', page.value);

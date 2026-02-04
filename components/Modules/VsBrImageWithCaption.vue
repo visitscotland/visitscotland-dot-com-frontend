@@ -97,6 +97,7 @@ const configStore = useConfigStore();
 interface IProps {
     image?: any,
     imageString?: string,
+    imageDataSet?: any,
     variant?: string,
     isHero?: boolean,
     isVideo?: boolean,
@@ -114,6 +115,7 @@ interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
     image: null,
     imageString: '',
+    imageDataSet: null,
     variant: 'fullwidth',
     isHero: false,
     isVideo: false,
@@ -131,6 +133,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const {
     image,
     imageString,
+    imageDataSet,
     variant,
     isHero,
     isVideo,
@@ -168,6 +171,10 @@ if (page) {
             imageData.coordinates = configStore.heroImage.coordinates;
         }
 
+        if (isHero.value) {
+            imageData.description = configStore.heroImage.description;
+        }
+
         if (imageData.coordinates) {
             if (imageData.coordinates.longitude) {
                 longitude = imageData.coordinates.longitude.toString();
@@ -186,6 +193,11 @@ if (page) {
 
     if (imageString.value) {
         imageSrc = imageString.value;
+    }
+
+    if (imageDataSet.value) {
+        imageData = imageDataSet.value;
+        descriptionString = imageData.description;
     }
 }
 

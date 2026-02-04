@@ -7,7 +7,7 @@
                     :key="rowIndex"
                     :open-by-default="rowIndex === 0 ? true : false"
                     variant="transparent"
-                    :control-id="`{accordion-item-${row.transport.key}-${rowIndex}`"
+                    :control-id="`accordion-item-tab-${tabIndex}-${row.transport.key}-${rowIndex}`"
                     :class="rowIndex === 0 ? 'border-top-0' : ''"
                 >
                     <template #title>
@@ -46,7 +46,8 @@ import {
     VsIcon,
 } from '@visitscotland/component-library/components';
 
-const props = defineProps<{ tab: Object }>();
-const tab: any = props.tab;
+const props = defineProps<{ tab: Object, tabIndex: Number }>();
+const tab: Object = props.tab;
+const tabIndex: Number = props.tabIndex;
 
 </script>

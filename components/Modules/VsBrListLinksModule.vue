@@ -7,12 +7,20 @@
         :cookie-link-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
         :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
         :no-js-message="configStore.getLabel('video', 'video.no-js')"
+        :button-link="module.cta ? formatLink(module.cta.link) : null"
     >
         <template
             v-if="module.introduction"
             #vs-megalinks-intro
         >
             <VsBrRichText :input-content="module.introduction.value" />
+        </template>
+
+        <template
+            v-if="module.cta"
+            #vs-megalinks-button
+        >
+            {{ module.cta.label }}
         </template>
         <VsRow>
             <VsCol

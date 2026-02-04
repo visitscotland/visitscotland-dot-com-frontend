@@ -6,16 +6,15 @@
 
         <template
             #vs-module-wrapper-intro
-            v-if="module.introduction"
         >
-            <VsBrRichText :input-content="module.introduction.value" />
+            <VsBrRichText :input-content="module.introduction ? module.introduction.value : ''" />
         </template>
 
         <VsMapWithSidebar
             :main-heading-exists="module.title ? true : false"
             :category-heading="module.tabTitle"
             :filters="module.filters"
-            :places-data="module.geoJson.features"
+            :places-data="filteredFeatures"
             :map-id="`vs-map-${module.id}`"
             :region-bounds="module.mapPosition"
             :buttons-label="configStore.getLabel('map', 'map.buttons-label')"
@@ -30,7 +29,7 @@
             :panel-message="
                 module.mapType === 'regional'
                     ? configStore.getLabel('map', 'map.panel-bottom-msg')
-                    : ''
+                    : null
             "
             :load-branding-immediately="true"
         >
@@ -83,10 +82,23 @@ import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
+import formatLink from '~/composables/formatLink.ts';
+
 const configStore = useConfigStore();
 
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;
+
+const filteredFeatures = module.geoJson.features.filter(
+    (feature: any) => feature.geometry && feature.geometry.type,
+);
+
+for (let x = 0; x < filteredFeatures.length; x++) {
+    if (filteredFeatures[x].properties && filteredFeatures[x].properties.link) {
+        filteredFeatures[x].properties.link.link =
+            formatLink(filteredFeatures[x].properties.link.link);
+    }
+}
 
 let toggleValues = [];
 

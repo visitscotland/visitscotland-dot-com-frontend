@@ -28,7 +28,7 @@
                 >
                     <VsBrImageWithCaption
                         :mobile-overlap="true"
-                        :alignment="module.alignment"
+                        :alignment="module.alternate === true ? 'left' : 'right'"
                         :image="module.image.cmsImage
                             ? module.image.cmsImage
                             : module.image.externalImage"

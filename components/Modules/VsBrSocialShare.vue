@@ -2,8 +2,8 @@
     <VsSocialShare
         :id="noJs ? 'nojs' : 'default'"
         :no-js="noJs"
-        page-url="<@hst.link hippobean=document canonical=true fullyQualified=true/>"
-        page-title="${document.title}"
+        :page-url="useRequestURL().toString()"
+        :page-title="pageTitle"
         :share-btn-text="configStore.getLabel('social.share', 'share.button.text')"
         :close-alt-text="configStore.getLabel('social.share', 'close.share')"
         :share-popover-title="configStore.getLabel('social.share', 'share.on')"
@@ -38,6 +38,9 @@
 </template>
 
 <script lang="ts" setup>
+import { inject } from 'vue';
+
+import type { Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
@@ -58,4 +61,22 @@ const noJs: boolean = props.noJs;
 
 const configStore = useConfigStore();
 
+const page: Page | undefined = inject('page');
+let pageDocument;
+let pageTitle = '';
+
+if (page) {
+    pageDocument = page.getContent(configStore.pageDocument);
+
+    if (pageDocument) {
+        pageTitle = pageDocument.model.data.title;
+    }
+}
+
 </script>
+
+<style>
+    .vs-social-share__close-btn.btn {
+        position: absolute;
+    }
+</style>

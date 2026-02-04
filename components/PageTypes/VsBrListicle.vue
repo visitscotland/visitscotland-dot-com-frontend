@@ -32,6 +32,8 @@
                             <div>
                                 <VsBrImageWithCaption
                                     :image="item.image.cmsImage ? item.image.cmsImage : null"
+                                    :image-string="!item.image.cmsImage ? item.image.externalImage : ''"
+                                    :image-data-set="!item.image.cmsImage ? item.image : null"
                                     variant="fullwidth"
                                     :no-alt-text="true"
                                     :use-lazy-loading="index !== 0"
@@ -41,9 +43,9 @@
 
                         <template #description-slot>
                             <div>
-                                <div
-                                    v-html="item.description.value"
-                                />
+                                <VsBody>
+                                    <VsBrRichText :input-content="item.description.value" />
+                                </VsBody>
 
                                 <div
                                     class="mb-050"
@@ -51,8 +53,8 @@
                                     :key="linkIndex"
                                 >
                                     <VsLink
-                                        :href="cta.link"
-                                        :type="cta.type.toLowerCase()"
+                                        :href="formatLink(cta.link)"
+                                        :type="cta.type.toLowerCase() === 'internal' ? null : cta.type.toLowerCase()"
                                     >
                                         {{ cta.label }}<span class="visually-hidden">: {{ item.title }}</span>
                                     </VsLink>
@@ -97,9 +99,9 @@
                     </template>
 
                     <VsBody variant="lead">
-                        <div
-                            v-html="listicleClosing.copy.value"
-                        />
+                        <VsBody>
+                            <VsBrRichText :input-content="listicleClosing.copy.value" />
+                        </VsBody>
                     </VsBody>
                 </VsPanel>
             </VsCol>
@@ -149,11 +151,14 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
+import formatLink from '~/composables/formatLink.ts';
+
 import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
     VsContainer,
@@ -164,16 +169,14 @@ import {
     VsIconList,
     VsIconListItem,
     VsPanel,
-    VsBody,
     VsHeading,
+    VsBody,
 } from '@visitscotland/component-library/components';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { page, component } = toRefs(props);
 
-let document : any = {
-};
 let documentData : any = {
 };
 let productSearch : any = {
@@ -186,8 +189,9 @@ let listicleItems = [];
 let listicleClosing = null;
 
 if (page.value) {
-    document = page.value.getDocument();
-    documentData = document.getData();
+    const pageDocument = page.value.getContent(configStore.pageDocument);
+
+    documentData = pageDocument.getData();
     productSearch = configStore.productSearch;
     if (configStore.otyml) {
         otyml = configStore.otyml;
