@@ -18,6 +18,11 @@
             :video="configStore.heroVideo"
             :image="heroImage"
         />
+        <VsBrHeroSection
+            v-else-if="configStore.enableHeroSection"
+            :content="documentData"
+            :image="heroImage"
+        />
         <VsBrPageIntro
             v-else
             :content="documentData"

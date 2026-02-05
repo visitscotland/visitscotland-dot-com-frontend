@@ -5,6 +5,8 @@
         :img-src="imageSrc"
         :video-src="video ? video.link : null"
         :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
+        :img-caption="imageData.description"
+        :img-credit="imageData.credit"
     />
 </template>
 
@@ -32,10 +34,12 @@ const {
 } = toRefs(props);
 
 let imageValue = null;
+let imageData = null;
 let imageSrc = '';
 
 if (image.value) {
     imageValue = page.getContent(image.value.$ref);
+    imageData = imageValue.model.data;
     imageSrc = imageValue.getOriginal().getUrl();
 }
 

@@ -134,6 +134,7 @@ if (page.value) {
         configStore.cludoApiOperator = componentModels.pageConfiguration.cludoApiOperator;
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
+        configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
