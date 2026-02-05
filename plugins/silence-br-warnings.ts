@@ -6,8 +6,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         'failed to resolve component',
     ];
 
-    // eslint-disable-next-line no-param-reassign
-    nuxtApp.vueApp.config.warnHandler = (msg, trace) => {
+    // eslint-disable-next-line no-param-reassign, @typescript-eslint/no-unused-vars
+    nuxtApp.vueApp.config.warnHandler = (msg, instance, trace) => {
         if (silentWarnings.some((warning) => msg.includes(warning))) {
             return;
         }
