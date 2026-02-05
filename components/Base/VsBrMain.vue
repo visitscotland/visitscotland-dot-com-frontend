@@ -197,6 +197,15 @@ if (page.value) {
         }
     }
 
+    const canonicalLink = forceHttps(useRequestURL().toString().split('?')[0]);
+
+    let ogImageSrc = '';
+
+    if (pageDocument.model.data.heroImage.$ref) {
+        const ogImageValue = page.value.getContent(pageDocument.model.data.heroImage.$ref);
+        ogImageSrc = ogImageValue.getOriginal().getUrl();
+    }
+
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
@@ -213,6 +222,62 @@ if (page.value) {
             {
                 name: 'robots',
                 content: pageDocument.model.data.noIndex ? 'noindex' : '',
+            },
+            {
+                name: 'og:title',
+                content: pageDocument.model.data.seoTitle,
+            },
+            {
+                name: 'og:description',
+                content: pageDocument.model.data.seoDescription,
+            },
+            {
+                name: 'og:type',
+                content: 'article',
+            },
+            {
+                name: 'og:url',
+                content: canonicalLink,
+            },
+            {
+                name: 'og:site_name',
+                content: configStore.getLabel('seo', 'site-name'),
+            },
+            {
+                name: 'og:locale',
+                content: configStore.locale,
+            },
+            {
+                name: 'og:image',
+                content: ogImageSrc,
+            },
+            {
+                name: 'twitter:card',
+                content: 'summary_large_image',
+            },
+            {
+                name: 'twitter:site',
+                content: configStore.getLabel('seo', 'og.twitter.site'),
+            },
+            {
+                name: 'twitter:title',
+                content: pageDocument.model.data.seoTitle,
+            },
+            {
+                name: 'twitter:description',
+                content: pageDocument.model.data.seoDescription,
+            },
+            {
+                name: 'twitter:image',
+                content: ogImageSrc,
+            },
+            {
+                name: 'search:category',
+                content: pageModels.searchCategory,
+            },
+            {
+                name: 'search:contentType',
+                content: pageModels.searchContentType,
             },
         ],
         htmlAttrs: {
@@ -237,7 +302,7 @@ if (page.value) {
             },
             {
                 rel: 'canonical',
-                href: forceHttps(useRequestURL().toString().split('?')[0]),
+                href: canonicalLink,
             },
         ],
     });
