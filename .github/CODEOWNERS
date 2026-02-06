@@ -1,0 +1,17 @@
+# Configures "owners" for given types of code in the repo, automatically assigning them for review
+# when a PR is created
+
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence.
+
+* @GemmaLouise @mjpvs @markup-mitchell @duncansanderson @chesterroberts-vs
+
+# Owners can also be set on a per-filetype basis, if that is useful in the future
+
+# *.vue @AVueDeveloper
+
+# Or to a folder
+
+# stories/ @AStoryWriter
