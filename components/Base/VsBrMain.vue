@@ -224,31 +224,31 @@ if (page.value) {
                 content: pageDocument.model.data.noIndex ? 'noindex' : '',
             },
             {
-                name: 'og:title',
+                property: 'og:title',
                 content: pageDocument.model.data.seoTitle,
             },
             {
-                name: 'og:description',
+                property: 'og:description',
                 content: pageDocument.model.data.seoDescription,
             },
             {
-                name: 'og:type',
+                property: 'og:type',
                 content: 'article',
             },
             {
-                name: 'og:url',
+                property: 'og:url',
                 content: canonicalLink,
             },
             {
-                name: 'og:site_name',
+                property: 'og:site_name',
                 content: configStore.getLabel('seo', 'site-name'),
             },
             {
-                name: 'og:locale',
+                property: 'og:locale',
                 content: configStore.locale,
             },
             {
-                name: 'og:image',
+                property: 'og:image',
                 content: ogImageSrc,
             },
             {
