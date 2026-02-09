@@ -47,10 +47,7 @@
         -->
 
         <template #vs-intro-breadcrumb>
-            <VsBrBreadcrumb
-                :breadcrumb="breadcrumb"
-                :is-home="isHome"
-            />
+            <VsBrBreadcrumb />
         </template>
 
         <template #vs-intro-heading>
@@ -205,9 +202,6 @@ const {
     isListicle,
 } = toRefs(props);
 
-let breadcrumb : [];
-let isHome : boolean;
-
 let blogAuthor : any;
 let blogTime : string;
 let blogDate : string;
@@ -223,9 +217,6 @@ if (page) {
     const pageModels : any = pageContent.models;
 
     if (pageModels) {
-        isHome = pageModels.isHome;
-        breadcrumb = pageModels.breadcrumb.items;
-
         if (blog.value) {
             blogAuthor = page.getContent(blog.value.author);
 

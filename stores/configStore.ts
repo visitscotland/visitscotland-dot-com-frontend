@@ -23,9 +23,11 @@ interface IConfigState {
     searchDmsBased: boolean,
     eventsApiUrl: string,
     showSearchWidget: boolean,
+    cludoApiOperator: string,
     googleMapApiKey: string,
     isMainMapPageFlag: boolean,
     pageDocument: any,
+    enableHeroSection: boolean,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -57,9 +59,11 @@ const useConfigStore = defineStore('configStore', {
         searchDmsBased: false,
         eventsApiUrl: '',
         showSearchWidget: false,
+        cludoApiOperator: 'or',
         googleMapApiKey: '',
         isMainMapPageFlag: false,
         pageDocument: null,
+        enableHeroSection: false,
     }),
     actions: {
         getLabel(section: string, key: string) {

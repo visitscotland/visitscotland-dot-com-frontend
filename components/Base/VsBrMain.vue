@@ -58,6 +58,8 @@ import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 
+import forceHttps from '~/composables/forceHttps.ts';
+
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
@@ -138,8 +140,10 @@ if (page.value) {
         configStore.cludoEngineId = componentModels.pageConfiguration['cludo.engine-id'];
         configStore.cludoLanguage = componentModels.pageConfiguration.language;
         configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
+        configStore.cludoApiOperator = componentModels.pageConfiguration.cludoApiOperator;
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
+        configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
@@ -156,7 +160,7 @@ if (page.value) {
 
     configStore.pageDocument = pageModels.document;
 
-    configStore.locale = pageDocument.model.data.localeString;
+    configStore.locale = componentModels.pageConfiguration.language;
 
     let langString = '';
 
@@ -186,6 +190,32 @@ if (page.value) {
         configStore.langString = langString;
     }
 
+    const hrefLangs = [];
+
+    if (pageModels.orderedTranslations) {
+        for (let x = 0; x < pageModels.orderedTranslations.length; x++) {
+            const translation = page.value.getContent(pageModels.orderedTranslations[x].$ref);
+            const translationLocale = translation?.model?.data?.localeString;
+
+            if (translationLocale !== configStore.locale) {
+                hrefLangs.push({
+                    rel: 'alternate',
+                    href: forceHttps(translation?.model?.links?.site?.href),
+                    hreflang: translationLocale,
+                });
+            }
+        }
+    }
+
+    const canonicalLink = forceHttps(useRequestURL().toString().split('?')[0]);
+
+    let ogImageSrc = '';
+
+    if (pageDocument.model.data.heroImage.$ref) {
+        const ogImageValue = page.value.getContent(pageDocument.model.data.heroImage.$ref);
+        ogImageSrc = ogImageValue.getOriginal().getUrl();
+    }
+
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
@@ -203,6 +233,62 @@ if (page.value) {
                 name: 'robots',
                 content: pageDocument.model.data.noIndex ? 'noindex' : '',
             },
+            {
+                property: 'og:title',
+                content: pageDocument.model.data.seoTitle,
+            },
+            {
+                property: 'og:description',
+                content: pageDocument.model.data.seoDescription,
+            },
+            {
+                property: 'og:type',
+                content: 'article',
+            },
+            {
+                property: 'og:url',
+                content: canonicalLink,
+            },
+            {
+                property: 'og:site_name',
+                content: configStore.getLabel('seo', 'site-name'),
+            },
+            {
+                property: 'og:locale',
+                content: configStore.locale,
+            },
+            {
+                property: 'og:image',
+                content: ogImageSrc,
+            },
+            {
+                name: 'twitter:card',
+                content: 'summary_large_image',
+            },
+            {
+                name: 'twitter:site',
+                content: configStore.getLabel('seo', 'og.twitter.site'),
+            },
+            {
+                name: 'twitter:title',
+                content: pageDocument.model.data.seoTitle,
+            },
+            {
+                name: 'twitter:description',
+                content: pageDocument.model.data.seoDescription,
+            },
+            {
+                name: 'twitter:image',
+                content: ogImageSrc,
+            },
+            {
+                name: 'search:category',
+                content: pageModels.searchCategory,
+            },
+            {
+                name: 'search:contentType',
+                content: pageModels.searchContentType,
+            },
         ],
         htmlAttrs: {
             lang: langString,
@@ -217,7 +303,7 @@ if (page.value) {
             },
             {
                 rel: 'icon',
-                href: '/icons/favicon.svg',
+                href: '/favicon.svg',
                 type: 'image/svg+xml',
             },
             {
@@ -226,9 +312,13 @@ if (page.value) {
             },
             {
                 rel: 'canonical',
-                href: useRequestURL().toString().split('?')[0],
+                href: canonicalLink,
             },
         ],
+    });
+
+    useHead({
+        link: hrefLangs,
     });
 
     if (configStore.searchDmsBased) {

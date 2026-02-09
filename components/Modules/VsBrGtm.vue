@@ -79,17 +79,17 @@ const attachCivicEvents = (counter = 1) => {
             window.dataLayer.push = (arg) => {
                 let res = null;
 
-                if (arg) {
-                    res = originalDataLayerPush(arg);
-                } else {
-                    return originalDataLayerPush();
+                if (arg && arg !== null && typeof arg !== 'undefined') {
+                    res = originalDataLayerPush.apply(window.dataLayer, [arg]);
+
+                    const eventString = arg.event || (arg.value && arg.value.event) || '';
+
+                    checkEvent(eventString);
+
+                    return res;
                 }
 
-                const eventString = arg?.value?.event ?? arg?.event ?? '';
-
-                checkEvent(eventString);
-
-                return res;
+                return originalDataLayerPush.apply(window.dataLayer, [arg]);
             };
         } else {
             setTimeout(() => {

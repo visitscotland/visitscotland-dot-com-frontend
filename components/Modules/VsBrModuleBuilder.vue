@@ -4,7 +4,7 @@
         v-for="(item, index) in modules"
         :key="index"
         :id="`section-${index}`"
-        :class="{ 'has-edit-button': page.isPreview() }"
+        :class="`vs-module-wrapper__outer--${item.themeValue} ${page.isPreview() ? 'has-edit-button' : ''}`"
     >
         <BrManageContentButton
             v-if="item.hippoBean && page"
@@ -170,6 +170,7 @@
         >
             <VsBrSpotlightSection
                 :module="item"
+                :theme="item.themeValue"
             />
         </NuxtLazyHydrate>
 
@@ -259,6 +260,7 @@ if (modules) {
             modules[x].type === 'ListLinksModule'
             || modules[x].type === 'MultiImageLinksModule'
             || modules[x].type === 'SingleImageLinksModule'
+            || modules[x].type === 'CardGroupModule'
         ) {
             if (modules[x].title || currentMegaLinkSection === -1) {
                 currentMegaLinkSection += 1;

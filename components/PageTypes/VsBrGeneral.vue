@@ -18,6 +18,22 @@
             :video="configStore.heroVideo"
             :image="heroImage"
         />
+        <template v-else-if="configStore.enableHeroSection">
+            <VsContainer class="mt-075 mt-lg-200">
+                <VsRow>
+                    <VsCol
+                        cols="10"
+                        lg="8"
+                    >
+                        <VsBrBreadcrumb />
+                    </VsCol>
+                </VsRow>
+            </VsContainer>
+            <VsBrHeroSection
+                :content="documentData"
+                :image="heroImage"
+            />
+        </template>
         <VsBrPageIntro
             v-else
             :content="documentData"
@@ -36,6 +52,11 @@
             :image="heroImage"
         />
     </template>
+
+    <VsBrHeroSection
+        v-else-if="documentData.theme === 'Simple' && isSearchResultsPage"
+        :content="documentData"
+    />
 
     <VsBrPageIntro
         v-else-if="documentData.theme === 'Simple' && !configStore.isMainMapPageFlag"
@@ -65,10 +86,19 @@
         />
     </NuxtLazyHydrate>
 
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+        v-if="configStore.showSearchWidget"
+    >
+        <div class="mt-175 mt-md-500 mb-175 mb-md-500">
+            <VsBrSearchWidget />
+        </div>
+    </NuxtLazyHydrate>
+
     <template
         v-if="isSearchResultsPage"
     >
-        <VsBrSearchResults
+        <VsBrSearch
             :modules="pageItems"
         />
     </template>
@@ -89,15 +119,6 @@
             v-if="productSearch && productSearch.position === 'Bottom'"
             class="mt-300 mt-lg-600"
         />
-    </NuxtLazyHydrate>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-        v-if="configStore.showSearchWidget"
-    >
-        <div class="mt-175 mt-md-500 mb-175 mb-md-500">
-            <VsBrSiteSearchWidget />
-        </div>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
@@ -145,8 +166,13 @@ import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksM
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
 import VsBrCategorySection from '~/components/Modules/VsBrCategorySection.vue';
-import VsBrSearchResults from '~/components/Modules/VsBrSearchResults.vue';
-import VsBrSiteSearchWidget from '~/components/Modules/VsBrSiteSearchWidget.vue';
+import VsBrSearch from '~/components/Modules/VsBrSearch.vue';
+import VsBrSearchWidget from '~/components/Modules/VsBrSearchWidget.vue';
+import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
+
+import {
+    VsContainer, VsRow, VsCol,
+} from '@visitscotland/component-library/components';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
@@ -197,8 +223,9 @@ if (page.value) {
         }
     }
 
+    // Remove trailing slashes from the global search path to remove path ambiguity
     if (window
-        && window.location.pathname.includes(configStore.globalSearchPath)) {
+        && window.location.pathname.includes(configStore.globalSearchPath.replace(/\/+$/, ''))) {
         isSearchResultsPage = true;
     }
 }
