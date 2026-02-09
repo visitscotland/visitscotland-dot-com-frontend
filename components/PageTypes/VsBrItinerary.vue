@@ -11,117 +11,117 @@
                     <span class="vs-section-header__divider mb-0" />
                 </VsCol>
             </VsRow>
-                <div class="row gap-175 gap-lg-0">
-                    <VsCol
-                        cols="12"
-                        lg="4"
-                        class="mt-150"
+            <div class="row gap-175 gap-lg-0">
+                <VsCol
+                    cols="12"
+                    lg="4"
+                    class="mt-150"
+                >
+                    <VsHeading
+                        level="2"
+                        heading-style="heading-l"
+                        no-margins
                     >
-                        <VsHeading
-                            level="2"
-                            heading-style="heading-l"
-                            no-margins
-                        >
-                            {{ documentData.subheading }}
-                        </VsHeading>
-                    </VsCol>
-                    <VsCol
-                        cols="12"
-                        lg="8"
-                    >
+                        {{ documentData.subheading }}
+                    </VsHeading>
+                </VsCol>
+                <VsCol
+                    cols="12"
+                    lg="8"
+                >
                     <div class="d-flex flex-column gap-150 gap-md-300">
-                    <VsBody>
-                        <VsBrRichText
-                            :input-content="documentData.introduction.value"
-                        />
-                    </VsBody>
-                    <VsPanel>
-                        <VsContainer>
-                            <VsRow class="align-items-center">
-                                <VsCol cols="12" md="9" class="mb-175 mb-md-0">
-                                    <VsHeading
-                                        heading-style="heading-xs"
-                                        level="3"
-                                        no-margins
-                                        class="mb-125"
-                                    >
-                                        {{ configStore.getLabel('itinerary', 'highlights') }}
-                                    </VsHeading>
-                                    <div class="d-flex flex-wrap column-gap-300 row-gap-150 align-items-end">
-                                        <VsDetail
+                        <VsBody>
+                            <VsBrRichText
+                                :input-content="documentData.introduction.value"
+                            />
+                        </VsBody>
+                        <VsPanel>
+                            <VsContainer>
+                                <VsRow class="align-items-center">
+                                    <VsCol cols="12" md="9" class="mb-175 mb-md-0">
+                                        <VsHeading
+                                            heading-style="heading-xs"
+                                            level="3"
                                             no-margins
-                                            color="tertiary"
-                                            :icon="themeIcon[pageIntro.theme.key]"
-                                            icon-variant="tertiary"
+                                            class="mb-125"
                                         >
-                                            {{ pageIntro.theme.displayName }}
-                                        </VsDetail>
+                                            {{ configStore.getLabel('itinerary', 'highlights') }}
+                                        </VsHeading>
+                                        <div class="d-flex flex-wrap column-gap-300 row-gap-150 align-items-end">
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                :icon="themeIcon[pageIntro.theme.key]"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ pageIntro.theme.displayName }}
+                                            </VsDetail>
 
-                                        <VsDetail
-                                            no-margins
-                                            color="tertiary"
-                                            icon="fa-regular fa-route"
-                                            icon-variant="tertiary"
-                                        >
-                                            {{ numberOfMiles }} {{ milesLabel }} ({{ numberOfKm }}{{ kmLabel }})
-                                        </VsDetail>
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                icon="fa-regular fa-route"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ distanceText }}
+                                            </VsDetail>
 
-                                        <VsDetail
-                                            no-margins
-                                            color="tertiary"
-                                            icon="fa-regular fa-calendar-range"
-                                            icon-variant="tertiary"
-                                        >
-                                            {{ numberOfDays }} {{ numberOfDays === 1 ? daySingular : daysPlural }}
-                                        </VsDetail>
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                icon="fa-regular fa-calendar-range"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ durationText }}
+                                            </VsDetail>
 
-                                        <VsDetail
-                                            no-margins
-                                            color="tertiary"
-                                            :icon="transportIcon[pageIntro.transports[0].key]"
-                                            icon-variant="tertiary"
-                                        >
-                                            {{ pageIntro.transports[0].displayName }}
-                                        </VsDetail>
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                :icon="transportIcon[pageIntro.transports[0].key]"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ pageIntro.transports[0].displayName }}
+                                            </VsDetail>
 
-                                        <VsDetail
-                                            no-margins
-                                            color="tertiary"
-                                            icon="fa-regular fa-location-dot"
-                                            icon-variant="tertiary"
-                                        >
-                                            {{ areaList }}
-                                        </VsDetail>
-                                    </div>
-                                </VsCol>
-                                <VsCol cols="12" md="3">
-                                    <VsIllustratedMap
-                                        width="145px"
-                                        class="d-block mx-auto"
-                                        :highlighted-regions="mapAreas"
-                                    />
-                                </VsCol>
-                            </VsRow>
-                        </VsContainer>
-                    </VsPanel>
-                    <div 
-                        class="
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                icon="fa-regular fa-location-dot"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ areaList }}
+                                            </VsDetail>
+                                        </div>
+                                    </VsCol>
+                                    <VsCol cols="12" md="3">
+                                        <VsIllustratedMap
+                                            width="145px"
+                                            class="d-block mx-auto"
+                                            :highlighted-regions="mapAreas"
+                                        />
+                                    </VsCol>
+                                </VsRow>
+                            </VsContainer>
+                        </VsPanel>
+                        <div
+                            class="
                             d-flex flex-column
                             flex-md-row
                             gap-075 gap-md-150
                         "
-                    >
-                        <VsButton
-                            :href="itineraryMap.link"
-                            icon="fa-regular fa-binoculars"
-                            size="md"
                         >
-                            {{ itineraryMap.label || "View itinerary in Google Maps" }}
-                        </VsButton>
+                            <VsButton
+                                :href="itineraryMap.link"
+                                icon="fa-regular fa-binoculars"
+                                size="md"
+                            >
+                                {{ itineraryMap.label }}
+                            </VsButton>
+                        </div>
                     </div>
-                </div>
-            </VsCol>
-        </div>
+                </VsCol>
+            </div>
         </VsContainer>
         <VsBrDaySection
             v-for="(item, index) in pageItems"
@@ -189,8 +189,6 @@ const { page, component } = toRefs(props);
 
 let documentData : any = {
 };
-let productSearch : any = {
-};
 let heroImage = {
 };
 let pageIntro = {
@@ -208,8 +206,11 @@ let areaList = null;
 let numberOfDays = null;
 const daySingular = configStore.getLabel('itinerary', 'day').toLowerCase();
 const daysPlural = configStore.getLabel('itinerary', 'days').toLowerCase();
-const milesLabel = configStore.getLabel('itinerary', 'miles').toLowerCase();
+const durationText = `${ numberOfDays } ${ numberOfDays === 1 ? daySingular : daysPlural }`;
+
+const milesLabel = configStore.getLabel('itinerary', 'miles');
 const kmLabel = configStore.getLabel('itinerary', 'kilometres-abbreviation');
+const distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm }${ kmLabel })`;
 
 const transportIcon = {
     boat: 'fa-regular fa-sailboat',
@@ -241,7 +242,6 @@ if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
-    productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
     itineraryMap = documentData.mapLink;
 
