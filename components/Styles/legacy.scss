@@ -58,7 +58,8 @@
         .vs-global-menu__dropdown .btn-primary.dropdown-toggle,
         .vs-global-menu__languages .btn-primary.dropdown-toggle,
         .vs-global-menu__dropdown .dropdown-menu li a,
-        .vs-global-menu__languages__item {
+        .vs-global-menu__languages__item,
+        .vs-mega-nav-static-link {
             font-size: 1.33rem !important;
         }
 
@@ -120,7 +121,8 @@
     @media (max-width: 499px) {
         .vs-mega-nav-dropdown .btn.dropdown-toggle,
         .vs-mega-nav-top-menu-item__cta-link,
-        .vs-mega-nav-list-item .vs-link--variant-primary {
+        .vs-mega-nav-list-item .vs-link--variant-primary,
+        .vs-mega-nav-static-link {
             font-size: 1.6rem !important;
         }
 
@@ -172,7 +174,8 @@
 
     @media (min-width: 500px) and (max-width: 991px) {
         .vs-mega-nav-dropdown .btn.dropdown-toggle,
-        .vs-mega-nav-top-menu-item__cta-link {
+        .vs-mega-nav-top-menu-item__cta-link,
+        .vs-mega-nav-static-link {
             font-size: 2.22rem !important;
         }
 
@@ -226,7 +229,7 @@
             font-size: 1.4rem !important;
         }
 
-        .vs-mega-nav-dropdown .btn.dropdown-toggle {
+        .vs-mega-nav-dropdown .btn.dropdown-toggle, .vs-mega-nav-static-link {
             font-size: 1.6rem !important;
             padding-bottom: 1.2rem !important;
         }

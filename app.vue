@@ -16,19 +16,14 @@
                         <div
                             :class="!isMounted ? 'no-js' : ''"
                         >
-                            <CssHeader v-if="isInternalResource && internalResourceName === 'css-header'" />
-
                             <br-component
                                 component="menu"
-                                v-if="!isInternalResource || internalResourceName === 'header'"
                             />
                             <br-component
                                 component="main"
-                                v-if="!isInternalResource"
                             />
                             <br-component
                                 component="footer"
-                                v-if="!isInternalResource || internalResourceName === 'footer'"
                             />
                         </div>
                     </template>
@@ -42,25 +37,17 @@
             </noscript>
         </div>
         <div v-if="isInternalResource">
-            <br-page
-                :configuration="configuration"
-                :mapping="mapping"
-            >
-                <template #default>
-                    START_FRAGMENT_MARKER
-                    <CssHeader v-if="isInternalResource && internalResourceName === 'css-header'" />
-
-                    <br-component
-                        component="menu"
-                        v-if="internalResourceName === 'header'"
-                    />
-                    <br-component
-                        component="footer"
-                        v-if="internalResourceName === 'footer'"
-                    />
-                    END_FRAGMENT_MARKER
-                </template>
-            </br-page>
+            <div id="start-fragment" style="display: none;" />
+            <div :id="internalResourceName === 'header' ? '__nuxt' : '__nuxt_footer'">
+                <br-page :configuration="configuration" :mapping="mapping">
+                    <template #default>
+                        <CssHeader v-if="isInternalResource && internalResourceName.startsWith('header')" />
+                        <br-component component="menu" v-if="internalResourceName.startsWith('header')" />
+                        <br-component component="footer" v-if="internalResourceName.startsWith('footer')" />
+                    </template>
+                </br-page>
+            </div>
+            <div id="end-fragment" style="display: none;" />
         </div>
     </div>
 </template>
@@ -172,13 +159,34 @@ if (process.server && xForwardedhost.value) {
 let isInternalResource = false;
 let internalResourceName = '';
 
-if (deLocalisedRoute.includes('/data/internal/')) {
-    isInternalResource = true;
-    internalResourceName = deLocalisedRoute.substr(
-        deLocalisedRoute.indexOf('/data/internal/') + '/data/internal/'.length,
-        deLocalisedRoute.length,
-    );
-}
+const determineInternalState = () => {
+    if (window && window.__NUXT_INTERNAL_RESOURCE__) {
+        return {
+            isInternal: true,
+            name: window.__NUXT_INTERNAL_RESOURCE__,
+        };
+    }
+
+    if (deLocalisedRoute.includes('/data/internal/')) {
+        const name = deLocalisedRoute.substr(
+            deLocalisedRoute.indexOf('/data/internal/') + '/data/internal/'.length,
+            deLocalisedRoute.length,
+        );
+        return {
+            isInternal: true,
+            name,
+        };
+    }
+
+    return {
+        isInternal: false,
+        name: '',
+    };
+};
+
+const state = determineInternalState();
+isInternalResource = state.isInternal;
+internalResourceName = state.name;
 
 if (isInternalResource) {
     deLocalisedRoute = '/';
