@@ -116,7 +116,7 @@
                                 icon="fa-regular fa-binoculars"
                                 size="md"
                             >
-                                {{ itineraryMap.label }}
+                                {{ itineraryCta }}
                             </VsButton>
                         </div>
                     </div>
@@ -211,6 +211,8 @@ const durationText = `${ numberOfDays } ${ numberOfDays === 1 ? daySingular : da
 const milesLabel = configStore.getLabel('itinerary', 'miles');
 const kmLabel = configStore.getLabel('itinerary', 'kilometres-abbreviation');
 const distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm }${ kmLabel })`;
+
+const itineraryCta = configStore.getLabel('itinerary', 'itinerary.default-cta');
 
 const transportIcon = {
     boat: 'fa-regular fa-sailboat',
