@@ -206,11 +206,11 @@ let areaList = null;
 let numberOfDays = null;
 const daySingular = configStore.getLabel('itinerary', 'day').toLowerCase();
 const daysPlural = configStore.getLabel('itinerary', 'days').toLowerCase();
-const durationText = `${ numberOfDays } ${ numberOfDays === 1 ? daySingular : daysPlural }`;
+let durationText = null;
 
 const milesLabel = configStore.getLabel('itinerary', 'miles');
 const kmLabel = configStore.getLabel('itinerary', 'kilometres-abbreviation');
-const distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm }${ kmLabel })`;
+let distanceText = null;
 
 const itineraryCta = configStore.getLabel('itinerary', 'itinerary.default-cta');
 
@@ -252,9 +252,11 @@ if (page.value) {
         pageIntro = component.value.model.models.pageIntro;
         mapAreas = pageIntro.areas.map((area) => area.key);
         areaList = pageIntro.areas.map((area) => area.displayName).join('; ');
-        numberOfDays = pageIntro.days.length;
+        numberOfDays = pageIntro.dayCount;
+        durationText = `${ numberOfDays } ${ numberOfDays === 1 ? daySingular : daysPlural }`;
         numberOfMiles = Math.round(pageIntro.distance);
         numberOfKm = Math.round(numberOfMiles * 1.6093);
+        distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm }${ kmLabel })`;
     }
 }
 </script>
