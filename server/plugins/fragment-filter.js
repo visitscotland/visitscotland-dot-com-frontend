@@ -29,7 +29,9 @@ export default defineNitroPlugin((nitroApp) => {
             const endIdx = bodyString.indexOf(endMarker);
 
             if (startIdx !== -1 && endIdx !== -1) {
-                const internalName = path.split('/').pop();
+                const pathWithoutQuery = path.split('?')[0];
+                const internalName = pathWithoutQuery.split('/').pop();
+
                 const persistenceScript = `<script>window.__NUXT_INTERNAL_RESOURCE__ = "${internalName}";</script>`;
 
                 let fragment = bodyString.substring(
@@ -38,6 +40,11 @@ export default defineNitroPlugin((nitroApp) => {
                 ).trim();
 
                 fragment = fragment.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+
+                const payloadRegex = /<script>window\.__NUXT__[\s\S]*?<\/script>/gi;
+                const payloadBlock = (bodyString.match(payloadRegex) || []).join('\n');
+
+                fragment = `${payloadBlock}\n${persistenceScript}\n${scriptBlock}\n${styleBlock}\n${fragment}`;
 
                 fragment = `${persistenceScript}\n${scriptBlock}\n${styleBlock}\n${fragment}`;
 
