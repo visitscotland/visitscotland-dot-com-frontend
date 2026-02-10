@@ -43,7 +43,9 @@
             <div id="__nuxt">
                 <br-page :configuration="configuration" :mapping="mapping">
                     <template #default>
-                        <CssHeader v-if="internalResourceName === 'header'" />
+                        <Suspense v-if="internalResourceName === 'header'">
+                            <component :is="CssHeader" />
+                        </Suspense>
                         <br-component component="menu" v-if="internalResourceName === 'header'" />
                         <br-component component="footer" v-if="internalResourceName === 'footer'" />
                     </template>
@@ -76,7 +78,7 @@ import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
 
-import CssHeader from '~/components/InternalResources/CssHeader.vue';
+const CssHeader = defineAsyncComponent(() => import('~/components/InternalResources/CssHeader.vue'));
 
 /**
  * This section sets up all of the information we need to make available for the Bloomreach SDK
