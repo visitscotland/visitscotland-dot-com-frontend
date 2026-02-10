@@ -5,8 +5,8 @@
         :img-src="imageSrc"
         :video-src="video ? video.link : null"
         :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
-        :img-caption="imageData.description"
-        :img-credit="imageData.credit"
+        :img-caption="imageData?.description"
+        :img-credit="imageData?.credit"
     />
 </template>
 
