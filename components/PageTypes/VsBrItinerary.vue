@@ -1,105 +1,140 @@
 <template>
-    <VsBrPageIntro
-        :content="documentData"
-        :hero-image="heroImage"
-        :light-background="true"
-        :itinerary="itinerary"
-        :theme="theme"
-        :all-transports="allTransports"
-        :all-areas="allAreas"
-    />
-
-    <VsItinerary>
-        <template #map>
-            <component
-                :is="VsBrItineraryMap"
-                :places="itineraryPlaces"
-            />
-        </template>
-        <template #list>
-            <VsItineraryDay
-                v-for="(day, index) in itinerary.days"
-                :key="index"
-                :day-number="`${index + 1}`"
-                :day-label="configStore.getLabel('itinerary', 'day')"
-                :day-title="day.title"
-            >
-                <template
-                    #day-introduction
-                    v-if="day.introduction"
+    <div class="d-flex flex-column gap-500">
+        <VsBrHeroSection
+            :content="documentData"
+            :image="heroImage"
+            inset
+        />
+        <VsContainer>
+            <VsRow>
+                <VsCol>
+                    <span class="vs-section-header__divider mb-0" />
+                </VsCol>
+            </VsRow>
+            <div class="row gap-175 gap-lg-0">
+                <VsCol
+                    cols="12"
+                    lg="4"
+                    class="mt-150"
                 >
-                    <VsBody>
-                        <VsBrRichText :input-content="day.introduction.value" />
-                    </VsBody>
-                </template>
-
-                <template
-                    #day-transport
-                    v-if="day.transports"
-                >
-                    <VsDescriptionList
-                        class="text-center justify-content-center mb-075 has-edit-button"
-                        inline
+                    <VsHeading
+                        level="2"
+                        heading-style="heading-l"
+                        no-margins
                     >
-                        <VsDescriptionListItem
-                            title
-                            class="col-auto px-0"
-                        >
-                            {{ configStore.getLabel("itinerary", "transport") }}
-                        </VsDescriptionListItem>
-
-                        <VsDescriptionListItem
-                            class="col-auto px-0"
-                            v-for="(transport, transportIndex) in day.transports"
-                            :key="transportIndex"
-                        >
-                            <VsTooltip
-                                :title="configStore.getLabel('transports', '${transport}')"
-                                href="#"
-                                :icon="getDMSIconName(transport)"
-                                size="sm"
-                                icon-only
-                                variant="transparent"
-                            >
-                                <span class="visually-hidden">
-                                    {{ configStore.getLabel("transports", "${transport}") }}
-                                </span>
-                            </VsTooltip>
-                        </VsDescriptionListItem>
-                    </VsDescriptionList>
-                </template>
-
-                <template
-                    #stops
-                    v-if="day.stops"
+                        {{ documentData.subheading }}
+                    </VsHeading>
+                </VsCol>
+                <VsCol
+                    cols="12"
+                    lg="8"
                 >
-                    <VsBrItineraryStop
-                        v-for="(stop, stopsIndex) in day.stops"
-                        :key="stopsIndex"
-                        :stop="stop"
-                        :is-last-stop="stopsIndex === day.stops.length - 1"
-                        :nearby-eat-link="nearbyEatLink"
-                        :nearby-stay-link="nearbyStayLink"
-                    />
-                </template>
-            </VsItineraryDay>
-        </template>
-    </VsItinerary>
+                    <div class="d-flex flex-column gap-150 gap-md-300">
+                        <VsBody>
+                            <VsBrRichText
+                                :input-content="documentData.introduction.value"
+                            />
+                        </VsBody>
+                        <VsPanel>
+                            <VsContainer>
+                                <VsRow class="align-items-center">
+                                    <VsCol cols="12" md="9" class="mb-175 mb-md-0">
+                                        <VsHeading
+                                            heading-style="heading-xs"
+                                            level="3"
+                                            no-margins
+                                            class="mb-125"
+                                        >
+                                            {{ configStore.getLabel('itinerary', 'highlights') }}
+                                        </VsHeading>
+                                        <div class="d-flex flex-wrap column-gap-300 row-gap-150 align-items-end">
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                :icon="themeIcon[pageIntro.theme.key]"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ pageIntro.theme.displayName }}
+                                            </VsDetail>
 
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                icon="fa-regular fa-route"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ distanceText }}
+                                            </VsDetail>
+
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                icon="fa-regular fa-calendar-range"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ durationText }}
+                                            </VsDetail>
+
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                :icon="transportIcon[pageIntro.transports[0].key]"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ pageIntro.transports[0].displayName }}
+                                            </VsDetail>
+
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                icon="fa-regular fa-location-dot"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ areaList }}
+                                            </VsDetail>
+                                        </div>
+                                    </VsCol>
+                                    <VsCol cols="12" md="3">
+                                        <VsIllustratedMap
+                                            width="145px"
+                                            class="d-block mx-auto"
+                                            :highlighted-regions="mapAreas"
+                                        />
+                                    </VsCol>
+                                </VsRow>
+                            </VsContainer>
+                        </VsPanel>
+                        <div
+                            class="
+                            d-flex flex-column
+                            flex-md-row
+                            gap-075 gap-md-150
+                        "
+                        >
+                            <VsButton
+                                :href="itineraryMap.link"
+                                icon="fa-regular fa-binoculars"
+                                size="md"
+                            >
+                                {{ itineraryCta }}
+                            </VsButton>
+                        </div>
+                    </div>
+                </VsCol>
+            </div>
+        </VsContainer>
+        <VsBrDaySection
+            v-for="(item, index) in pageItems"
+            :key="`item-${index}`"
+            :day="item"
+            :day-number="index + 1"
+        />
+    </div>
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
         <VsBrSocialShare
             :no-js="true"
-        />
-    </NuxtLazyHydrate>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrProductSearch
-            v-if="productSearch"
-            class="mt-300 mt-lg-600"
         />
     </NuxtLazyHydrate>
 
@@ -124,28 +159,29 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs, defineAsyncComponent } from 'vue';
+import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
-import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
-import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
-import VsBrItineraryStop from '~/components/Modules/VsBrItineraryStop.vue';
+
+import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
-    VsItinerary,
-    VsItineraryDay,
-    VsDescriptionList,
-    VsDescriptionListItem,
-    VsTooltip,
     VsBody,
+    VsHeading,
+    VsContainer,
+    VsRow,
+    VsCol,
+    VsPanel,
+    VsIllustratedMap,
+    VsDetail,
+    VsButton,
 } from '@visitscotland/component-library/components';
 
-const VsBrItineraryMap = defineAsyncComponent(() => import('~/components/Modules/VsBrItineraryMap.vue'));
+const configStore = useConfigStore();
 
 const props = defineProps<{ component: Component, page: Page }>();
 
@@ -153,90 +189,74 @@ const { page, component } = toRefs(props);
 
 let documentData : any = {
 };
-let productSearch : any = {
-};
 let heroImage = {
 };
-let otyml : any = null;
+let pageIntro = {
+};
+let mapAreas = null;
+let itineraryMap = null;
 
-const configStore = useConfigStore();
+let numberOfMiles = null;
+let numberOfKm = null;
 
-let itinerary = {
+let pageItems = {
+};
+let areaList = null;
+
+let numberOfDays = null;
+const daySingular = configStore.getLabel('itinerary', 'day').toLowerCase();
+const daysPlural = configStore.getLabel('itinerary', 'days').toLowerCase();
+let durationText = null;
+
+const milesLabel = configStore.getLabel('itinerary', 'miles');
+const kmLabel = configStore.getLabel('itinerary', 'kilometres-abbreviation');
+let distanceText = null;
+
+const itineraryCta = configStore.getLabel('itinerary', 'itinerary.default-cta');
+
+const transportIcon = {
+    boat: 'fa-regular fa-sailboat',
+    bus: 'fa-regular fa-bus',
+    car: 'fa-regular fa-car-side',
+    cycling: 'fa-regular fa-person-biking',
+    ferry: 'fa-regular fa-ferry',
+    public: 'fa-regular fa-taxi-bus',
+    train: 'fa-regular fa-train',
+    walking: 'fa-regular fa-person-walking',
 };
 
-let allTransports = [];
-
-let allAreas = [];
-
-let theme = {
+const themeIcon = {
+    acti: 'fa-regular fa-person-hiking',
+    castle: 'fa-regular fa-chess-rook',
+    city: 'fa-regular fa-city',
+    familyev: 'fa-regular fa-family',
+    history: 'fa-regular fa-landmark',
+    islands: 'fa-regular fa-island-tropical',
+    landscape: 'fa-regular fa-mountain',
+    landscapes: 'fa-regular fa-mountains',
+    filmev: 'fa-regular fa-camera-movie',
+    spahealth: 'fa-regular fa-spa',
+    whisky: 'fa-regular fa-whiskey-glass-ice',
+    sightseeing: 'fa-regular fa-binoculars',
 };
-
-let nearbyEatLink = '';
-let nearbyStayLink = '';
-
-const itineraryPlaces : any[] = [];
 
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
-    productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
-
-    if (configStore.otyml) {
-        otyml = configStore.otyml;
-    }
+    itineraryMap = documentData.mapLink;
 
     if (component.value) {
-        itinerary = component.value.model.models.itinerary;
-
-        allTransports = itinerary.transports;
-        allAreas = itinerary.areas;
-        theme = itinerary.theme;
-
-        nearbyEatLink = itinerary.lastStopNearbyEat;
-        nearbyStayLink = itinerary.lastStopNearbyStay;
-
-        if (itinerary.days) {
-            const allStops = [];
-
-            for (let x = 0; x < Object.keys(itinerary.stops).length; x++) {
-                const nextStop = itinerary.stops[Object.keys(itinerary.stops)[x]];
-
-                allStops[nextStop.hippoBean.$ref] = nextStop;
-            }
-
-            for (let x = 0; x < itinerary.days.length; x++) {
-                if (itinerary.days[x].$ref) {
-                    itinerary.days[x] = page.value.getContent(itinerary.days[x]);
-                }
-                if (itinerary.days[x].model) {
-                    itinerary.days[x] = itinerary.days[x].model.data;
-                }
-
-                if (itinerary.days[x].stops) {
-                    for (let y = 0; y < itinerary.days[x].stops.length; y++) {
-                        if (itinerary.days[x].stops[y].$ref) {
-                            itinerary.days[x].stops[y] = allStops[itinerary.days[x].stops[y].$ref];
-                        }
-
-                        const stop = itinerary.days[x].stops[y];
-
-                        if (stop.coordinates) {
-                            itineraryPlaces.push({
-                                title: stop.title,
-                                latitude: stop.coordinates.latitude,
-                                longitude: stop.coordinates.longitude,
-                                stopCount: stop.index,
-                                imageSrc: '', // TODO - currently no examples to work from
-                                altText: stop.title,
-                            });
-                        }
-                    }
-                }
-            }
-        }
+        pageItems = component.value.model.models.pageItems;
+        pageIntro = component.value.model.models.pageIntro;
+        mapAreas = pageIntro.areas.map((area) => area.key);
+        areaList = pageIntro.areas.map((area) => area.displayName).join('; ');
+        numberOfDays = pageIntro.dayCount;
+        durationText = `${ numberOfDays } ${ numberOfDays === 1 ? daySingular : daysPlural }`;
+        numberOfMiles = Math.round(pageIntro.distance);
+        numberOfKm = Math.round(numberOfMiles * 1.6093);
+        distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm }${ kmLabel })`;
     }
 }
-
 </script>

@@ -41,6 +41,9 @@ if (image.value) {
     imageValue = page.getContent(image.value.$ref);
     imageData = imageValue.model.data;
     imageSrc = imageValue.getOriginal().getUrl();
+    // imageCaption = imageValue.model.data.description;
+    // imageAlt = imageValue.model.data.altText;
+    // imageCredit = imageValue.model.data.credit;
 }
 
 </script>
