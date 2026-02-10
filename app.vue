@@ -36,14 +36,16 @@
                 </component>
             </noscript>
         </div>
+        <!-- Alternative templating that is only loaded by the TMS when retrieving the header
+         and footer for external use -->
         <div v-if="isInternalResource">
             <div id="start-fragment" style="display: none;" />
-            <div :id="internalResourceName === 'header' ? '__nuxt' : '__nuxt_footer'">
+            <div id="__nuxt">
                 <br-page :configuration="configuration" :mapping="mapping">
                     <template #default>
-                        <CssHeader v-if="isInternalResource && internalResourceName.startsWith('header')" />
-                        <br-component component="menu" v-if="internalResourceName.startsWith('header')" />
-                        <br-component component="footer" v-if="internalResourceName.startsWith('footer')" />
+                        <CssHeader v-if="internalResourceName === 'header'" />
+                        <br-component component="menu" v-if="internalResourceName === 'header'" />
+                        <br-component component="footer" v-if="internalResourceName === 'footer'" />
                     </template>
                 </br-page>
             </div>
@@ -160,22 +162,29 @@ let isInternalResource = false;
 let internalResourceName = '';
 
 const determineInternalState = () => {
-    if (window && window.__NUXT_INTERNAL_RESOURCE__) {
-        return {
-            isInternal: true,
-            name: window.__NUXT_INTERNAL_RESOURCE__,
-        };
+    if (process.server) {
+        if (deLocalisedRoute.includes('/data/internal/header')) {
+            return {
+                isInternal: true,
+                name: 'header',
+            };
+        }
+        if (deLocalisedRoute.includes('/data/internal/footer')) {
+            return {
+                isInternal: true,
+                name: 'footer',
+            };
+        }
     }
 
-    if (deLocalisedRoute.includes('/data/internal/')) {
-        const name = deLocalisedRoute.substr(
-            deLocalisedRoute.indexOf('/data/internal/') + '/data/internal/'.length,
-            deLocalisedRoute.length,
-        );
-        return {
-            isInternal: true,
-            name,
-        };
+    if (process.client) {
+        const el = document.querySelector('.nuxt-internal-wrapper[data-internal-type]');
+        if (el) {
+            return {
+                isInternal: true,
+                name: el.getAttribute('data-internal-type'),
+            };
+        }
     }
 
     return {
