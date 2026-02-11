@@ -1,5 +1,7 @@
 <template>
-    <VsContainer>
+    <VsContainer
+        class="vs-daysection-wrapper"
+    >
         <VsRow>
             <VsCol>
                 <span class="vs-section-header__divider mb-0" />
@@ -106,13 +108,13 @@ const dayLabel = configStore.getLabel('itinerary', 'day');
 
 </script>
 
-<style lang="scss">
-    h3 {
+<style>
+    .vs-daysection-wrapper h3 {
         margin-bottom: 1.25rem !important;
         margin-top: 0 !important;
     }
 
-    figure {
+    .vs-daysection-wrapper figure {
         margin: 0;
     }
 </style>
