@@ -98,6 +98,7 @@ interface IProps {
     image?: any,
     imageString?: string,
     imageDataSet?: any,
+    imageDescription?: string,
     variant?: string,
     isHero?: boolean,
     isVideo?: boolean,
@@ -116,6 +117,7 @@ const props = withDefaults(defineProps<IProps>(), {
     image: null,
     imageString: '',
     imageDataSet: null,
+    imageDescription: '',
     variant: 'fullwidth',
     isHero: false,
     isVideo: false,
@@ -134,6 +136,7 @@ const {
     image,
     imageString,
     imageDataSet,
+    imageDescription,
     variant,
     isHero,
     isVideo,
@@ -186,6 +189,8 @@ if (page) {
 
         if (isVideo.value) {
             descriptionString = `${configStore.getLabel('essentials.global', 'image.title')}: ${imageData.description}`;
+        } else if (imageDescription.value) {
+            descriptionString = imageDescription.value;
         } else if (imageData) {
             descriptionString = imageData.description;
         }
