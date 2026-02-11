@@ -8,9 +8,9 @@
             >
                 <VsBrImageWithCaption
                     :is-video="false"
-                    :is-hero="false"
                     variant="fullwidth"
                     :image="image"
+                    :image-description="configStore.heroImage?.description"
                 />
             </VsCol>
         </VsRow>
@@ -25,6 +25,10 @@ import {
 } from '@visitscotland/component-library/components';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
 
 const props = defineProps<{
     image?: any,
