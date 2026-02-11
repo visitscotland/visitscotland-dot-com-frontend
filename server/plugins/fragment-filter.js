@@ -68,7 +68,7 @@ export default defineNitroPlugin((nitroApp) => {
                  * used to load the actual content of the TMS on the other server.
                  */
                 if (path.includes('/header')) {
-                    fragment = `${styleBlock}\n${scriptBlock}\n${fragment}\n<main id="main">`;
+                    fragment = `${styleBlock}\n${scriptBlock}\n${fragment}\n<main id="main" class="external-header-integration">`;
                 } else if (path.includes('/footer')) {
                     /**
                      * As this creates two nuxt apps which are hydrated separately, one containing

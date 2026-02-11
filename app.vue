@@ -40,7 +40,7 @@
          and footer for external use -->
         <div v-if="isInternalResource">
             <div id="start-fragment" style="display: none;" />
-            <div id="__nuxt">
+            <div id="__nuxt" class="external-header-integration">
                 <br-page :configuration="configuration" :mapping="mapping">
                     <template #default>
                         <Suspense v-if="internalResourceName === 'header'">
