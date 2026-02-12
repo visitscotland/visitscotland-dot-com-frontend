@@ -56,7 +56,10 @@ if (image.startsWith('assets')) {
     image = `/${image}`;
 }
 
-const description = decode(module.copy.value);
+// Strip out paragraph tags that are only sometimes present
+let description = module.copy.value.replace(/<[^>]+>/g, '');
+// Parse html entities that the editor is sending
+description = decode(description);
 
 </script>
 
