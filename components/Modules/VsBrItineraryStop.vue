@@ -20,7 +20,7 @@
             <VsLink
                 v-if="stop.ctaLink"
                 :href="stop.ctaLink.link"
-                :type="stop.ctaLink.type === 'internal' ? null : stop.ctaLink.type"
+                :type="stop.ctaLink.type === 'EXTERNAL' ? 'external' : null"
                 class="d-inline-block mb-100"
             >
                 {{ stop.ctaLink.label }}
