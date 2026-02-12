@@ -20,6 +20,8 @@
 
 import { inject } from 'vue';
 
+import { decode } from 'html-entities';
+
 import type { Page } from '@bloomreach/spa-sdk';
 
 import {
@@ -54,13 +56,7 @@ if (image.startsWith('assets')) {
     image = `/${image}`;
 }
 
-let description = module.copy.value.replace(/<[^>]+>/g, '');
-
-if (window && window.location) {
-    const decoder = document.createElement('textarea');
-    decoder.innerHTML = description;
-    description = decoder.value;
-}
+const description = decode(module.copy.value);
 
 </script>
 
