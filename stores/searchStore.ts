@@ -60,13 +60,14 @@ const useSearchStore = defineStore('search', () => {
         const cludoResults: SearchApiResults = await $fetch('/api/frontend/search/cludo-search', {
             method: 'post',
             body: {
+                apiOperator: configStore.cludoApiOperator,
                 categoryKey: categoryKey.value,
                 cludoApiKey: configStore.cludoExperienceId,
                 cludoCustomerId: parseInt(configStore.cludoCustomerId, 10),
                 cludoEngineId: parseInt(configStore.cludoEngineId, 10),
+                langString: configStore.langString,
                 searchTerm: searchTerm.value,
                 page: currentPage.value,
-                apiOperator: configStore.cludoApiOperator,
             },
         });
 
