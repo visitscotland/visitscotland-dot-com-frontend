@@ -32,6 +32,7 @@
                         :image="module.image.cmsImage
                             ? module.image.cmsImage
                             : module.image.externalImage"
+                        :image-description="module.image.description"
                     />
                 </template>
 
