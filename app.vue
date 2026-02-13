@@ -1,37 +1,58 @@
 <template>
     <div>
-        <VsBrSkeleton
-            v-show="!hideSkeleton"
-        />
-        <div
-            class="hydrate"
-            v-show="isMounted"
-        >
-            <br-page
-                :configuration="configuration"
-                :mapping="mapping"
+        <div v-if="!isInternalResource">
+            <VsBrSkeleton
+                v-show="!hideSkeleton"
+            />
+            <div
+                class="hydrate"
+                v-show="isMounted"
             >
-                <template #default>
-                    <div
-                        :class="!isMounted ? 'no-js' : ''"
-                    >
-                        <br-component component="menu" />
-                        <br-component component="main" />
-                        <NuxtLazyHydrate
-                            :when-visible="{ rootMargin: '50px' }"
+                <br-page
+                    :configuration="configuration"
+                    :mapping="mapping"
+                >
+                    <template #default>
+                        <div
+                            :class="!isMounted ? 'no-js' : ''"
                         >
-                            <br-component component="footer" />
-                        </NuxtLazyHydrate>
-                    </div>
-                </template>
-            </br-page>
+                            <br-component
+                                component="menu"
+                            />
+                            <br-component
+                                component="main"
+                            />
+                            <br-component
+                                component="footer"
+                            />
+                        </div>
+                    </template>
+                </br-page>
+            </div>
+            <noscript>
+                <component :is="'style'">
+                .skeleton-site { display: none !important }
+                .hydrate { display: block !important }
+                </component>
+            </noscript>
         </div>
-        <noscript>
-            <component :is="'style'">
-            .skeleton-site { display: none !important }
-            .hydrate { display: block !important }
-            </component>
-        </noscript>
+        <!-- Alternative templating that is only loaded by the TMS when retrieving the header
+         and footer for external use -->
+        <div v-if="isInternalResource">
+            <div id="start-fragment" style="display: none;" />
+            <div id="__nuxt" class="external-header-integration">
+                <br-page :configuration="configuration" :mapping="mapping">
+                    <template #default>
+                        <Suspense v-if="internalResourceName === 'header'">
+                            <component :is="CssHeader" />
+                        </Suspense>
+                        <br-component component="menu" v-if="internalResourceName === 'header'" />
+                        <br-component component="footer" v-if="internalResourceName === 'footer'" />
+                    </template>
+                </br-page>
+            </div>
+            <div id="end-fragment" style="display: none;" />
+        </div>
     </div>
 </template>
 
@@ -56,6 +77,8 @@ import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
+
+const CssHeader = defineAsyncComponent(() => import('~/components/InternalResources/CssHeader.vue'));
 
 /**
  * This section sets up all of the information we need to make available for the Bloomreach SDK
@@ -135,6 +158,49 @@ const runtimeConfig = useRuntimeConfig();
 
 if (process.server && xForwardedhost.value) {
     axios.defaults.headers.common.Host = xForwardedhost.value;
+}
+
+let isInternalResource = false;
+let internalResourceName = '';
+
+const determineInternalState = () => {
+    if (process.server) {
+        if (deLocalisedRoute.includes('/data/internal/header')) {
+            return {
+                isInternal: true,
+                name: 'header',
+            };
+        }
+        if (deLocalisedRoute.includes('/data/internal/footer')) {
+            return {
+                isInternal: true,
+                name: 'footer',
+            };
+        }
+    }
+
+    if (process.client) {
+        const el = document.querySelector('.nuxt-internal-wrapper[data-internal-type]');
+        if (el) {
+            return {
+                isInternal: true,
+                name: el.getAttribute('data-internal-type'),
+            };
+        }
+    }
+
+    return {
+        isInternal: false,
+        name: '',
+    };
+};
+
+const state = determineInternalState();
+isInternalResource = state.isInternal;
+internalResourceName = state.name;
+
+if (isInternalResource) {
+    deLocalisedRoute = '/';
 }
 
 /**
