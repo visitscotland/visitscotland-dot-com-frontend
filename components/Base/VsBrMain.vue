@@ -13,7 +13,9 @@
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
-
+        <VsBrSaveContentButton
+            :content="pageUrl"
+        />
         <VsBrGeneral
             v-if="pageName === 'general-page' || pageName === 'pagenotfound'"
             :page="page"
@@ -73,6 +75,8 @@ import VsBrGtm from '~/components/Modules/VsBrGtm.vue';
 import VsBrPageViewEvent from '~/components/Utils/VsBrPageViewEvent.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
+
+const pageUrl = window.location.href;
 
 const { component, page } = toRefs(props);
 

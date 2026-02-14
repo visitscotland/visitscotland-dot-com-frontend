@@ -81,7 +81,7 @@ function toggleSaved(uid) {
 <style>
     .vs-save-content-button {
         position: fixed;
-        top: 80px;
+        top: 100px;
         right: 10px;
         z-index: 100;
     }
