@@ -1,5 +1,8 @@
 <template>
     <div class="d-flex flex-column gap-500">
+        <VsBrSaveContentButton
+            :content="pageUrl"
+        />
         <VsBrHeroSection
             :content="documentData"
             :image="heroImage"
@@ -168,6 +171,7 @@ import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.
 
 import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
 
 import {
     VsBody,
@@ -186,6 +190,8 @@ const configStore = useConfigStore();
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { page, component } = toRefs(props);
+
+const pageUrl = window.location.href;
 
 let documentData : any = {
 };
