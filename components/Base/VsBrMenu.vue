@@ -138,6 +138,12 @@ if (page.value) {
     menuItems = menuData.items;
     localisedUrls = component.value.getModels().localizedURLs;
 
+    if (configStore.pathIfError) {
+        for (let x = 0; x < localisedUrls.length; x++) {
+            localisedUrls[x].url = localisedUrls[x].replace('/servererror', configStore.pathIfError);
+        }
+    }
+
     banner = component.value.getModels().banner;
     if (banner && banner.ctaLink) {
         banner.ctaLink.link = banner.ctaLink.link.replace('/site/resourceapi', '');

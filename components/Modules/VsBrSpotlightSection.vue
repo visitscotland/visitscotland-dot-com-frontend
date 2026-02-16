@@ -56,11 +56,11 @@ if (image.startsWith('assets')) {
 
 let description = module.copy.value.replace(/<[^>]+>/g, '');
 
-if (window && window.location) {
-    const decoder = document.createElement('textarea');
-    decoder.innerHTML = description;
-    description = decoder.value;
-}
+// if (window && window.location) {
+const decoder = document.createElement('textarea');
+decoder.innerHTML = description;
+description = decoder.value;
+// }
 
 </script>
 

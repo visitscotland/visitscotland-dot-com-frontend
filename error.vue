@@ -48,6 +48,10 @@ import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
+
 const app = getCurrentInstance();
 const emitter = mitt();
 app.appContext.config.globalProperties.emitter = emitter;
@@ -95,8 +99,11 @@ let locale = 'resourceapi';
 for (let x = 0; x < localeStrings.length; x++) {
     if (route.includes(localeStrings[x])) {
         locale = `${localeStrings[x]}/resourceapi`;
+        deLocalisedRoute = deLocalisedRoute.replace(`/${localeStrings[x]}`, '');
     }
 }
+
+configStore.pathIfError = deLocalisedRoute;
 
 const localisedEndpoint = endpoint.value.replace('resourceapi', locale);
 
