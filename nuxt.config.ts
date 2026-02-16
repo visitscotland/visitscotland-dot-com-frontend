@@ -75,4 +75,12 @@ export default defineNuxtConfig({
     },
 
     compatibilityDate: '2025-05-06',
+
+    routeRules: {
+        '/_nuxt/**': {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            },
+        },
+    },
 });
