@@ -73,6 +73,7 @@
             :heading="configStore.getLabel('search', 'refine')"
             ref="subcategoryFilter"
             @filter-updated="updateSubcategoryKey"
+            variant="secondary"
         />
     </div>
 </template>
