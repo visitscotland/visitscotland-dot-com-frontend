@@ -12,9 +12,7 @@
                 :mapping="mapping"
             >
                 <template #default>
-                    <div
-                        :class="!isMounted ? 'no-js' : ''"
-                    >
+                    <div>
                         <br-component component="menu" />
                         <br-component component="main" />
                         <NuxtLazyHydrate
@@ -26,12 +24,6 @@
                 </template>
             </br-page>
         </div>
-        <noscript>
-            <component :is="'style'">
-            .skeleton-site { display: none !important }
-            .hydrate { display: block !important }
-            </component>
-        </noscript>
     </div>
 </template>
 
@@ -48,7 +40,7 @@
 import axios from 'axios';
 
 import {
-    getCurrentInstance, ref, onMounted,
+    getCurrentInstance, ref, onMounted, nextTick,
 } from 'vue';
 import mitt from 'mitt';
 
@@ -92,11 +84,32 @@ const localeStrings = [
 const isMounted = ref(false);
 const hideSkeleton = ref(false);
 
-onMounted(() => {
+const scrollToAnchor = (hash, attempts = 0) => {
+    const element = document.querySelector(hash);
+
+    if (element) {
+        element.scrollIntoView({
+            behavior: 'smooth',
+        });
+    } else if (attempts < 20) {
+        setTimeout(() => scrollToAnchor(hash, attempts + 1), 100);
+    }
+};
+
+onMounted(async() => {
     isMounted.value = true;
 
     const hydrationEvent = new Event('vs-app-hydrated');
     window.dispatchEvent(hydrationEvent);
+
+    await nextTick();
+
+    const fullRoute = useRoute();
+
+    // Browsers sometimes fail to find anchor links as they attempt to check when the skeleton
+    // site is still visible. This manually implements the anchor scroll as soon as the page is
+    // actually rendered.
+    if (fullRoute.hash) scrollToAnchor(fullRoute.hash);
 });
 
 let deLocalisedRoute = route;
@@ -190,5 +203,18 @@ const mapping = {
         z-index: 2;
         position: relative;
         background-color: white;
+    }
+
+    /* When JS is disabled, hide the skeleton and force show the content */
+    .no-js .skeleton-site {
+        display: none !important;
+    }
+
+    .no-js .hydrate {
+        display: block !important;
+    }
+
+    [id] {
+        scroll-margin-top: 4rem;
     }
 </style>
