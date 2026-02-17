@@ -75,4 +75,18 @@ export default defineNuxtConfig({
     },
 
     compatibilityDate: '2025-05-06',
+
+    app: {
+        head: {
+            htmlAttrs: {
+                class: 'no-js',
+            },
+            script: [
+                {
+                    children: 'document.documentElement.classList.remove(\'no-js\');',
+                    type: 'text/javascript',
+                },
+            ],
+        },
+    },
 });

@@ -26,12 +26,6 @@
                 </template>
             </br-page>
         </div>
-        <noscript>
-            <component :is="'style'">
-            .skeleton-site { display: none !important }
-            .hydrate { display: block !important }
-            </component>
-        </noscript>
     </div>
 </template>
 
@@ -190,5 +184,14 @@ const mapping = {
         z-index: 2;
         position: relative;
         background-color: white;
+    }
+
+    /* When JS is disabled, hide the skeleton and force show the content */
+    .no-js .skeleton-site {
+        display: none !important;
+    }
+
+    .no-js .hydrate {
+        display: block !important;
     }
 </style>
