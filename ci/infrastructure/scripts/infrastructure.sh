@@ -1137,6 +1137,7 @@ createBuildReport() {
     echo "" >> $VS_MAIL_NOTIFY_BUILD_MESSAGE
   fi
   # quick and dirty conversion of the email message to an "HTML" file that'll play nice with the Jenkins HTML Publisher
+  # target="_top" is added intentionally to all links to ensure that they will FAIL to open in the Jenkins iFrame, instead the user must Ctrl-Click
   if [ -e "$VS_MAIL_NOTIFY_BUILD_MESSAGE" ]; then
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] writing build report to $VS_HTML_PUBLISHER_REPORT_DIR/$VS_HTML_PUBLISHER_REPORT_FILE"
     {
@@ -1146,9 +1147,11 @@ createBuildReport() {
         s/&/\&amp;/g
         s/</\&lt;/g
         s/>/\&gt;/g
-        /\?vs-reset/! s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2">\1<\/a>&g
-        /\?vs-reset/ s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2">\1\2<\/a>&g
+        /\?vs-reset/! s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2" target=_top">\1<\/a>&g
+        /\?vs-reset/ s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2" target=_top">\1\2<\/a>&g
       ' $VS_MAIL_NOTIFY_BUILD_MESSAGE
+      echo
+      echo " ** NOTE: all links in this report are intentionally set to require opening in a new tab/window to avoid issues with Jenkins iFrames, please Right-Click or Ctrl-Click to open in a new tab/window **"
       echo "</pre></body></html>"
     } > $VS_HTML_PUBLISHER_REPORT_DIR/$VS_HTML_PUBLISHER_REPORT_FILE
   fi
