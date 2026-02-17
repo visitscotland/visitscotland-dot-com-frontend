@@ -205,10 +205,10 @@ extractVariables() {
   # extract variables from values set by branch-specific properties
   if [ ! -z "$BR_RESOURCE_API_ENDPOINT" ]; then
     if [[ -z "$VS_BRXM_HOST" ]]; then
-      VS_BRXM_HOST=$(echo $BR_RESOURCE_API_ENDPOINT | sed -e "s/.*vs_brxm_host=\([^&]*\).*/\1/g")
+      VS_BRXM_HOST=$(echo $BR_RESOURCE_API_ENDPOINT | grep "vs_brxm_host" | sed -e "s/.*vs_brxm_host=\([^&]*\).*/\1/g")
     fi
     if [[ -z "$VS_BRXM_PORT" ]]; then
-      VS_BRXM_PORT=$(echo $BR_RESOURCE_API_ENDPOINT | sed -e "s/.*vs_brxm_port=\([^&]*\).*/\1/g")
+      VS_BRXM_PORT=$(echo $BR_RESOURCE_API_ENDPOINT | grep "vs_brxm_port" | sed -e "s/.*vs_brxm_port=\([^&]*\).*/\1/g")
     fi  
   fi
 }
@@ -1109,7 +1109,7 @@ createBuildReport() {
     if [ ! -z "$VS_BRXM_DSSR_SITES" ]; then
       echo "# Resource API URLs for SPA-SDK/DSSR sites" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
       for SITE in $VS_BRXM_DSSR_SITES; do
-        echo "#   - https://$SITE/resourceapi?vs_brxm_host=$VS_HOST_IP_ADDRESS&vs_brxm_port=$VS_CONTAINER_BASE_PORT&vs-no-redirect" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+        echo "#   - https://$SITE/resourceapi?vs_brxm_host=$VS_HOST_IP_ADDRESS&vs_brxm_port=$VS_CONTAINER_BASE_PORT&vs-no-redirect=true" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
       done
       echo "#   NOTE: the vs-no-redirect query string parameter allows the content to be served without redirecting to a bare URL" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
       echo "#       this is necessary to allow non-browser requests, such as those from the front-end to the resourceapi, to be served" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
@@ -1151,8 +1151,8 @@ createBuildReport() {
         s/&/\&amp;/g
         s/</\&lt;/g
         s/>/\&gt;/g
-        /(\?vs-reset|resourceapi)/! s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2" target=_top">\1<\/a>&g
-        /(\?vs-reset|resourceapi)/ s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2" target=_top">\1\2<\/a>&g
+        /(\?vs-reset|resourceapi)/! s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2" target=\"_top\">\1<\/a>&g
+        /(\?vs-reset|resourceapi)/ s&(http[s]?://[^?[:space:]]+)(\?[^[:space:]].*$)?&<a href="\1\2" target=\"_top\">\1\2<\/a>&g
       ' $VS_MAIL_NOTIFY_BUILD_MESSAGE
       echo
       echo " ** NOTE: all links in this report are intentionally set to require opening in a new tab/window to avoid issues with Jenkins iFrames, please Right-Click or Ctrl-Click to open in a new tab/window **"
