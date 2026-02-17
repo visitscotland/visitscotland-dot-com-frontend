@@ -201,6 +201,18 @@ checkVariables() {
   fi
 }
 
+extractVariables() {
+  # extract variables from values set by branch-specific properties
+  if [ ! -z "$BR_RESOURCE_API_ENDPOINT" ]; then
+    if [[ -z "$VS_BRXM_HOST" ]]; then
+      VS_BRXM_HOST=$(echo $BR_RESOURCE_API_ENDPOINT | sed -e "s/.*vs_brxm_host=\([^&]*\).*/\1/g")
+    fi
+    if [[ -z "$VS_BRXM_PORT" ]]; then
+      VS_BRXM_PORT=$(echo $BR_RESOURCE_API_ENDPOINT | sed -e "s/.*vs_brxm_port=\([^&]*\).*/\1/g")
+    fi  
+  fi
+}
+
 defaultSettings() {
   # unset variables
   unset VS_CONTAINER_LIST
@@ -219,6 +231,7 @@ defaultSettings() {
   if [ ! -d "$VS_CI_DIR" ]; then mkdir -p $VS_CI_DIR; fi
   if [ ! -d "$VS_CI_DIR/logs" ]; then mkdir -p $VS_CI_DIR/logs; fi
   if [ ! -d "$VS_CI_DIR/reports" ]; then mkdir -p $VS_CI_DIR/reports; fi
+  if [ ! -d "$VS_CI_DIR/temp" ]; then mkdir -p $VS_CI_DIR/temp; fi
   ## add additional check here to see if there's a CHANGE_BRANCH variable as well as a BRANCH_NAME variable
   if [ -z "$VS_BRANCH_NAME" ]; then
     if [ ! -z "$CHANGE_BRANCH" ]; then
@@ -1205,6 +1218,7 @@ case $METHOD in
   setvars)
     checkVariables
     defaultSettings
+    extractVariables
     exportVSVariables
     copyVSVariables
     writeSettings
