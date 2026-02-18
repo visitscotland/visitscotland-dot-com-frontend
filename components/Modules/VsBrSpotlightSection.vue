@@ -61,9 +61,6 @@ let description = module.copy.value.replace(/<[^>]+>/g, '');
 // Parse html entities that the editor is sending
 description = decode(description);
 
-const decoder = document.createElement('textarea');
-decoder.innerHTML = 'broken content';
-
 </script>
 
 <style>

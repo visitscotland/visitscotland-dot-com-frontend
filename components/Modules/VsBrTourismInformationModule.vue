@@ -46,4 +46,7 @@ const props = defineProps<{ module: Object, theme: string }>();
 const module: any = props.module;
 const theme: string = props.theme;
 
+const decoder = document.createElement('textarea');
+decoder.innerHTML = 'broken content';
+
 </script>
