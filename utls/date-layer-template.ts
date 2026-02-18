@@ -26,6 +26,7 @@ const siteSearchClickTemplate = [
     'click_category',
     'search_usage_index',
     'results_count',
+    'facet_status',
 ];
 
 const siteSearchCloseTemplate = [

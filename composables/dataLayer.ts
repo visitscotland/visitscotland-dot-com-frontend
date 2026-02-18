@@ -151,6 +151,7 @@ export default function dataLayerComposable() {
                 query_input: event.query_input,
                 page_number: event.page_number,
                 results_count: event.results_count,
+                facet_status: event.facet_status,
             };
             fullTemplate = compileFullTemplate(templateValues);
             dataLayerData = templateFiller(siteSearchCloseTemplate, fullTemplate);

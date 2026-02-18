@@ -223,7 +223,7 @@ function highlightAutocompleteSuggestion(suggestion: string) {
     return escapeHtml(suggestion).replace(reg, '<strong>$1</strong>');
 }
 
-function categoryClickAnalytics(category: SearchFilterCategory) {
+function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: Boolean) {
     dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
         interaction_type: 'facet_click',
         search_query: searchStore.searchTerm,
@@ -231,6 +231,7 @@ function categoryClickAnalytics(category: SearchFilterCategory) {
         search_usage_index: searchStore.searchInSessionCount,
         results_count: searchStore.totalResults,
         click_text: category.Label || category.Key,
+        facet_status: facetStatus ? 'applied' : 'removed',
     });
 }
 
@@ -269,22 +270,23 @@ async function updateCategoryKey(category: SearchFilterCategory) {
 
     await searchStore.setUrlParameters();
 
-    categoryClickAnalytics(category);
+    categoryClickAnalytics(category, searchStore.categoryKey !== undefined);
 }
 
 async function updateSubcategoryKey(category: SearchFilterCategory) {
     if (!searchStore.subcategoryKeys.includes(category.Key)) {
         searchStore.subcategoryKeys.push(category.Key);
+        categoryClickAnalytics(category, true);
     } else {
         const index = searchStore.subcategoryKeys.indexOf(category.Key);
 
         if (index >= 0) {
             searchStore.subcategoryKeys.splice(index, 1);
         }
+
+        categoryClickAnalytics(category, false);
     }
     await searchStore.setUrlParameters();
-
-    categoryClickAnalytics(category);
 }
 
 const searchLink = computed(() => {
