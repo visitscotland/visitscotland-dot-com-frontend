@@ -40,4 +40,7 @@ import VsBrTravelInformationTab from './VsBrTravelInformationTab.vue';
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;
 
+const decoder = document.createElement('textarea');
+decoder.innerHTML = 'broken content';
+
 </script>
