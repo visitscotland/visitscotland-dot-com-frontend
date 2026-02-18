@@ -37,6 +37,13 @@
                     :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
                     :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
                 />
+                <VsVideoCaption
+                    :video-id="youtubeId"
+                >
+                    <template #video-title>
+                        {{ videoLabel ?? configStore.getLabel('video', 'video.play-btn') }}
+                    </template>
+                </VsVideoCaption>
                 <figure
                     v-if="imageValue"
                 >
