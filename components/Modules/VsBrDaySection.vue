@@ -2,6 +2,13 @@
     <VsContainer
         class="vs-daysection-wrapper"
     >
+        <!-- VIDEO VALUE: {{ videoValue }}
+        <br>
+        <br>
+        Youtube ID: {{ youtubeId }}
+        <br>
+        <br>
+        IMAGE VALUE: {{ imageValue }} -->
         <VsRow>
             <VsCol>
                 <span class="vs-section-header__divider mb-0" />
@@ -26,7 +33,27 @@
                 lg="8"
                 class="d-flex flex-column gap-150"
             >
-                <figure>
+                <VsVideo
+                    v-if="videoValue"
+                    :video-title="videoLabel"
+                    :video-id="youtubeId"
+                    :single-minute-descriptor="configStore.getLabel('video', 'video.minute-text')"
+                    :plural-minute-descriptor="configStore.getLabel('video', 'video.minutes-text')"
+                    :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
+                    :no-js-message="configStore.getLabel('video', 'video.no-js')"
+                    :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+                    :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
+                />
+                <!-- <VsVideoCaption
+                    :video-id="module.video.youtubeId"
+                >
+                    <template #video-title>
+                        {{ module.video.label ?? configStore.getLabel('video', 'video.play-btn') }}
+                    </template>?
+                </VsVideoCaption> -->
+                <figure
+                    v-if="imageValue"
+                >
                     <VsImg
                         :src="imageSrc"
                         use-lazy-loading
@@ -86,6 +113,7 @@ import {
     VsCol,
     VsBody,
     VsMediaCaption,
+    VsVideo,
 } from '@visitscotland/component-library/components';
 import VsBrRichText from './VsBrRichText.vue';
 
@@ -99,11 +127,30 @@ const props = defineProps<{
 const page: any = inject('page');
 const day: any = props.day;
 const dayNumber: any = props.dayNumber;
-const imageValue = page.getContent(day.media[0].$ref);
-const imageSrc = imageValue.getOriginal().getUrl();
-const imageCaption = imageValue.model.data.description;
-const imageAlt = imageValue.model.data.altText;
-const imageCredit = imageValue.model.data.credit;
+
+let imageValue = false;
+let imageSrc = null;
+let imageCaption = null;
+let imageAlt = null;
+let imageCredit = null;
+
+let videoValue = false;
+let youtubeId = false;
+let videoLabel = false;
+
+if (page.getContent(day.media[0].$ref)) {
+    imageValue = page.getContent(day.media[0].$ref);
+    imageSrc = imageValue.getOriginal().getUrl();
+    imageCaption = imageValue.model.data.description;
+    imageAlt = imageValue.model.data.altText;
+    imageCredit = imageValue.model.data.credit;
+}
+if (page.getContent(day.media[0].videoLink)) {
+    videoValue = page.getContent(day.media[0].videoLink.$ref);
+    youtubeId = videoValue.model.data.url.split('?v=')[1];
+    videoLabel = videoValue.model.data.label;
+}
+
 const dayLabel = configStore.getLabel('itinerary', 'day');
 
 </script>
