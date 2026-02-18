@@ -2,13 +2,6 @@
     <VsContainer
         class="vs-daysection-wrapper"
     >
-        <!-- VIDEO VALUE: {{ videoValue }}
-        <br>
-        <br>
-        Youtube ID: {{ youtubeId }}
-        <br>
-        <br>
-        IMAGE VALUE: {{ imageValue }} -->
         <VsRow>
             <VsCol>
                 <span class="vs-section-header__divider mb-0" />
@@ -44,13 +37,6 @@
                     :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
                     :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
                 />
-                <!-- <VsVideoCaption
-                    :video-id="module.video.youtubeId"
-                >
-                    <template #video-title>
-                        {{ module.video.label ?? configStore.getLabel('video', 'video.play-btn') }}
-                    </template>?
-                </VsVideoCaption> -->
                 <figure
                     v-if="imageValue"
                 >
@@ -135,8 +121,8 @@ let imageAlt = null;
 let imageCredit = null;
 
 let videoValue = false;
-let youtubeId = false;
-let videoLabel = false;
+let youtubeId = null;
+let videoLabel = null;
 
 if (page.getContent(day.media[0].$ref)) {
     imageValue = page.getContent(day.media[0].$ref);
