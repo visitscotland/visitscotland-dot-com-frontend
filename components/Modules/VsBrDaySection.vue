@@ -26,24 +26,23 @@
                 lg="8"
                 class="d-flex flex-column gap-150"
             >
-                <VsVideo
-                    v-if="videoValue"
-                    :video-title="videoLabel"
-                    :video-id="youtubeId"
-                    :single-minute-descriptor="configStore.getLabel('video', 'video.minute-text')"
-                    :plural-minute-descriptor="configStore.getLabel('video', 'video.minutes-text')"
-                    :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
-                    :no-js-message="configStore.getLabel('video', 'video.no-js')"
-                    :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
-                    :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
-                />
-                <VsVideoCaption
-                    :video-id="youtubeId"
-                >
-                    <template #video-title>
-                        {{ videoLabel ?? configStore.getLabel('video', 'video.play-btn') }}
-                    </template>
-                </VsVideoCaption>
+                <div v-if="videoValue">
+                    <VsVideo
+                        :video-title="videoLabel"
+                        :video-id="youtubeId"
+                        :single-minute-descriptor="configStore.getLabel('video', 'video.minute-text')"
+                        :plural-minute-descriptor="configStore.getLabel('video', 'video.minutes-text')"
+                        :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
+                        :no-js-message="configStore.getLabel('video', 'video.no-js')"
+                        :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+                        :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
+                    />
+                    <VsMediaCaption :video-id="youtubeId">
+                        <template #caption>
+                            {{ videoLabel ?? configStore.getLabel('video', 'video.play-btn') }}
+                        </template>
+                    </VsMediaCaption>
+                </div>
                 <figure
                     v-if="imageValue"
                 >
