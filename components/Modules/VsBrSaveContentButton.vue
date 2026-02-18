@@ -3,7 +3,7 @@
         <VsButton
             v-if="savePageEnabled"
             icon-only
-            :icon="pageInSaveList(props.content) ? 'fa-solid fa-star' : 'fa-regular fa-star'"
+            :icon="pageInSaveList(props.content) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
             variant="subtle"
             size="md"
             @click="toggleSaved(props.content)"

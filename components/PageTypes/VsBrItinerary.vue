@@ -3,10 +3,14 @@
         <VsBrSaveContentButton
             :content="pageUrl"
         />
-        <VsBrHeroSection
+        <!-- <VsBrHeroSection
             :content="documentData"
             :image="heroImage"
             inset
+        /> -->
+        <VsBrHeroSectionLikes
+            :content="documentData"
+            :image="heroImage"
         />
         <VsContainer>
             <VsRow>
@@ -168,7 +172,7 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
-
+import VsBrHeroSectionLikes from '~/components/Modules/VsBrHeroSectionLikes.vue';
 import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
