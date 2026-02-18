@@ -20,6 +20,8 @@
 
 import { inject } from 'vue';
 
+import { decode } from 'html-entities';
+
 import type { Page } from '@bloomreach/spa-sdk';
 
 import {
@@ -54,13 +56,13 @@ if (image.startsWith('assets')) {
     image = `/${image}`;
 }
 
+// Strip out paragraph tags that are only sometimes present
 let description = module.copy.value.replace(/<[^>]+>/g, '');
+// Parse html entities that the editor is sending
+description = decode(description);
 
-// if (window && window.location) {
 const decoder = document.createElement('textarea');
-decoder.innerHTML = description;
-description = decoder.value;
-// }
+decoder.innerHTML = 'broken content';
 
 </script>
 

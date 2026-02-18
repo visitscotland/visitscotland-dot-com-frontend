@@ -73,6 +73,7 @@
             :heading="configStore.getLabel('search', 'refine')"
             ref="subcategoryFilter"
             @filter-updated="updateSubcategoryKey"
+            variant="secondary"
         />
     </div>
 </template>
@@ -158,6 +159,7 @@ async function search() {
 
     if (isSearchWidget) {
         // `external: true` is required here to force a full page reload.
+        // eslint-disable-next-line no-undef
         await navigateTo(`${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, {
             external: true,
         });
@@ -192,6 +194,7 @@ async function suggestedSearch(suggestion: string) {
 
     if (isSearchWidget) {
         // `external: true` is required here to force a full page reload.
+        // eslint-disable-next-line no-undef
         await navigateTo(`${configStore.globalSearchPath}?search-term=${suggestion}`, {
             external: true,
         });
