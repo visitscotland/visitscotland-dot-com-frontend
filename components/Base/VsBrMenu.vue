@@ -140,7 +140,7 @@ if (page.value) {
 
     if (configStore.pathIfError) {
         for (let x = 0; x < localisedUrls.length; x++) {
-            localisedUrls[x].url = localisedUrls[x].replace('/servererror', configStore.pathIfError);
+            localisedUrls[x].url = localisedUrls[x].url.replace('/servererror', configStore.pathIfError);
         }
     }
 
