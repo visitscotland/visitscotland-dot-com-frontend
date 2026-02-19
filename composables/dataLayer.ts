@@ -138,6 +138,8 @@ export default function dataLayerComposable() {
                 search_usage_index: event.search_usage_index,
                 results_count: event.results_count,
                 facet_status: event.facet_status,
+                search_type: event.search_type,
+                search_origin: event.search_origin || 'results_page',
             };
             fullTemplate = compileFullTemplate(templateValues);
             dataLayerData = templateFiller(siteSearchClickTemplate, fullTemplate);

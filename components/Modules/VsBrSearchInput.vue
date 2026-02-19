@@ -232,6 +232,8 @@ function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: Boo
         results_count: searchStore.totalResults,
         click_text: category.Label || category.Key,
         facet_status: facetStatus ? 'applied' : 'removed',
+        search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
+        search_origin: isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
