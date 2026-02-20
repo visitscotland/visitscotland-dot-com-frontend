@@ -17,14 +17,18 @@
                             :key="'card-list-2-' + index"
                         >
                             <template #vs-card-header>
-               
-                                    <VsBrSaveContentButton
-                                        content="REMOVE"
-                                    />
-                                    <VsImg
-                                        src="https://images.unsplash.com/photo-1761839259488-2bdeeae794f5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8"
-                                        class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
-                                    />
+                                <!-- Need to think about how this component is built -->
+                                 <!-- It should maybe be two buttons? or an interactive icon, even? -->
+                                  <!-- two instances of a button with the same functionality mixed in? -->
+                                <VsBrSaveContentButton
+                                    content="REMOVE"
+                                    size="sm"
+                                    variant="primary"
+                                />
+                                <VsImg
+                                    src="https://images.unsplash.com/photo-1761839259488-2bdeeae794f5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8"
+                                    class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
+                                />
               
                             </template>
 
@@ -169,7 +173,8 @@ if (page.value) {
     }
     .vs-favourite-card .vs-save-content-button{
         position: absolute;
-        top: 0;
-        right: 0;
+        top: 12px;
+        right: 12px;
+        z-index: 100;
     }
 </style>

@@ -4,8 +4,8 @@
             v-if="savePageEnabled"
             icon-only
             :icon="pageInSaveList(props.content) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
-            variant="subtle"
-            size="md"
+            :variant="variant"
+            :size="size"
             @click="toggleSaved(props.content)"
         />
     </div>
@@ -20,7 +20,8 @@ import {
 import { VsButton } from '@visitscotland/component-library/components';
 
 const props = defineProps<{
-    content: string
+    content: string,
+    size: string,
 }>();
 
 const savedContentArray = ref(null);
