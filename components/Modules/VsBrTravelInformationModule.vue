@@ -40,11 +40,4 @@ import VsBrTravelInformationTab from './VsBrTravelInformationTab.vue';
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;
 
-// eslint-disable-next-line no-undef
-throw createError({
-    statusCode: 500,
-    statusMessage: 'Intentional Server Error for Testing',
-    fatal: true,
-});
-
 </script>
