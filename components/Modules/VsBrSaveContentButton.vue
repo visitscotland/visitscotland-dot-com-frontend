@@ -79,10 +79,10 @@ function toggleSaved(uid) {
 </script>
 
 <style>
-    .vs-save-content-button {
+    /* .vs-save-content-button {
         position: fixed;
         top: 100px;
         right: 10px;
         z-index: 100;
-    }
+    } */
 </style>

@@ -16,12 +16,14 @@
         <VsBrSaveContentButton
             :content="pageUrl"
         />
+        <VsBrFavourites
+            v-if="pageDocument.model.data.displayName === 'favourites'"
+        />
         <VsBrGeneral
-            v-if="pageName === 'general-page' || pageName === 'pagenotfound'"
+            v-if="(pageName === 'general-page' || pageName === 'pagenotfound') && pageDocument.model.data.displayName !== 'favourites'"
             :page="page"
             :component="component"
         />
-
         <VsBrDestination
             v-if="pageName === 'destination-page'"
             :page="page"
@@ -66,6 +68,7 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
+import VsBrFavourites from '~/components/PageTypes/VsBrFavourites.vue';
 import VsBrItineraryLegacy from '~/components/PageTypes/VsBrItineraryLegacy.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';

@@ -1,8 +1,8 @@
 <template>
     <div class="d-flex flex-column gap-500">
-        <VsBrSaveContentButton
+        <!-- <VsBrSaveContentButton
             :content="pageUrl"
-        />
+        /> -->
         <VsBrHeroSection
             :content="documentData"
             :image="heroImage"
