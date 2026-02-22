@@ -13,8 +13,12 @@
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
+
         <VsBrSaveContentButton
-            :content="pageUrl"
+            :content="{
+                url: pageUrl,
+                title: pageDocument.model.data.displayName,
+            }"
         />
         <VsBrFavourites
             v-if="pageDocument.model.data.displayName === 'favourites'"

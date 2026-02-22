@@ -1,8 +1,5 @@
 <template>
     <div class="d-flex flex-column gap-500">
-        <!-- <VsBrSaveContentButton
-            :content="pageUrl"
-        /> -->
         <VsBrHeroSection
             :content="documentData"
             :image="heroImage"
@@ -170,7 +167,6 @@ import useConfigStore from '~/stores/configStore.ts';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
-import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
 
 import {
     VsBody,

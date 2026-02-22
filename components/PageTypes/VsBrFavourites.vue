@@ -13,23 +13,31 @@
                     >
                         <VsCard
                             class="vs-favourite-card"
-                            v-for="(card, index) in [1,2,3,4,5,6,7,8]"
+                            v-for="(page, index) in savedContentArray"
                             :key="'card-list-2-' + index"
                         >
                             <template #vs-card-header>
                                 <!-- Need to think about how this component is built -->
-                                 <!-- It should maybe be two buttons? or an interactive icon, even? -->
-                                  <!-- two instances of a button with the same functionality mixed in? -->
-                                <VsBrSaveContentButton
+                                <!-- It should maybe be two buttons? or an interactive icon, even? -->
+                                <!-- two instances of a button with the same functionality mixed in? -->
+                                <!-- <VsBrSaveContentButton
                                     content="REMOVE"
                                     size="sm"
                                     variant="primary"
-                                />
+                                /> -->
+                                <div class="vs-save-content-button">
+                                    <VsButton
+                                        icon-only
+                                        icon="fa-solid fa-heart"
+                                        :variant="variant"
+                                        size="sm"
+                                        @click="removePage(page.url)"
+                                    />
+                                </div>
                                 <VsImg
                                     src="https://images.unsplash.com/photo-1761839259488-2bdeeae794f5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8"
                                     class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                                 />
-              
                             </template>
 
                             <template #vs-card-body>
@@ -39,19 +47,18 @@
                                         heading-style="heading-xs"
                                     >
                                         <VsLink
-                                            href="#"
+                                            :href="page.url"
                                             class="stretched-link"
                                             variant="secondary"
                                         >
-                                            <!-- {{ card.title }} -->
-                                              TITLE
+                                            {{ page.title }}
                                         </VsLink>
                                     </VsHeading>
 
                                     <VsBody class="mb-150">
                                         <p class="truncate-2-lines">
-                                            <!-- {{ card.description }} -->
-                                              DESCRIPTION
+                                            <!-- {{ page.description }} -->
+                                              desc
                                         </p>
                                     </VsBody>
                                 </div>
@@ -127,13 +134,14 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs } from 'vue';
+import {
+    toRefs, ref, onMounted,
+} from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
-import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
 
 import {
     VsCard,
@@ -146,13 +154,14 @@ import {
     VsCol,
     VsHeroSection,
     VsCardGroup,
+    VsButton,
 } from '@visitscotland/component-library/components';
 
 const configStore = useConfigStore();
 
 const props = defineProps<{ component: Component, page: Page }>();
 
-const { page, component } = toRefs(props);
+const { page } = toRefs(props);
 
 let documentData : any = {
 };
@@ -162,12 +171,39 @@ if (page.value) {
 
     documentData = pageDocument.getData();
 }
+
+const savedContentArray = ref(null);
+
+const savePageEnabled = ref(false);
+const localStoragePropertyName = 'vs-saved-pages';
+
+function refreshState() {
+    const storageState = localStorage.getItem(localStoragePropertyName); // null || string
+    if (storageState !== null && storageState.length > 0) {
+        savePageEnabled.value = true;
+        savedContentArray.value = JSON.parse(storageState);
+    } else {
+        savePageEnabled.value = false;
+        savedContentArray.value = null;
+    }
+}
+
+onMounted(() => {
+    refreshState();
+    window.addEventListener('storage', () => {
+        refreshState();
+    });
+});
+
+function removePage(uid) {
+    const filteredArray = savedContentArray.value.filter((item) => item.url !== uid);
+    savedContentArray.value = filteredArray;
+    localStorage.setItem(localStoragePropertyName, JSON.stringify(filteredArray));
+};
+
 </script>
 
 <style>
-    /* .vs-favourite-card {
-        border: solid 2px blueviolet;
-    } */
     .vs-favourite-card .vs-card__header{
         position: relative;
     }

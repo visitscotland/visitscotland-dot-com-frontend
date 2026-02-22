@@ -59,7 +59,7 @@ function savePage(uid) {
 };
 
 function removePage(uid) {
-    const filteredArray = savedContentArray.value.filter((pin) => pin !== uid);
+    const filteredArray = savedContentArray.value.filter((item) => item.url !== uid);
     savedContentArray.value = filteredArray;
     localStorage.setItem(localStoragePropertyName, JSON.stringify(filteredArray));
 };
