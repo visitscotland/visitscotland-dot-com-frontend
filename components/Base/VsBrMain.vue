@@ -13,11 +13,11 @@
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
-
         <VsBrSaveContentButton
             :content="{
                 url: pageUrl,
                 title: pageDocument.model.data.displayName,
+                teaser: pageDocument.model.data.teaser,
             }"
         />
         <VsBrFavourites

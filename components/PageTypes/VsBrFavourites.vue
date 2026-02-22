@@ -17,14 +17,6 @@
                             :key="'card-list-2-' + index"
                         >
                             <template #vs-card-header>
-                                <!-- Need to think about how this component is built -->
-                                <!-- It should maybe be two buttons? or an interactive icon, even? -->
-                                <!-- two instances of a button with the same functionality mixed in? -->
-                                <!-- <VsBrSaveContentButton
-                                    content="REMOVE"
-                                    size="sm"
-                                    variant="primary"
-                                /> -->
                                 <div class="vs-save-content-button">
                                     <VsButton
                                         icon-only
@@ -57,8 +49,7 @@
 
                                     <VsBody class="mb-150">
                                         <p class="truncate-2-lines">
-                                            <!-- {{ page.description }} -->
-                                              desc
+                                            {{ page.teaser }}
                                         </p>
                                     </VsBody>
                                 </div>
@@ -68,42 +59,7 @@
                 </VsCol>
             </VsRow>
         </VsContainer>
-        <!-- <VsContainer>
-            <VsCol cols="12">
-                <VsCard v-for="(card, index) in [1,2,3,4,5,6,7]" :key="index">
-            <template #vs-card-header>
-                <VsImg
-                    src="https://images.unsplash.com/photo-1761839259488-2bdeeae794f5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8"
-                    class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
-                />
-            </template>
-
-            <template #vs-card-body>
-                <VsHeading
-                    level="3"
-                    heading-style="heading-s"
-                >
-                    <VsLink
-                        href="#"
-                        class="stretched-link"
-                        variant="secondary"
-                    >
-                        blah
-                    </VsLink>
-                </VsHeading>
-
-                <VsBody>
-                  more blah
-                </VsBody>
-            </template>
-        </VsCard>
-            </VsCol>
-            <VsRow>
-                <VsCol>
-                    <span class="vs-section-header__divider mb-0" />
-                </VsCol>
-            </VsRow>
-        </VsContainer> -->
+        
     </div>
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -173,7 +129,6 @@ if (page.value) {
 }
 
 const savedContentArray = ref(null);
-
 const savePageEnabled = ref(false);
 const localStoragePropertyName = 'vs-saved-pages';
 
