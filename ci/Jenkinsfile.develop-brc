@@ -5,12 +5,6 @@ thisAgent = "docker-02"
 // set any environment-specific environment variables here using the format: env.MY_VAR = "conditional_value" }
 // please see ci/README_PIPELINE_VARIABLES.md or consult Web Operations for details on environment variables and their purposes
 echo "== Setting conditional environment variables"
-if (BRANCH_NAME ==~ "ops/(feature-environment(s)?-enhancements|pipeline-updates)") {
-    echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
-    // no conditional environent variables are being set here, this section if for example only
-} else {
-    echo "=== No conditional environment variables found for branch $BRANCH_NAME in job $JOB_NAME, using defaults"
-}
 echo "==/Setting conditional environment variables"
 
 // set or override any default environment variables here using the format: if (!env.MY_VAR) { env.MY_VAR = "default_value" }
@@ -20,7 +14,6 @@ echo "== Setting default pipeline environment variables"
 if (!env.VS_CI_DIR) { env.VS_CI_DIR = "ci" }
 if (!env.VS_BRANCH_PROPERTIES_DIR) { env.VS_BRANCH_PROPERTIES_DIR = env.VS_CI_DIR + "/properties" }
 if (!env.VS_DSSR_PROXY_ON) { env.VS_DSSR_PROXY_ON = "TRUE" }
-if (!env.VS_BUILD_FEATURE_ENVIRONMENT) { env.VS_BUILD_FEATURE_ENVIRONMENT = "true" }
 if (!env.VS_DOCKER_IMAGE_NAME) { env.VS_DOCKER_IMAGE_NAME = "vs/vs-brxm15:node18" }
 if (!env.VS_DOCKER_BUILDER_IMAGE_NAME) { env.VS_DOCKER_BUILDER_IMAGE_NAME = "vs/vs-brxm15-builder:node18" }
 if (!env.VS_SSR_PROXY_ON) { env.VS_SSR_PROXY_ON = "FALSE" }
@@ -28,9 +21,9 @@ if (!env.VS_RELEASE_SNAPSHOT) { env.VS_RELEASE_SNAPSHOT = "FALSE" }
 if (!env.VS_PROXY_SERVER_FQDN) { env.VS_PROXY_SERVER_FQDN = "develop-brc.visitscotland.com" }
 if (!env.HOSTNAME) { env.HOSTNAME = env.NODE_NAME }
 if (!env.VS_BRANCH_PROPERTIES_FILE && !env.CHANGE_BRANCH) {
-	env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" 
+    env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" 
 } else if (!env.VS_BRANCH_PROPERTIES_FILE && env.CHANGE_BRANCH) {
-	env.VS_BRANCH_PROPERTIES_FILE = env.CHANGE_BRANCH.substring(env.CHANGE_BRANCH.lastIndexOf('/') + 1) + ".properties" 
+    env.VS_BRANCH_PROPERTIES_FILE = env.CHANGE_BRANCH.substring(env.CHANGE_BRANCH.lastIndexOf('/') + 1) + ".properties" 
 }
 echo "==/Setting default pipeline environment variables"
 
@@ -42,7 +35,6 @@ echo "==/Setting default application variables"
 
 echo "== Setting default container variables"
 if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC = "/bin/bash -c \"node .output/server/index.mjs\"" }
-// debug version w/log "NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs 2>&1 | tee -a ./nodeapp.log"
 if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "FALSE" }
 if (!env.VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE) { env.VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE = "TRUE" }
 if (!env.VS_CONTAINER_BASE_PORT_OVERRIDE) { env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3061" }
@@ -59,54 +51,53 @@ pipeline {
     agent {label thisAgent}
 
     environment {
-		//GITHUB_PAT_JENKINS_CI = credentials('github-pat-jenkins-ci')
-		GITHUB_PAT_JENKINS_CI = "not-in-use"
+        GITHUB_PAT_JENKINS_CI = credentials('github-pat-jenkins-ci')
     }
 
     stages {
-	    stage ('Pre-build') {
-	        steps {
-                    echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
-	            // make all branch-specific variables available to pipeline, load file must be in env.VARIABLE="VALUE" format
-	            script {
-                        echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
-                        echo " - if the pipeline fails at this point please check the format of your properties file!"
-	                if (fileExists("$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE")) {
-	                    echo "loading environment variables from $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
-    	                load "$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
-	                } else {
-	                    echo "branch specific properties won't be loaded, file $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE does not exist"
-	                }
-	            }
-		    // the two script blocks below are necessary to allow infrastructure.sh to set variables and then import them back to the pipeline
-                    //  - if we determine that none of these variables are actually used until the Deploy stage, then this is not necessary
-                    //  - the printenv commands in every stage are useful for debugging but may not be required long-term
-                    // run infrastructure.sh to set default variables and then import them into the pipeline
-		    script {
-	                if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
-                        echo "calling \"/infrastructure.sh setvars\" to set default pipeline variables"
-	                    sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars --quiet'
-	                } else {
-	                    echo; echo "infrastructure.sh was not found - default environment variables will not be set"
-	                }
-		        }
-		    script {
-	                if (fileExists("$WORKSPACE/ci/vs-last-env.quoted")) {
-	                    echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
-	                    load "$WORKSPACE/ci/vs-last-env.quoted"
-	                    echo "found commit author: ${env.VS_COMMIT_AUTHOR}"
-                        sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh writevars --quiet'
-	                } else {
-	                    echo; echo "$WORKSPACE/ci/vs-last-env.quoted - default environment variables will not be loaded"
-	                }
-		    }
+        stage ('Pre-build') {
+            steps {
+                echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
+                // make all branch-specific variables available to pipeline, load file must be in env.VARIABLE="VALUE" format
+                script {
+                    echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+                    echo " - if the pipeline fails at this point please check the format of your properties file!"
+                    if (fileExists("$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE")) {
+                        echo "loading environment variables from $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+                        load "$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+                    } else {
+                        echo "branch specific properties won't be loaded, file $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE does not exist"
+                    }
                 }
-	    } // end stage
+                // the two script blocks below are necessary to allow infrastructure.sh to set variables and then import them back to the pipeline
+                //  - if we determine that none of these variables are actually used until the Deploy stage, then this is not necessary
+                //  - the printenv commands in every stage are useful for debugging but may not be required long-term
+                // run infrastructure.sh to set default variables and then import them into the pipeline
+                script {
+                    if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
+                        echo "calling \"/infrastructure.sh setvars\" to set default pipeline variables"
+                        sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars --quiet'
+                    } else {
+                        echo; echo "infrastructure.sh was not found - default environment variables will not be set"
+                    }
+                }
+                script {
+                    if (fileExists("$WORKSPACE/ci/vs-last-env.quoted")) {
+                        echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
+                        load "$WORKSPACE/ci/vs-last-env.quoted"
+                        echo "found commit author: ${env.VS_COMMIT_AUTHOR}"
+                        sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh writevars --quiet'
+                    } else {
+                        echo; echo "$WORKSPACE/ci/vs-last-env.quoted - default environment variables will not be loaded"
+                    }
+                }
+            }
+        } // end stage
 
         stage ('SCM checkout') {
             agent {
                 docker {
-		    image "$VS_DOCKER_BUILDER_IMAGE_NAME"
+                    image "$VS_DOCKER_BUILDER_IMAGE_NAME"
                     label thisAgent
                     reuseNode true
                 }
@@ -131,9 +122,9 @@ pipeline {
         stage ('Install Dependencies') {
             agent {
                 docker {
-		    image "$VS_DOCKER_BUILDER_IMAGE_NAME"
-		    label thisAgent
-		    reuseNode true
+                    image "$VS_DOCKER_BUILDER_IMAGE_NAME"
+                    label thisAgent
+                    reuseNode true
                 }
             }
             steps {
@@ -180,43 +171,45 @@ pipeline {
             }
             steps {
                 echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
-                sh '''
-                    set +x
-                    export HOME=$WORKSPACE
-                    export npm_config_cache=$HOME/.npm
-                    if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
-                    yarn build
-                '''
+                    sh '''
+                        set +x
+                        export HOME=$WORKSPACE
+                        export npm_config_cache=$HOME/.npm
+                        if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
+                        yarn build
+                    '''
             }
         } //end stage
 
-        stage ('Deploy') {
-	    when {
-		anyOf {
-		    environment name: 'VS_BUILD_FEATURE_ENVIRONMENT', value: 'true'
-		    expression {return env.VS_BUILD_FEATURE_ENVIRONMENT ==~ /(TRUE|true)/}
-		}
-	    }
+        stage ('Deploy Development Container') {
+        when {
+        anyOf {
+            branch 'main'
+            changeRequest()
+            environment name: 'VS_BUILD_FEATURE_ENVIRONMENT', value: 'true'
+            expression {return env.VS_BUILD_FEATURE_ENVIRONMENT ==~ /(TRUE|true)/}
+        }
+        }
             steps {
                 echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
                 // the two script blocks below are necessary to allow infrastructure.sh to set variables and then import them back to the pipeline
                 //  - in a future iteration, where the container is started by the shell script, these will no longer be required
                 script {
                     if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
-	                    sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh dssr-server --debug --map-workspace=true'
-	                } else {
-	                    echo; echo "infrastructure.sh was not found - no container will be created"
-	                }
+                        sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh dssr-server --map-workspace=true'
+                    } else {
+                        echo; echo "infrastructure.sh was not found - no container will be created"
+                    }
                 }
                 script {
-	                if (fileExists("$WORKSPACE/ci/vs-last-env.quoted")) {
-	                    echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
-	                    load "$WORKSPACE/ci/vs-last-env.quoted"
-	                    echo "found ${env.VS_COMMIT_AUTHOR}"
-	                } else {
-	                    echo; echo "$WORKSPACE/ci/vs-last-env.quoted - updated environment variables will not be loaded"
-	                }
-		        }
+                    if (fileExists("$WORKSPACE/ci/vs-last-env.quoted")) {
+                        echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
+                        load "$WORKSPACE/ci/vs-last-env.quoted"
+                        echo "found ${env.VS_COMMIT_AUTHOR}"
+                    } else {
+                        echo; echo "$WORKSPACE/ci/vs-last-env.quoted - updated environment variables will not be loaded"
+                    }
+                }
                 sh '''
                     set +x
                     echo $VS_CONTAINER_EXEC
