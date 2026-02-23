@@ -86,7 +86,8 @@ import VsBrPageViewEvent from '~/components/Utils/VsBrPageViewEvent.vue';
 const props = defineProps<{ component: Component, page: Page }>();
 
 const pageUrl = window.location.href;
-const pageImage = '/assets/images/illustrations/newsletter-background.jpg';
+// const pageImage = '/assets/images/illustrations/newsletter-background.jpg';
+const pageImage = 'https://static.visitscotland.com/img/fallback-img.png';
 
 const { component, page } = toRefs(props);
 
