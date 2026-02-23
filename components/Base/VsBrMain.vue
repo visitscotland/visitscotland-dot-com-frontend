@@ -13,11 +13,13 @@
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
+
         <VsBrSaveContentButton
             :content="{
                 url: pageUrl,
                 title: pageDocument.model.data.displayName,
                 teaser: pageDocument.model.data.teaser,
+                imgUrl: pageImage,
             }"
         />
         <VsBrFavourites
@@ -84,6 +86,7 @@ import VsBrPageViewEvent from '~/components/Utils/VsBrPageViewEvent.vue';
 const props = defineProps<{ component: Component, page: Page }>();
 
 const pageUrl = window.location.href;
+const pageImage = '/assets/images/illustrations/newsletter-background.jpg';
 
 const { component, page } = toRefs(props);
 

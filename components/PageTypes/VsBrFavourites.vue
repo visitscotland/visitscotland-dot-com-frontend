@@ -11,55 +11,57 @@
                         variant="grid"
                         :cards-per-row="4"
                     >
-                        <VsCard
-                            class="vs-favourite-card"
-                            v-for="(page, index) in savedContentArray"
-                            :key="'card-list-2-' + index"
-                        >
-                            <template #vs-card-header>
-                                <div class="vs-save-content-button">
-                                    <VsButton
-                                        icon-only
-                                        icon="fa-solid fa-heart"
-                                        :variant="variant"
-                                        size="sm"
-                                        @click="removePage(page.url)"
+                        <TransitionGroup name="fade">
+                            <VsCard
+                                class="vs-favourite-card"
+                                v-for="(page, index) in savedContentArray"
+                                :key="'card-list-2-' + index"
+                            >
+                                <template #vs-card-header>
+                                    <div class="vs-save-content-button">
+                                        <VsButton
+                                            icon-only
+                                            icon="fa-solid fa-heart"
+                                            :variant="variant"
+                                            size="sm"
+                                            @click="removePage(page.url)"
+                                        />
+                                    </div>
+                                    <VsImg
+                                        v-if="page.imgUrl"
+                                        :src="page.imgUrl"
+                                        class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                                     />
-                                </div>
-                                <VsImg
-                                    src="https://images.unsplash.com/photo-1761839259488-2bdeeae794f5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8"
-                                    class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
-                                />
-                            </template>
+                                </template>
 
-                            <template #vs-card-body>
-                                <div>
-                                    <VsHeading
-                                        level="3"
-                                        heading-style="heading-xs"
-                                    >
-                                        <VsLink
-                                            :href="page.url"
-                                            class="stretched-link"
-                                            variant="secondary"
+                                <template #vs-card-body>
+                                    <div>
+                                        <VsHeading
+                                            level="3"
+                                            heading-style="heading-xs"
                                         >
-                                            {{ page.title }}
-                                        </VsLink>
-                                    </VsHeading>
+                                            <VsLink
+                                                :href="page.url"
+                                                class="stretched-link"
+                                                variant="secondary"
+                                            >
+                                                {{ page.title }}
+                                            </VsLink>
+                                        </VsHeading>
 
-                                    <VsBody class="mb-150">
-                                        <p class="truncate-2-lines">
-                                            {{ page.teaser }}
-                                        </p>
-                                    </VsBody>
-                                </div>
-                            </template>
-                        </VsCard>
+                                        <VsBody class="mb-150">
+                                            <p class="truncate-2-lines">
+                                                {{ page.teaser }}
+                                            </p>
+                                        </VsBody>
+                                    </div>
+                                </template>
+                            </VsCard>
+                        </TransitionGroup>
                     </VsCardGroup>
                 </VsCol>
             </VsRow>
         </VsContainer>
-        
     </div>
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -124,7 +126,6 @@ let documentData : any = {
 
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
-
     documentData = pageDocument.getData();
 }
 
@@ -168,4 +169,12 @@ function removePage(uid) {
         right: 12px;
         z-index: 100;
     }
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: all 0.5s ease;
+        }
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+        }
 </style>

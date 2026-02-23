@@ -54,7 +54,7 @@ onMounted(() => {
 
 function savePage(uid) {
     savedContentArray.value.push(uid);
-    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value))
+    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
 };
 
 function removePage(uid) {
