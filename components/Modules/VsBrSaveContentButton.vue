@@ -38,7 +38,7 @@ function refreshState() {
     if (storageState !== null && storageState.length > 0) {
         savePageEnabled.value = true;
         savedContentArray.value = JSON.parse(storageState);
-        pageSaved.value = pageInSaveList(props.content.uid);
+        pageSaved.value = pageInSaveList(props.content.url);
     } else {
         savePageEnabled.value = false;
         savedContentArray.value = null;
