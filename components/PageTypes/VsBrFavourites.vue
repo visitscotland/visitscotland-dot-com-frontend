@@ -176,11 +176,7 @@ function removePage(uid) {
         border-color: transparent;
     }
     .vs-favourite-card .vs-remove-content-button .btn:hover {
-        background-color: #ffffff60;
-        border-color: transparent;
-    }
-    .vs-favourite-card .vs-remove-content-button .btn:hover i {
-        background: red  !important;
+        background: #1f49d6;
     }
     .fade-enter-active,
     .fade-leave-active {
