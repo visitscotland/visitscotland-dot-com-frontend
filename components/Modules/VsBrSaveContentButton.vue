@@ -38,7 +38,7 @@ function refreshState() {
     if (storageState !== null && storageState.length > 0) {
         savePageEnabled.value = true;
         savedContentArray.value = JSON.parse(storageState);
-        pageSaved.value = pageInSaveList(props.content.url);
+        pageSaved.value = pageInSaveList(pageUrl);
     } else {
         savePageEnabled.value = false;
         savedContentArray.value = null;
@@ -50,7 +50,10 @@ onMounted(() => {
     window.addEventListener('storage', () => {
         refreshState();
     });
+    pageUrl = window.location.href;
 });
+
+let pageUrl = null;
 
 function savePage(uid) {
     savedContentArray.value.push(uid);
@@ -75,6 +78,7 @@ function toggleSaved(data) {
         removePage(uid);
         pageSaved.value = false;
     } else {
+        data.url = pageUrl;
         savePage(data);
         pageSaved.value = true;
     };

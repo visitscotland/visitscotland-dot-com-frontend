@@ -119,13 +119,6 @@ const props = defineProps<{
 const page: any = inject('page');
 const day: any = props.day;
 const dayNumber: any = props.dayNumber;
-<<<<<<< HEAD
-const imageValue = page.getContent(day.media[0].$ref);
-const imageSrc = imageValue.getOriginal().getUrl();
-const imageCaption = imageValue.description;
-const imageAlt = imageValue.model.data.altText;
-const imageCredit = imageValue.model.data.credit;
-=======
 
 let imageValue = false;
 let imageSrc = null;
@@ -150,7 +143,6 @@ if (page.getContent(day.media[0].videoLink)) {
     videoLabel = videoValue.model.data.label;
 }
 
->>>>>>> @{-1}
 const dayLabel = configStore.getLabel('itinerary', 'day');
 
 </script>
