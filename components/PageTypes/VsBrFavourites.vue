@@ -18,13 +18,15 @@
                                 :key="'card-list-2-' + index"
                             >
                                 <template #vs-card-header>
-                                    <div class="vs-save-content-button">
+                                    <div class="vs-remove-content-button">
                                         <VsButton
                                             icon-only
                                             icon="fa-solid fa-heart"
                                             :variant="variant"
                                             size="sm"
                                             @click="removePage(page.url)"
+                                            @mouseover="hover = true"
+                                            :class="{ active: hover }"
                                         />
                                     </div>
                                     <VsImg
@@ -163,11 +165,22 @@ function removePage(uid) {
     .vs-favourite-card .vs-card__header{
         position: relative;
     }
-    .vs-favourite-card .vs-save-content-button{
+    .vs-favourite-card .vs-remove-content-button{
         position: absolute;
         top: 12px;
         right: 12px;
         z-index: 100;
+    }
+    .vs-favourite-card .vs-remove-content-button .btn {
+        background-color: #200F2E;
+        border-color: transparent;
+    }
+    .vs-favourite-card .vs-remove-content-button .btn:hover {
+        background-color: #ffffff60;
+        border-color: transparent;
+    }
+    .vs-favourite-card .vs-remove-content-button .btn:hover i {
+        background: red  !important;
     }
     .fade-enter-active,
     .fade-leave-active {
@@ -176,5 +189,5 @@ function removePage(uid) {
     .fade-enter-from,
     .fade-leave-to {
         opacity: 0;
-        }
+    }
 </style>
