@@ -1,6 +1,15 @@
 import type { SearchApiResult } from '~/types/types.ts';
 
-function cleanData(data: any) {
+// Add the site language to the tours result URL as this does not come from Cludo.
+function setToursResultUrl(url: string, category: string, langString: string) {
+    if (!url) return '';
+
+    if (category !== 'tours' || !langString) return url;
+
+    return url.replace('/info/tours', `/${langString}/info/tours`);
+}
+
+function cleanData(data: any, langString: string) {
     const documents = data.TypedDocuments;
 
     const results: SearchApiResult[] = documents.map((document: any) => ({
@@ -8,7 +17,11 @@ function cleanData(data: any) {
         title: document.Fields.Title.Value || '',
         description: document.Fields.Description.Value || '',
         imgSrc: document.Fields.Image?.Value || '',
-        url: document.Fields.Url.Value || '',
+        url: setToursResultUrl(
+            document.Fields.Url.Value,
+            document.Fields.categoryCard.Value,
+            langString,
+        ),
         dataSrc: 'cludo',
         categoryCard: document.Fields.categoryCard.Value || '',
     }));
@@ -50,7 +63,8 @@ export default defineEventHandler(async(event) => {
 
         const results = await response.json();
 
-        const cleanResults = cleanData(results);
+        const { langString } = body;
+        const cleanResults = cleanData(results, langString);
 
         return {
             results: cleanResults,

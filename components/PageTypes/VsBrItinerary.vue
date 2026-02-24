@@ -164,6 +164,8 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
+import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
+
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
@@ -241,12 +243,18 @@ const themeIcon = {
     sightseeing: 'fa-regular fa-binoculars',
 };
 
+let otyml : any = null;
+
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
     heroImage = documentData.heroImage;
     itineraryMap = documentData.mapLink;
+
+    if (configStore.otyml) {
+        otyml = configStore.otyml;
+    }
 
     if (component.value) {
         pageItems = component.value.model.models.pageItems;

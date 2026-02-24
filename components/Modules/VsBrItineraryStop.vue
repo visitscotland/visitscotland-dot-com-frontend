@@ -8,6 +8,7 @@
             v-if="stop.image"
             :image="stop.image.cmsImage ? stop.image.cmsImage : null"
             :image-string="stop.image.externalImage ? stop.image.externalImage : ''"
+            :image-description="stop.image.description"
         />
 
         <template
@@ -20,7 +21,7 @@
             <VsLink
                 v-if="stop.ctaLink"
                 :href="stop.ctaLink.link"
-                :type="stop.ctaLink.type === 'internal' ? null : stop.ctaLink.type"
+                :type="stop.ctaLink.type === 'EXTERNAL' ? 'external' : null"
                 class="d-inline-block mb-100"
             >
                 {{ stop.ctaLink.label }}
