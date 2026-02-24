@@ -188,8 +188,6 @@ const props = defineProps<{ component: Component, page: Page }>();
 
 const { page, component } = toRefs(props);
 
-const pageUrl = window.location.href;
-
 let documentData : any = {
 };
 let heroImage = {
