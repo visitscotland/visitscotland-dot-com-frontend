@@ -11,6 +11,11 @@
             :content="hippoContent[index]"
         />
 
+        <VsBrPreviewError
+            v-if="item.errorMessages && item.errorMessages.length"
+            :messages="item.errorMessages"
+        />
+
         <template
             v-if="item.type === 'ListLinksModule'"
         >
@@ -200,7 +205,6 @@
                 :when-visible="{ rootMargin: '50px' }"
             >
                 <VsBrPreviewError
-                    v-if="page.isPreview()"
                     :messages="item.errorMessages"
                 />
             </NuxtLazyHydrate>
