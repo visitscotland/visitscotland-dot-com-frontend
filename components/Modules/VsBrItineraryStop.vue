@@ -12,6 +12,7 @@
             v-if="stop.image"
             :image="stop.image.cmsImage ? stop.image.cmsImage : null"
             :image-string="stop.image.externalImage ? stop.image.externalImage : ''"
+            :image-description="stop.image.description"
         />
 
         <template

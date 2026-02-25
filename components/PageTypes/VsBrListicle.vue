@@ -41,6 +41,7 @@
                                         :image="item.image.cmsImage ? item.image.cmsImage : null"
                                         :image-string="!item.image.cmsImage ? item.image.externalImage : ''"
                                         :image-data-set="!item.image.cmsImage ? item.image : null"
+                                        :image-description="item.image.description"
                                         variant="fullwidth"
                                         :no-alt-text="true"
                                         :use-lazy-loading="index !== 0"
@@ -83,7 +84,7 @@
                                             :icon="getDMSIconName(facility.id)"
                                             :label="facility.name"
                                         />
-                                    </VsIconList>
+                                    </vsiconlist>
                                 </div>
                             </template>
                         </VsListicleItem>
