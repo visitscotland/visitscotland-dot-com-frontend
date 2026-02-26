@@ -1,7 +1,7 @@
 <template>
     <div class="vs-save-content-button">
+        {{ buttonSavedState }}
         <VsButton
-            v-if="savePageEnabled"
             icon-only
             :icon="buttonSavedState ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
             :variant="variant"
@@ -27,24 +27,16 @@ const props = defineProps<{
     image: string,
 }>();
 
-const savedContentArray = ref(null);
-const savePageEnabled = ref(false);
+const savedContentArray = ref([]);
 const localStoragePropertyName = 'vs-saved-pages';
 const buttonSavedState = ref(false);
 
 function pageInSaveList(uid) {
-    return savePageEnabled.value && savedContentArray.value.some((item) => item.uid === uid);
+    return savedContentArray.value.some((item) => item.uid === uid);
 }
 
 function refreshState() {
-    const storageState = localStorage.getItem(localStoragePropertyName); // null || string
-    if (storageState !== null && storageState.length > 0) {
-        savePageEnabled.value = true;
-        savedContentArray.value = JSON.parse(storageState);
-    } else {
-        savePageEnabled.value = false;
-        savedContentArray.value = null;
-    }
+    savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
     buttonSavedState.value = pageInSaveList(props.uid);
 }
 
@@ -62,7 +54,7 @@ function savePage(content) {
 
 function removePage(uid) {
     savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
-    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray));
+    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
 };
 
 function toggleSaved(uid) {
@@ -71,6 +63,6 @@ function toggleSaved(uid) {
     } else if (!pageInSaveList(uid)) {
         savePage(props);
     }
-    refreshState();
+    buttonSavedState.value = pageInSaveList(props.uid);
 }
 </script>
