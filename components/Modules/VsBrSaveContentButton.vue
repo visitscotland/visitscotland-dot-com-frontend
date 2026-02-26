@@ -3,11 +3,12 @@
         <VsButton
             v-if="savePageEnabled"
             icon-only
-            :icon="pageSaved ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
+            :icon="buttonSavedState ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
             :variant="variant"
             :size="size"
-            @click="toggleSaved(props.content)"
+            @click="toggleSaved(props.uid)"
         />
+        {{ savedContentArray }}
     </div>
 </template>
 
@@ -20,18 +21,19 @@ import {
 import { VsButton } from '@visitscotland/component-library/components';
 
 const props = defineProps<{
-    content: string,
-    size: string,
+    title: string,
+    description: string,
+    uid: string,
+    image: string,
 }>();
 
 const savedContentArray = ref(null);
 const savePageEnabled = ref(false);
 const localStoragePropertyName = 'vs-saved-pages';
-const pageSaved = ref(false);
-let pageUrl = null;
+const buttonSavedState = ref(false);
 
 function pageInSaveList(uid) {
-    return savePageEnabled.value && savedContentArray.value.some((item) => item.url === uid);
+    return savePageEnabled.value && savedContentArray.value.some((item) => item.uid === uid);
 }
 
 function refreshState() {
@@ -39,11 +41,11 @@ function refreshState() {
     if (storageState !== null && storageState.length > 0) {
         savePageEnabled.value = true;
         savedContentArray.value = JSON.parse(storageState);
-        pageSaved.value = pageInSaveList(pageUrl);
     } else {
         savePageEnabled.value = false;
         savedContentArray.value = null;
     }
+    buttonSavedState.value = pageInSaveList(props.uid);
 }
 
 onMounted(() => {
@@ -51,7 +53,6 @@ onMounted(() => {
     window.addEventListener('storage', () => {
         refreshState();
     });
-    pageUrl = window.location.href;
 });
 
 function savePage(content) {
@@ -60,22 +61,16 @@ function savePage(content) {
 };
 
 function removePage(uid) {
-    const filteredArray = savedContentArray.value.filter((item) => item.url !== uid);
-    savedContentArray.value = filteredArray;
-    localStorage.setItem(localStoragePropertyName, JSON.stringify(filteredArray));
+    savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
+    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray));
 };
 
-function toggleSaved(data) {
-    const content = data;
-    content.url = pageUrl;
-
-    if (pageSaved.value) {
-        pageSaved.value = false;
-        removePage(content.uid);
-    } else {
-        pageSaved.value = true;
-        savePage(content);
+function toggleSaved(uid) {
+    if (pageInSaveList(uid)) {
+        removePage(uid);
+    } else if (!pageInSaveList(uid)) {
+        savePage(props);
     }
+    refreshState();
 }
-
 </script>

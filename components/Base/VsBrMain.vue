@@ -15,11 +15,10 @@
         />
         <VsBrSaveContentButton
             v-if="isSavable"
-            :content="{
-                title: pageDocument.model.data.displayName,
-                teaser: pageDocument.model.data.teaser,
-                imgUrl: pageImage,
-            }"
+            :title="pageDocument.model.data.displayName"
+            :description="pageDocument.model.data.teaser"
+            :uid="pageDocument.model.data.id"
+            :image="pageImage"
         />
         <VsBrFavourites
             v-if="pageDocument.model.data.displayName === 'favourites'"
