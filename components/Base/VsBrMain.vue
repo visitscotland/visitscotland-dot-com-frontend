@@ -22,6 +22,8 @@
         />
         <VsBrFavourites
             v-if="pageDocument.model.data.displayName === 'favourites'"
+            :page="page"
+            :component="component"
         />
         <VsBrGeneral
             v-if="(pageName === 'general-page' || pageName === 'pagenotfound') && pageDocument.model.data.displayName !== 'favourites'"

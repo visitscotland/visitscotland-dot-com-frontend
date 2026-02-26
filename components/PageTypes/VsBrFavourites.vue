@@ -1,8 +1,7 @@
 <template>
     <div class="d-flex flex-column gap-500">
-        <VsHeroSection
-            heading="whatever"
-            lede="whatever"
+        <VsBrHeroSection
+            :content="documentData"
         />
         <VsContainer class="mt-075 mt-lg-200">
             <VsRow>
@@ -100,7 +99,7 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
-
+import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 import {
     VsCard,
     VsImg,
@@ -110,7 +109,6 @@ import {
     VsContainer,
     VsRow,
     VsCol,
-    VsHeroSection,
     VsCardGroup,
     VsButton,
 } from '@visitscotland/component-library/components';
