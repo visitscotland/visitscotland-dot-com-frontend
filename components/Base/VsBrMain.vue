@@ -13,8 +13,8 @@
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
-
         <VsBrSaveContentButton
+            v-if="isSavable"
             :content="{
                 title: pageDocument.model.data.displayName,
                 teaser: pageDocument.model.data.teaser,
@@ -97,6 +97,7 @@ let pageDocument : any = {
 };
 
 let hasStops = null;
+let isSavable = false;
 
 const configStore = useConfigStore();
 
@@ -146,6 +147,7 @@ if (page.value) {
     }
 
     if (componentModels.pageConfiguration) {
+        isSavable = componentModels.pageConfiguration.isFavourite;
         hasStops = componentModels.pageConfiguration.hasStops;
         configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
         configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];

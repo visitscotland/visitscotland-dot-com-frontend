@@ -14,8 +14,8 @@
                         <TransitionGroup name="fade">
                             <VsCard
                                 class="vs-favourite-card"
-                                v-for="(page, index) in savedContentArray"
-                                :key="'card-list-2-' + index"
+                                v-for="(page) in savedContentArray"
+                                :key="page.url"
                             >
                                 <template #vs-card-header>
                                     <div class="vs-remove-content-button">
@@ -25,8 +25,6 @@
                                             :variant="variant"
                                             size="sm"
                                             @click="removePage(page.url)"
-                                            @mouseover="hover = true"
-                                            :class="{ active: hover }"
                                         />
                                     </div>
                                     <VsImg

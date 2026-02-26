@@ -28,6 +28,7 @@ const savedContentArray = ref(null);
 const savePageEnabled = ref(false);
 const localStoragePropertyName = 'vs-saved-pages';
 const pageSaved = ref(false);
+let pageUrl = null;
 
 function pageInSaveList(uid) {
     return savePageEnabled.value && savedContentArray.value.some((item) => item.url === uid);
@@ -53,10 +54,8 @@ onMounted(() => {
     pageUrl = window.location.href;
 });
 
-let pageUrl = null;
-
-function savePage(uid) {
-    savedContentArray.value.push(uid);
+function savePage(content) {
+    savedContentArray.value.push(content);
     localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
 };
 
@@ -67,21 +66,16 @@ function removePage(uid) {
 };
 
 function toggleSaved(data) {
+    const content = data;
+    content.url = pageUrl;
+
     if (pageSaved.value) {
         pageSaved.value = false;
+        removePage(content.uid);
     } else {
         pageSaved.value = true;
+        savePage(content);
     }
-    const uid = data.url;
-
-    if (pageInSaveList(uid)) {
-        removePage(uid);
-        pageSaved.value = false;
-    } else {
-        data.url = pageUrl;
-        savePage(data);
-        pageSaved.value = true;
-    };
 }
 
 </script>
