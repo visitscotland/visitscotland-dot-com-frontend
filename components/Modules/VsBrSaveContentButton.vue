@@ -1,6 +1,5 @@
 <template>
     <div class="vs-save-content-button">
-        {{ buttonSavedState }}
         <VsButton
             icon-only
             :icon="buttonSavedState ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
@@ -8,7 +7,6 @@
             :size="size"
             @click="toggleSaved(props.uid)"
         />
-        {{ savedContentArray }}
     </div>
 </template>
 
@@ -27,6 +25,8 @@ const props = defineProps<{
     image: string,
 }>();
 
+// ####################################
+
 const savedContentArray = ref([]);
 const localStoragePropertyName = 'vs-saved-pages';
 const buttonSavedState = ref(false);
@@ -37,13 +37,13 @@ function pageInSaveList(uid) {
 
 function refreshState() {
     savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
-    buttonSavedState.value = pageInSaveList(props.uid);
 }
 
 onMounted(() => {
     refreshState();
     window.addEventListener('storage', () => {
         refreshState();
+        buttonSavedState.value = pageInSaveList(props.uid);
     });
 });
 
@@ -65,4 +65,6 @@ function toggleSaved(uid) {
     }
     buttonSavedState.value = pageInSaveList(props.uid);
 }
+
+// ####################################
 </script>

@@ -14,8 +14,8 @@
                         <TransitionGroup name="fade">
                             <VsCard
                                 class="vs-favourite-card"
-                                v-for="(page) in savedContentArray"
-                                :key="page.url"
+                                v-for="(data) in savedContentArray"
+                                :key="data.uid"
                             >
                                 <template #vs-card-header>
                                     <div class="vs-remove-content-button">
@@ -24,12 +24,12 @@
                                             icon="fa-solid fa-heart"
                                             :variant="variant"
                                             size="sm"
-                                            @click="removePage(page.url)"
+                                            @click="removePage(data.uid)"
                                         />
                                     </div>
                                     <VsImg
-                                        v-if="page.imgUrl"
-                                        :src="page.imgUrl"
+                                        v-if="data.image"
+                                        :src="data.image"
                                         class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                                     />
                                 </template>
@@ -41,17 +41,17 @@
                                             heading-style="heading-xs"
                                         >
                                             <VsLink
-                                                :href="page.url"
+                                                :href="data.url"
                                                 class="stretched-link"
                                                 variant="secondary"
                                             >
-                                                {{ page.title }}
+                                                {{ data.title }}
                                             </VsLink>
                                         </VsHeading>
 
                                         <VsBody class="mb-150">
                                             <p class="truncate-2-lines">
-                                                {{ page.teaser }}
+                                                {{ data.description }}
                                             </p>
                                         </VsBody>
                                     </div>
@@ -129,19 +129,13 @@ if (page.value) {
     documentData = pageDocument.getData();
 }
 
-const savedContentArray = ref(null);
-const savePageEnabled = ref(false);
+// ####################################
+
+const savedContentArray = ref([]);
 const localStoragePropertyName = 'vs-saved-pages';
 
 function refreshState() {
-    const storageState = localStorage.getItem(localStoragePropertyName); // null || string
-    if (storageState !== null && storageState.length > 0) {
-        savePageEnabled.value = true;
-        savedContentArray.value = JSON.parse(storageState);
-    } else {
-        savePageEnabled.value = false;
-        savedContentArray.value = null;
-    }
+    savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
 }
 
 onMounted(() => {
@@ -152,10 +146,11 @@ onMounted(() => {
 });
 
 function removePage(uid) {
-    const filteredArray = savedContentArray.value.filter((item) => item.url !== uid);
-    savedContentArray.value = filteredArray;
-    localStorage.setItem(localStoragePropertyName, JSON.stringify(filteredArray));
+    savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
+    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
 };
+
+// ####################################
 
 </script>
 
@@ -169,13 +164,13 @@ function removePage(uid) {
         right: 12px;
         z-index: 100;
     }
-    .vs-favourite-card .vs-remove-content-button .btn {
+    /* .vs-favourite-card .vs-remove-content-button .btn {
         background-color: #200F2E;
         border-color: transparent;
     }
     .vs-favourite-card .vs-remove-content-button .btn:hover {
         background: #1f49d6;
-    }
+    } */
     .fade-enter-active,
     .fade-leave-active {
         transition: all 0.5s ease;
