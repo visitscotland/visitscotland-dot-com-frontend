@@ -12,7 +12,10 @@
             :extra-content="configStore.getLabel('ugc', 'ugc.extra-warning-content')"
             :embedded-script="`https://apps.storystream.ai/app/js/${module.storystreamId}.js`"
         >
-            <template #embed-intro-copy>
+            <template
+                #embed-intro-copy
+                v-if="module.copy"
+            >
                 <VsBrRichText :input-content="module.copy.value" />
             </template>
 
