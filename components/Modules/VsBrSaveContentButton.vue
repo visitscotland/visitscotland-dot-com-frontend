@@ -25,8 +25,6 @@ const props = defineProps<{
     image: string,
 }>();
 
-// ####################################
-
 const savedContentArray = ref([]);
 const localStoragePropertyName = 'vs-saved-pages';
 const buttonSavedState = ref(false);
@@ -41,6 +39,7 @@ function refreshState() {
 
 onMounted(() => {
     refreshState();
+    buttonSavedState.value = pageInSaveList(props.uid);
     window.addEventListener('storage', () => {
         refreshState();
         buttonSavedState.value = pageInSaveList(props.uid);
@@ -66,5 +65,4 @@ function toggleSaved(uid) {
     buttonSavedState.value = pageInSaveList(props.uid);
 }
 
-// ####################################
 </script>

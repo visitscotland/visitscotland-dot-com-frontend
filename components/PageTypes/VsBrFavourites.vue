@@ -6,6 +6,11 @@
         <VsContainer class="mt-075 mt-lg-200">
             <VsRow>
                 <VsCol>
+                    <div v-if="savedContentArray.length < 1">
+                        <p>
+                            You don't have any saved pages yet.
+                        </p>
+                    </div>
                     <VsCardGroup
                         variant="grid"
                         :cards-per-row="4"
@@ -127,8 +132,6 @@ if (page.value) {
     documentData = pageDocument.getData();
 }
 
-// ####################################
-
 const savedContentArray = ref([]);
 const localStoragePropertyName = 'vs-saved-pages';
 
@@ -147,8 +150,6 @@ function removePage(uid) {
     savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
     localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
 };
-
-// ####################################
 
 </script>
 
