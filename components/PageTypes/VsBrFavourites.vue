@@ -3,10 +3,16 @@
         <VsBrHeroSection
             :content="documentData"
         />
-        <!-- {{ displayData.cards }}
-        {{ testData }} -->
-        <br>
-        <!-- {{ savedContentArray }} -->
+        <p>
+            displayData.cards: {{ displayData.cards }}
+        </p>
+        <!-- {{ testData }} -->
+       <p>
+           savedContentArray: {{ savedContentArray }}
+        </p>
+        <p>
+            requestBody: {{ requestBody }}
+        </p>
         <!-- {{ requestBody }} -->
         <VsContainer class="mt-075 mt-lg-200">
             <VsRow>
@@ -143,21 +149,7 @@ const requestBody = ref({
 });
 
 const localStoragePropertyName = 'vs-saved-pages';
-
-function refreshState() {
-    savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
-    requestBody.value.uuids = savedContentArray.value.map((o) => o.uid);
-}
-
 const displayData = ref('no data retrieved');
-
-function removePage(uid) {
-    // savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
-    displayData.value.cards = displayData.value.cards.filter((o) => o.uuid !== uid);
-    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
-};
-
-
 
 async function getSavedPageData(uuidArray) {
     // eslint-disable-next-line no-undef
@@ -171,6 +163,21 @@ async function getSavedPageData(uuidArray) {
 
     displayData.value = await res;
 }
+
+function refreshState() {
+    savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
+    requestBody.value.uuids = savedContentArray.value.map((o) => o.uid);
+    getSavedPageData(requestBody.value);
+}
+
+function removePage(uuid) {
+    // Remove from working data:
+    savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uuid);
+    // Remove from display data:
+    displayData.value.cards = displayData.value.cards.filter((o) => o.uuid !== uuid);
+    // Update localStorage:
+    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
+};
 
 const testData = {
     uuids: [
