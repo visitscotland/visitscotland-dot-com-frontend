@@ -3,8 +3,11 @@
         <VsBrHeroSection
             :content="documentData"
         />
-        {{ displayData }}
-        <!-- {{ testData }} -->
+        <!-- {{ displayData }} -->
+        {{ testData }}
+        <br>
+          <!-- {{ savedContentArray }} -->
+        {{ requestBody }}
         <VsContainer class="mt-075 mt-lg-200">
             <VsRow>
                 <VsCol>
@@ -135,10 +138,15 @@ if (page.value) {
 }
 
 const savedContentArray = ref([]);
+const requestBody = ref({
+    uuids: [],
+});
+
 const localStoragePropertyName = 'vs-saved-pages';
 
 function refreshState() {
     savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
+    requestBody.value.uuids = savedContentArray.value.map((o) => o.uid);
 }
 
 function removePage(uid) {
@@ -148,14 +156,14 @@ function removePage(uid) {
 
 const displayData = ref('no data retrieved');
 
-async function getSavedPageData(uidArray) {
+async function getSavedPageData(uuidArray) {
     // eslint-disable-next-line no-undef
     const res = await $fetch('http://localhost:8080/site/api/favourites/get-favourites', {
         headers: {
             'Content-Type': 'application/json',
         },
         method: 'post',
-        body: JSON.stringify(uidArray),
+        body: JSON.stringify(uuidArray),
     });
 
     displayData.value = await res;
@@ -165,13 +173,13 @@ const testData = {
     uuids: [
         '03638a37-3acc-4c14-b07d-bbaaa816f576',
         'd660a005-456f-433d-842a-7ca180139771',
-        'e16bdb89-c271-46f1-851f-2d2b82d631d4',
+        // 'e16bdb89-c271-46f1-851f-2d2b82d631d4',
         // 'f846ac14-4bbe-43af-8bdd-1f60979abc11',
-        '8b4a3c11-8b84-4aa0-bccf-f407d18c1c44',
-        '9db81e99-3924-4c43-a336-f5559d6fbcd6',
+        // '8b4a3c11-8b84-4aa0-bccf-f407d18c1c44',
+        // '9db81e99-3924-4c43-a336-f5559d6fbcd6',
         // 'c9ee3aa3-7163-4d2a-aa73-3bb84de975b2',
-        'bc5bec32-9cbc-45a7-855b-342008ad8ef9',
-        'bc5bec32-9cbc-45a7-855b-342dfdrd8ef9',
+        // 'bc5bec32-9cbc-45a7-855b-342008ad8ef9',
+        // 'bc5bec32-9cbc-45a7-855b-342dfdrd8ef9',
     ],
 };
 
@@ -180,7 +188,8 @@ onMounted(() => {
     window.addEventListener('storage', () => {
         refreshState();
     });
-    getSavedPageData(testData);
+    // getSavedPageData(testData);
+    getSavedPageData(requestBody.value);
 });
 
 </script>
