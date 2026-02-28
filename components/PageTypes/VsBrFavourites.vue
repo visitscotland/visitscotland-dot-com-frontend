@@ -3,14 +3,16 @@
         <VsBrHeroSection
             :content="documentData"
         />
+        {{ displayData }}
+        <!-- {{ testData }} -->
         <VsContainer class="mt-075 mt-lg-200">
             <VsRow>
                 <VsCol>
-                    <div v-if="savedContentArray.length < 1">
+                    <!-- <div v-if="savedContentArray.length < 1">
                         <p>
                             You don't have any saved pages yet.
                         </p>
-                    </div>
+                    </div> -->
                     <VsCardGroup
                         variant="grid"
                         :cards-per-row="4"
@@ -18,8 +20,8 @@
                         <TransitionGroup name="fade">
                             <VsCard
                                 class="vs-favourite-card"
-                                v-for="(data) in savedContentArray"
-                                :key="data.uid"
+                                v-for="(data) in displayData.cards"
+                                :key="data.uuid"
                             >
                                 <template #vs-card-header>
                                     <div class="vs-remove-content-button">
@@ -28,7 +30,7 @@
                                             icon="fa-solid fa-heart"
                                             :variant="variant"
                                             size="sm"
-                                            @click="removePage(data.uid)"
+                                            @click="removePage(data.uuid)"
                                         />
                                     </div>
                                     <VsImg
@@ -139,17 +141,47 @@ function refreshState() {
     savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
 }
 
+function removePage(uid) {
+    savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
+    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
+};
+
+const displayData = ref('no data retrieved');
+
+async function getSavedPageData(uidArray) {
+    // eslint-disable-next-line no-undef
+    const res = await $fetch('http://localhost:8080/site/api/favourites/get-favourites', {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'post',
+        body: JSON.stringify(uidArray),
+    });
+
+    displayData.value = await res;
+}
+
+const testData = {
+    uuids: [
+        '03638a37-3acc-4c14-b07d-bbaaa816f576',
+        'd660a005-456f-433d-842a-7ca180139771',
+        'e16bdb89-c271-46f1-851f-2d2b82d631d4',
+        // 'f846ac14-4bbe-43af-8bdd-1f60979abc11',
+        '8b4a3c11-8b84-4aa0-bccf-f407d18c1c44',
+        '9db81e99-3924-4c43-a336-f5559d6fbcd6',
+        // 'c9ee3aa3-7163-4d2a-aa73-3bb84de975b2',
+        'bc5bec32-9cbc-45a7-855b-342008ad8ef9',
+        'bc5bec32-9cbc-45a7-855b-342dfdrd8ef9',
+    ],
+};
+
 onMounted(() => {
     refreshState();
     window.addEventListener('storage', () => {
         refreshState();
     });
+    getSavedPageData(testData);
 });
-
-function removePage(uid) {
-    savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
-    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
-};
 
 </script>
 
