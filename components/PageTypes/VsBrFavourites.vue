@@ -3,11 +3,11 @@
         <VsBrHeroSection
             :content="documentData"
         />
-        <!-- {{ displayData }} -->
-        {{ testData }}
+        <!-- {{ displayData.cards }}
+        {{ testData }} -->
         <br>
-          <!-- {{ savedContentArray }} -->
-        {{ requestBody }}
+        <!-- {{ savedContentArray }} -->
+        <!-- {{ requestBody }} -->
         <VsContainer class="mt-075 mt-lg-200">
             <VsRow>
                 <VsCol>
@@ -149,12 +149,15 @@ function refreshState() {
     requestBody.value.uuids = savedContentArray.value.map((o) => o.uid);
 }
 
+const displayData = ref('no data retrieved');
+
 function removePage(uid) {
-    savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
+    // savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
+    displayData.value.cards = displayData.value.cards.filter((o) => o.uuid !== uid);
     localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
 };
 
-const displayData = ref('no data retrieved');
+
 
 async function getSavedPageData(uuidArray) {
     // eslint-disable-next-line no-undef
