@@ -3,25 +3,23 @@
         <VsBrHeroSection
             :content="documentData"
         />
-        <p>
+        <!-- <p>
             displayData.cards: {{ displayData.cards }}
         </p>
-        <!-- {{ testData }} -->
        <p>
            savedContentArray: {{ savedContentArray }}
         </p>
         <p>
             requestBody: {{ requestBody }}
-        </p>
-        <!-- {{ requestBody }} -->
+        </p> -->
         <VsContainer class="mt-075 mt-lg-200">
             <VsRow>
                 <VsCol>
-                    <!-- <div v-if="savedContentArray.length < 1">
+                    <div v-if="savedContentArray.length < 1">
                         <p>
                             You don't have any saved pages yet.
                         </p>
-                    </div> -->
+                    </div>
                     <VsCardGroup
                         variant="grid"
                         :cards-per-row="4"
@@ -66,8 +64,9 @@
 
                                         <VsBody class="mb-150">
                                             <p class="truncate-2-lines">
-                                                {{ data.description }}
+                                                {{ data.teaser }}
                                             </p>
+                                            {{ data.image }}
                                         </VsBody>
                                     </div>
                                 </template>
@@ -177,20 +176,6 @@ function removePage(uuid) {
     displayData.value.cards = displayData.value.cards.filter((o) => o.uuid !== uuid);
     // Update localStorage:
     localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
-};
-
-const testData = {
-    uuids: [
-        '03638a37-3acc-4c14-b07d-bbaaa816f576',
-        'd660a005-456f-433d-842a-7ca180139771',
-        // 'e16bdb89-c271-46f1-851f-2d2b82d631d4',
-        // 'f846ac14-4bbe-43af-8bdd-1f60979abc11',
-        // '8b4a3c11-8b84-4aa0-bccf-f407d18c1c44',
-        // '9db81e99-3924-4c43-a336-f5559d6fbcd6',
-        // 'c9ee3aa3-7163-4d2a-aa73-3bb84de975b2',
-        // 'bc5bec32-9cbc-45a7-855b-342008ad8ef9',
-        // 'bc5bec32-9cbc-45a7-855b-342dfdrd8ef9',
-    ],
 };
 
 onMounted(() => {
