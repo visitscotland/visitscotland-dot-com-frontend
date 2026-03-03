@@ -83,6 +83,16 @@
             >
                 {{ configStore.getLabel("listicle", "listicle.disclaimer") }}
             </p>
+
+            <div class="mt-200">
+                <VsBrSaveContentButton
+                    size="md"
+                    text="Add to favourites"
+                    :uuid="content.id"
+                    :title="content.displayName"
+                    :teaser="content.teaser"
+                />
+            </div>
         </template>
 
         <!-- TODO - Itinerary Summary -->
@@ -188,6 +198,7 @@ const props = defineProps<{
     allTransports?: any[],
     allAreas?: any[],
     isListicle?: boolean,
+    isFavourite?: boolean,
 }>();
 
 const {
