@@ -13,13 +13,13 @@
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
-        <VsBrSaveContentButton
+        <!-- <VsBrSaveContentButton
             v-if="isSavable"
             :title="pageDocument.model.data.displayName"
             :description="pageDocument.model.data.teaser"
             :uid="pageDocument.model.data.id"
             :image="pageImage"
-        />
+        /> -->
         <VsBrFavourites
             v-if="pageDocument.model.data.displayName === 'favourites'"
             :page="page"
@@ -85,9 +85,6 @@ import VsBrPageViewEvent from '~/components/Utils/VsBrPageViewEvent.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
-// const pageImage = '/assets/images/illustrations/newsletter-background.jpg';
-const pageImage = 'https://static.visitscotland.com/img/fallback-img.png';
-
 const { component, page } = toRefs(props);
 
 let pageComponent : any = {
@@ -148,7 +145,6 @@ if (page.value) {
     }
 
     if (componentModels.pageConfiguration) {
-        isSavable = componentModels.pageConfiguration.isFavourite;
         hasStops = componentModels.pageConfiguration.hasStops;
         configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
         configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];

@@ -1,12 +1,15 @@
 <template>
     <div class="vs-save-content-button">
         <VsButton
-            icon-only
+            icon-position="right"
             :icon="buttonSavedState ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
-            :variant="variant"
+            :variant="buttonSavedState ? 'primary' : 'secondary'"
             :size="size"
             @click="toggleSaved(props.uid)"
-        />
+        >
+            <!-- two alternate labels -->
+            {{ buttonSavedState ? "Remove from favourites" : "Add to favourites" }}
+        </VsButton>
     </div>
 </template>
 
@@ -20,14 +23,22 @@ import { VsButton } from '@visitscotland/component-library/components';
 
 const props = defineProps<{
     title: string,
-    description: string,
-    uid: string,
+    teaser: string,
+    uuid: string,
     image: string,
+    variant: string,
+    size: string,
 }>();
 
 const savedContentArray = ref([]);
 const localStoragePropertyName = 'vs-saved-pages';
 const buttonSavedState = ref(false);
+const dataForStorage = {
+    title: props.title,
+    teaser: props.teaser,
+    uuid: props.uuid,
+    image: props.image,
+};
 
 function pageInSaveList(uid) {
     return savedContentArray.value.some((item) => item.uid === uid);
@@ -60,7 +71,7 @@ function toggleSaved(uid) {
     if (pageInSaveList(uid)) {
         removePage(uid);
     } else if (!pageInSaveList(uid)) {
-        savePage(props);
+        savePage(dataForStorage);
     }
     buttonSavedState.value = pageInSaveList(props.uid);
 }
