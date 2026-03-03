@@ -3,6 +3,7 @@
         :background="lightBackground ? themeCalculator(1) : themeCalculator(0)"
         :hero-intro="heroImage ? true : false"
         :is-itinerary="itinerary ? true : false"
+        :full-screen-mobile="fullScreenMobile ? true : false"
     >
         <template
             #vs-intro-hero
@@ -188,6 +189,7 @@ const props = defineProps<{
     allTransports?: any[],
     allAreas?: any[],
     isListicle?: boolean,
+    fullSCreenMobile?: boolean,
 }>();
 
 const {
@@ -200,6 +202,7 @@ const {
     allTransports,
     allAreas,
     isListicle,
+    fullScreenMobile,
 } = toRefs(props);
 
 let blogAuthor : any;
