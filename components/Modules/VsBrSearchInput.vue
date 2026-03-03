@@ -257,6 +257,28 @@ Object.keys(subcategories).forEach((key) => {
     });
 });
 
+async function setCategoryAnalytics(category: any, facetStatus?: boolean) {
+    let facetData;
+
+    if (facetStatus === true) {
+        facetData = true;
+    } else if (facetStatus === false) {
+        facetData = false;
+    } else {
+        facetData = searchStore.categoryKey !== undefined;
+    }
+
+    // Subscribe once per update to the store before running clickEventAnalytics
+    searchStore.$subscribe(() => {
+        categoryClickAnalytics(
+            category,
+            facetData,
+        );
+    }, {
+        once: true,
+    });
+}
+
 async function updateCategoryKey(category: SearchFilterCategory) {
     searchStore.currentPage = 1;
     searchStore.subcategoryKeys = [];
@@ -272,23 +294,26 @@ async function updateCategoryKey(category: SearchFilterCategory) {
 
     await searchStore.setUrlParameters();
 
-    categoryClickAnalytics(category, searchStore.categoryKey !== undefined);
+    await setCategoryAnalytics(category);
 }
 
 async function updateSubcategoryKey(category: SearchFilterCategory) {
     if (!searchStore.subcategoryKeys.includes(category.Key)) {
         searchStore.subcategoryKeys.push(category.Key);
-        categoryClickAnalytics(category, true);
     } else {
         const index = searchStore.subcategoryKeys.indexOf(category.Key);
 
         if (index >= 0) {
             searchStore.subcategoryKeys.splice(index, 1);
         }
-
-        categoryClickAnalytics(category, false);
     }
     await searchStore.setUrlParameters();
+
+    if (!searchStore.subcategoryKeys.includes(category.Key)) {
+        await setCategoryAnalytics(category, false);
+    } else {
+        await setCategoryAnalytics(category, true);
+    }
 }
 
 const searchLink = computed(() => {
