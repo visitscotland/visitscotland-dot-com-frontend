@@ -95,7 +95,6 @@ let pageDocument : any = {
 };
 
 let hasStops = null;
-let isSavable = false;
 
 const configStore = useConfigStore();
 

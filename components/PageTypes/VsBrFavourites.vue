@@ -171,7 +171,7 @@ function refreshState() {
 
 function removePage(uuid) {
     // Remove from working data:
-    savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uuid);
+    savedContentArray.value = savedContentArray.value.filter((item) => item.uuid !== uuid);
     // Remove from display data:
     displayData.value.cards = displayData.value.cards.filter((o) => o.uuid !== uuid);
     // Update localStorage:
@@ -199,13 +199,6 @@ onMounted(() => {
         right: 12px;
         z-index: 100;
     }
-    /* .vs-favourite-card .vs-remove-content-button .btn {
-        background-color: #200F2E;
-        border-color: transparent;
-    }
-    .vs-favourite-card .vs-remove-content-button .btn:hover {
-        background: #1f49d6;
-    } */
     .fade-enter-active,
     .fade-leave-active {
         transition: all 0.5s ease;
