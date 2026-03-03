@@ -3,15 +3,6 @@
         <VsBrHeroSection
             :content="documentData"
         />
-        <!-- <p>
-            displayData.cards: {{ displayData.cards }}
-        </p>
-       <p>
-           savedContentArray: {{ savedContentArray }}
-        </p>
-        <p>
-            requestBody: {{ requestBody }}
-        </p> -->
         <VsContainer class="mt-075 mt-lg-200">
             <VsRow>
                 <VsCol>
@@ -165,7 +156,7 @@ async function getSavedPageData(uuidArray) {
 
 function refreshState() {
     savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
-    requestBody.value.uuids = savedContentArray.value.map((o) => o.uid);
+    requestBody.value.uuids = savedContentArray.value.map((o) => o.uuid);
     getSavedPageData(requestBody.value);
 }
 
