@@ -5,7 +5,7 @@
             :icon="buttonSavedState ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
             :variant="buttonSavedState ? 'primary' : 'secondary'"
             :size="size"
-            @click="toggleSaved(props.uid)"
+            @click="toggleSaved(props.uuid)"
         >
             <!-- two alternate labels -->
             {{ buttonSavedState ? "Remove from favourites" : "Add to favourites" }}
@@ -40,8 +40,8 @@ const dataForStorage = {
     image: props.image,
 };
 
-function pageInSaveList(uid) {
-    return savedContentArray.value.some((item) => item.uid === uid);
+function pageInSaveList(uuid) {
+    return savedContentArray.value.some((item) => item.uuid === uuid);
 }
 
 function refreshState() {
@@ -50,10 +50,10 @@ function refreshState() {
 
 onMounted(() => {
     refreshState();
-    buttonSavedState.value = pageInSaveList(props.uid);
+    buttonSavedState.value = pageInSaveList(props.uuid);
     window.addEventListener('storage', () => {
         refreshState();
-        buttonSavedState.value = pageInSaveList(props.uid);
+        buttonSavedState.value = pageInSaveList(props.uuid);
     });
 });
 
@@ -62,18 +62,18 @@ function savePage(content) {
     localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
 };
 
-function removePage(uid) {
-    savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
+function removePage(uuid) {
+    savedContentArray.value = savedContentArray.value.filter((item) => item.uuid !== uuid);
     localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
 };
 
-function toggleSaved(uid) {
-    if (pageInSaveList(uid)) {
-        removePage(uid);
-    } else if (!pageInSaveList(uid)) {
+function toggleSaved(uuid) {
+    if (pageInSaveList(uuid)) {
+        removePage(uuid);
+    } else if (!pageInSaveList(uuid)) {
         savePage(dataForStorage);
     }
-    buttonSavedState.value = pageInSaveList(props.uid);
+    buttonSavedState.value = pageInSaveList(props.uuid);
 }
 
 </script>
