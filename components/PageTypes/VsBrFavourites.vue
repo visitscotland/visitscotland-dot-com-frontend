@@ -18,10 +18,10 @@
                         <TransitionGroup name="fade">
                             <VsCard
                                 class="vs-favourite-card"
-                                v-for="(data) in displayData.cards"
+                                v-for="(data) in savedContentArray"
                                 :key="data.uuid"
                             >
-                                <template #vs-card-header>
+                            <template #vs-card-header>
                                     <div class="vs-remove-content-button">
                                         <VsButton
                                             icon-only
@@ -32,8 +32,7 @@
                                         />
                                     </div>
                                     <VsImg
-                                        v-if="data.image"
-                                        :src="data.image"
+                                        src="https://static.visitscotland.com/img/fallback-img.png"
                                         class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                                     />
                                 </template>
@@ -57,7 +56,6 @@
                                             <p class="truncate-2-lines">
                                                 {{ data.teaser }}
                                             </p>
-                                            {{ data.image }}
                                         </VsBody>
                                     </div>
                                 </template>
