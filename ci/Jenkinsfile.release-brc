@@ -208,6 +208,7 @@ pipeline {
         when {
         anyOf {
             branch 'main'
+            branch 'VS-753-ensure-gtm-isnt-invoked-in-preview-mode'
             branch 'release/*'
             changeRequest()
             environment name: 'VS_BUILD_FEATURE_ENVIRONMENT', value: 'true'
