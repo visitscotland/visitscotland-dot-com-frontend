@@ -163,13 +163,6 @@ function removePage(uid) {
         right: 12px;
         z-index: 100;
     }
-    /* .vs-favourite-card .vs-remove-content-button .btn {
-        background-color: #200F2E;
-        border-color: transparent;
-    }
-    .vs-favourite-card .vs-remove-content-button .btn:hover {
-        background: #1f49d6;
-    } */
     .fade-enter-active,
     .fade-leave-active {
         transition: all 0.5s ease;
