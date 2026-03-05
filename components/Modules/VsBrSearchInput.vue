@@ -292,9 +292,9 @@ async function updateCategoryKey(category: SearchFilterCategory) {
         ? category.Key
         : undefined;
 
-    await searchStore.setUrlParameters();
-
     await setCategoryAnalytics(category);
+
+    await searchStore.setUrlParameters();
 }
 
 async function updateSubcategoryKey(category: SearchFilterCategory) {

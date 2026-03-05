@@ -7,6 +7,7 @@ const siteSearchUsageTemplate = [
     'event',
     'search_query',
     'query_input',
+    'search_category',
     'results_count',
     'search_usage_index',
     'search_type',
