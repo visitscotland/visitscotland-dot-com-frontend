@@ -1,4 +1,13 @@
 <template>
+
+    <template v-if="checkFlags('greeting')">
+        greetings flag content
+    </template>
+
+    <template v-if="checkFlags('profile-page')">
+        profile-page flag content
+    </template>
+
     <template v-if="documentData.blog">
         <VsBrPageIntro
             :content="documentData"
