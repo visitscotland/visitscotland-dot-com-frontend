@@ -189,7 +189,7 @@ const props = defineProps<{
     allTransports?: any[],
     allAreas?: any[],
     isListicle?: boolean,
-    fullSCreenMobile?: boolean,
+    fullScreenMobile?: boolean,
 }>();
 
 const {

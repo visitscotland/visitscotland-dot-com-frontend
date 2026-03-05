@@ -63,7 +63,7 @@
             v-else
             :content="documentData"
             :hero-image="heroImage"
-            :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
+            :light-background="true"
             :full-screen-mobile="true"
         />
     </template>
