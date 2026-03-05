@@ -8,6 +8,7 @@
             <VsCard
                 v-for="result in searchStore.searchResults"
                 :key="result.id"
+                card-style="outlined"
             >
                 <template #vs-card-header>
                     <div class="position-relative">
@@ -15,10 +16,21 @@
                             class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                             :src="result.imgSrc || fallbackImg"
                         />
-                        <div class="position-absolute bottom-0 start-0 d-flex gap-2">
+                        <div class="position-absolute top-0 start-0 d-flex pt-050 ps-050">
+                            <VsBadge
+                                v-if="
+                                    result.categoryCard
+                                        && result.venueName"
+                                class="rounded mx-0"
+                                variant="information"
+                            >
+                                {{ result.venueName }}
+                            </VsBadge>
+                        </div>
+                        <div class="position-absolute bottom-0 start-0 d-flex gap-2 pb-050 ps-050">
                             <VsBadge
                                 v-if="result.minPrice"
-                                class="rounded-top-end rounded-bottom-start"
+                                class="rounded"
                                 variant="information"
                             >
                                 {{ configStore.getLabel('search', 'price.from') }} {{ formattedPrice(result.minPrice) }}
@@ -26,18 +38,18 @@
 
                             <VsBadge
                                 v-if="result.startDate"
-                                class="rounded-top-end rounded-top-start"
+                                class="rounded"
                                 variant="information"
                             >
                                 {{ setEventDate(result.startDate, result.endDate) }}
                             </VsBadge>
                         </div>
-                        <div class="position-absolute bottom-0 end-0 d-flex">
+                        <div class="position-absolute bottom-0 end-0 d-flex pb-050 pe-050">
                             <VsBadge
                                 v-if="
                                     result.categoryCard
                                         && cardCategoryLabels[result.categoryCard]"
-                                class="rounded-top-start rounded-bottom-start mx-0"
+                                class="rounded mx-0"
                                 variant="highlight"
                             >
                                 {{ cardCategoryLabels[result.categoryCard] }}
@@ -47,54 +59,69 @@
                 </template>
 
                 <template #vs-card-body>
-                    <VsHeading
-                        heading-style="heading-xs"
-                        level="3"
-                    >
-                        <VsLink
-                            class="stretched-link"
-                            :href="setCardLink(result)"
-                            variant="secondary"
-                            @click="eventClickAnalytics(result)"
+                    <div class="px-100">
+                        <VsHeading
+                            heading-style="heading-xxs"
+                            level="3"
                         >
-                            {{ result.title }}
-                        </VsLink>
-                    </VsHeading>
+                            <VsLink
+                                class="stretched-link"
+                                :href="setCardLink(result)"
+                                variant="secondary"
+                                @click="eventClickAnalytics(result)"
+                            >
+                                {{ result.title }}
+                            </VsLink>
+                        </VsHeading>
 
-                    <VsBody>
-                        <p class="truncate-3-lines text-break">
-                            {{ result.description }}
-                        </p>
-                    </VsBody>
+                        <VsBody
+                            :class="result.dataSrc === 'cludo' ? 'mb-100' : null"
+                        >
+                            <p class="truncate-2-lines text-break">
+                                {{ result.description }}
+                            </p>
+                        </VsBody>
+                    </div>
                 </template>
-
-                <template #vs-card-footer>
-                    <div class="d-flex justify-content-end align-items-end mt-050">
+                <template #vs-card-footer v-if="result.dataSrc === 'data-thistle'">
+                    <VsBrDivider class="mx-100" />
+                    <div class="d-flex justify-content-end align-items-center mt-100 px-100 pb-100">
                         <div
                             v-if="result.location"
                             class="d-flex align-items-start flex-grow-1"
                         >
-                            <VsIcon
+                            <!-- <VsIcon
                                 class="me-050"
                                 icon="fa-solid fa-location-dot"
                                 size="sm"
                                 variant="highlight"
-                            />
+                            /> -->
                             <VsDetail
                                 color="tertiary"
                                 no-margins
+                                size="small"
+                                icon="fa-solid fa-location-dot"
                             >
                                 {{ result.location }}
                             </VsDetail>
                         </div>
 
-                        <div>
-                            <VsIcon
+                        <div class="ps-050">
+                            <!-- <VsIcon
                                 v-if="result.dataSrc === 'data-thistle'"
                                 icon="vs-icon-control-external-link"
                                 size="sm"
                                 variant="highlight"
-                            />
+                            /> -->
+                            <VsButton
+                                icon="vs-icon-control-external-link"
+                                icon-position="right"
+                                size="md"
+                                variant="secondary"
+                                style="z-index: 100; text-wrap: nowrap;"
+                            >
+                                View details
+                            </VsButton>
                         </div>
                     </div>
                 </template>
@@ -130,6 +157,7 @@ import { computed } from 'vue';
 import {
     VsBadge,
     VsBody,
+    VsButton,
     VsCard,
     VsCardGroup,
     VsDetail,
@@ -275,6 +303,11 @@ function paginationClickAnalytics(isForward: boolean) {
 </script>
 
 <style lang="scss">
+
+.vs-event-card__footer-button {
+    z-index: 100;
+}
+
 .vs-search__pagination {
     margin: 4rem 0 3rem 0;
 
