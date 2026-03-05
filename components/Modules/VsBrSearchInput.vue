@@ -172,6 +172,7 @@ async function search() {
         results_count: searchStore.totalResults,
         search_usage_index: searchStore.searchInSessionCount,
         search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
+        search_origin: isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
@@ -184,6 +185,7 @@ function autoSuggestAnalytics(suggestion: string) {
         results_count: searchStore.totalResults,
         click_text: suggestion,
         query_input: searchStore.queryInput,
+        search_origin: isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
