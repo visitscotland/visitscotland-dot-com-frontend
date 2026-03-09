@@ -2459,10 +2459,10 @@
     picomatch "^4.0.2"
     resolve-from "^5.0.0"
 
-"@visitscotland/component-library@5.32.8":
-  version "5.32.8"
-  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-5.32.8.tgz#9c2f768653ffdb9b3b3fc9e2bc9fd862454e504e"
-  integrity sha512-A4Tv0AL2yAKtcqzsLUJbUzThTYPOQTASchUQMM/PiSPBLqBe7lyK/9Yrd9+rygjl6LG1XgYTC0VZK8KbUPZHmA==
+"@visitscotland/component-library@5.36.0":
+  version "5.36.0"
+  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-5.36.0.tgz#8ec2141c55a6781dae5aadc51c3ce89d0dd7cdcf"
+  integrity sha512-N7+fl3CYuH9nb4JhBTcsRJAJ1JnXGvoOS2nqKUq6Ydhp4ZKv0GWq4gFx7Dp43YfaCjeV73S5c+pmawyciHMETw==
   dependencies:
     "@googlemaps/js-api-loader" "^2.0.1"
     "@mapbox/geojson-extent" "^1.0.1"
