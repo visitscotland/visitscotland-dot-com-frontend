@@ -1,40 +1,45 @@
 <template>
     <VsRow class="vs-search-sort">
-        <VsCol
-            cols="6"
-            md="4"
-        >
-            <label
-                class="vs-search-sort__label"
-                for="vs-search-sort__from-date"
+        <VsCol cols="12" md="8">
+            <fieldset
+                @change="(event) => handleDatePickerChange(event)"
             >
-                {{ configStore.getLabel('search', 'date.from') }}
-            </label>
-            <VsInput
-                :auto-complete="false"
-                field-name="vs-search-sort__from-date"
-                type="date"
-                :value="searchStore.fromDate || new Date().toJSON().slice(0, 10)"
-                @input="updateFromDate($event.target.value)"
-            />
-        </VsCol>
-        <VsCol
-            cols="6"
-            md="4"
-        >
-            <label
-                class="vs-search-sort__label"
-                for="vs-search-sort__to-date"
-            >
-                {{ configStore.getLabel('search', 'date.to') }}
-            </label>
-            <VsInput
-                :auto-complete="false"
-                field-name="vs-search-sort__to-date"
-                type="date"
-                :value="searchStore.toDate || ''"
-                @input="updateToDate($event.target.value)"
-            />
+                <VsRow>
+                    <VsCol
+                        cols="6"
+                    >
+                        <label
+                            class="vs-search-sort__label"
+                            for="vs-search-sort__from-date"
+                        >
+                            {{ configStore.getLabel('search', 'date.from') }}
+                        </label>
+                        <VsInput
+                            :auto-complete="false"
+                            field-name="vs-search-sort__from-date"
+                            type="date"
+                            :value="searchStore.fromDate || new Date().toJSON().slice(0, 10)"
+                        />
+                    </VsCol>
+                    <VsCol
+                        cols="6"
+                    >
+                        <label
+                            class="vs-search-sort__label"
+                            for="vs-search-sort__to-date"
+                        >
+                            {{ configStore.getLabel('search', 'date.to') }}
+                        </label>
+                        <VsInput
+                            :auto-complete="false"
+                            field-name="vs-search-sort__to-date"
+                            type="date"
+                            :value="searchStore.toDate || ''"
+                            :min="searchStore.fromDate"
+                        />
+                    </VsCol>
+                </VsRow>
+            </fieldset>
         </VsCol>
         <VsCol
             class="vs-search-sort__dropdown-wrapper"
@@ -117,6 +122,20 @@ function updateToDate(value: string) {
 function updateSortBy(value: string) {
     searchStore.sortBy = value;
     searchStore.setUrlParameters();
+}
+
+function handleDatePickerChange(event: Event) {
+    const idStem = 'vs-search-sort';
+
+    if (!event.target) return;
+
+    const id = event.target.id;
+
+    if (id === `${idStem}__from-date`) {
+        updateFromDate(event.target.value);
+    } else if (id === `${idStem}__to-date`) {
+        updateToDate(event.target.value);
+    };
 }
 </script>
 
