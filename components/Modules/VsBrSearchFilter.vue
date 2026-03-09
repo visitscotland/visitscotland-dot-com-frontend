@@ -30,12 +30,11 @@
                     v-for="item in sortedItems"
                     :key="item.Key"
                     class="vs-search-filter__category-button"
-                    :href="isSearchWidget ? `${configStore.globalSearchPath}?category=${item.Key}` : null"
                     :icon="variant === 'primary' ? itemIconMap[item.Key] : null"
                     :size="variant === 'secondary' ? 'sm' : 'md'"
                     :variant="isActive(item.Key) ? 'primary' : 'secondary'"
-                    @click="!isSearchWidget ? $emit('filter-updated', item) : null"
                     :aria-label="`${item.Label || item.Key} ${categoryBtnText}`"
+                    @click="!isSearchWidget ? $emit('filter-updated', item) : createAnalyticsThenNavigateToResultsPage(item)"
                 >
                     {{ item.Label || item.Key }}
                 </VsButton>
@@ -62,8 +61,13 @@ import { ref, computed } from 'vue';
 import { VsBody, VsButton } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
+import useSearchStore from '~/stores/searchStore.ts';
+
+import dataLayerComposable from '~/composables/dataLayer.ts';
 
 const configStore = useConfigStore();
+const searchStore = useSearchStore();
+const dataLayerHelper = dataLayerComposable();
 
 type Props = {
     activeFilter?: string | string[];
@@ -147,6 +151,25 @@ function filterClasses() {
         `vs-search-filter__scroll-rail--${variant}`,
         wrap ? 'vs-search-filter__scroll-rail--wrap' : '',
     ];
+}
+
+function categoryClickAnalytics(category: SearchFilterCategory) {
+    dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
+        interaction_type: 'facet_click',
+        click_text: category.Label || category.Key,
+        facet_status: 'applied',
+        search_type: 'initial',
+        search_origin: isSearchWidget ? 'home_page' : 'results_page',
+    });
+}
+
+async function createAnalyticsThenNavigateToResultsPage(category: SearchFilterCategory) {
+    categoryClickAnalytics(category);
+
+    // `external: true` is required here to force a full page reload.
+    await navigateTo(`${configStore.globalSearchPath}?category=${category.Key}`, {
+        external: true,
+    });
 }
 
 const sortedItems = computed(() => {
