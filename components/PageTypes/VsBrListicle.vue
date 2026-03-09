@@ -18,69 +18,77 @@
                     style="list-style:none; margin:0; padding:0;"
                     v-if="listicleItems.length"
                 >
-                    <VsListicleItem
+                    <template
                         v-for="(item, index) in listicleItems"
                         :key="index"
-                        :index="`${item.index}`"
-                        :title="item.title"
-                        :sub-title="item.subtitle"
                     >
-                        <template
-                            #image-slot
-                            v-if="item.image"
+                        <VsBrPreviewError
+                            v-if="item.errorMessages && item.errorMessages.length"
+                            :messages="item.errorMessages"
+                        />
+
+                        <VsListicleItem
+                            :index="`${item.index}`"
+                            :title="item.title"
+                            :sub-title="item.subtitle"
                         >
-                            <div>
-                                <VsBrImageWithCaption
-                                    :image="item.image.cmsImage ? item.image.cmsImage : null"
-                                    :image-string="!item.image.cmsImage ? item.image.externalImage : ''"
-                                    :image-data-set="!item.image.cmsImage ? item.image : null"
-                                    :image-description="item.image.description"
-                                    variant="fullwidth"
-                                    :no-alt-text="true"
-                                    :use-lazy-loading="index !== 0"
-                                />
-                            </div>
-                        </template>
-
-                        <template #description-slot>
-                            <div>
-                                <VsBody>
-                                    <VsBrRichText :input-content="item.description.value" />
-                                </VsBody>
-
-                                <div
-                                    class="mb-050"
-                                    v-for="(cta, linkIndex) in item.links"
-                                    :key="linkIndex"
-                                >
-                                    <VsLink
-                                        :href="formatLink(cta.link)"
-                                        :type="cta.type.toLowerCase() === 'internal' ? null : cta.type.toLowerCase()"
-                                    >
-                                        {{ cta.label }}<span class="visually-hidden">: {{ item.title }}</span>
-                                    </VsLink>
-                                </div>
-                            </div>
-                        </template>
-
-                        <template
-                            #facilities-slot
-                            v-if="item.facilities && item.facilities.length"
-                        >
-                            <div>
-                                <VsIconList
-                                    :title="configStore.getLabel('listicle', 'keyfacilities.title')"
-                                >
-                                    <VsIconListItem
-                                        v-for="(facility, facilityIndex) in item.facilities"
-                                        :key="facilityIndex"
-                                        :icon="getDMSIconName(facility.id)"
-                                        :label="facility.name"
+                            <template
+                                #image-slot
+                                v-if="item.image"
+                            >
+                                <div>
+                                    <VsBrImageWithCaption
+                                        :image="item.image.cmsImage ? item.image.cmsImage : null"
+                                        :image-string="!item.image.cmsImage ? item.image.externalImage : ''"
+                                        :image-data-set="!item.image.cmsImage ? item.image : null"
+                                        :image-description="item.image.description"
+                                        variant="fullwidth"
+                                        :no-alt-text="true"
+                                        :use-lazy-loading="index !== 0"
                                     />
-                                </VsIconList>
-                            </div>
-                        </template>
-                    </VsListicleItem>
+                                </div>
+                            </template>
+
+                            <template #description-slot>
+                                <div>
+                                    <VsBody>
+                                        <VsBrRichText :input-content="item.description.value" />
+                                    </VsBody>
+
+                                    <div
+                                        class="mb-050"
+                                        v-for="(cta, linkIndex) in item.links"
+                                        :key="linkIndex"
+                                    >
+                                        <VsLink
+                                            :href="formatLink(cta.link)"
+                                            :type="cta.type.toLowerCase() === 'internal' ? null : cta.type.toLowerCase()"
+                                        >
+                                            {{ cta.label }}<span class="visually-hidden">: {{ item.title }}</span>
+                                        </VsLink>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <template
+                                #facilities-slot
+                                v-if="item.facilities && item.facilities.length"
+                            >
+                                <div>
+                                    <VsIconList
+                                        :title="configStore.getLabel('listicle', 'keyfacilities.title')"
+                                    >
+                                        <VsIconListItem
+                                            v-for="(facility, facilityIndex) in item.facilities"
+                                            :key="facilityIndex"
+                                            :icon="getDMSIconName(facility.id)"
+                                            :label="facility.name"
+                                        />
+                                    </vsiconlist>
+                                </div>
+                            </template>
+                        </VsListicleItem>
+                    </template>
                 </ol>
             </VsCol>
         </VsRow>
@@ -160,6 +168,7 @@ import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksM
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import {
     VsContainer,
