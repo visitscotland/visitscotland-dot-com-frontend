@@ -35,7 +35,7 @@
                     :size="variant === 'secondary' ? 'sm' : 'md'"
                     :variant="isActive(item.Key) ? 'primary' : 'secondary'"
                     @click="!isSearchWidget ? $emit('filter-updated', item) : null"
-                    :aria-label="variant === 'primary' ? `${item.Label || item.Key} category` : `${item.Label || item.Key} subcategory`"
+                    :aria-label="`${item.Label || item.Key} ${categoryBtnText}`"
                 >
                     {{ item.Label || item.Key }}
                 </VsButton>
@@ -75,6 +75,7 @@ type Props = {
     scrollButtonRightText?: string;
     variant?: 'primary' | 'secondary';
     wrap?: boolean;
+    categoryBtnText: string,
 };
 
 const {

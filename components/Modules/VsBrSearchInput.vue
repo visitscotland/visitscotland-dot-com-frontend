@@ -63,6 +63,7 @@
             ref="categoryFilter"
             wrap
             @filter-updated="updateCategoryKey"
+            :category-btn-text="configStore.getLabel('search', 'filters.category')"
         />
 
         <VsBrSearchFilter
@@ -74,6 +75,7 @@
             ref="subcategoryFilter"
             @filter-updated="updateSubcategoryKey"
             variant="secondary"
+            :category-btn-text="configStore.getLabel('search', 'filters.subcategory')"
         />
     </div>
 </template>
