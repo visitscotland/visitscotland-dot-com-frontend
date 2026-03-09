@@ -11,6 +11,9 @@
                             You don't have any saved pages yet.
                         </p>
                     </div>
+                    {{ savedContentArray }}
+                    <br>
+                    {{ displayData }}
                     <VsCardGroup
                         variant="grid"
                         :cards-per-row="4"
@@ -18,10 +21,10 @@
                         <TransitionGroup name="fade">
                             <VsCard
                                 class="vs-favourite-card"
-                                v-for="(data) in savedContentArray"
+                                v-for="(data) in displayData"
                                 :key="data.uuid"
                             >
-                            <template #vs-card-header>
+                                <template #vs-card-header>
                                     <div class="vs-remove-content-button">
                                         <VsButton
                                             icon-only
@@ -32,7 +35,7 @@
                                         />
                                     </div>
                                     <VsImg
-                                        src="https://static.visitscotland.com/img/fallback-img.png"
+                                        :src="data.image"
                                         class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                                     />
                                 </template>
@@ -172,7 +175,6 @@ onMounted(() => {
     window.addEventListener('storage', () => {
         refreshState();
     });
-    // getSavedPageData(testData);
     getSavedPageData(requestBody.value);
 });
 
