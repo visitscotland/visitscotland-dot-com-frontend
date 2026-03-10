@@ -1,4 +1,3 @@
-console.log('authentication file');
 import {
     AppConfigDataClient,
     BadRequestException,

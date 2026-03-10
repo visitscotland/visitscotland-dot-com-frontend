@@ -1,7 +1,7 @@
 <template>
 
     <template v-if="checkFlags('greeting')">
-        greetings flag content
+        <h1>Hello user</h1>
     </template>
 
     <template v-if="checkFlags('profile-page')">
