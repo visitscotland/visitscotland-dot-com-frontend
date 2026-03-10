@@ -33,6 +33,7 @@
                     :icon="variant === 'primary' ? itemIconMap[item.Key] : null"
                     :size="variant === 'secondary' ? 'sm' : 'md'"
                     :variant="isActive(item.Key) ? 'primary' : 'secondary'"
+                    :aria-label="`${item.Label || item.Key} ${categoryBtnText}`"
                     @click="!isSearchWidget ? $emit('filter-updated', item) : createAnalyticsThenNavigateToResultsPage(item)"
                 >
                     {{ item.Label || item.Key }}
@@ -78,6 +79,7 @@ type Props = {
     scrollButtonRightText?: string;
     variant?: 'primary' | 'secondary';
     wrap?: boolean;
+    categoryBtnText: string,
 };
 
 const {
