@@ -52,7 +52,6 @@
                         level="3"
                     >
                         <VsLink
-                            class="stretched-link"
                             :href="setCardLink(result)"
                             variant="secondary"
                             @click="eventClickAnalytics(result)"

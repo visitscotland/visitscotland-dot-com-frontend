@@ -127,9 +127,13 @@
             />
             <Suspense v-else>
                 <component
-                    :is="VsBrMapWithSidebar"
+                    :is="VsBrMapWithSiderbarGoogle"
                     :module="item"
                 />
+                <!-- <component
+                    :is="VsBrMapWithSidebar"
+                    :module="item"
+                /> -->
             </Suspense>
         </NuxtLazyHydrate>
 
@@ -240,6 +244,7 @@ import themeCalculator from '~/composables/themeCalculator.ts';
 
 const VsBrMapWithSidebar = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSidebar.vue'));
 const VsBrMainMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMainMap.vue'));
+const VsBrMapWithSiderbarGoogle = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSiderbarGoogle.vue'));
 
 const props = defineProps<{
     modules: any[],
