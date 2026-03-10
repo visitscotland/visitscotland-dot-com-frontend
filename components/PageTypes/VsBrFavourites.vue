@@ -14,6 +14,7 @@
                     <VsCardGroup
                         variant="grid"
                         :cards-per-row="4"
+                        class="row-gap-lg-500"
                     >
                         <TransitionGroup name="fade">
                             <VsCard
