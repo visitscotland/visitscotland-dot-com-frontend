@@ -11,6 +11,9 @@
                             You don't have any saved pages yet.
                         </p>
                     </div>
+                    {{ savedContentArray }}
+                    <br>
+                    {{ displayData }}
                     <VsCardGroup
                         variant="grid"
                         :cards-per-row="4"
@@ -18,8 +21,8 @@
                         <TransitionGroup name="fade">
                             <VsCard
                                 class="vs-favourite-card"
-                                v-for="(data) in savedContentArray"
-                                :key="data.uid"
+                                v-for="(data) in displayData"
+                                :key="data.uuid"
                             >
                                 <template #vs-card-header>
                                     <div class="vs-remove-content-button">
@@ -28,11 +31,10 @@
                                             icon="fa-solid fa-heart"
                                             :variant="variant"
                                             size="sm"
-                                            @click="removePage(data.uid)"
+                                            @click="removePage(data.uuid)"
                                         />
                                     </div>
                                     <VsImg
-                                        v-if="data.image"
                                         :src="data.image"
                                         class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                                     />
@@ -55,7 +57,7 @@
 
                                         <VsBody class="mb-150">
                                             <p class="truncate-2-lines">
-                                                {{ data.description }}
+                                                {{ data.teaser }}
                                             </p>
                                         </VsBody>
                                     </div>
@@ -133,23 +135,48 @@ if (page.value) {
 }
 
 const savedContentArray = ref([]);
+const requestBody = ref({
+    uuids: [],
+});
+
 const localStoragePropertyName = 'vs-saved-pages';
+const displayData = ref('no data retrieved');
+
+async function getSavedPageData(uuidArray) {
+    // eslint-disable-next-line no-undef
+    const res = await $fetch('http://localhost:8080/site/api/favourites/get-favourites', {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'post',
+        body: JSON.stringify(uuidArray),
+    });
+
+    displayData.value = await res;
+}
 
 function refreshState() {
     savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
+    requestBody.value.uuids = savedContentArray.value.map((o) => o.uuid);
+    getSavedPageData(requestBody.value);
 }
+
+function removePage(uuid) {
+    // Remove from working data:
+    savedContentArray.value = savedContentArray.value.filter((item) => item.uuid !== uuid);
+    // Remove from display data:
+    displayData.value.cards = displayData.value.cards.filter((o) => o.uuid !== uuid);
+    // Update localStorage:
+    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
+};
 
 onMounted(() => {
     refreshState();
     window.addEventListener('storage', () => {
         refreshState();
     });
+    getSavedPageData(requestBody.value);
 });
-
-function removePage(uid) {
-    savedContentArray.value = savedContentArray.value.filter((item) => item.uid !== uid);
-    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
-};
 
 </script>
 
