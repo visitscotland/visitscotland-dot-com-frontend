@@ -11,9 +11,6 @@
                             You don't have any saved pages yet.
                         </p>
                     </div>
-                    {{ savedContentArray }}
-                    <br>
-                    {{ displayData }}
                     <VsCardGroup
                         variant="grid"
                         :cards-per-row="4"
@@ -21,7 +18,7 @@
                         <TransitionGroup name="fade">
                             <VsCard
                                 class="vs-favourite-card"
-                                v-for="(data) in displayData"
+                                v-for="(data) in displayData.cards"
                                 :key="data.uuid"
                             >
                                 <template #vs-card-header>
