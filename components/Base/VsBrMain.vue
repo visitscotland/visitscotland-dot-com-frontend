@@ -221,10 +221,6 @@ if (page.value) {
         ogImageSrc = ogImageValue.getOriginal().getUrl();
     }
 
-    // if (pageDocument.model.data.id) {
-    //     configStore
-    // }
-
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
