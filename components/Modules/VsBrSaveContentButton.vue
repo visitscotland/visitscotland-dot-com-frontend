@@ -1,16 +1,13 @@
 <template>
-    <div class="vs-save-content-button">
-        <VsButton
-            icon-position="right"
-            :icon="buttonSavedState ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
-            :variant="buttonSavedState ? 'primary' : 'secondary'"
-            :size="size"
-            @click="toggleSaved(props.uuid)"
-        >
-            <!-- two alternate labels -->
-            {{ buttonSavedState ? "Remove from favourites" : "Add to favourites" }}
-        </VsButton>
-    </div>
+    <VsButton
+        icon-position="right"
+        :icon="buttonSavedState ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
+        :variant="buttonSavedState ? 'primary' : 'secondary'"
+        @click="toggleSaved(props.uuid)"
+    >
+        <!-- two alternate labels -->
+        {{ buttonSavedState ? "Remove from favourites" : "Add to favourites" }}
+    </VsButton>
 </template>
 
 <script lang="ts" setup>
