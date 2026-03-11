@@ -76,25 +76,28 @@
         <template
             #vs-intro-content
         >
-            <VsBrRichText :input-content="content.introduction.value" />
-            <p
-                v-if="isListicle"
-                class="mt-200"
-            >
-                {{ configStore.getLabel("listicle", "listicle.disclaimer") }}
-            </p>
-
-            <div
-                v-if="configStore.allowFavourite"
-                class="mt-200"
-            >
-                <VsBrSaveContentButton
-                    size="md"
-                    text="Add to favourites"
-                    :uuid="content.id"
-                    :title="content.displayName"
-                    :teaser="content.teaser"
-                />
+            <div class="d-flex flex-column gap-200">
+                <div class="">
+                    <VsBrRichText :input-content="content.introduction.value" />
+                    <p
+                        v-if="isListicle"
+                        class="mt-200"
+                    >
+                        {{ configStore.getLabel("listicle", "listicle.disclaimer") }}
+                    </p>
+                </div>
+                <div
+                    v-if="configStore.allowFavourite"
+                    class="d-flex flex-column flex-md-row"
+                >
+                    <!-- should button text be a label? -->
+                    <VsBrSaveContentButton
+                        text="Add to favourites"
+                        :uuid="content.id"
+                        :title="content.displayName"
+                        :teaser="content.teaser"
+                    />
+                </div>
             </div>
         </template>
 
