@@ -198,5 +198,7 @@ provide('page', page.value);
 }
 .vs-favourites-link:focus {
     box-shadow: 0 0 0 2px #fffa99 inset;
+    outline: none;
 }
+
 </style>
