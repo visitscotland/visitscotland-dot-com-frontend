@@ -2,7 +2,7 @@
     <VsRow class="vs-search-sort">
         <VsCol cols="12" md="8">
             <fieldset
-                @change="(event) => handleDatePickerChange(event)"
+                @change="(event) => debounceInput(event)"
             >
                 <VsRow>
                     <VsCol
@@ -35,7 +35,6 @@
                             field-name="vs-search-sort__to-date"
                             type="date"
                             :value="searchStore.toDate || ''"
-                            :min="searchStore.fromDate"
                         />
                     </VsCol>
                 </VsRow>
@@ -75,6 +74,8 @@ import {
     VsInput,
     VsRow,
 } from '@visitscotland/component-library/components';
+
+import debounce from '~/utls/debounce.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 import useSearchStore from '~/stores/searchStore.ts';
@@ -124,7 +125,7 @@ function updateSortBy(value: string) {
     searchStore.setUrlParameters();
 }
 
-function handleDatePickerChange(event: Event) {
+const debounceInput = debounce((event: Event) => {
     const idStem = 'vs-search-sort';
 
     if (!event.target) return;
@@ -136,7 +137,8 @@ function handleDatePickerChange(event: Event) {
     } else if (id === `${idStem}__to-date`) {
         updateToDate(event.target.value);
     };
-}
+}, 500);
+
 </script>
 
 <style lang="scss">
