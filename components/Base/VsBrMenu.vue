@@ -122,7 +122,6 @@ import {
     VsBanner,
     VsLink,
     VsIcon,
-    VsButton,
 } from '@visitscotland/component-library/components';
 
 import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
