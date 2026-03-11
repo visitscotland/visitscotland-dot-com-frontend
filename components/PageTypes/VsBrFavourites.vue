@@ -14,12 +14,13 @@
                     <VsCardGroup
                         variant="grid"
                         :cards-per-row="4"
+                        class="row-gap-lg-500"
                     >
                         <TransitionGroup name="fade">
                             <VsCard
                                 class="vs-favourite-card"
-                                v-for="(data) in savedContentArray"
-                                :key="data.uid"
+                                v-for="(data) in displayData.cards"
+                                :key="data.uuid"
                             >
                                 <template #vs-card-header>
                                     <div class="vs-remove-content-button">
@@ -32,7 +33,6 @@
                                         />
                                     </div>
                                     <VsImg
-                                        v-if="data.image"
                                         :src="data.image"
                                         class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                                     />
@@ -55,7 +55,7 @@
 
                                         <VsBody class="mb-150">
                                             <p class="truncate-2-lines">
-                                                {{ data.description }}
+                                                {{ data.teaser }}
                                             </p>
                                         </VsBody>
                                     </div>
@@ -133,23 +133,48 @@ if (page.value) {
 }
 
 const savedContentArray = ref([]);
+const requestBody = ref({
+    uuids: [],
+});
+
 const localStoragePropertyName = 'vs-saved-pages';
+const displayData = ref('no data retrieved');
+
+async function getSavedPageData(uuidArray) {
+    // eslint-disable-next-line no-undef
+    const res = await $fetch('http://localhost:8080/site/api/favourites/get-favourites', {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'post',
+        body: JSON.stringify(uuidArray),
+    });
+
+    displayData.value = await res;
+}
 
 function refreshState() {
     savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
+    requestBody.value.uuids = savedContentArray.value.map((o) => o.uuid);
+    getSavedPageData(requestBody.value);
 }
+
+function removePage(uuid) {
+    // Remove from working data:
+    savedContentArray.value = savedContentArray.value.filter((item) => item.uuid !== uuid);
+    // Remove from display data:
+    displayData.value.cards = displayData.value.cards.filter((o) => o.uuid !== uuid);
+    // Update localStorage:
+    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
+};
 
 onMounted(() => {
     refreshState();
     window.addEventListener('storage', () => {
         refreshState();
     });
+    getSavedPageData(requestBody.value);
 });
-
-function removePage(uuid) {
-    savedContentArray.value = savedContentArray.value.filter((item) => item.uuid !== uuid);
-    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
-};
 
 </script>
 

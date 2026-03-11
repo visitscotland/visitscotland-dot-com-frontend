@@ -85,7 +85,10 @@
                 {{ configStore.getLabel("listicle", "listicle.disclaimer") }}
             </p>
 
-            <div class="mt-200">
+            <div
+                v-if="configStore.allowFavourite"
+                class="mt-200"
+            >
                 <VsBrSaveContentButton
                     size="md"
                     text="Add to favourites"

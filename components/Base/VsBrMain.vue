@@ -8,23 +8,16 @@
         />
 
         <VsBrGtm />
-
         <VsBrPageViewEvent
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
-        <!-- <VsBrSaveContentButton
-            v-if="isSavable"
-            :title="pageDocument.model.data.displayName"
-            :description="pageDocument.model.data.teaser"
-            :uid="pageDocument.model.data.id"
-            :image="pageImage"
-        /> -->
         <VsBrFavourites
             v-if="pageDocument.model.data.displayName === 'favourites'"
             :page="page"
             :component="component"
         />
+        <!-- Is there a better way of excluding the favourites page? -->
         <VsBrGeneral
             v-if="(pageName === 'general-page' || pageName === 'pagenotfound') && pageDocument.model.data.displayName !== 'favourites'"
             :page="page"
@@ -95,7 +88,6 @@ let pageDocument : any = {
 };
 
 let hasStops = null;
-let isSavable = false;
 
 const configStore = useConfigStore();
 
@@ -156,6 +148,7 @@ if (page.value) {
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
         configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
+        configStore.allowFavourite = componentModels.pageConfiguration.isFavourite;
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
