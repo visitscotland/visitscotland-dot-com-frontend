@@ -142,7 +142,7 @@ const displayData = ref('no data retrieved');
 
 async function getSavedPageData(uuidArray) {
     // eslint-disable-next-line no-undef
-    const res = await $fetch('http://localhost:8080/site/api/favourites/get-favourites', {
+    const res = await $fetch('/site/api/favourites/get-favourites', {
         headers: {
             'Content-Type': 'application/json',
         },
