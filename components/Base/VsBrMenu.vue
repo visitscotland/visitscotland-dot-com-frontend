@@ -26,6 +26,19 @@
                     : 'https://www.visitscotland.com/'"
             >
                 <template #third-menu-item>
+                    <a
+                        href="/sandbox/pages/favourites"
+                        class="vs-favourites-link"
+                    >
+                        <VsIcon
+                            icon="fa-regular fa-heart"
+                            variant="inverse"
+                            size="xxs"
+                        />
+                        <span class="vs-favourites-link--text d-none d-lg-flex align-middle">
+                            Favourites
+                        </span>
+                    </a>
                     <VsGlobalMenuLanguage
                         :language="configStore.locale"
                         :language-label="configStore.getLabel('navigation.static', 'universal.language')"
@@ -108,6 +121,8 @@ import {
     VsMeganav,
     VsBanner,
     VsLink,
+    VsIcon,
+    VsButton,
 } from '@visitscotland/component-library/components';
 
 import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
@@ -164,3 +179,24 @@ if (page.value) {
 
 provide('page', page.value);
 </script>
+
+<style>
+.vs-favourites-link {
+    font-size: .75rem;
+    gap: 0.25rem;
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    height: 100%;
+    padding: 0 1.5rem;
+    transition: all .2s ease-in-out;
+}
+.vs-favourites-link:hover {
+    background: #33225d;
+    transition: all .2s ease-in-out;
+}
+.vs-favourites-link:focus {
+    box-shadow: 0 0 0 2px #fffa99 inset;
+}
+</style>
