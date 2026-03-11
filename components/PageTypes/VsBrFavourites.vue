@@ -7,9 +7,26 @@
             <VsRow>
                 <VsCol>
                     <!-- <p>
-
                      displayData: {{ displayData }}
                     </p> -->
+                    <!-- <p>
+                     saved items: {{ savedContentArray.length }}
+                    </p> -->
+                    <div v-if="savedContentArray.length > 0 && !displayData.cards">
+                        <div class="d-flex justify-content-center">
+                            <div class="d-flex flex-column gap-200 align-items-center" style="max-width: 478px">
+                                <svg width="189" height="189" viewBox="0 0 189 189" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M118.974 98.9297C122.444 99.8895 126.098 100.406 129.938 100.406C152.271 100.406 170.469 82.6875 171.244 60.5391L161.905 69.8783C157.475 74.308 151.458 76.7812 145.183 76.7812H135.844C122.813 76.7812 112.219 66.1869 112.219 53.1562V43.7801C112.219 37.5047 114.692 31.4877 119.122 27.058L128.461 17.7557C106.312 18.4939 88.5938 36.7295 88.5938 59.0625C88.5938 62.8646 89.1105 66.5561 90.0703 70.026C91.7684 76.1537 89.9965 82.7244 85.493 87.2279L21.0779 151.606C18.9 153.747 17.7188 156.7 17.7188 159.764C17.7188 166.113 22.8867 171.281 29.2359 171.281C32.2998 171.281 35.216 170.063 37.3939 167.922L101.772 103.507C106.276 99.0035 112.846 97.2686 118.974 98.9297ZM156.737 14.5441L131.672 39.6088C130.565 40.7162 129.938 42.2297 129.938 43.7801V53.1562C129.938 56.4047 132.595 59.0625 135.844 59.0625H145.22C146.77 59.0625 148.284 58.435 149.391 57.3275L174.456 32.2629C177.114 29.6051 181.58 30.085 183.204 33.4811C186.933 41.233 189 49.9078 189 59.0625C189 91.6945 162.57 118.125 129.938 118.125C124.511 118.125 119.269 117.387 114.323 116.021L49.9078 180.436C44.4076 185.936 36.9879 189 29.2359 189C13.1045 189 0 175.896 0 159.764C0 152.012 3.06387 144.592 8.56406 139.092L72.9791 74.6771C71.6133 69.7307 70.875 64.4889 70.875 59.0625C70.875 26.4305 97.3055 0 129.938 0C139.092 0 147.767 2.1041 155.519 5.79551C158.915 7.41973 159.395 11.8863 156.737 14.5441ZM32.4844 150.609C34.0508 150.609 35.5531 151.232 36.6607 152.339C37.7684 153.447 38.3906 154.949 38.3906 156.516C38.3906 158.082 37.7684 159.584 36.6607 160.692C35.5531 161.8 34.0508 162.422 32.4844 162.422C30.9179 162.422 29.4157 161.8 28.308 160.692C27.2004 159.584 26.5781 158.082 26.5781 156.516C26.5781 154.949 27.2004 153.447 28.308 152.339C29.4157 151.232 30.9179 150.609 32.4844 150.609Z" fill="#E5E5F0" />
+                                </svg>
+                                <p class="vs-heading vs-heading--display-s text-center">
+                                    OOPS!
+                                </p>
+                                <p class="text-center">
+                                    Click the heart icon placed around the site to favourite items! They will be saved here until you remove them.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     <div v-if="savedContentArray.length < 1">
                         <div class="d-flex justify-content-center">
                             <div class="d-flex flex-column gap-200 align-items-center" style="max-width: 478px">
@@ -156,7 +173,7 @@ const displayData = ref('no data retrieved');
 
 async function getSavedPageData(uuidArray) {
     // eslint-disable-next-line no-undef
-    const res = await $fetch('https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8018&vs-no-redirect=true', {
+    const res = await $fetch('/site/api/favourites/get-favourites', {
         headers: {
             'Content-Type': 'application/json',
         },
