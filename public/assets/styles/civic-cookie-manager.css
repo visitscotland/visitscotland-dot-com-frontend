@@ -14,20 +14,20 @@
 
 #ccc .checkbox-toggle-on {
   background-color: #E9E9E9;
-  opacity: 1;
+  opacity: 1 !important;
   color: #909090;
 }
 
 #ccc .checkbox-toggle--slider .checkbox-toggle-off {
   background-color: #E9E9E9;
-  opacity: 1;
+  opacity: 1 !important;
   color: #909090;
 }
 
 #ccc .checkbox-toggle--slider .checkbox-toggle-toggle {
   background-color: #909090;
-  width: calc(50% - 6px);
-  height: calc(100% - 6px);
+  width: calc(50% - 6px) !important;
+  height: calc(100% - 6px) !important;
   transform: translate(3px, 3px);
 }
 
