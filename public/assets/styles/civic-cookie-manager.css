@@ -4,7 +4,7 @@
 }
 
 #ccc hr {
-  opacity: 1;
+  opacity: 1 !important;
 }
 
 #ccc .checkbox-toggle {
@@ -63,5 +63,5 @@
 }
 
 #ccc .ccc-svg-element {
-  top: 0;
+  top: 0 !important;
 }
