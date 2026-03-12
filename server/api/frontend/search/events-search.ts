@@ -11,6 +11,7 @@ function cleanData(data: any) {
         imgSrc: event.images?.[0]?.url || '',
         url: event.performances?.[0]?.url || '',
         placeUrl: event.place.website,
+        venueName: event.place.name || null,
         location: event.place.town,
         startDate: event.startFormatted,
         endDate: event.endFormatted,
