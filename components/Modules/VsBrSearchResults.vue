@@ -1,4 +1,5 @@
 <template>
+    <pre>{{ module }}</pre>
     <div v-if="!searchStore.isLoading">
         <VsCardGroup
             v-if="!errorMessage"

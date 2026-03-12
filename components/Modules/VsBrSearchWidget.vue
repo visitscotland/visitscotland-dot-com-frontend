@@ -1,8 +1,8 @@
 <template>
     <VsContainer>
         <VsBrSectionHeader
-            :heading="configStore.getLabel('search', 'search.widget-title')"
-            :lede="configStore.getLabel('search', 'search.widget-label')"
+            :heading="module.title || configStore.getLabel('search', 'search.widget-title')"
+            :lede="module.description || configStore.getLabel('search', 'search.widget-label')"
         />
 
         <VsBrSearchInput
@@ -11,6 +11,7 @@
             :search-url="configStore.globalSearchPath"
         />
     </VsContainer>
+    <pre>{{ module }}</pre>
 </template>
 
 <script setup lang="ts">
@@ -21,4 +22,11 @@ import VsBrSectionHeader from './VsBrSectionHeader.vue';
 import VsBrSearchInput from './VsBrSearchInput.vue';
 
 const configStore = useConfigStore();
+
+const props = defineProps({
+    module: {
+        type: Object,
+        default: () => {},
+    },
+});
 </script>
