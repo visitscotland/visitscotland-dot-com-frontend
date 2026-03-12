@@ -19,6 +19,9 @@
                             field-name="vs-search-sort__from-date"
                             type="date"
                             :value="searchStore.fromDate || new Date().toJSON().slice(0, 10)"
+                            :validation-rules="{
+                                min: new Date().toJSON().slice(0, 10),
+                            }"
                         />
                     </VsCol>
                     <VsCol
@@ -35,6 +38,9 @@
                             field-name="vs-search-sort__to-date"
                             type="date"
                             :value="searchStore.toDate || ''"
+                            :validation-rules="{
+                                min: searchStore.fromDate,
+                            }"
                         />
                     </VsCol>
                 </VsRow>
