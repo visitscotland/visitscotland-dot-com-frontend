@@ -137,7 +137,7 @@ const debounceInput = debounce((event: Event) => {
     } else if (id === `${idStem}__to-date`) {
         updateToDate(event.target.value);
     };
-}, 500);
+}, 750);
 
 </script>
 
