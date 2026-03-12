@@ -84,7 +84,7 @@
                                 color="tertiary"
                                 no-margins
                             >
-                                {{ `${result.venueName}, ${result.location}` }}
+                                {{ result.venueName ? `${result.venueName}, ${result.location}` : `${result.location}` }}
                             </VsDetail>
                         </div>
 
