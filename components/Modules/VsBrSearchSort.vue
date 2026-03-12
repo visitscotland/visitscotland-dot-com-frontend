@@ -16,6 +16,9 @@
                 type="date"
                 :value="searchStore.fromDate || new Date().toJSON().slice(0, 10)"
                 @input="updateFromDate($event.target.value)"
+                :validation-rules="{
+                    min: new Date().toJSON().slice(0, 10),
+                }"
             />
         </VsCol>
         <VsCol
@@ -34,6 +37,9 @@
                 type="date"
                 :value="searchStore.toDate || ''"
                 @input="updateToDate($event.target.value)"
+                :validation-rules="{
+                    min: searchStore.fromDate,
+                }"
             />
         </VsCol>
         <VsCol
