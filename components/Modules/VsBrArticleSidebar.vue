@@ -17,6 +17,7 @@
 
                 <VsBrImageWithCaption
                     :image="section.video.image.cmsImage"
+                    :image-description="section.video.image.description"
                     :is-video="true"
                     :video-id="section.video.youtubeId"
                     :video-title="section.video.label
