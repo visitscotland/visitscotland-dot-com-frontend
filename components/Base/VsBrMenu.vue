@@ -17,7 +17,221 @@
         </div>
     </div>
 
-    <div class="vs-sticky-nav vs-sticky-nav--has-content" :class="{ 'has-edit-button': page.isPreview() }">
+    <!-- Navbar To Do - Switch to feature flag -->
+    <div v-if="useNavBar">
+        <!-- Navbar To Do - Get real labels -->
+        <VsNavigationBar
+            sidebar-close-label="Close navigation menu"
+            sidebar-open-label="Main menu"
+            sidebar-title="Navigation menu"
+            sidebar-breakpoint="md"
+        >
+            <template #logo-link>
+                <VsSvgLink
+                    link-alt-text="VisitScotland Home"
+                    :href="`/${configStore.langString}`"
+                    svg-fill="#5B2487"
+                    svg-path="visitscotland-logo"
+                    svg-width="167px"
+                    svg-height="28px"
+                />
+            </template>
+
+            <template #navigation-bar-menu>
+                <VsNavigationBarMenu
+                    menu-aria-label="Main navigation menu"
+                >
+                    <template
+                        v-for="(menuItem, index) in menuItems"
+                        :key="index"
+                    >
+                        <li v-if="menuItem.children && menuItem.children.length">
+                            <VsNavigationBarMenuDropdown>
+                                <template #button-content>
+                                    {{ menuItem.model.title }}
+                                </template>
+
+                                <VsNavigationBarMenuItem
+                                    v-for="(dropdownItem, dropdownIndex) in menuItem.children"
+                                    :key="dropdownIndex"
+                                    :href="getNavLink(dropdownItem)"
+                                >
+                                    {{ dropdownItem.model.title }}
+                                </VsNavigationBarMenuItem>
+
+                                <li class="my-075 mx-100">
+                                    <VsLink
+                                        v-if="menuItem.model.cta"
+                                        :href="getNavLink(menuItem)"
+                                        type="internal"
+                                        no-visited-styles
+                                    >
+                                        {{ menuItem.model.cta }}
+                                    </VsLink>
+                                </li>
+                            </VsNavigationBarMenuDropdown>
+                        </li>
+
+                        <VsNavigationBarMenuItem
+                            v-else
+                            variant="primary-menu-item"
+                            :href="getNavLink(menuItem)"
+                        >
+                            {{ menuItem.model.title }}
+                        </VsNavigationBarMenuItem>
+                    </template>
+                </VsNavigationBarMenu>
+            </template>
+
+            <template #navigation-bar-utilities>
+                <nav
+                    aria-label="Utility menu"
+                >
+                    <ul class="d-flex">
+                        <li class="me-075">
+                            <VsNavigationBarSearch />
+                        </li>
+                        <li
+                            class="d-none d-md-block me-075"
+                        >
+                            <VsTooltip
+                                title="Map of Scotland"
+                                subtle
+                                variant="subtle"
+                                size="sm"
+                                icon="fa-regular fa-map"
+                                icon-only
+                                href="/map"
+                                class="d-block"
+                            >
+                                Map of Scotland
+                            </VsTooltip>
+                        </li>
+                        <li
+                            class="d-none d-md-block me-0 me-md-075 me-lg-0"
+                        >
+                            <VsNavigationBarMenuDropdown subtle>
+                                <template #button-content>
+                                    {{ configStore.locale.toUpperCase() }}
+                                </template>
+
+                                <VsNavigationBarMenuItem
+                                    v-for="(language, index) in localisedUrls"
+                                    :key="index"
+                                    :href="formatLink(language.url)"
+                                >
+                                    {{ language.displayName }}
+                                </VsNavigationBarMenuItem>
+                            </VsNavigationBarMenuDropdown>
+                        </li>
+                    </ul>
+                </nav>
+            </template>
+
+            <template #sidebar-body>
+                <VsAccordion>
+                    <nav
+                        aria-label="Main navigation menu"
+                    >
+                        <ul>
+                            <template
+                                v-for="(menuItem, index) in menuItems"
+                                :key="index"
+                            >
+                                <li v-if="menuItem.children && menuItem.children.length">
+                                    <VsAccordionItem
+                                        :control-id="index.toString()"
+                                    >
+                                        <template #title>
+                                            {{ menuItem.model.title }}
+                                        </template>
+
+                                        <ul>
+                                            <VsNavigationBarMenuItem
+                                                v-for="(mobileDropdownItem, mobileDropdownIndex)
+                                                    in menuItem.children"
+                                                :key="mobileDropdownIndex"
+                                                :href="getNavLink(mobileDropdownItem)"
+                                            >
+                                                {{ mobileDropdownItem.model.title }}
+                                            </VsNavigationBarMenuItem>
+
+                                            <li class="my-075 mx-100">
+                                                <VsLink
+                                                    v-if="menuItem.model.cta"
+                                                    :href="getNavLink(menuItem)"
+                                                    type="internal"
+                                                    no-visited-styles
+                                                >
+                                                    {{ menuItem.model.cta }}
+                                                </VsLink>
+                                            </li>
+                                        </ul>
+                                    </VsAccordionItem>
+                                </li>
+
+                                <template v-else>
+                                    <VsNavigationBarMenuItem
+                                        variant="primary-sidebar-item"
+                                        :href="getNavLink(menuItem)"
+                                    >
+                                        {{ menuItem.model.title }}
+                                    </VsNavigationBarMenuItem>
+
+                                    <VsDivider class="my-025" />
+                                </template>
+                            </template>
+                        </ul>
+                    </nav>
+                </VsAccordion>
+            </template>
+
+            <template
+                #sidebar-footer
+            >
+                <div class="p-100 pb-300">
+                    <nav aria-label="Sidebar Utility menu">
+                        <ul class="d-flex justify-content-end">
+                            <li class="d-block d-md-none me-075">
+                                <VsTooltip
+                                    title="Map of Scotland"
+                                    subtle
+                                    variant="subtle"
+                                    size="sm"
+                                    icon="fa-regular fa-map"
+                                    icon-only
+                                    href="#"
+                                    class="d-block"
+                                >
+                                    Map of Scotland
+                                </VsTooltip>
+                            </li>
+                            <li class="d-block d-md-none">
+                                <VsNavigationBarMenuDropdown subtle>
+                                    <template #button-content>
+                                        {{ configStore.locale.toUpperCase() }}
+                                    </template>
+
+                                    <VsNavigationBarMenuItem
+                                        v-for="(language, index) in localisedUrls"
+                                        :key="index"
+                                        :href="formatLink(language.url)"
+                                    >
+                                        {{ language.displayName }}
+                                    </VsNavigationBarMenuItem>
+                                </VsNavigationBarMenuDropdown>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </template>
+        </VsNavigationBar>
+    </div>
+    <div
+        v-else
+        class="vs-sticky-nav vs-sticky-nav--has-content"
+        :class="{ 'has-edit-button': page.isPreview() }"
+    >
         <VsBrSkipTo />
         <header>
             <VsGlobalMenu
@@ -93,7 +307,9 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs, provide } from 'vue';
+import {
+    toRefs, ref, provide,
+} from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
@@ -108,6 +324,15 @@ import {
     VsMeganav,
     VsBanner,
     VsLink,
+    VsNavigationBar,
+    VsSvgLink,
+    VsNavigationBarMenu,
+    VsNavigationBarMenuDropdown,
+    VsNavigationBarMenuItem,
+    VsNavigationBarSearch,
+    VsTooltip,
+    VsAccordion,
+    VsAccordionItem,
 } from '@visitscotland/component-library/components';
 
 import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
@@ -118,6 +343,8 @@ import VsBrAccordionNav from '~/components/Modules/VsBrAccordionNav.vue';
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
+
+const useNavBar = ref(true);
 
 let menu = {
     $ref: '',
