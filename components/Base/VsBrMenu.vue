@@ -18,13 +18,17 @@
     </div>
 
     <!-- Navbar To Do - Switch to feature flag -->
-    <div v-if="useNavBar">
+    <div
+        v-if="configStore.useNavbar"
+        class="vs-sticky-nav"
+        :class="(configStore.isLocalVideoheader && configStore.transparentHeader) ? 'transparent-nav-bar' : ''"
+    >
         <!-- Navbar To Do - Get real labels -->
         <VsNavigationBar
             sidebar-close-label="Close navigation menu"
             sidebar-open-label="Main menu"
             sidebar-title="Navigation menu"
-            sidebar-breakpoint="md"
+            sidebar-breakpoint="lg"
         >
             <template #logo-link>
                 <VsSvgLink
@@ -89,7 +93,25 @@
                 >
                     <ul class="d-flex">
                         <li class="me-075">
-                            <VsNavigationBarSearch />
+                            <VsButton
+                                size="sm"
+                                variant="secondary"
+                                :href="configStore.globalSearchPath"
+                                icon="vs-icon-control-search"
+                                class="d-none d-sm-block"
+                            >
+                                {{ configStore.getLabel('search', 'search') }}
+                            </VsButton>
+                            <VsButton
+                                size="sm"
+                                variant="secondary"
+                                :href="configStore.globalSearchPath"
+                                icon="vs-icon-control-search"
+                                :icon-only="true"
+                                class="d-sm-none"
+                            >
+                                {{ configStore.getLabel('search', 'search') }}
+                            </VsButton>
                         </li>
                         <li
                             class="d-none d-md-block me-075"
@@ -200,7 +222,7 @@
                                     size="sm"
                                     icon="fa-regular fa-map"
                                     icon-only
-                                    href="#"
+                                    href="/map"
                                     class="d-block"
                                 >
                                     Map of Scotland
@@ -307,9 +329,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    toRefs, ref, provide,
-} from 'vue';
+import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
@@ -329,10 +349,10 @@ import {
     VsNavigationBarMenu,
     VsNavigationBarMenuDropdown,
     VsNavigationBarMenuItem,
-    VsNavigationBarSearch,
     VsTooltip,
     VsAccordion,
     VsAccordionItem,
+    VsButton,
 } from '@visitscotland/component-library/components';
 
 import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
@@ -343,8 +363,6 @@ import VsBrAccordionNav from '~/components/Modules/VsBrAccordionNav.vue';
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
-
-const useNavBar = ref(true);
 
 let menu = {
     $ref: '',
@@ -391,3 +409,22 @@ if (page.value) {
 
 provide('page', page.value);
 </script>
+
+<style lang="scss">
+    .transparent-nav-bar .vs-navigation-bar {
+        background-color: rgba(0,0,0,0);
+        box-shadow: none;
+
+        .vs-navigation-bar-menu-dropdown > .btn {
+            color: white;
+
+            &:after {
+                color: white;
+            }
+        }
+
+        .vs-navigation-bar-menu-item > a {
+            color: white;
+        }
+    }
+</style>

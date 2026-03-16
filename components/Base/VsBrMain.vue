@@ -1,7 +1,10 @@
 <template>
     <div
         class="vs-main-container"
-        :class="{ 'has-edit-button': page.isPreview() }"
+        :class="{
+            'has-edit-button': page.isPreview(),
+            'has-transparent-nav': configStore.isLocalVideoheader && configStore.useNavbar,
+        }"
     >
         <BrManageContentButton
             :content="pageDocument"
@@ -161,6 +164,9 @@ if (page.value) {
     configStore.pageDocument = pageModels.document;
 
     configStore.locale = componentModels.pageConfiguration.language;
+
+    configStore.useNavbar = true;
+    configStore.transparentHeader = true;
 
     let langString = '';
 
@@ -361,5 +367,9 @@ provide('page', page.value);
         @media (min-width: 992px) {
             min-height: calc(100vh - 28rem);
         }
+    }
+
+    .has-transparent-nav {
+        margin-top: -76px;
     }
 </style>
