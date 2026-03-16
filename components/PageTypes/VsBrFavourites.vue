@@ -19,7 +19,7 @@
                                     Oops!
                                 </VsHeading>
                                 <p class="text-center">
-                                    Sorry, we weren't able to fetch your saved pages at the current time. Please try again later.
+                                    Something went wrong and we were unable to retrieve your saved pages. Please try again later. 
                                 </p>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                                         />
                                     </div>
                                     <VsImg
-                                        src="https://static.visitscotland.com/img/fallback-img.png"
+                                        :src="data.image"
                                         class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                                     />
                                 </template>
@@ -181,7 +181,7 @@ const displayData = ref('no data retrieved');
 
 async function getSavedPageData(uuidArray) {
     // eslint-disable-next-line no-undef
-    const res = await $fetch('/site/api/favourites/get-favourites', {
+    const res = await $fetch('site/api/favourites/get-favourites', {
         headers: {
             'Content-Type': 'application/json',
         },
