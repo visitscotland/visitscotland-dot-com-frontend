@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex flex-column gap-500">
-        <VsBrHeroSection
+    <div class="d-flex flex-column gap-500 pt-150 pt-lg-300">
+        <VsComItineraryHero
             :content="documentData"
             :image="heroImage"
             inset
@@ -181,6 +181,8 @@ import {
     VsDetail,
     VsButton,
 } from '@visitscotland/component-library/components';
+
+import VsComItineraryHero from '../Modules/VsComItineraryHero.vue';
 
 const configStore = useConfigStore();
 
