@@ -21,7 +21,11 @@
     <div
         v-if="configStore.useNavbar"
         class="vs-sticky-nav"
-        :class="(configStore.isLocalVideoheader && configStore.transparentHeader) ? 'transparent-nav-bar' : ''"
+        :class="{ 'transparent-nav-bar': shouldShowTransparent }"
+        @mouseenter="isHovered = true"
+        @mouseleave="isHovered = false"
+        @focusin="isFocused = true"
+        @focusout="isFocused = false"
     >
         <!-- Navbar To Do - Get real labels -->
         <VsNavigationBar
@@ -200,7 +204,7 @@
                                         {{ menuItem.model.title }}
                                     </VsNavigationBarMenuItem>
 
-                                    <VsDivider class="my-025" />
+                                    <VsBrDivider class="my-025" />
                                 </template>
                             </template>
                         </ul>
@@ -329,7 +333,9 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs, provide } from 'vue';
+import {
+    toRefs, provide, ref, computed, onMounted, onUnmounted,
+} from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
@@ -357,6 +363,7 @@ import {
 
 import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
 
+import VsBrDivider from '~/components/Modules/VsBrDivider.vue';
 import VsBrMegaNav from '~/components/Modules/VsBrMegaNav.vue';
 import VsBrAccordionNav from '~/components/Modules/VsBrAccordionNav.vue';
 
@@ -376,6 +383,29 @@ let banner : any = null;
 let cacheBustDate : string = '';
 
 const configStore = useConfigStore();
+
+const isHovered = ref(false);
+const isFocused = ref(false);
+const scrollY = ref(1);
+
+const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
+    && configStore.transparentHeader
+    && scrollY.value === 0
+    && !isHovered.value
+    && !isFocused.value);
+
+function handleScroll() {
+    scrollY.value = window.scrollY;
+}
+
+onMounted(() => {
+    scrollY.value = window.scrollY;
+    window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll);
+});
 
 if (page.value) {
     menu = component.value.getModels().menu;
@@ -411,6 +441,10 @@ provide('page', page.value);
 </script>
 
 <style lang="scss">
+    .vs-navigation-bar {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    }
+
     .transparent-nav-bar .vs-navigation-bar {
         background-color: rgba(0,0,0,0);
         box-shadow: none;
@@ -425,6 +459,10 @@ provide('page', page.value);
 
         .vs-navigation-bar-menu-item > a {
             color: white;
+        }
+
+        .vs-button--icon-only.btn-subtle i {
+            color: white !important;
         }
     }
 </style>
