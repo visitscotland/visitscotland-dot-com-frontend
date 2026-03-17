@@ -21,6 +21,7 @@
         :featured-places="filteredFeatures"
         :js-disabled="false"
         :cookie-btn-text="`${configStore.getLabel('essentials.global', 'cookie.link-message')}`"
+        :alert-text="`${configStore.getLabel('map', 'map.google-results-primary-message')}`"
     />
 </template>
 
