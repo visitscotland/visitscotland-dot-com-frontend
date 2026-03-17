@@ -62,7 +62,7 @@
                     </VsHeading>
 
                     <VsBody>
-                        <p class="truncate-3-lines text-break">
+                        <p class="truncate-2-lines text-break">
                             {{ result.description }}
                         </p>
                     </VsBody>
@@ -84,7 +84,7 @@
                                 color="tertiary"
                                 no-margins
                             >
-                                {{ result.location }}
+                                {{ result.venueName ? `${result.venueName}, ${result.location}` : `${result.location}` }}
                             </VsDetail>
                         </div>
 

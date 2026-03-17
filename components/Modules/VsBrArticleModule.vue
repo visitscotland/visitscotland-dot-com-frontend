@@ -32,6 +32,7 @@
         >
             <VsBrImageWithCaption
                 :image="module.image.cmsImage"
+                :image-description="module.image.description"
             />
         </template>
 

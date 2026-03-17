@@ -314,6 +314,10 @@ if (page.value) {
                 rel: 'canonical',
                 href: canonicalLink,
             },
+            {
+                rel: 'stylesheet',
+                href: '/assets/styles/civic-cookie-manager.css',
+            },
         ],
     });
 

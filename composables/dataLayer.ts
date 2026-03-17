@@ -113,11 +113,12 @@ export default function dataLayerComposable() {
                 event: eventName,
                 search_query: event.search_query,
                 query_input: event.query_input,
+                search_category: event.search_category,
                 results_count: event.results_count,
                 search_usage_index: event.search_usage_index,
                 search_type: event.search_type,
                 search_origin: event.search_origin || 'results_page',
-                interaction_type: 'search_input',
+                interaction_type: event.interaction_type || 'search_input',
             };
             fullTemplate = compileFullTemplate(templateValues);
             dataLayerData = templateFiller(siteSearchUsageTemplate, fullTemplate);
@@ -137,6 +138,9 @@ export default function dataLayerComposable() {
                 click_category: event.click_category,
                 search_usage_index: event.search_usage_index,
                 results_count: event.results_count,
+                facet_status: event.facet_status,
+                search_type: event.search_type,
+                search_origin: event.search_origin || 'results_page',
             };
             fullTemplate = compileFullTemplate(templateValues);
             dataLayerData = templateFiller(siteSearchClickTemplate, fullTemplate);

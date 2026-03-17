@@ -7,6 +7,7 @@ const siteSearchUsageTemplate = [
     'event',
     'search_query',
     'query_input',
+    'search_category',
     'results_count',
     'search_usage_index',
     'search_type',
@@ -26,6 +27,9 @@ const siteSearchClickTemplate = [
     'click_category',
     'search_usage_index',
     'results_count',
+    'facet_status',
+    'search_type',
+    'search_origin',
 ];
 
 const siteSearchCloseTemplate = [
