@@ -17,6 +17,24 @@
         </div>
     </div>
 
+    <VsBanner
+        v-if="banner"
+        :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+    >
+        <template #banner-text>
+            <div v-html="banner.copy.value" />
+        </template>
+
+        <template #banner-cta>
+            <VsLink
+                :href="banner.ctaLink.link"
+                :type="banner.ctaLink.type"
+            >
+                {{ banner.ctaLink.label }}
+            </VsLink>
+        </template>
+    </VsBanner>
+
     <!-- Navbar To Do - Switch to feature flag -->
     <div
         v-if="configStore.useNavbar"
@@ -303,24 +321,6 @@
             </VsMeganav>
         </header>
     </div>
-
-    <VsBanner
-        v-if="banner"
-        :close-btn-text="configStore.getLabel('essentials.global', 'close')"
-    >
-        <template #banner-text>
-            <div v-html="banner.copy.value" />
-        </template>
-
-        <template #banner-cta>
-            <VsLink
-                :href="banner.ctaLink.link"
-                :type="banner.ctaLink.type"
-            >
-                {{ banner.ctaLink.label }}
-            </VsLink>
-        </template>
-    </VsBanner>
 </template>
 
 <script lang="ts" setup>
