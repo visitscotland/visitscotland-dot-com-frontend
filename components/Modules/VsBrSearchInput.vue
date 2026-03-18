@@ -19,7 +19,7 @@
                     class="vs-search__input w-100"
                     field-name="site-search"
                     name="searchrequest"
-                    :placeholder="configStore.getLabel('search', 'search-label')"
+                    :placeholder="props.placeholder ? props.placeholder : configStore.getLabel('search', 'search-label')"
                     type="search"
                     :value="searchStore.searchTerm"
                     @input="updateSearchTerm($event.target.value)"
@@ -59,7 +59,7 @@
             :active-filter="searchStore.categoryKey"
             class="mt-200"
             :filter-categories="orderedCategories"
-            :is-search-widget
+            :is-search-widget="props.isSearchWidget"
             ref="categoryFilter"
             wrap
             @filter-updated="updateCategoryKey"
@@ -67,7 +67,7 @@
         />
 
         <VsBrSearchFilter
-            v-if="searchStore.categoryKey === 'events' && !isSearchWidget"
+            v-if="searchStore.categoryKey === 'events' && !props.isSearchWidget"
             :active-filter="searchStore.subcategoryKeys"
             class="mt-200"
             :filter-categories="orderedSubcategories"
@@ -113,11 +113,28 @@ const route = useRoute();
 const categoryFilter = ref<any>(null);
 const subcategoryFilter = ref<any>(null);
 
-type Props = {
-    isSearchWidget?: boolean;
-}
-
-const { isSearchWidget = false } = defineProps<Props>();
+const props = defineProps({
+    /** Defines if input is on search widget or search page */
+    isSearchWidget: {
+        type: Boolean,
+        default: false,
+    },
+    /** Toggles the cludo autocomplete */
+    autocomplete: {
+        type: Boolean,
+        default: true,
+    },
+    /** Placeholder text for input */
+    placeholder: {
+        type: String,
+        default: '',
+    },
+    /** Keypair object of categories to display */
+    searchCategories: {
+        type: Object,
+        default: () => {},
+    },
+});
 
 const { isLoading } = storeToRefs(searchStore);
 
@@ -126,7 +143,7 @@ const searchSuggestions = ref<string[]>([]);
 async function updateSearchTerm(term: string) {
     searchStore.searchTerm = term.trim();
 
-    if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm) {
+    if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm && props.autocomplete) {
         // eslint-disable-next-line no-undef
         const response: { suggestions: string[], error: SearchApiError } = await $fetch('/api/frontend/search/cludo-autocomplete', {
             method: 'post',
@@ -159,7 +176,7 @@ async function search() {
     searchStore.toDate = undefined;
     searchStore.sortBy = undefined;
 
-    if (isSearchWidget) {
+    if (props.isSearchWidget) {
         // `external: true` is required here to force a full page reload.
         // eslint-disable-next-line no-undef
         await navigateTo(`${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, {
@@ -175,7 +192,7 @@ async function search() {
         results_count: searchStore.totalResults,
         search_usage_index: searchStore.searchInSessionCount,
         search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
-        search_origin: isSearchWidget ? 'home_page' : 'results_page',
+        search_origin: props.isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
@@ -188,7 +205,7 @@ function autoSuggestAnalytics(suggestion: string) {
         results_count: searchStore.totalResults,
         click_text: suggestion,
         query_input: searchStore.queryInput,
-        search_origin: isSearchWidget ? 'home_page' : 'results_page',
+        search_origin: props.isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
@@ -196,7 +213,7 @@ async function suggestedSearch(suggestion: string) {
     searchStore.searchTerm = suggestion;
     searchSuggestions.value = [];
 
-    if (isSearchWidget) {
+    if (props.isSearchWidget) {
         // `external: true` is required here to force a full page reload.
         // eslint-disable-next-line no-undef
         await navigateTo(`${configStore.globalSearchPath}?search-term=${suggestion}`, {
@@ -239,17 +256,20 @@ function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: Boo
         click_text: category.Label || category.Key,
         facet_status: facetStatus ? 'applied' : 'removed',
         search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
-        search_origin: isSearchWidget ? 'home_page' : 'results_page',
+        search_origin: props.isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
-const categories = configStore.getLabelMap('search-categories');
+const categories = computed(() => {
+    if (props.searchCategories) return props.searchCategories;
+    return configStore.getLabelMap('search-categories');
+});
 const orderedCategories = ref<SearchFilterCategory[]>([]);
 
-Object.keys(categories).forEach((key) => {
+Object.keys(categories.value).forEach((key) => {
     orderedCategories.value.push({
         Key: key,
-        Label: categories[key],
+        Label: categories.value[key],
     });
 });
 
@@ -323,7 +343,7 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
 }
 
 const searchLink = computed(() => {
-    if (!isSearchWidget) return null;
+    if (!props.isSearchWidget) return null;
 
     return searchStore.searchTerm
         ? `${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`

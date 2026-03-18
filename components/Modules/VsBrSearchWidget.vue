@@ -1,17 +1,26 @@
 <template>
     <VsContainer>
         <VsBrSectionHeader
-            :heading="module.title || configStore.getLabel('search', 'search.widget-title')"
-            :lede="module.description || configStore.getLabel('search', 'search.widget-label')"
+            v-if="module"
+            :heading="module.title"
+            :lede="module.description"
+        />
+
+        <VsBrSectionHeader
+            v-else
+            :heading="configStore.getLabel('search', 'search.widget-title')"
+            :lede="configStore.getLabel('search', 'search.widget-label')"
         />
 
         <VsBrSearchInput
             class="mt-200"
             is-search-widget
+            :autocomplete="module.mainCategory === 'events' ? false : true"
             :search-url="configStore.globalSearchPath"
+            :placeholder="module.placeholder"
+            :search-categories="module.subcategories"
         />
     </VsContainer>
-    <pre>{{ module }}</pre>
 </template>
 
 <script setup lang="ts">
