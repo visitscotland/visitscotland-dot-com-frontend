@@ -32,7 +32,7 @@
             sidebar-close-label="Close navigation menu"
             sidebar-open-label="Main menu"
             sidebar-title="Navigation menu"
-            sidebar-breakpoint="lg"
+            sidebar-breakpoint="xl"
         >
             <template #logo-link>
                 <VsSvgLink
@@ -102,17 +102,8 @@
                                 variant="secondary"
                                 :href="configStore.globalSearchPath"
                                 icon="vs-icon-control-search"
-                                class="d-none d-sm-block"
-                            >
-                                {{ configStore.getLabel('search', 'search') }}
-                            </VsButton>
-                            <VsButton
-                                size="sm"
-                                variant="secondary"
-                                :href="configStore.globalSearchPath"
-                                icon="vs-icon-control-search"
-                                :icon-only="true"
-                                class="d-sm-none"
+                                class="d-none d-sm-block vs-navigation-bar__search-link"
+                                show-label-breakpoint="md"
                             >
                                 {{ configStore.getLabel('search', 'search') }}
                             </VsButton>
@@ -449,6 +440,10 @@ provide('page', page.value);
         background-color: rgba(0,0,0,0);
         box-shadow: none;
 
+        .vs-svg-link > svg {
+            fill: white !important;
+        }
+
         .vs-navigation-bar-menu-dropdown > .btn {
             color: white;
 
@@ -463,6 +458,16 @@ provide('page', page.value);
 
         .vs-button--icon-only.btn-subtle i {
             color: white !important;
+        }
+
+        .vs-navigation-bar__search-link {
+            background-color: rgba(0,0,0,0);
+            color: white;
+            border-color: white;
+
+            i {
+                color: white !important;
+            }
         }
     }
 </style>
