@@ -24,13 +24,9 @@ const configStore = useConfigStore();
 const page: Page | undefined = inject('page');
 
 let id = '';
-let queryString = '';
 
 if (configStore.gtm) {
     id = configStore.gtm['gtm.container-id'];
-    queryString = configStore.gtm['gtm.is-production'] === 'true'
-        ? ''
-        : configStore.gtm['gtm.preview-query-string'];
 }
 
 let isPreviewMode = false;
@@ -105,7 +101,7 @@ if (id && !isPreviewMode) {
             `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            '/metrics/'+i+dl+'${queryString}';f.parentNode.insertBefore(j,f);
+            '/metrics/'+i+dl+'';f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','${id}');`,
         ],
     });
