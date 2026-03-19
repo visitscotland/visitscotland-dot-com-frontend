@@ -205,7 +205,6 @@ const props = defineProps<{
     allTransports?: any[],
     allAreas?: any[],
     isListicle?: boolean,
-    isFavourite?: boolean,
     fullScreenMobile?: boolean,
 }>();
 

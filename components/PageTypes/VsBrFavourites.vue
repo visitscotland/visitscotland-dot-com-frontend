@@ -19,7 +19,7 @@
                                     Oops!
                                 </VsHeading>
                                 <p class="text-center">
-                                    Something went wrong and we were unable to retrieve your saved pages. Please try again later. 
+                                    Something went wrong and we were unable to retrieve your saved pages. Please try again later.
                                 </p>
                             </div>
                         </div>
@@ -45,11 +45,10 @@
                     <VsCardGroup
                         variant="grid"
                         :cards-per-row="3"
-                        class="row-gap-lg-500 col-gap-lg-200"
                     >
                         <TransitionGroup name="fade">
                             <VsCard
-                                class="vs-favourite-card"
+                                class="vs-favourite-card rounded-2"
                                 v-for="(data) in displayData.cards"
 
                                 :key="data.uuid"
@@ -72,7 +71,7 @@
                                 </template>
 
                                 <template #vs-card-body>
-                                    <div class="p-100">
+                                    <div class="px-075">
                                         <VsHeading
                                             level="3"
                                             heading-style="heading-xxs"
@@ -150,6 +149,7 @@ import {
     VsCol,
     VsCardGroup,
     VsButton,
+    VsSvg,
 } from '@visitscotland/component-library/components';
 
 const configStore = useConfigStore();
@@ -181,7 +181,7 @@ const displayData = ref('no data retrieved');
 
 async function getSavedPageData(uuidArray) {
     // eslint-disable-next-line no-undef
-    const res = await $fetch('/site/api/favourites/get-favourites', {
+    const res = await $fetch('https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8018&vs-no-redirect=true', {
         headers: {
             'Content-Type': 'application/json',
         },

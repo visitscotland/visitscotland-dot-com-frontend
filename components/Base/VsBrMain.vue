@@ -148,7 +148,7 @@ if (page.value) {
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
         configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
-        configStore.allowFavourite = componentModels.pageConfiguration.isFavourite;
+        configStore.allowFavourite = componentModels.pageConfiguration.allowFavourite;
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
