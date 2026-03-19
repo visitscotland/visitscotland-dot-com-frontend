@@ -52,7 +52,7 @@
                                 v-for="(data) in displayData.cards"
 
                                 :key="data.uuid"
-                                card-style="elevated"
+                                card-style="outlined"
                             >
                                 <template #vs-card-header>
                                     <div class="vs-remove-content-button">
@@ -149,7 +149,6 @@ import {
     VsCol,
     VsCardGroup,
     VsButton,
-    VsSvg,
 } from '@visitscotland/component-library/components';
 
 const configStore = useConfigStore();
@@ -181,7 +180,7 @@ const displayData = ref('no data retrieved');
 
 async function getSavedPageData(uuidArray) {
     // eslint-disable-next-line no-undef
-    const res = await $fetch('/site/api/favourites/get-favourites', {
+    const res = await $fetch('https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8018&vs-no-redirect=true', {
         headers: {
             'Content-Type': 'application/json',
         },

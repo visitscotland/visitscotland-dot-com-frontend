@@ -42,7 +42,11 @@ function pageInSaveList(uuid) {
 }
 
 function refreshState() {
-    savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
+    if (JSON.parse(localStorage.getItem(localStoragePropertyName)) === null) {
+        localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
+    } else {
+        savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
+    };
 }
 
 onMounted(() => {
