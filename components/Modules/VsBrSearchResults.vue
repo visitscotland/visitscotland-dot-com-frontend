@@ -217,7 +217,7 @@ function loadPage(pageNumber: number) {
 
     searchStore.setUrlParameters();
 
-    // eslint-disable-next-line no-use-before-define
+     
     paginationClickAnalytics(paginatingForward);
 }
 

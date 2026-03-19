@@ -15,7 +15,7 @@ import { computed } from 'vue';
 
 const props = defineProps<{
     address: any,
-    sameLine: Boolean,
+    sameLine: boolean,
 }>();
 
 const filteredAddress = computed(() => {
