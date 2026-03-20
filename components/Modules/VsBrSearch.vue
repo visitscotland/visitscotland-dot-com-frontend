@@ -108,7 +108,6 @@ const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
 
- 
 const route = useRoute();
 
 type Props = {
@@ -157,6 +156,7 @@ onMounted(() => {
     searchStore.postcode = route.query.postcode as string;
     searchStore.postcodeareas = route.query.postcodeareas as string;
     searchStore.radius = Number(route.query.radius) || 0;
+    searchStore.when = route.query.when as string;
 
     searchStore.getSearchResults();
 

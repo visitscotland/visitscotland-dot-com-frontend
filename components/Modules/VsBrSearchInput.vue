@@ -109,7 +109,6 @@ const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
 
- 
 const route = useRoute();
 const categoryFilter = ref<any>(null);
 const subcategoryFilter = ref<any>(null);
@@ -203,7 +202,7 @@ async function search() {
 
         return '';
     }
-    
+
     await searchStore.setUrlParameters();
 
     dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
