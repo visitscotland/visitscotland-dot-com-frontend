@@ -178,17 +178,15 @@ onMounted(() => {
                 results_count: searchStore.totalResults,
                 search_usage_index: searchStore.searchInSessionCount,
                 search_type: 'initial',
-                search_origin: 'home_page',
+                search_origin: route.query['category'] === 'events' ? 'events_page' : 'home_page',
             });
-        }
-
-        if (route.query['category']) {
+        } else if (route.query['category']) {
             dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
                 search_category: searchStore.categoryKey,
                 results_count: searchStore.totalResults,
                 search_usage_index: searchStore.searchInSessionCount,
                 search_type: 'initial',
-                search_origin: 'home_page',
+                search_origin: route.query['subcategories'] ? 'events_page' : 'home_page',
                 interaction_type: 'category_click',
             });
         }

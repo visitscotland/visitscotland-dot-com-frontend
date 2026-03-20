@@ -75,6 +75,7 @@ type Props = {
     filterCategories: SearchFilterCategory[];
     heading?: string;
     isSearchWidget?: boolean;
+    isEventWidget?: boolean;
     scrollButtonLeftText?: string;
     scrollButtonRightText?: string;
     variant?: 'primary' | 'secondary';
@@ -88,6 +89,7 @@ const {
     filterCategories,
     heading,
     isSearchWidget = false,
+    isEventWidget = false,
     scrollButtonLeftText,
     scrollButtonRightText,
     variant = 'primary',
@@ -153,23 +155,31 @@ function filterClasses() {
     ];
 }
 
-function categoryClickAnalytics(category: SearchFilterCategory) {
+function categoryClickAnalytics(category: SearchFilterCategory, searchOrigin: String) {
     dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
         interaction_type: 'facet_click',
         click_text: category.Label || category.Key,
         facet_status: 'applied',
         search_type: 'initial',
-        search_origin: isSearchWidget ? 'home_page' : 'results_page',
+        search_origin: searchOrigin,
     });
 }
 
 async function createAnalyticsThenNavigateToResultsPage(category: SearchFilterCategory) {
-    categoryClickAnalytics(category);
-
     // `external: true` is required here to force a full page reload.
-    await navigateTo(`${configStore.globalSearchPath}?category=${category.Key}`, {
-        external: true,
-    });
+    if (isEventWidget && isSearchWidget) {
+        categoryClickAnalytics(category, 'events_page');
+        // eslint-disable-next-line no-undef
+        await navigateTo(`${configStore.globalSearchPath}?category=events&subcategories=${category.Key}`, {
+            external: true,
+        });
+    } else if (!isEventWidget && isSearchWidget) {
+        categoryClickAnalytics(category, 'home_page');
+        // eslint-disable-next-line no-undef
+        await navigateTo(`${configStore.globalSearchPath}?category=${category.Key}`, {
+            external: true,
+        });
+    }
 }
 
 const sortedItems = computed(() => {

@@ -1,13 +1,22 @@
 <template>
-    <VsContainer>
+    <VsContainer v-if="module">
         <VsBrSectionHeader
-            v-if="module"
             :heading="module.title"
             :lede="module.description"
         />
 
+        <VsBrSearchInput
+            class="mt-200"
+            is-search-widget
+            :is-event-widget="module?.mainCategory === 'events' ? true : false"
+            :autocomplete="module?.mainCategory === 'events' ? false : true"
+            :search-url="configStore.globalSearchPath"
+            :placeholder="module?.placeholder"
+            :search-categories="module?.mainCategory === 'events' ? module.subcategories : module.categories"
+        />
+    </VsContainer>
+    <VsContainer v-else>
         <VsBrSectionHeader
-            v-else
             :heading="configStore.getLabel('search', 'search.widget-title')"
             :lede="configStore.getLabel('search', 'search.widget-label')"
         />
@@ -15,10 +24,7 @@
         <VsBrSearchInput
             class="mt-200"
             is-search-widget
-            :autocomplete="module.mainCategory === 'events' ? false : true"
             :search-url="configStore.globalSearchPath"
-            :placeholder="module.placeholder"
-            :search-categories="module.subcategories"
         />
     </VsContainer>
 </template>

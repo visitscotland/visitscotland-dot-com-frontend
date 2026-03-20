@@ -30,7 +30,7 @@
                 class="d-none d-lg-block px-200"
                 :disabled="isLoading"
                 :href="searchLink"
-                @click="search"
+                @click.prevent="search"
             >
                 {{ configStore.getLabel('search', 'search') }}
             </VsButton>
@@ -60,6 +60,7 @@
             class="mt-200"
             :filter-categories="orderedCategories"
             :is-search-widget="props.isSearchWidget"
+            :is-event-widget="props.isEventWidget"
             ref="categoryFilter"
             wrap
             @filter-updated="updateCategoryKey"
@@ -119,6 +120,11 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    /** Defined if input is configured to be event search */
+    isEventWidget: {
+        type: Boolean,
+        default: false,
+    },
     /** Toggles the cludo autocomplete */
     autocomplete: {
         type: Boolean,
@@ -168,6 +174,8 @@ async function updateSearchTerm(term: string) {
 }
 
 async function search() {
+    let searchOrigin = 'results_page';
+
     searchSuggestions.value = [];
     searchStore.currentPage = 1;
     searchStore.fromDate = searchStore.categoryKey === 'events'
@@ -176,15 +184,28 @@ async function search() {
     searchStore.toDate = undefined;
     searchStore.sortBy = undefined;
 
-    if (props.isSearchWidget) {
+    if (props.isSearchWidget && props.isEventWidget) {
+        searchOrigin = 'events_page';
+        // `external: true` is required here to force a full page reload.
+        // eslint-disable-next-line no-undef
+        await navigateTo(`${configStore.globalSearchPath}?category=events&search-term=${searchStore.searchTerm}`, {
+            external: true,
+        });
+        return '';
+    }
+
+    if (!props.isEventWidget && props.isSearchWidget) {
+        searchOrigin = 'home_page';
         // `external: true` is required here to force a full page reload.
         // eslint-disable-next-line no-undef
         await navigateTo(`${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, {
             external: true,
         });
-    } else {
-        await searchStore.setUrlParameters();
+
+        return '';
     }
+
+    await searchStore.setUrlParameters();
 
     dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
         search_query: searchStore.searchTerm,
@@ -192,7 +213,7 @@ async function search() {
         results_count: searchStore.totalResults,
         search_usage_index: searchStore.searchInSessionCount,
         search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
-        search_origin: props.isSearchWidget ? 'home_page' : 'results_page',
+        search_origin: searchOrigin,
     });
 }
 
