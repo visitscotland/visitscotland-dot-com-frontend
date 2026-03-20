@@ -46,8 +46,8 @@ import {
     VsIcon,
 } from '@visitscotland/component-library/components';
 
-const props = defineProps<{ tab: Object, tabIndex: Number }>();
-const tab: Object = props.tab;
-const tabIndex: Number = props.tabIndex;
+const props = defineProps<{ tab: object, tabIndex: number }>();
+const tab: object = props.tab;
+const tabIndex: number = props.tabIndex;
 
 </script>

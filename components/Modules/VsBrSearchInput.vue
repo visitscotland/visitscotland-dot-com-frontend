@@ -109,7 +109,7 @@ const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
 
-// eslint-disable-next-line no-undef
+ 
 const route = useRoute();
 const categoryFilter = ref<any>(null);
 const subcategoryFilter = ref<any>(null);
@@ -150,14 +150,13 @@ async function updateSearchTerm(term: string) {
     searchStore.searchTerm = term.trim();
 
     if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm && props.autocomplete) {
-        // eslint-disable-next-line no-undef
         const response: { suggestions: string[], error: SearchApiError } = await $fetch('/api/frontend/search/cludo-autocomplete', {
             method: 'post',
             body: {
                 searchTerm: searchStore.searchTerm,
                 cludoApiKey: configStore.cludoExperienceId,
-                cludoCustomerId: parseInt(configStore.cludoCustomerId, 10),
-                cludoEngineId: parseInt(configStore.cludoEngineId, 10),
+                cludoCustomerId: Number.parseInt(configStore.cludoCustomerId, 10),
+                cludoEngineId: Number.parseInt(configStore.cludoEngineId, 10),
             },
         });
 
@@ -204,7 +203,7 @@ async function search() {
 
         return '';
     }
-
+    
     await searchStore.setUrlParameters();
 
     dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
@@ -236,7 +235,7 @@ async function suggestedSearch(suggestion: string) {
 
     if (props.isSearchWidget) {
         // `external: true` is required here to force a full page reload.
-        // eslint-disable-next-line no-undef
+         
         await navigateTo(`${configStore.globalSearchPath}?search-term=${suggestion}`, {
             external: true,
         });
@@ -267,7 +266,7 @@ function highlightAutocompleteSuggestion(suggestion: string) {
     return escapeHtml(suggestion).replace(reg, '<strong>$1</strong>');
 }
 
-function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: Boolean) {
+function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: boolean) {
     dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
         interaction_type: 'facet_click',
         search_query: searchStore.searchTerm,

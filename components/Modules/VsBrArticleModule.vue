@@ -32,6 +32,7 @@
         >
             <VsBrImageWithCaption
                 :image="module.image.cmsImage"
+                :image-description="module.image.description"
             />
         </template>
 
@@ -67,7 +68,7 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable import/no-import-module-exports */
+ 
 
 import {
     VsArticle,
@@ -87,7 +88,7 @@ import useConfigStore from '~/stores/configStore.ts';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 const articleSections: any[] = [];

@@ -81,8 +81,8 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable import/no-import-module-exports */
-/* eslint-disable no-undef */
+ 
+ 
 
 import { inject } from 'vue';
 
@@ -103,7 +103,7 @@ import formatLink from '~/composables/formatLink.ts';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object, theme: string }>();
+const props = defineProps<{ module: object, theme: string }>();
 const module: any = props.module;
 const theme: string = props.theme;
 
