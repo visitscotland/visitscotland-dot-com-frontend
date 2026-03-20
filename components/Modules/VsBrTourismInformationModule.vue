@@ -42,7 +42,7 @@ import VsBrQuote from './VsBrQuote.vue';
 
 // const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object, theme: string }>();
+const props = defineProps<{ module: object, theme: string }>();
 const module: any = props.module;
 const theme: string = props.theme;
 

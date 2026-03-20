@@ -4,6 +4,7 @@ function debounce(functn: any, wait: number) {
         if (timer) {
             clearTimeout(timer);
         }
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const context = this;
         timer = setTimeout(() => {
             functn.apply(context, args);
