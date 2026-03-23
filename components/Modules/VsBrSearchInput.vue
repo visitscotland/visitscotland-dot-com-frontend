@@ -19,7 +19,7 @@
                     class="vs-search__input w-100"
                     field-name="site-search"
                     name="searchrequest"
-                    :placeholder="props.placeholder ? props.placeholder : configStore.getLabel('search', 'search-label')"
+                    :placeholder="placeholder ? placeholder : configStore.getLabel('search', 'search-label')"
                     type="search"
                     :value="searchStore.searchTerm"
                     @input="updateSearchTerm($event.target.value)"
@@ -59,8 +59,8 @@
             :active-filter="searchStore.categoryKey"
             class="mt-200"
             :filter-categories="orderedCategories"
-            :is-search-widget="props.isSearchWidget"
-            :is-event-widget="props.isEventWidget"
+            :is-search-widget="isSearchWidget"
+            :is-event-widget="isEventWidget"
             ref="categoryFilter"
             wrap
             @filter-updated="updateCategoryKey"
@@ -68,7 +68,7 @@
         />
 
         <VsBrSearchFilter
-            v-if="searchStore.categoryKey === 'events' && !props.isSearchWidget"
+            v-if="searchStore.categoryKey === 'events' && !isSearchWidget"
             :active-filter="searchStore.subcategoryKeys"
             class="mt-200"
             :filter-categories="orderedSubcategories"
@@ -113,33 +113,22 @@ const route = useRoute();
 const categoryFilter = ref<any>(null);
 const subcategoryFilter = ref<any>(null);
 
-const props = defineProps({
-    /** Defines if input is on search widget or search page */
-    isSearchWidget: {
-        type: Boolean,
-        default: false,
+type Props = {
+    isSearchWidget?: boolean;
+    isEventWidget?: boolean;
+    autocomplete?: boolean;
+    placeholder?: string;
+    searchCategories?: object;
+}
+
+const {
+    isSearchWidget = false,
+    isEventWidget = false,
+    autocomplete = false,
+    placeholder = '',
+    searchCategories = {
     },
-    /** Defined if input is configured to be event search */
-    isEventWidget: {
-        type: Boolean,
-        default: false,
-    },
-    /** Toggles the cludo autocomplete */
-    autocomplete: {
-        type: Boolean,
-        default: true,
-    },
-    /** Placeholder text for input */
-    placeholder: {
-        type: String,
-        default: '',
-    },
-    /** Keypair object of categories to display */
-    searchCategories: {
-        type: Object,
-        default: () => {},
-    },
-});
+} = defineProps<Props>();
 
 const { isLoading } = storeToRefs(searchStore);
 
@@ -148,7 +137,7 @@ const searchSuggestions = ref<string[]>([]);
 async function updateSearchTerm(term: string) {
     searchStore.searchTerm = term.trim();
 
-    if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm && props.autocomplete) {
+    if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm && autocomplete) {
         const response: { suggestions: string[], error: SearchApiError } = await $fetch('/api/frontend/search/cludo-autocomplete', {
             method: 'post',
             body: {
@@ -182,28 +171,24 @@ async function search() {
     searchStore.toDate = undefined;
     searchStore.sortBy = undefined;
 
-    if (props.isSearchWidget && props.isEventWidget) {
+    if (isSearchWidget && isEventWidget) {
         searchOrigin = 'events_page';
         // `external: true` is required here to force a full page reload.
         // eslint-disable-next-line no-undef
         await navigateTo(`${configStore.globalSearchPath}?category=events&search-term=${searchStore.searchTerm}`, {
             external: true,
         });
-        return '';
-    }
-
-    if (!props.isEventWidget && props.isSearchWidget) {
+    } else if (!isEventWidget && isSearchWidget) {
         searchOrigin = 'home_page';
         // `external: true` is required here to force a full page reload.
         // eslint-disable-next-line no-undef
         await navigateTo(`${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, {
             external: true,
         });
-
-        return '';
+    } else {
+        await searchStore.setUrlParameters();
     }
 
-    await searchStore.setUrlParameters();
 
     dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
         search_query: searchStore.searchTerm,
@@ -224,7 +209,7 @@ function autoSuggestAnalytics(suggestion: string) {
         results_count: searchStore.totalResults,
         click_text: suggestion,
         query_input: searchStore.queryInput,
-        search_origin: props.isSearchWidget ? 'home_page' : 'results_page',
+        search_origin: isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
@@ -232,9 +217,9 @@ async function suggestedSearch(suggestion: string) {
     searchStore.searchTerm = suggestion;
     searchSuggestions.value = [];
 
-    if (props.isSearchWidget) {
+    if (isSearchWidget) {
         // `external: true` is required here to force a full page reload.
-         
+
         await navigateTo(`${configStore.globalSearchPath}?search-term=${suggestion}`, {
             external: true,
         });
@@ -275,12 +260,12 @@ function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: boo
         click_text: category.Label || category.Key,
         facet_status: facetStatus ? 'applied' : 'removed',
         search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
-        search_origin: props.isSearchWidget ? 'home_page' : 'results_page',
+        search_origin: isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
 const categories = computed(() => {
-    if (props.searchCategories) return props.searchCategories;
+    if (searchCategories) return searchCategories;
     return configStore.getLabelMap('search-categories');
 });
 const orderedCategories = ref<SearchFilterCategory[]>([]);
@@ -362,7 +347,7 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
 }
 
 const searchLink = computed(() => {
-    if (!props.isSearchWidget) return null;
+    if (!isSearchWidget) return null;
 
     return searchStore.searchTerm
         ? `${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`
