@@ -63,6 +63,7 @@
             ref="categoryFilter"
             wrap
             @filter-updated="updateCategoryKey"
+            :category-btn-text="configStore.getLabel('search', 'filters.category')"
         />
 
         <VsBrSearchFilter
@@ -73,6 +74,8 @@
             :heading="configStore.getLabel('search', 'refine')"
             ref="subcategoryFilter"
             @filter-updated="updateSubcategoryKey"
+            variant="secondary"
+            :category-btn-text="configStore.getLabel('search', 'filters.subcategory')"
         />
     </div>
 </template>
@@ -105,7 +108,7 @@ const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
 
-// eslint-disable-next-line no-undef
+ 
 const route = useRoute();
 const categoryFilter = ref<any>(null);
 const subcategoryFilter = ref<any>(null);
@@ -124,14 +127,14 @@ async function updateSearchTerm(term: string) {
     searchStore.searchTerm = term.trim();
 
     if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm) {
-        // eslint-disable-next-line no-undef
+         
         const response: { suggestions: string[], error: SearchApiError } = await $fetch('/api/frontend/search/cludo-autocomplete', {
             method: 'post',
             body: {
                 searchTerm: searchStore.searchTerm,
                 cludoApiKey: configStore.cludoExperienceId,
-                cludoCustomerId: parseInt(configStore.cludoCustomerId, 10),
-                cludoEngineId: parseInt(configStore.cludoEngineId, 10),
+                cludoCustomerId: Number.parseInt(configStore.cludoCustomerId, 10),
+                cludoEngineId: Number.parseInt(configStore.cludoEngineId, 10),
             },
         });
 
@@ -158,6 +161,7 @@ async function search() {
 
     if (isSearchWidget) {
         // `external: true` is required here to force a full page reload.
+         
         await navigateTo(`${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, {
             external: true,
         });
@@ -171,6 +175,7 @@ async function search() {
         results_count: searchStore.totalResults,
         search_usage_index: searchStore.searchInSessionCount,
         search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
+        search_origin: isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
@@ -183,6 +188,7 @@ function autoSuggestAnalytics(suggestion: string) {
         results_count: searchStore.totalResults,
         click_text: suggestion,
         query_input: searchStore.queryInput,
+        search_origin: isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
@@ -192,6 +198,7 @@ async function suggestedSearch(suggestion: string) {
 
     if (isSearchWidget) {
         // `external: true` is required here to force a full page reload.
+         
         await navigateTo(`${configStore.globalSearchPath}?search-term=${suggestion}`, {
             external: true,
         });
@@ -222,7 +229,7 @@ function highlightAutocompleteSuggestion(suggestion: string) {
     return escapeHtml(suggestion).replace(reg, '<strong>$1</strong>');
 }
 
-function categoryClickAnalytics(category: SearchFilterCategory) {
+function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: boolean) {
     dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
         interaction_type: 'facet_click',
         search_query: searchStore.searchTerm,
@@ -230,6 +237,9 @@ function categoryClickAnalytics(category: SearchFilterCategory) {
         search_usage_index: searchStore.searchInSessionCount,
         results_count: searchStore.totalResults,
         click_text: category.Label || category.Key,
+        facet_status: facetStatus ? 'applied' : 'removed',
+        search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
+        search_origin: isSearchWidget ? 'home_page' : 'results_page',
     });
 }
 
@@ -253,6 +263,28 @@ Object.keys(subcategories).forEach((key) => {
     });
 });
 
+async function setCategoryAnalytics(category: any, facetStatus?: boolean) {
+    let facetData;
+
+    if (facetStatus === true) {
+        facetData = true;
+    } else if (facetStatus === false) {
+        facetData = false;
+    } else {
+        facetData = searchStore.categoryKey !== undefined;
+    }
+
+    // Subscribe once per update to the store before running clickEventAnalytics
+    searchStore.$subscribe(() => {
+        categoryClickAnalytics(
+            category,
+            facetData,
+        );
+    }, {
+        once: true,
+    });
+}
+
 async function updateCategoryKey(category: SearchFilterCategory) {
     searchStore.currentPage = 1;
     searchStore.subcategoryKeys = [];
@@ -266,9 +298,9 @@ async function updateCategoryKey(category: SearchFilterCategory) {
         ? category.Key
         : undefined;
 
-    await searchStore.setUrlParameters();
+    await setCategoryAnalytics(category);
 
-    categoryClickAnalytics(category);
+    await searchStore.setUrlParameters();
 }
 
 async function updateSubcategoryKey(category: SearchFilterCategory) {
@@ -283,7 +315,11 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
     }
     await searchStore.setUrlParameters();
 
-    categoryClickAnalytics(category);
+    if (!searchStore.subcategoryKeys.includes(category.Key)) {
+        await setCategoryAnalytics(category, false);
+    } else {
+        await setCategoryAnalytics(category, true);
+    }
 }
 
 const searchLink = computed(() => {

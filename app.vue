@@ -69,7 +69,7 @@
 import axios from 'axios';
 
 import {
-    getCurrentInstance, ref, onMounted,
+    getCurrentInstance, ref, onMounted, nextTick,
 } from 'vue';
 import mitt from 'mitt';
 
@@ -115,11 +115,32 @@ const localeStrings = [
 const isMounted = ref(false);
 const hideSkeleton = ref(false);
 
-onMounted(() => {
+const scrollToAnchor = (hash, attempts = 0) => {
+    const element = document.querySelector(hash);
+
+    if (element) {
+        element.scrollIntoView({
+            behavior: 'smooth',
+        });
+    } else if (attempts < 20) {
+        setTimeout(() => scrollToAnchor(hash, attempts + 1), 100);
+    }
+};
+
+onMounted(async() => {
     isMounted.value = true;
 
     const hydrationEvent = new Event('vs-app-hydrated');
     window.dispatchEvent(hydrationEvent);
+
+    await nextTick();
+
+    const fullRoute = useRoute();
+
+    // Browsers sometimes fail to find anchor links as they attempt to check when the skeleton
+    // site is still visible. This manually implements the anchor scroll as soon as the page is
+    // actually rendered.
+    if (fullRoute.hash) scrollToAnchor(fullRoute.hash);
 });
 
 let deLocalisedRoute = route;
@@ -144,10 +165,16 @@ const PREVIEW_SERVER_ID_KEY = 'server-id';
 let authorizationToken = '';
 let serverId = '';
 
-if (window && window.location) {
-    const searchParams = new URLSearchParams(window.location.search);
-    authorizationToken = searchParams.get(PREVIEW_TOKEN_KEY);
-    serverId = searchParams.get(PREVIEW_SERVER_ID_KEY);
+const query = useRoute().query;
+
+if (query) {
+    if (query[PREVIEW_TOKEN_KEY]) {
+        authorizationToken = query[PREVIEW_TOKEN_KEY];
+    }
+
+    if (query[PREVIEW_SERVER_ID_KEY]) {
+        serverId = query[PREVIEW_SERVER_ID_KEY];
+    }
 }
 
 /**
@@ -156,7 +183,7 @@ if (window && window.location) {
  */
 const runtimeConfig = useRuntimeConfig();
 
-if (process.server && xForwardedhost.value) {
+if (import.meta.server && xForwardedhost.value) {
     axios.defaults.headers.common.Host = xForwardedhost.value;
 }
 
@@ -256,5 +283,18 @@ const mapping = {
         z-index: 2;
         position: relative;
         background-color: white;
+    }
+
+    /* When JS is disabled, hide the skeleton and force show the content */
+    .no-js .skeleton-site {
+        display: none !important;
+    }
+
+    .no-js .hydrate {
+        display: block !important;
+    }
+
+    [id] {
+        scroll-margin-top: 4rem;
     }
 </style>

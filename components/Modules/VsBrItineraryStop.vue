@@ -1,4 +1,8 @@
 <template>
+    <VsBrPreviewError
+        v-if="stop.errorMessages && stop.errorMessages.length"
+        :messages="stop.errorMessages"
+    />
     <VsItineraryStop
         :stop-number="`${stop.index}`"
         :stop-label="stop.title"
@@ -8,6 +12,7 @@
             v-if="stop.image"
             :image="stop.image.cmsImage ? stop.image.cmsImage : null"
             :image-string="stop.image.externalImage ? stop.image.externalImage : ''"
+            :image-description="stop.image.description"
         />
 
         <template
@@ -20,7 +25,7 @@
             <VsLink
                 v-if="stop.ctaLink"
                 :href="stop.ctaLink.link"
-                :type="stop.ctaLink.type === 'internal' ? null : stop.ctaLink.type"
+                :type="stop.ctaLink.type === 'EXTERNAL' ? 'external' : null"
                 class="d-inline-block mb-100"
             >
                 {{ stop.ctaLink.label }}
@@ -129,6 +134,7 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import {
     VsItineraryStop,

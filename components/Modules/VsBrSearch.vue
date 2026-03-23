@@ -108,7 +108,7 @@ const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
 
-// eslint-disable-next-line no-undef
+ 
 const route = useRoute();
 
 type Props = {
@@ -168,16 +168,33 @@ onMounted(() => {
         referrer_page: document.referrer,
     });
 
-    if (route.query['search-term']) {
-        dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
-            search_query: searchStore.searchTerm,
-            query_input: searchStore.queryInput,
-            results_count: searchStore.totalResults,
-            search_usage_index: searchStore.searchInSessionCount,
-            search_type: 'initial',
-            search_origin: 'home_page',
-        });
-    }
+    // Subscribe once per update to the store before running siteSearchUsageEvent
+    // to receive the results count once they've loaded
+    searchStore.$subscribe(() => {
+        if (route.query['search-term']) {
+            dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
+                search_query: searchStore.searchTerm,
+                query_input: searchStore.queryInput,
+                results_count: searchStore.totalResults,
+                search_usage_index: searchStore.searchInSessionCount,
+                search_type: 'initial',
+                search_origin: 'home_page',
+            });
+        }
+
+        if (route.query['category']) {
+            dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
+                search_category: searchStore.categoryKey,
+                results_count: searchStore.totalResults,
+                search_usage_index: searchStore.searchInSessionCount,
+                search_type: 'initial',
+                search_origin: 'home_page',
+                interaction_type: 'category_click',
+            });
+        }
+    }, {
+        once: true,
+    });
 });
 </script>
 

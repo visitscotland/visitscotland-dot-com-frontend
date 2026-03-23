@@ -3,6 +3,7 @@
         :background="lightBackground ? themeCalculator(1) : themeCalculator(0)"
         :hero-intro="heroImage ? true : false"
         :is-itinerary="itinerary ? true : false"
+        :fullscreen-mobile="fullScreenMobile ? true : false"
     >
         <template
             #vs-intro-hero
@@ -47,10 +48,7 @@
         -->
 
         <template #vs-intro-breadcrumb>
-            <VsBrBreadcrumb
-                :breadcrumb="breadcrumb"
-                :is-home="isHome"
-            />
+            <VsBrBreadcrumb />
         </template>
 
         <template #vs-intro-heading>
@@ -191,6 +189,7 @@ const props = defineProps<{
     allTransports?: any[],
     allAreas?: any[],
     isListicle?: boolean,
+    fullScreenMobile?: boolean,
 }>();
 
 const {
@@ -203,10 +202,8 @@ const {
     allTransports,
     allAreas,
     isListicle,
+    fullScreenMobile,
 } = toRefs(props);
-
-let breadcrumb : [];
-let isHome : boolean;
 
 let blogAuthor : any;
 let blogTime : string;
@@ -223,9 +220,6 @@ if (page) {
     const pageModels : any = pageContent.models;
 
     if (pageModels) {
-        isHome = pageModels.isHome;
-        breadcrumb = pageModels.breadcrumb.items;
-
         if (blog.value) {
             blogAuthor = page.getContent(blog.value.author);
 

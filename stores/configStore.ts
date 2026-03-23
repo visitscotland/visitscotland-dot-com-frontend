@@ -27,6 +27,8 @@ interface IConfigState {
     googleMapApiKey: string,
     isMainMapPageFlag: boolean,
     pageDocument: any,
+    enableHeroSection: boolean,
+    pathIfError: string,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -62,6 +64,8 @@ const useConfigStore = defineStore('configStore', {
         googleMapApiKey: '',
         isMainMapPageFlag: false,
         pageDocument: null,
+        enableHeroSection: false,
+        pathIfError: '',
     }),
     actions: {
         getLabel(section: string, key: string) {

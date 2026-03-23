@@ -16,9 +16,11 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable import/no-import-module-exports */
+ 
 
 import { inject } from 'vue';
+
+import { decode } from 'html-entities';
 
 import type { Page } from '@bloomreach/spa-sdk';
 
@@ -33,7 +35,7 @@ import formatLink from '~/composables/formatLink.ts';
 
 const page: Page | undefined = inject('page');
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 let image: any = null;
@@ -54,13 +56,10 @@ if (image.startsWith('assets')) {
     image = `/${image}`;
 }
 
+// Strip out paragraph tags that are only sometimes present
 let description = module.copy.value.replace(/<[^>]+>/g, '');
-
-if (window && window.location) {
-    const decoder = document.createElement('textarea');
-    decoder.innerHTML = description;
-    description = decoder.value;
-}
+// Parse html entities that the editor is sending
+description = decode(description);
 
 </script>
 

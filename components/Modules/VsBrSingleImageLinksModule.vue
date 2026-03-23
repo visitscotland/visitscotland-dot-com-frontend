@@ -32,6 +32,7 @@
                         :image="module.image.cmsImage
                             ? module.image.cmsImage
                             : module.image.externalImage"
+                        :image-description="module.image.description"
                     />
                 </template>
 
@@ -102,7 +103,7 @@ import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object, theme: string }>();
+const props = defineProps<{ module: object, theme: string }>();
 const module: any = props.module;
 const theme: string = props.theme;
 

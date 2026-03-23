@@ -1,4 +1,5 @@
 node_modules
+ci/temp
 *.log*
 .nuxt
 .nitro

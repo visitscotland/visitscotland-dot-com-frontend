@@ -18,6 +18,22 @@
             :video="configStore.heroVideo"
             :image="heroImage"
         />
+        <template v-else-if="configStore.enableHeroSection">
+            <VsContainer class="mt-075 mt-lg-200">
+                <VsRow>
+                    <VsCol
+                        cols="10"
+                        lg="8"
+                    >
+                        <VsBrBreadcrumb />
+                    </VsCol>
+                </VsRow>
+            </VsContainer>
+            <VsBrHeroSection
+                :content="documentData"
+                :image="heroImage"
+            />
+        </template>
         <VsBrPageIntro
             v-else
             :content="documentData"
@@ -34,6 +50,21 @@
 
         <VsBrIntroImage
             :image="heroImage"
+        />
+    </template>
+
+    <template v-else-if="documentData.theme === 'Inspiration'">
+        <VsBrHeroSection
+            v-if="isSearchResultsPage"
+            :content="documentData"
+            :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
+        />
+        <VsBrPageIntro
+            v-else
+            :content="documentData"
+            :hero-image="heroImage"
+            :light-background="true"
+            :full-screen-mobile="true"
         />
     </template>
 
@@ -152,6 +183,11 @@ import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
 import VsBrCategorySection from '~/components/Modules/VsBrCategorySection.vue';
 import VsBrSearch from '~/components/Modules/VsBrSearch.vue';
 import VsBrSearchWidget from '~/components/Modules/VsBrSearchWidget.vue';
+import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
+
+import {
+    VsContainer, VsRow, VsCol,
+} from '@visitscotland/component-library/components';
 
 const props = defineProps<{ component: Component, page: Page }>();
 

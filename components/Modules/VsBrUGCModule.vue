@@ -12,7 +12,10 @@
             :extra-content="configStore.getLabel('ugc', 'ugc.extra-warning-content')"
             :embedded-script="`https://apps.storystream.ai/app/js/${module.storystreamId}.js`"
         >
-            <template #embed-intro-copy>
+            <template
+                #embed-intro-copy
+                v-if="module.copy"
+            >
                 <VsBrRichText :input-content="module.copy.value" />
             </template>
 
@@ -36,7 +39,7 @@ import VsBrRichText from './VsBrRichText.vue';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 </script>
