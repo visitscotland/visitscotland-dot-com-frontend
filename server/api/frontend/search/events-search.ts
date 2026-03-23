@@ -23,9 +23,7 @@ function cleanData(data: any) {
     return results;
 }
 
- 
 export default defineEventHandler(async(event) => {
-     
     const body = await readBody(event);
 
     let url = `${body.eventsApiUrl}?lang=${body.siteLanguage}`;
@@ -39,6 +37,7 @@ export default defineEventHandler(async(event) => {
     url = body.postcode ? `${url}&postcode=${body.postcode}` : url;
     url = body.postcodeareas ? `${url}&postcodeareas=${body.postcodeareas}` : url;
     url = body.radius ? `${url}&radius=${body.radius}` : url;
+    url = body.when ? `${url}&when=${body.when}` : url;
 
     body.subcategoryKeys.forEach((category: any) => {
         url += `&category=${category}`;
