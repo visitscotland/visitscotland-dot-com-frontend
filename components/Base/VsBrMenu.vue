@@ -38,7 +38,7 @@
     <!-- Navbar To Do - Switch to feature flag -->
     <div
         v-if="configStore.useNavbar"
-        class="vs-sticky-nav"
+        class="vs-sticky-nav--no-global"
         :class="{ 'transparent-nav-bar': shouldShowTransparent }"
         @mouseenter="isHovered = true"
         @mouseleave="isHovered = false"
