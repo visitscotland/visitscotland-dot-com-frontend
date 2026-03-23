@@ -126,8 +126,7 @@ const {
     isEventWidget = false,
     autocomplete = false,
     placeholder = '',
-    searchCategories = {
-    },
+    searchCategories = {},
 } = defineProps<Props>();
 
 const { isLoading } = storeToRefs(searchStore);
@@ -265,7 +264,8 @@ function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: boo
 }
 
 const categories = computed(() => {
-    if (searchCategories) return searchCategories;
+    // Check if searchCategories actaully has anything, otherwise get from label store.
+    if (Object.values(searchCategories).length > 0) return searchCategories;
     return configStore.getLabelMap('search-categories');
 });
 const orderedCategories = ref<SearchFilterCategory[]>([]);
