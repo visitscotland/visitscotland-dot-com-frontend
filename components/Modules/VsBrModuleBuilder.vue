@@ -217,6 +217,7 @@
                 :when-visible="{ rootMargin: '50px' }"
             >
                 <VsBrSearchWidget
+                    class="mt-175 mt-md-500 mb-175 mb-md-500"
                     :module="item"
                 />
             </NuxtLazyHydrate>
