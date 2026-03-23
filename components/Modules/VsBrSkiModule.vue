@@ -178,7 +178,7 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable import/no-import-module-exports */
+ 
 
 import {
     VsModuleWrapper,
@@ -199,7 +199,7 @@ import useConfigStore from '~/stores/configStore.ts';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 for (let x = 0; x < module.socialChannels.length; x++) {

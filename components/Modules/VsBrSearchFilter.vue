@@ -61,12 +61,10 @@ import { ref, computed } from 'vue';
 import { VsBody, VsButton } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
-import useSearchStore from '~/stores/searchStore.ts';
 
 import dataLayerComposable from '~/composables/dataLayer.ts';
 
 const configStore = useConfigStore();
-const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
 
 type Props = {

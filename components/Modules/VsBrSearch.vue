@@ -108,7 +108,7 @@ const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
 
-// eslint-disable-next-line no-undef
+ 
 const route = useRoute();
 
 type Props = {
