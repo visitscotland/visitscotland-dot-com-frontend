@@ -23,9 +23,9 @@ function cleanData(data: any) {
     return results;
 }
 
-// eslint-disable-next-line no-undef
+ 
 export default defineEventHandler(async(event) => {
-    // eslint-disable-next-line no-undef
+     
     const body = await readBody(event);
 
     let url = `${body.eventsApiUrl}?lang=${body.siteLanguage}`;
