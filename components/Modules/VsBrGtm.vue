@@ -24,9 +24,13 @@ const configStore = useConfigStore();
 const page: Page | undefined = inject('page');
 
 let id = '';
+let queryString = '';
 
 if (configStore.gtm) {
     id = configStore.gtm['gtm.container-id'];
+    queryString = configStore.gtm['gtm.is-production'] === 'true'
+        ? ''
+        : configStore.gtm['gtm.preview-query-string'];
 }
 
 let isPreviewMode = false;
