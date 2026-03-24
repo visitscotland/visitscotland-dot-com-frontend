@@ -11,6 +11,7 @@ function cleanData(data: any) {
         imgSrc: event.images?.[0]?.url || '',
         url: event.performances?.[0]?.url || '',
         placeUrl: event.place.website,
+        venueName: event.place.name || null,
         location: event.place.town,
         startDate: event.startFormatted,
         endDate: event.endFormatted,
@@ -22,9 +23,7 @@ function cleanData(data: any) {
     return results;
 }
 
-// eslint-disable-next-line no-undef
 export default defineEventHandler(async(event) => {
-    // eslint-disable-next-line no-undef
     const body = await readBody(event);
 
     let url = `${body.eventsApiUrl}?lang=${body.siteLanguage}`;
@@ -38,6 +37,7 @@ export default defineEventHandler(async(event) => {
     url = body.postcode ? `${url}&postcode=${body.postcode}` : url;
     url = body.postcodeareas ? `${url}&postcodeareas=${body.postcodeareas}` : url;
     url = body.radius ? `${url}&radius=${body.radius}` : url;
+    url = body.when ? `${url}&when=${body.when}` : url;
 
     body.subcategoryKeys.forEach((category: any) => {
         url += `&category=${category}`;

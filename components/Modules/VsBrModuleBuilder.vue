@@ -11,6 +11,11 @@
             :content="hippoContent[index]"
         />
 
+        <VsBrPreviewError
+            v-if="item.errorMessages && item.errorMessages.length"
+            :messages="item.errorMessages"
+        />
+
         <template
             v-if="item.type === 'ListLinksModule'"
         >
@@ -200,8 +205,20 @@
                 :when-visible="{ rootMargin: '50px' }"
             >
                 <VsBrPreviewError
-                    v-if="page.isPreview()"
                     :messages="item.errorMessages"
+                />
+            </NuxtLazyHydrate>
+        </div>
+
+        <div
+            v-else-if="item.type === 'SearchWidgetModule'"
+        >
+            <NuxtLazyHydrate
+                :when-visible="{ rootMargin: '50px' }"
+            >
+                <VsBrSearchWidget
+                    class="mt-175 mt-md-500 mb-175 mb-md-500"
+                    :module="item"
                 />
             </NuxtLazyHydrate>
         </div>

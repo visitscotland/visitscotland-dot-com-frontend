@@ -62,6 +62,21 @@
         />
     </template>
 
+    <template v-else-if="documentData.theme === 'Inspiration'">
+        <VsBrHeroSection
+            v-if="isSearchResultsPage"
+            :content="documentData"
+            :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
+        />
+        <VsBrPageIntro
+            v-else
+            :content="documentData"
+            :hero-image="heroImage"
+            :light-background="true"
+            :full-screen-mobile="true"
+        />
+    </template>
+
     <VsBrHeroSection
         v-else-if="documentData.theme === 'Simple' && isSearchResultsPage"
         :content="documentData"

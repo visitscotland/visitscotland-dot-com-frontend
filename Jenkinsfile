@@ -45,8 +45,8 @@ if (!env.VS_BRC_STACK_URL) { env.VS_BRC_STACK_URL = "https://api.${VS_BRC_STACK_
 if (!env.VS_BRC_STACK_API_VERSION) { env.VS_BRC_STACK_API_VERSION = "v3" }
 if (!env.VS_DSSR_PROXY_ON) { env.VS_DSSR_PROXY_ON = "TRUE" }
 if (!env.VS_BUILD_FEATURE_ENVIRONMENT) { env.VS_BUILD_FEATURE_ENVIRONMENT = "false" }
-if (!env.VS_DOCKER_IMAGE_NAME) { env.VS_DOCKER_IMAGE_NAME = "vs/vs-brxm15:node18" }
-if (!env.VS_DOCKER_BUILDER_IMAGE_NAME) { env.VS_DOCKER_BUILDER_IMAGE_NAME = "vs/vs-brxm15-builder:node18" }
+if (!env.VS_DOCKER_IMAGE_NAME) { env.VS_DOCKER_IMAGE_NAME = "vs/vs-brxm15:node24" }
+if (!env.VS_DOCKER_BUILDER_IMAGE_NAME) { env.VS_DOCKER_BUILDER_IMAGE_NAME = "vs/vs-brxm15-builder:node24" }
 if (!env.VS_SSR_PROXY_ON) { env.VS_SSR_PROXY_ON = "FALSE" }
 if (!env.VS_RELEASE_SNAPSHOT) { env.VS_RELEASE_SNAPSHOT = "FALSE" }
 if (!env.VS_PROXY_SERVER_FQDN) { env.VS_PROXY_SERVER_FQDN = "feature.visitscotland.com" }
@@ -60,7 +60,7 @@ echo "==/Setting default pipeline environment variables"
 
 echo "== Setting default application variables"
 if (!env.BR_CMS_ORIGIN_LOCATION ) { env.BR_CMS_ORIGIN_LOCATION = "https://feature.visitscotland.com" }
-if (!env.BR_RESOURCE_API_ENDPOINT ) { env.BR_RESOURCE_API_ENDPOINT = "https://feature.visitscotland.com/resourceapi?vs-brxm-host=172.28.87.25&vs-brxm-port=8087&vs-no-redirect=TRUE" }
+if (!env.BR_RESOURCE_API_ENDPOINT ) { env.BR_RESOURCE_API_ENDPOINT = "https://feature.visitscotland.com/resourceapi?vs-brxm-host=172.28.87.25&vs-brxm-port=8097&vs-no-redirect=TRUE" }
 if (!env.BR_X_FORWARDED_HOST ) { env.BR_X_FORWARDED_HOST = "feature.visitscotland.com" }
 echo "==/Setting default application variables"
 
@@ -154,7 +154,7 @@ pipeline {
         stage ('Install Dependencies') {
             agent {
                 docker {
-		    image 'vs/vs-brxm15-builder:node18'
+		    image 'vs/vs-brxm15-builder:node24'
 		    label thisAgent
 		    reuseNode true
                 }

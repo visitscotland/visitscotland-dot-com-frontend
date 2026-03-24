@@ -88,7 +88,7 @@ import {
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 </script>

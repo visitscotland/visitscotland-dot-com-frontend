@@ -153,10 +153,16 @@ const PREVIEW_SERVER_ID_KEY = 'server-id';
 let authorizationToken = '';
 let serverId = '';
 
-if (window && window.location) {
-    const searchParams = new URLSearchParams(window.location.search);
-    authorizationToken = searchParams.get(PREVIEW_TOKEN_KEY);
-    serverId = searchParams.get(PREVIEW_SERVER_ID_KEY);
+const query = useRoute().query;
+
+if (query) {
+    if (query[PREVIEW_TOKEN_KEY]) {
+        authorizationToken = query[PREVIEW_TOKEN_KEY];
+    }
+
+    if (query[PREVIEW_SERVER_ID_KEY]) {
+        serverId = query[PREVIEW_SERVER_ID_KEY];
+    }
 }
 
 /**
@@ -165,7 +171,7 @@ if (window && window.location) {
  */
 const runtimeConfig = useRuntimeConfig();
 
-if (process.server && xForwardedhost.value) {
+if (import.meta.server && xForwardedhost.value) {
     axios.defaults.headers.common.Host = xForwardedhost.value;
 }
 

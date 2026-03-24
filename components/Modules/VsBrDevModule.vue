@@ -9,12 +9,12 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable import/no-import-module-exports */
+ 
 /* eslint no-undef: 0 */
 
 import VsBrCarbonCalculator from './VsBrCarbonCalculator.vue';
 
-const props = defineProps<{ module: Object, content: Object, }>();
+const props = defineProps<{ module: object, content: object, }>();
 const content: any = props.content;
 const moduleData = content?.model?.data || {
 };

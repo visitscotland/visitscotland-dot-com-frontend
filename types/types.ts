@@ -16,6 +16,7 @@ export type SearchApiResult = {
     endDate?: string;
     id: string;
     imgSrc?: string;
+    venueName?: string,
     location?: string;
     minPrice?: string | number;
     startDate?: string;
