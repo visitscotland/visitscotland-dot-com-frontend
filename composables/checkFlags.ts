@@ -1,6 +1,9 @@
 import checkQueryString from './checkQueryString';
 import { useFlagsStore } from '../stores/flags';
 
+// this should be used in a conditional, eg:
+// <template v-if="checkFlags('profile-page')">Feature flag enabled</template>
+
 const checkFlag = (str) => {
     const flagsStore = useFlagsStore();
     const flags = flagsStore.flags;
