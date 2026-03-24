@@ -149,6 +149,9 @@ if (page.value) {
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
         configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
         configStore.allowFavourite = componentModels.pageConfiguration.allowFavourite;
+        configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
+        configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
+        configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;

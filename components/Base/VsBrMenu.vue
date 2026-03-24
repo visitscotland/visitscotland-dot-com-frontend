@@ -27,7 +27,8 @@
             >
                 <template #third-menu-item>
                     <a
-                        href="/sandbox/pages/favourites"
+                        v-if="configStore.featureFavouritesEnabled"
+                        :href="configStore.featureFavouritesUrl"
                         class="vs-favourites-link"
                     >
                         <VsIcon
@@ -36,7 +37,7 @@
                             size="xxs"
                         />
                         <span class="vs-favourites-link--text d-none d-lg-flex align-middle">
-                            Favourites
+                            {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
                         </span>
                     </a>
                     <VsGlobalMenuLanguage

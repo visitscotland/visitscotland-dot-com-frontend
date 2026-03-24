@@ -16,10 +16,10 @@
                                     level="2"
                                     heading-style="heading-l"
                                 >
-                                    Oops!
+                                    {{ configStore.getLabel('favourites', 'favourites.error.failed-fetch.header') }}
                                 </VsHeading>
                                 <p class="text-center">
-                                    Something went wrong and we were unable to retrieve your saved pages. Please try again later.
+                                    {{ configStore.getLabel('favourites', 'favourites.error.failed-fetch.text') }}
                                 </p>
                             </div>
                         </div>
@@ -34,10 +34,10 @@
                                     level="2"
                                     heading-style="heading-l"
                                 >
-                                    No saved items yet!
+                                    {{ configStore.getLabel('favourites', 'favourites.error.empty-state.heading') }}
                                 </VsHeading>
                                 <p class="text-center">
-                                    Click the heart icon placed around the site to favourite items! They will be saved here until you remove them.
+                                    {{ configStore.getLabel('favourites', 'favourites.error.empty-state.text') }}
                                 </p>
                             </div>
                         </div>
@@ -62,7 +62,9 @@
                                             :variant="variant"
                                             size="sm"
                                             @click="removePage(data.uuid)"
-                                        />
+                                        >
+                                            {{ configStore.getLabel('favourites', 'favourites.button.remove') }}
+                                        </VsButton>
                                     </div>
                                     <VsImg
                                         :src="data.image"
@@ -178,15 +180,22 @@ const requestBody = ref({
 const localStoragePropertyName = 'vs-saved-pages';
 const displayData = ref('no data retrieved');
 
+const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+// const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8018&vs-no-redirect=true';
+
 async function getSavedPageData(uuidArray) {
     // eslint-disable-next-line no-undef
-    const res = await $fetch('https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8018&vs-no-redirect=true', {
-        headers: {
-            'Content-Type': 'application/json',
+    const res = await $fetch(
+        favouritesEndpoint,
+        // devEndpoint,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'post',
+            body: JSON.stringify(uuidArray),
         },
-        method: 'post',
-        body: JSON.stringify(uuidArray),
-    });
+    );
 
     displayData.value = await res;
 }

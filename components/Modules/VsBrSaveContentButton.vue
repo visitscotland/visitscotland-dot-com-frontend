@@ -1,12 +1,12 @@
 <template>
+    <br>
     <VsButton
         icon-position="right"
         :icon="buttonSavedState ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
         :variant="buttonSavedState ? 'primary' : 'secondary'"
         @click="toggleSaved(props.uuid)"
     >
-        <!-- two alternate labels -->
-        {{ buttonSavedState ? "Remove from favourites" : "Add to favourites" }}
+        {{ buttonSavedState ? configStore.getLabel('favourites', 'favourites.button.remove.text') : configStore.getLabel('favourites', 'favourites.button.add.text') }}
     </VsButton>
 </template>
 
@@ -17,6 +17,10 @@ import {
 } from 'vue';
 
 import { VsButton } from '@visitscotland/component-library/components';
+
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
 
 const props = defineProps<{
     title: string,
@@ -31,10 +35,7 @@ const savedContentArray = ref([]);
 const localStoragePropertyName = 'vs-saved-pages';
 const buttonSavedState = ref(false);
 const dataForStorage = {
-    title: props.title,
-    teaser: props.teaser,
     uuid: props.uuid,
-    image: props.image,
 };
 
 function pageInSaveList(uuid) {
