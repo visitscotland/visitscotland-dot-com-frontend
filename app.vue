@@ -80,12 +80,12 @@ const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 const flagStore = useFlagsStore();
 
 const fetchFlags = async () => {
-  try {
-    const flags = featureFlagsData;
-    flagStore.flags = flags;
-  } catch (error) {
-    console.error('Error fetching flags:', error);
-  }
+    try {
+        const flags = featureFlagsData;
+        flagStore.flags = flags;
+    } catch (error) {
+        console.error('Error fetching flags:', error);
+    }
 };
 
 await fetchFlags();  
