@@ -30,3 +30,30 @@ export type SearchApiResults = {
     results: SearchApiResult[];
     totalResults: number;
 };
+
+export type FeaturedMapCategory = {
+    id: string,
+    label: string,
+};
+
+export type FeaturedMapPlace = {
+    type: string,
+    properties: {
+        id: string,
+        title: string,
+        description: string,
+        category: FeaturedMapCategory,
+        image: string,
+        link: {
+            label: string,
+            link: string,
+            type: string,
+        },
+        subtitle: string,
+        subcategory: FeaturedMapCategory[],
+    },
+    geometry: {
+        type: string,
+        coordinates: number[],
+    },
+};
