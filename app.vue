@@ -43,8 +43,8 @@ import {
     getCurrentInstance, ref, onMounted, nextTick,
 } from 'vue';
 import mitt from 'mitt';
-import { useFlagsStore } from '../stores/flags';
-import checkFlag from '../composables/checkFlags';
+import { useFlagsStore } from './stores/flags';
+import checkFlag from './composables/checkFlags';
 
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
