@@ -88,7 +88,7 @@ const fetchFlags = async () => {
   }
 };
 
-fetchFlags();  
+await fetchFlags();  
 
 let locale = 'resourceapi';
 
