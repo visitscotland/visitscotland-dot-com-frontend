@@ -84,7 +84,7 @@ pipeline {
     }
 
     agent {label thisAgent}
-
+    triggers { cron( cron_string )}
     environment {
 		//GITHUB_PAT_JENKINS_CI = credentials('github-pat-jenkins-ci')
 		GITHUB_PAT_JENKINS_CI = "not-in-use"
