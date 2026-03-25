@@ -5,10 +5,53 @@
         />
 
         <VsRow class="vs-map-with-sidebar__container mt-200">
-            <VsCol cols="3">
-                <VsBadge v-for="(filter, key) in module.filters" key="key">
+            <!-- <VsCol cols="3">
+                <VsBadge v-for="(filter, key) in module.filters" key="key" :class="`vs-map-with-sidebar__colour--${filter.id}`">
                     {{filter.label}}
                 </VsBadge>
+                <VsCard>
+
+                </VsCard>
+            </VsCol> -->
+            <VsCol cols="3" class="vs-map-with-sidebar__sidebar">
+                <VsHeading
+                    headling-level="3"
+                    heading-style="heading-xxs"
+                    class="mb-100"
+                >
+                    Outlander Filming Locations
+                </VsHeading>
+                <VsCardGroup cards-per-row="1">
+                    <VsCard 
+                        v-for="(feature, key) in module.geoJson.features"
+                        :key
+                        card-style="outlined"
+                        horizontal
+                    >
+                        <template #vs-card-header>
+                            <VsImg
+                                :src="feature.properties.image"
+                                class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
+                            />
+                        </template>
+                        <template #vs-card-body>
+                            <div class="mx-050">
+                                <VsHeading
+                                    headling-level="4"
+                                    heading-style="heading-xxxs"
+                                >
+                                    {{ feature.properties.title }}
+                                </VsHeading>
+                                <VsBadge 
+                                    :class="`vs-map-with-sidebar__colour--${feature.properties.category.id}`"
+                                    class="vs-map-with-sidebar__badge"
+                                >
+                                    {{feature.properties.category.label}}
+                                </VsBadge>
+                            </div>
+                        </template>
+                    </VsCard>
+                </VsCardGroup>
             </VsCol>
             <VsCol cols="9">
                 <div
@@ -36,6 +79,10 @@ import {
     VsRow,
     VsCol,
     VsBadge,
+    VsCard,
+    VsCardGroup,
+    VsImg,
+    VsHeading,
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
@@ -185,14 +232,26 @@ function getMarkerClass(filter: string) {
 
 <style lang="scss">
     $animation-duration: 100ms;
+    $module-height: 75vh;
 
     .vs-map-with-sidebar {
+        height: $module-height;
+
+        &__sidebar {
+            height: $module-height;
+            overflow-y: scroll;
+        }
+
         &__container {
             border: 1px solid grey;
         }
 
         &__google-map-container {
-            height: 75vh;
+            height: $module-height;
+        }
+
+        &__badge {
+            color: white;
         }
 
         &__marker {
