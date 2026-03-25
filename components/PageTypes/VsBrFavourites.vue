@@ -63,7 +63,7 @@
                                             size="sm"
                                             @click="removePage(data.uuid)"
                                         >
-                                            {{ configStore.getLabel('favourites', 'favourites.button.remove') }}
+                                            {{ configStore.getLabel('favourites', 'favourites.button.remove.text') }}
                                         </VsButton>
                                     </div>
                                     <VsImg
@@ -181,7 +181,7 @@ const localStoragePropertyName = 'vs-saved-pages';
 const displayData = ref('no data retrieved');
 
 const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-// const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8018&vs-no-redirect=true';
+// const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8017&vs-no-redirect=true';
 
 async function getSavedPageData(uuidArray) {
     // eslint-disable-next-line no-undef
