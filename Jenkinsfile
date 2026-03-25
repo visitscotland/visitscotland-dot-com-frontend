@@ -12,6 +12,9 @@ if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?feature.visitscotland.(com|
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3064"
+} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-nightly.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
+    echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3063"
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-brc.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3061"
