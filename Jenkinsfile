@@ -113,7 +113,7 @@ pipeline {
                     // run infrastructure.sh to set default variables and then import them into the pipeline
 		    script {
 	                if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
-                            echo "calling \"/infrastructure.sh setvars\" to set default pipeline variables"
+                        echo "calling \"/infrastructure.sh setvars\" to set default pipeline variables"
 	                    sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars --quiet'
 	                } else {
 	                    echo; echo "infrastructure.sh was not found - default environment variables will not be set"
@@ -124,7 +124,7 @@ pipeline {
 	                    echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
 	                    load "$WORKSPACE/ci/vs-last-env.quoted"
 	                    echo "found commit author: ${env.VS_COMMIT_AUTHOR}"
-                            sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh writevars --quiet'
+                        sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh writevars --quiet'
 	                } else {
 	                    echo; echo "$WORKSPACE/ci/vs-last-env.quoted - default environment variables will not be loaded"
 	                }
