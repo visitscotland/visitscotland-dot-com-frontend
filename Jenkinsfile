@@ -16,6 +16,11 @@ if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?feature.visitscotland.(com|
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-nightly.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3063"
+    env.VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE = "TRUE"
+    env.VS_PROXY_SERVER_FQDN = "develop-nightly.visitscotland.com"
+    env.BR_CMS_ORIGIN_LOCATION = "https://cms-develop-nightly.visitscotland.com"
+    env.BR_RESOURCE_API_ENDPOINT = "https://develop-nightly.visitscotland.com/resourceapi"
+    env.BR_X_FORWARDED_HOST = "develop-nightly.visitscotland.com"
     cron_string = "@midnight"
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-brc.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
@@ -108,7 +113,7 @@ pipeline {
                     // run infrastructure.sh to set default variables and then import them into the pipeline
 		    script {
 	                if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
-                        echo "calling \"/infrastructure.sh setvars\" to set default pipeline variables"
+                            echo "calling \"/infrastructure.sh setvars\" to set default pipeline variables"
 	                    sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars --quiet'
 	                } else {
 	                    echo; echo "infrastructure.sh was not found - default environment variables will not be set"
@@ -119,7 +124,7 @@ pipeline {
 	                    echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
 	                    load "$WORKSPACE/ci/vs-last-env.quoted"
 	                    echo "found commit author: ${env.VS_COMMIT_AUTHOR}"
-                        sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh writevars --quiet'
+                            sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh writevars --quiet'
 	                } else {
 	                    echo; echo "$WORKSPACE/ci/vs-last-env.quoted - default environment variables will not be loaded"
 	                }
@@ -155,7 +160,7 @@ pipeline {
         stage ('Install Dependencies') {
             agent {
                 docker {
-		    image 'vs/vs-brxm15-builder:node24'
+		    image '$VS_DOCKER_BUILDER_IMAGE_NAME'
 		    label thisAgent
 		    reuseNode true
                 }
@@ -214,7 +219,7 @@ pipeline {
             }
         } //end stage
 
-        stage ('Deploy') {
+        stage ('Deploy Container') {
 	    when {
 		anyOf {
 		    branch 'main'
@@ -230,7 +235,7 @@ pipeline {
                 //  - in a future iteration, where the container is started by the shell script, these will no longer be required
                 script {
                     if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
-	                    sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh dssr-server --debug --map-workspace=true'
+	                    sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh dssr-server --map-workspace=true'
 	                } else {
 	                    echo; echo "infrastructure.sh was not found - no container will be created"
 	                }
