@@ -177,7 +177,6 @@ const requestBody = ref({
     uuids: [],
 });
 
-const localStoragePropertyName = 'vs-saved-pages';
 const displayData = ref('no data retrieved');
 
 const favouritesEndpoint = configStore.featureFavouritesEndpoint;
@@ -201,9 +200,13 @@ async function getSavedPageData(uuidArray) {
 }
 
 function refreshState() {
-    savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
-    requestBody.value.uuids = savedContentArray.value.map((o) => o.uuid);
-    getSavedPageData(requestBody.value);
+    if (JSON.parse(localStorage.getItem('vs-saved-pages')) === null) {
+        localStorage.setItem('vs-saved-pages', JSON.stringify([]));
+    } else {
+        savedContentArray.value = JSON.parse(localStorage.getItem('vs-saved-pages'));
+        requestBody.value.uuids = savedContentArray.value.map((o) => o.uuid);
+        getSavedPageData(requestBody.value);
+    };
 }
 
 function removePage(uuid) {
@@ -212,7 +215,7 @@ function removePage(uuid) {
     // Remove from display data:
     displayData.value.cards = displayData.value.cards.filter((o) => o.uuid !== uuid);
     // Update localStorage:
-    localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
+    localStorage.setItem('vs-saved-pages', JSON.stringify(savedContentArray.value));
 };
 
 onMounted(() => {

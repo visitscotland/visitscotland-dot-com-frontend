@@ -1,5 +1,4 @@
 <template>
-    <br>
     <VsButton
         icon-position="right"
         :icon="buttonSavedState ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
