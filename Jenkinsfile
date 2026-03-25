@@ -15,7 +15,6 @@ if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?feature.visitscotland.(com|
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-nightly.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3063"
-    env.VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE = "TRUE"
     cron_string = "@midnight"
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-brc.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
