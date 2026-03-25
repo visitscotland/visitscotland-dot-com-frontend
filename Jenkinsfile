@@ -16,6 +16,11 @@ if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?feature.visitscotland.(com|
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-nightly.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3063"
+    env.VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE = "TRUE"
+    env.VS_PROXY_SERVER_FQDN = "develop-nightly.visitscotland.com"
+    env.BR_CMS_ORIGIN_LOCATION = "https://cms-develop-nightly.visitscotland.com"
+    env.BR_RESOURCE_API_ENDPOINT = "https://develop-nightly.visitscotland.com/resourceapi"
+    env.BR_X_FORWARDED_HOST = "develop-nightly.visitscotland.com"
     cron_string = "@midnight"
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-brc.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
@@ -44,10 +49,6 @@ echo "==/Setting conditional environment variables"
 echo "== Setting default pipeline environment variables"
 if (!env.VS_CI_DIR) { env.VS_CI_DIR = "ci" }
 if (!env.VS_BRANCH_PROPERTIES_DIR) { env.VS_BRANCH_PROPERTIES_DIR = env.VS_CI_DIR + "/properties" }
-if (!env.VS_BRC_STACK_URI) { env.VS_BRC_STACK_URI = "visitscotland" }
-if (!env.VS_BRC_ENV) { env.VS_BRC_ENV = "demo" }
-if (!env.VS_BRC_STACK_URL) { env.VS_BRC_STACK_URL = "https://api.${VS_BRC_STACK_URI}.bloomreach.cloud" }
-if (!env.VS_BRC_STACK_API_VERSION) { env.VS_BRC_STACK_API_VERSION = "v3" }
 if (!env.VS_DSSR_PROXY_ON) { env.VS_DSSR_PROXY_ON = "TRUE" }
 if (!env.VS_BUILD_FEATURE_ENVIRONMENT) { env.VS_BUILD_FEATURE_ENVIRONMENT = "false" }
 if (!env.VS_DOCKER_IMAGE_NAME) { env.VS_DOCKER_IMAGE_NAME = "vs/vs-brxm15:node24" }
@@ -159,7 +160,7 @@ pipeline {
         stage ('Install Dependencies') {
             agent {
                 docker {
-		    image 'vs/vs-brxm15-builder:node24'
+		    image '$VS_DOCKER_BUILDER_IMAGE_NAME'
 		    label thisAgent
 		    reuseNode true
                 }
@@ -218,7 +219,7 @@ pipeline {
             }
         } //end stage
 
-        stage ('Deploy') {
+        stage ('Deploy Container') {
 	    when {
 		anyOf {
 		    branch 'main'
@@ -234,7 +235,7 @@ pipeline {
                 //  - in a future iteration, where the container is started by the shell script, these will no longer be required
                 script {
                     if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
-	                    sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh dssr-server --debug --map-workspace=true'
+	                    sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh dssr-server --map-workspace=true'
 	                } else {
 	                    echo; echo "infrastructure.sh was not found - no container will be created"
 	                }
