@@ -1,6 +1,7 @@
 def MAIL_TO = "webops@visitscotland.net"
 def thisAgent
 thisAgent = "docker-02"
+cron_string = ""
 
 // set any environment-specific environment variables here using the format: env.MY_VAR = "conditional_value" }
 // please see ci/README_PIPELINE_VARIABLES.md or consult Web Operations for details on environment variables and their purposes
@@ -15,6 +16,7 @@ if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?feature.visitscotland.(com|
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-nightly.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3063"
+    cron_string = "@midnight"
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-brc.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3061"
@@ -83,7 +85,7 @@ pipeline {
     }
 
     agent {label thisAgent}
-
+    triggers { cron( cron_string )}
     environment {
 		//GITHUB_PAT_JENKINS_CI = credentials('github-pat-jenkins-ci')
 		GITHUB_PAT_JENKINS_CI = "not-in-use"
