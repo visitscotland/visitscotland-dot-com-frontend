@@ -8,6 +8,7 @@
             <VsCard
                 v-for="result in searchStore.searchResults"
                 :key="result.id"
+                card-style="outlined"
             >
                 <template #vs-card-header>
                     <div class="position-relative">
@@ -47,29 +48,31 @@
                 </template>
 
                 <template #vs-card-body>
-                    <VsHeading
-                        heading-style="heading-xs"
-                        level="3"
-                    >
-                        <VsLink
-                            class="stretched-link"
-                            :href="setCardLink(result)"
-                            variant="secondary"
-                            @click="eventClickAnalytics(result)"
+                    <div class="px-075">
+                        <VsHeading
+                            heading-style="heading-xs"
+                            level="3"
                         >
-                            {{ result.title }}
-                        </VsLink>
-                    </VsHeading>
+                            <VsLink
+                                class="stretched-link"
+                                :href="setCardLink(result)"
+                                variant="secondary"
+                                @click="eventClickAnalytics(result)"
+                            >
+                                {{ result.title }}
+                            </VsLink>
+                        </VsHeading>
 
-                    <VsBody>
-                        <p class="truncate-2-lines text-break">
-                            {{ result.description }}
-                        </p>
-                    </VsBody>
+                        <VsBody>
+                            <p class="truncate-2-lines text-break">
+                                {{ result.description }}
+                            </p>
+                        </VsBody>
+                    </div>
                 </template>
 
                 <template #vs-card-footer>
-                    <div class="d-flex justify-content-end align-items-end mt-050">
+                    <div class="d-flex justify-content-end align-items-end mt-050 mb-075 px-075">
                         <div
                             v-if="result.location"
                             class="d-flex align-items-start flex-grow-1"
