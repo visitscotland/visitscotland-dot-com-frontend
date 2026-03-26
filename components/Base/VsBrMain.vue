@@ -3,7 +3,7 @@
         class="vs-main-container"
         :class="{
             'has-edit-button': page.isPreview(),
-            'has-transparent-nav': configStore.isLocalVideoheader && configStore.useNavbar,
+            'has-transparent-nav': configStore.isLocalVideoheader && checkFlags('use-navbar'),
         }"
     >
         <BrManageContentButton
@@ -164,9 +164,6 @@ if (page.value) {
     configStore.pageDocument = pageModels.document;
 
     configStore.locale = componentModels.pageConfiguration.language;
-
-    configStore.useNavbar = true;
-    configStore.transparentHeader = true;
 
     let langString = '';
 

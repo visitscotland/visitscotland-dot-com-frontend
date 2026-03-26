@@ -37,7 +37,7 @@
 
     <!-- Navbar To Do - Switch to feature flag -->
     <div
-        v-if="configStore.useNavbar"
+        v-if="checkFlags('use-navbar')"
         class="vs-sticky-nav--no-global"
         :class="{ 'transparent-nav-bar': shouldShowTransparent }"
         @mouseenter="isHovered = true"
@@ -380,7 +380,7 @@ const isFocused = ref(false);
 const scrollY = ref(1);
 
 const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
-    && configStore.transparentHeader
+    && checkFlags('use-navbar')
     && scrollY.value === 0
     && !isHovered.value
     && !isFocused.value);
