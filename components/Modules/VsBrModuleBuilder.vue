@@ -74,7 +74,15 @@
             :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'ArticleModule'"
         >
+            <!-- SET TO ACTUAL LAYOUT -->
+            <VsBrAccordionModule
+                v-if="item.layout === null"
+                :id-prefix="`accordionItem-${index}-`"
+                :module="item"
+            />
+
             <VsBrArticleModule
+                v-else
                 :module="item"
             />
         </NuxtLazyHydrate>
