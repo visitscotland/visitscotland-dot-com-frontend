@@ -372,5 +372,10 @@ provide('page', page.value);
 
     .has-transparent-nav {
         margin-top: -76px;
+
+        .vs-hero-section__video-overlay {
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 50.48%, rgba(0, 0, 0, 0.30) 89.9%),
+                        linear-gradient(180deg, rgba(0, 0, 0, 0.00) 39.5%, rgba(0, 0, 0, 0.85) 100%);
+        }
     }
 </style>

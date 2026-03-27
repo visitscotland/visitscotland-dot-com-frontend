@@ -17,217 +17,118 @@
         </div>
     </div>
 
-    <VsBanner
-        v-if="banner"
-        :close-btn-text="configStore.getLabel('essentials.global', 'close')"
-    >
-        <template #banner-text>
-            <div v-html="banner.copy.value" />
-        </template>
-
-        <template #banner-cta>
-            <VsLink
-                :href="banner.ctaLink.link"
-                :type="banner.ctaLink.type"
-            >
-                {{ banner.ctaLink.label }}
-            </VsLink>
-        </template>
-    </VsBanner>
-
-    <!-- Navbar To Do - Switch to feature flag -->
-    <div
-        v-if="checkFlags('use-navbar')"
-        class="vs-sticky-nav--no-global"
-        :class="{ 'transparent-nav-bar': shouldShowTransparent }"
-        @mouseenter="isHovered = true"
-        @mouseleave="isHovered = false"
-        @focusin="isFocused = true"
-        @focusout="isFocused = false"
-    >
-        <!-- Navbar To Do - Get real labels -->
-        <VsNavigationBar
-            sidebar-close-label="Close navigation menu"
-            sidebar-open-label="Main menu"
-            sidebar-title="Navigation menu"
-            sidebar-breakpoint="xl"
+    <template v-if="checkFlags('use-navbar')">
+        <VsBanner
+            v-if="banner"
+            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
         >
-            <template #logo-link>
-                <VsSvgLink
-                    link-alt-text="VisitScotland Home"
-                    :href="`/${configStore.langString}`"
-                    svg-fill="#5B2487"
-                    svg-path="visitscotland-logo"
-                    svg-width="167px"
-                    svg-height="28px"
-                />
+            <template #banner-text>
+                <div v-html="banner.copy.value" />
             </template>
 
-            <template #navigation-bar-menu>
-                <VsNavigationBarMenu
-                    menu-aria-label="Main navigation menu"
+            <template #banner-cta>
+                <VsLink
+                    :href="banner.ctaLink.link"
+                    :type="banner.ctaLink.type"
                 >
-                    <template
-                        v-for="(menuItem, index) in menuItems"
-                        :key="index"
-                    >
-                        <li v-if="menuItem.children && menuItem.children.length">
-                            <VsNavigationBarMenuDropdown>
-                                <template #button-content>
-                                    {{ menuItem.model.title }}
-                                </template>
-
-                                <VsNavigationBarMenuItem
-                                    v-for="(dropdownItem, dropdownIndex) in menuItem.children"
-                                    :key="dropdownIndex"
-                                    :href="getNavLink(dropdownItem)"
-                                >
-                                    {{ dropdownItem.model.title }}
-                                </VsNavigationBarMenuItem>
-
-                                <li class="my-075 mx-100">
-                                    <VsLink
-                                        v-if="menuItem.model.cta"
-                                        :href="getNavLink(menuItem)"
-                                        type="internal"
-                                        no-visited-styles
-                                    >
-                                        {{ menuItem.model.cta }}
-                                    </VsLink>
-                                </li>
-                            </VsNavigationBarMenuDropdown>
-                        </li>
-
-                        <VsNavigationBarMenuItem
-                            v-else
-                            variant="primary-menu-item"
-                            :href="getNavLink(menuItem)"
-                        >
-                            {{ menuItem.model.title }}
-                        </VsNavigationBarMenuItem>
-                    </template>
-                </VsNavigationBarMenu>
+                    {{ banner.ctaLink.label }}
+                </VsLink>
             </template>
+        </VsBanner>
 
-            <template #navigation-bar-utilities>
-                <nav
-                    aria-label="Utility menu"
-                >
-                    <ul class="d-flex">
-                        <li class="me-075">
-                            <VsButton
-                                size="sm"
-                                variant="secondary"
-                                :href="configStore.globalSearchPath"
-                                icon="vs-icon-control-search"
-                                class="d-none d-sm-block vs-navigation-bar__search-link"
-                                show-label-breakpoint="md"
-                            >
-                                {{ configStore.getLabel('search', 'search') }}
-                            </VsButton>
-                        </li>
-                        <li
-                            class="d-none d-md-block me-075"
-                        >
-                            <VsTooltip
-                                title="Map of Scotland"
-                                subtle
-                                variant="subtle"
-                                size="sm"
-                                icon="fa-regular fa-map"
-                                icon-only
-                                href="/map"
-                                class="d-block"
-                            >
-                                Map of Scotland
-                            </VsTooltip>
-                        </li>
-                        <li
-                            class="d-none d-md-block me-0 me-md-075 me-lg-0"
-                        >
-                            <VsNavigationBarMenuDropdown subtle>
-                                <template #button-content>
-                                    {{ configStore.locale.toUpperCase() }}
-                                </template>
+        <!-- Navbar To Do - Switch to feature flag -->
+        <div
+            class="vs-sticky-nav--no-global"
+            :class="{ 'transparent-nav-bar': shouldShowTransparent }"
+            @mouseenter="isHovered = true"
+            @mouseleave="isHovered = false"
+            @focusin="isFocused = true"
+            @focusout="isFocused = false"
+        >
+            <!-- Navbar To Do - Get real labels -->
+            <VsNavigationBar
+                sidebar-close-label="Close navigation menu"
+                sidebar-open-label="Main menu"
+                sidebar-title="Navigation menu"
+                sidebar-breakpoint="xl"
+            >
+                <template #logo-link>
+                    <VsSvgLink
+                        link-alt-text="VisitScotland Home"
+                        :href="`/${configStore.langString}`"
+                        svg-fill="#5B2487"
+                        svg-path="visitscotland-logo"
+                        svg-width="167px"
+                        svg-height="28px"
+                    />
+                </template>
 
-                                <VsNavigationBarMenuItem
-                                    v-for="(language, index) in localisedUrls"
-                                    :key="index"
-                                    :href="formatLink(language.url)"
-                                >
-                                    {{ language.displayName }}
-                                </VsNavigationBarMenuItem>
-                            </VsNavigationBarMenuDropdown>
-                        </li>
-                    </ul>
-                </nav>
-            </template>
-
-            <template #sidebar-body>
-                <VsAccordion>
-                    <nav
-                        aria-label="Main navigation menu"
+                <template #navigation-bar-menu>
+                    <VsNavigationBarMenu
+                        menu-aria-label="Main navigation menu"
                     >
-                        <ul>
-                            <template
-                                v-for="(menuItem, index) in menuItems"
-                                :key="index"
-                            >
-                                <li v-if="menuItem.children && menuItem.children.length">
-                                    <VsAccordionItem
-                                        :control-id="index.toString()"
-                                    >
-                                        <template #title>
-                                            {{ menuItem.model.title }}
-                                        </template>
-
-                                        <ul>
-                                            <VsNavigationBarMenuItem
-                                                v-for="(mobileDropdownItem, mobileDropdownIndex)
-                                                    in menuItem.children"
-                                                :key="mobileDropdownIndex"
-                                                :href="getNavLink(mobileDropdownItem)"
-                                            >
-                                                {{ mobileDropdownItem.model.title }}
-                                            </VsNavigationBarMenuItem>
-
-                                            <li class="my-075 mx-100">
-                                                <VsLink
-                                                    v-if="menuItem.model.cta"
-                                                    :href="getNavLink(menuItem)"
-                                                    type="internal"
-                                                    no-visited-styles
-                                                >
-                                                    {{ menuItem.model.cta }}
-                                                </VsLink>
-                                            </li>
-                                        </ul>
-                                    </VsAccordionItem>
-                                </li>
-
-                                <template v-else>
-                                    <VsNavigationBarMenuItem
-                                        variant="primary-sidebar-item"
-                                        :href="getNavLink(menuItem)"
-                                    >
+                        <template
+                            v-for="(menuItem, index) in menuItems"
+                            :key="index"
+                        >
+                            <li v-if="menuItem.children && menuItem.children.length">
+                                <VsNavigationBarMenuDropdown>
+                                    <template #button-content>
                                         {{ menuItem.model.title }}
+                                    </template>
+
+                                    <VsNavigationBarMenuItem
+                                        v-for="(dropdownItem, dropdownIndex) in menuItem.children"
+                                        :key="dropdownIndex"
+                                        :href="getNavLink(dropdownItem)"
+                                    >
+                                        {{ dropdownItem.model.title }}
                                     </VsNavigationBarMenuItem>
 
-                                    <VsBrDivider class="my-025" />
-                                </template>
-                            </template>
-                        </ul>
-                    </nav>
-                </VsAccordion>
-            </template>
+                                    <li class="my-075 mx-100">
+                                        <VsLink
+                                            v-if="menuItem.model.cta"
+                                            :href="getNavLink(menuItem)"
+                                            type="internal"
+                                            no-visited-styles
+                                        >
+                                            {{ menuItem.model.cta }}
+                                        </VsLink>
+                                    </li>
+                                </VsNavigationBarMenuDropdown>
+                            </li>
 
-            <template
-                #sidebar-footer
-            >
-                <div class="p-100 pb-300">
-                    <nav aria-label="Sidebar Utility menu">
-                        <ul class="d-flex justify-content-end">
-                            <li class="d-block d-md-none me-075">
+                            <VsNavigationBarMenuItem
+                                v-else
+                                variant="primary-menu-item"
+                                :href="getNavLink(menuItem)"
+                            >
+                                {{ menuItem.model.title }}
+                            </VsNavigationBarMenuItem>
+                        </template>
+                    </VsNavigationBarMenu>
+                </template>
+
+                <template #navigation-bar-utilities>
+                    <nav
+                        aria-label="Utility menu"
+                    >
+                        <ul class="d-flex">
+                            <li class="me-075">
+                                <VsButton
+                                    size="sm"
+                                    variant="secondary"
+                                    :href="configStore.globalSearchPath"
+                                    icon="vs-icon-control-search"
+                                    class="d-none d-sm-block vs-navigation-bar__search-link"
+                                    show-label-breakpoint="md"
+                                >
+                                    {{ configStore.getLabel('search', 'search') }}
+                                </VsButton>
+                            </li>
+                            <li
+                                class="d-none d-md-block me-075"
+                            >
                                 <VsTooltip
                                     title="Map of Scotland"
                                     subtle
@@ -241,7 +142,9 @@
                                     Map of Scotland
                                 </VsTooltip>
                             </li>
-                            <li class="d-block d-md-none">
+                            <li
+                                class="d-none d-md-block me-0 me-md-075 me-lg-0"
+                            >
                                 <VsNavigationBarMenuDropdown subtle>
                                     <template #button-content>
                                         {{ configStore.locale.toUpperCase() }}
@@ -258,69 +161,186 @@
                             </li>
                         </ul>
                     </nav>
+                </template>
+
+                <template #sidebar-body>
+                    <VsAccordion>
+                        <nav
+                            aria-label="Main navigation menu"
+                        >
+                            <ul>
+                                <template
+                                    v-for="(menuItem, index) in menuItems"
+                                    :key="index"
+                                >
+                                    <li v-if="menuItem.children && menuItem.children.length">
+                                        <VsAccordionItem
+                                            :control-id="index.toString()"
+                                        >
+                                            <template #title>
+                                                {{ menuItem.model.title }}
+                                            </template>
+
+                                            <ul>
+                                                <VsNavigationBarMenuItem
+                                                    v-for="(mobileDropdownItem, mobileDropdownIndex)
+                                                        in menuItem.children"
+                                                    :key="mobileDropdownIndex"
+                                                    :href="getNavLink(mobileDropdownItem)"
+                                                >
+                                                    {{ mobileDropdownItem.model.title }}
+                                                </VsNavigationBarMenuItem>
+
+                                                <li class="my-075 mx-100">
+                                                    <VsLink
+                                                        v-if="menuItem.model.cta"
+                                                        :href="getNavLink(menuItem)"
+                                                        type="internal"
+                                                        no-visited-styles
+                                                    >
+                                                        {{ menuItem.model.cta }}
+                                                    </VsLink>
+                                                </li>
+                                            </ul>
+                                        </VsAccordionItem>
+                                    </li>
+
+                                    <template v-else>
+                                        <VsNavigationBarMenuItem
+                                            variant="primary-sidebar-item"
+                                            :href="getNavLink(menuItem)"
+                                        >
+                                            {{ menuItem.model.title }}
+                                        </VsNavigationBarMenuItem>
+
+                                        <VsBrDivider class="my-025" />
+                                    </template>
+                                </template>
+                            </ul>
+                        </nav>
+                    </VsAccordion>
+                </template>
+
+                <template
+                    #sidebar-footer
+                >
+                    <div class="p-100 pb-300">
+                        <nav aria-label="Sidebar Utility menu">
+                            <ul class="d-flex justify-content-end">
+                                <li class="d-block d-md-none me-075">
+                                    <VsTooltip
+                                        title="Map of Scotland"
+                                        subtle
+                                        variant="subtle"
+                                        size="sm"
+                                        icon="fa-regular fa-map"
+                                        icon-only
+                                        href="/map"
+                                        class="d-block"
+                                    >
+                                        Map of Scotland
+                                    </VsTooltip>
+                                </li>
+                                <li class="d-block d-md-none">
+                                    <VsNavigationBarMenuDropdown subtle>
+                                        <template #button-content>
+                                            {{ configStore.locale.toUpperCase() }}
+                                        </template>
+
+                                        <VsNavigationBarMenuItem
+                                            v-for="(language, index) in localisedUrls"
+                                            :key="index"
+                                            :href="formatLink(language.url)"
+                                        >
+                                            {{ language.displayName }}
+                                        </VsNavigationBarMenuItem>
+                                    </VsNavigationBarMenuDropdown>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </template>
+            </VsNavigationBar>
+        </div>
+    </template>
+    <template v-else>
+        <div
+            class="vs-sticky-nav vs-sticky-nav--has-content"
+            :class="{ 'has-edit-button': page.isPreview() }"
+        >
+            <VsBrSkipTo />
+            <header>
+                <VsGlobalMenu
+                    :active-site="configStore.activeSite === 'be'
+                        ? 'https://businessevents.visitscotland.com/'
+                        : 'https://www.visitscotland.com/'"
+                >
+                    <template #third-menu-item>
+                        <VsGlobalMenuLanguage
+                            :language="configStore.locale"
+                            :language-label="configStore.getLabel('navigation.static', 'universal.language')"
+                        >
+                            <VsGlobalMenuLanguageItem
+                                v-for="(language, index) in localisedUrls"
+                                :key="index"
+                                :language-link="formatLink(language.url)"
+                                :language-name="language.displayName"
+                                :language="language.locale.language"
+                            />
+                        </VsGlobalMenuLanguage>
+                    </template>
+                </VsGlobalMenu>
+
+                <div style="display: none;" aria-hidden="true">
+                    Navigation generated at {{ cacheBustDate }}
                 </div>
-            </template>
-        </VsNavigationBar>
-    </div>
-    <div
-        v-else
-        class="vs-sticky-nav vs-sticky-nav--has-content"
-        :class="{ 'has-edit-button': page.isPreview() }"
-    >
-        <VsBrSkipTo />
-        <header>
-            <VsGlobalMenu
-                :active-site="configStore.activeSite === 'be'
-                    ? 'https://businessevents.visitscotland.com/'
-                    : 'https://www.visitscotland.com/'"
-            >
-                <template #third-menu-item>
-                    <VsGlobalMenuLanguage
-                        :language="configStore.locale"
-                        :language-label="configStore.getLabel('navigation.static', 'universal.language')"
-                    >
-                        <VsGlobalMenuLanguageItem
-                            v-for="(language, index) in localisedUrls"
-                            :key="index"
-                            :language-link="formatLink(language.url)"
-                            :language-name="language.displayName"
-                            :language="language.locale.language"
+
+                <BrManageMenuButton :menu="menuData" />
+
+                <VsMeganav
+                    :href="`/${configStore.langString}`"
+                    :menu-toggle-alt-text="configStore.getLabel('navigation.static', 'meganav-toggle-btn-alt-text')"
+                    :search-button-text="configStore.getLabel('search', 'search')"
+                    :search-label-text="configStore.getLabel('search', 'search-label')"
+                    :search-clear-button-text="configStore.getLabel('search', 'clear-form')"
+                    :search-close-button-text="configStore.getLabel('search', 'close-form')"
+                    :logo-alt-text="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
+                    :is-static="true"
+                    :search-link="configStore.searchDmsBased ? '' : configStore.globalSearchPath"
+                >
+                    <template #mega-nav-top-menu-items>
+                        <VsBrMegaNav
+                            :links="menuItems"
                         />
-                    </VsGlobalMenuLanguage>
-                </template>
-            </VsGlobalMenu>
+                    </template>
 
-            <div style="display: none;" aria-hidden="true">
-                Navigation generated at {{ cacheBustDate }}
-            </div>
+                    <template #mega-nav-accordion-items>
+                        <VsBrAccordionNav
+                            :links="menuItems"
+                        />
+                    </template>
+                </VsMeganav>
+            </header>
+        </div>
 
-            <BrManageMenuButton :menu="menuData" />
+        <VsBanner
+            v-if="banner"
+            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+        >
+            <template #banner-text>
+                <div v-html="banner.copy.value" />
+            </template>
 
-            <VsMeganav
-                :href="`/${configStore.langString}`"
-                :menu-toggle-alt-text="configStore.getLabel('navigation.static', 'meganav-toggle-btn-alt-text')"
-                :search-button-text="configStore.getLabel('search', 'search')"
-                :search-label-text="configStore.getLabel('search', 'search-label')"
-                :search-clear-button-text="configStore.getLabel('search', 'clear-form')"
-                :search-close-button-text="configStore.getLabel('search', 'close-form')"
-                :logo-alt-text="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
-                :is-static="true"
-                :search-link="configStore.searchDmsBased ? '' : configStore.globalSearchPath"
-            >
-                <template #mega-nav-top-menu-items>
-                    <VsBrMegaNav
-                        :links="menuItems"
-                    />
-                </template>
-
-                <template #mega-nav-accordion-items>
-                    <VsBrAccordionNav
-                        :links="menuItems"
-                    />
-                </template>
-            </VsMeganav>
-        </header>
-    </div>
+            <template #banner-cta>
+                <VsLink
+                    :href="banner.ctaLink.link"
+                    :type="banner.ctaLink.type"
+                >
+                    {{ banner.ctaLink.label }}
+                </VsLink>
+            </template>
+        </VsBanner>
+    </template>
 </template>
 
 <script lang="ts" setup>
