@@ -39,7 +39,7 @@ import VsBrRichText from './VsBrRichText.vue';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 </script>

@@ -29,6 +29,7 @@ const useSearchStore = defineStore('search', () => {
     const postcode = ref<string>();
     const postcodeareas = ref<string>();
     const radius = ref<number>();
+    const when = ref<string>();
 
     // Search results
     const currentPage = ref(1);
@@ -56,15 +57,14 @@ const useSearchStore = defineStore('search', () => {
             searchInSessionCount.value += 1;
         }
 
-        // eslint-disable-next-line no-undef
         const cludoResults: SearchApiResults = await $fetch('/api/frontend/search/cludo-search', {
             method: 'post',
             body: {
                 apiOperator: configStore.cludoApiOperator,
                 categoryKey: categoryKey.value,
                 cludoApiKey: configStore.cludoExperienceId,
-                cludoCustomerId: parseInt(configStore.cludoCustomerId, 10),
-                cludoEngineId: parseInt(configStore.cludoEngineId, 10),
+                cludoCustomerId: Number.parseInt(configStore.cludoCustomerId, 10),
+                cludoEngineId: Number.parseInt(configStore.cludoEngineId, 10),
                 langString: configStore.langString,
                 searchTerm: searchTerm.value,
                 page: currentPage.value,
@@ -76,7 +76,6 @@ const useSearchStore = defineStore('search', () => {
             console.error(cludoResults.error);
         }
 
-        // eslint-disable-next-line no-undef
         const eventsResults: SearchApiResults = await $fetch('/api/frontend/search/events-search', {
             method: 'post',
             body: {
@@ -93,6 +92,7 @@ const useSearchStore = defineStore('search', () => {
                 sortBy: sortBy.value,
                 startDate: fromDate.value,
                 subcategoryKeys: subcategoryKeys.value,
+                when: when.value,
             },
         });
 
@@ -111,7 +111,7 @@ const useSearchStore = defineStore('search', () => {
     }
 
     async function setUrlParameters(fromAutosuggest?: boolean) {
-        // eslint-disable-next-line no-undef
+
         const route = useRoute();
 
         queryInput.value = (fromAutosuggest) ? 'Autosuggestion' : 'User input';
@@ -119,7 +119,6 @@ const useSearchStore = defineStore('search', () => {
         // eslint-disable-next-line object-curly-newline
         route.query = {};
 
-        // eslint-disable-next-line no-undef
         await navigateTo({
             path: route.path,
             query: {
@@ -156,6 +155,9 @@ const useSearchStore = defineStore('search', () => {
                 ...(radius.value && {
                     radius: radius.value,
                 }),
+                ...(when.value) && {
+                    when: when.value,
+                },
             },
         });
 
@@ -187,6 +189,7 @@ const useSearchStore = defineStore('search', () => {
         totalResults,
         totalResultsCludo,
         totalResultsEvents,
+        when,
     };
 });
 
