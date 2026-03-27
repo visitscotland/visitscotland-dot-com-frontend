@@ -36,7 +36,7 @@ export default defineNitroPlugin((nitroApp) => {
                 .map((tag) => tag.replace(/href="\//g, `href="${baseOrigin}/`))
                 .join('\n');
 
-            const scriptRegex = /<script\b[^>]*>([\s\S]*?)<\/script>/gi;
+            const scriptRegex = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
             const scriptBlock = (bodyString.match(scriptRegex) || [])
                 .map((tag) => tag.replace(/src="\//g, `src="${baseOrigin}/`))
                 .join('\n');
