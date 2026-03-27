@@ -72,11 +72,14 @@ import {
     getCurrentInstance, ref, onMounted, nextTick,
 } from 'vue';
 import mitt from 'mitt';
+import { useFlagsStore } from './stores/flags';
+import checkFlag from './composables/checkFlags';
 
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
+import featureFlagsData from './composables/featureFlags';
 
 const CssHeader = defineAsyncComponent(() => import('~/components/InternalResources/CssHeader.vue'));
 
@@ -90,6 +93,9 @@ const app = getCurrentInstance();
 const emitter = mitt();
 app.appContext.config.globalProperties.emitter = emitter;
 
+const checkFlags = () => checkFlag;
+app.appContext.config.globalProperties.checkFlags = checkFlags();
+
 /**
  * The current path, which is then transformed into a resource api endpoint to get from the CMS
  */
@@ -101,6 +107,19 @@ const route = useRoute().path;
  */
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
+
+const flagStore = useFlagsStore();
+
+const fetchFlags = async () => {
+    try {
+        const flags = featureFlagsData;
+        flagStore.flags = flags;
+    } catch (error) {
+        console.error('Error fetching flags:', error);
+    }
+};
+
+await fetchFlags();  
 
 let locale = 'resourceapi';
 
