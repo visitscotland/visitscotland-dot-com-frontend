@@ -153,7 +153,7 @@ function filterClasses() {
     ];
 }
 
-function categoryClickAnalytics(category: SearchFilterCategory, searchOrigin: String) {
+function categoryClickAnalytics(category: SearchFilterCategory, searchOrigin: string) {
     dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
         interaction_type: 'facet_click',
         click_text: category.Label || category.Key,
@@ -167,13 +167,13 @@ async function createAnalyticsThenNavigateToResultsPage(category: SearchFilterCa
     // `external: true` is required here to force a full page reload.
     if (isEventWidget && isSearchWidget) {
         categoryClickAnalytics(category, 'events_page');
-        // eslint-disable-next-line no-undef
+         
         await navigateTo(`${configStore.globalSearchPath}?category=events&subcategories=${category.Key}`, {
             external: true,
         });
     } else if (!isEventWidget && isSearchWidget) {
         categoryClickAnalytics(category, 'home_page');
-        // eslint-disable-next-line no-undef
+         
         await navigateTo(`${configStore.globalSearchPath}?category=${category.Key}`, {
             external: true,
         });

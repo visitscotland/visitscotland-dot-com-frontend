@@ -43,14 +43,14 @@ import {
     getCurrentInstance, ref, onMounted, nextTick,
 } from 'vue';
 import mitt from 'mitt';
-import { useFlagsStore } from './stores/flags';
-import checkFlag from './composables/checkFlags';
+import { useFlagsStore } from './stores/flags.ts';
+import checkFlag from './composables/checkFlags.ts';
 
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
-import featureFlagsData from './composables/featureFlags';
+import featureFlagsData from './composables/featureFlags.ts';
 
 /**
  * This section sets up all of the information we need to make available for the Bloomreach SDK
@@ -79,7 +79,7 @@ const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 
 const flagStore = useFlagsStore();
 
-const fetchFlags = async () => {
+const fetchFlags = async() => {
     try {
         const flags = featureFlagsData;
         flagStore.flags = flags;

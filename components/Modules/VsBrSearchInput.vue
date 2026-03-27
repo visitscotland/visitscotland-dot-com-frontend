@@ -125,7 +125,8 @@ const {
     isEventWidget = false,
     autocomplete = false,
     placeholder = '',
-    searchCategories = {},
+    searchCategories = {
+    },
 } = defineProps<Props>();
 
 const { isLoading } = storeToRefs(searchStore);
@@ -172,26 +173,26 @@ async function search() {
     if (isSearchWidget && isEventWidget) {
         searchOrigin = 'events_page';
         // `external: true` is required here to force a full page reload.
-        // eslint-disable-next-line no-undef
+         
         await navigateTo(
             !searchStore.searchTerm
-            ? `${configStore.globalSearchPath}?category=events`
-            : `${configStore.globalSearchPath}?category=events&search-term=${searchStore.searchTerm}`,
+                ? `${configStore.globalSearchPath}?category=events`
+                : `${configStore.globalSearchPath}?category=events&search-term=${searchStore.searchTerm}`,
             {
                 external: true,
-            }
+            },
         );
     } else if (!isEventWidget && isSearchWidget) {
         searchOrigin = 'home_page';
         // `external: true` is required here to force a full page reload.
-        // eslint-disable-next-line no-undef
+         
         await navigateTo(
             !searchStore.searchTerm
-            ? configStore.globalSearchPath 
-            : `${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, 
+                ? configStore.globalSearchPath 
+                : `${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, 
             {
                 external: true,
-            }
+            },
         );
     } else {
         await searchStore.setUrlParameters();
@@ -358,6 +359,7 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const searchLink = computed(() => {
     if (!isSearchWidget) return null;
 
