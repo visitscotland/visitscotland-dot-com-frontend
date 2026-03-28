@@ -6,7 +6,7 @@
         <VsContainer class="mt-075 mt-lg-200">
             <VsRow>
                 <VsCol>
-                    <div v-if="savedContentArray.length > 0 && !displayData.cards">
+                    <div v-if="fetchRequestStatus === 'error'">
                         <div class="d-flex justify-content-center">
                             <div class="d-flex flex-column gap-200 align-items-center" style="max-width: 478px">
                                 <svg width="189" height="189" viewBox="0 0 189 189" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -59,7 +59,6 @@
                                         <VsButton
                                             icon-only
                                             icon="fa-solid fa-heart"
-                                            :variant="variant"
                                             size="sm"
                                             @click="removePage(data.uuid)"
                                         >
@@ -164,6 +163,8 @@ let documentData : any = {
 
 let otyml : any = null;
 
+let fetchRequestStatus = 'pending';
+
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
     documentData = pageDocument.getData();
@@ -179,24 +180,22 @@ const requestBody = ref({
 
 const displayData = ref('no data retrieved');
 
-const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-// const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8017&vs-no-redirect=true';
+// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8017&vs-no-redirect=true';
 
 async function getSavedPageData(uuidArray) {
-    // eslint-disable-next-line no-undef
-    const res = await $fetch(
-        favouritesEndpoint,
-        // devEndpoint,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            method: 'post',
-            body: JSON.stringify(uuidArray),
-        },
-    );
+    try {
+        const res = await $fetch(devEndpoint, {
+            method: 'POST',
+            body: uuidArray,
+        });
 
-    displayData.value = await res;
+        displayData.value = res;
+        fetchRequestStatus = 'done';
+    } catch (err) {
+        console.error('Failed to fetch saved page data:', err);
+        fetchRequestStatus = 'error';
+    }
 }
 
 function refreshState() {

@@ -88,15 +88,11 @@
                     </p>
                 </div>
                 <div
-                    v-if="configStore.allowFavourite"
+                    v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkQueryString('favourites')"
                     class="d-flex flex-column flex-md-row"
                 >
-                    <!-- should button text be a label? -->
                     <VsBrSaveContentButton
-                        text="Add to favourites"
                         :uuid="content.id"
-                        :title="content.displayName"
-                        :teaser="content.teaser"
                     />
                 </div>
             </div>
@@ -108,12 +104,14 @@
             v-if="itinerary"
             #vs-intro-start-finish
         >
-            <dt class="list-inline-item">
-                {{ configStore.getLabel("itinerary", "start-finish") }}
-            </dt>
-            <dd class="list-inline-item">
-                {{ itinerary.firstStopLocation }} / {{ itinerary.lastStopLocation }}
-            </dd>
+            <div :class="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkQueryString('favourites') ? 'mt-200' : ''">
+                <dt class="list-inline-item ">
+                    {{ configStore.getLabel("itinerary", "start-finish") }}
+                </dt>
+                <dd class="list-inline-item">
+                    {{ itinerary.firstStopLocation }} / {{ itinerary.lastStopLocation }}
+                </dd>
+            </div>
         </template>
 
         <template
