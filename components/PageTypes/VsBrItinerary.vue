@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex flex-column gap-500">
-        <VsBrHeroSection
+    <div class="d-flex flex-column gap-500 pt-150 pt-lg-300">
+        <VsBrItineraryHero
             :content="documentData"
             :image="heroImage"
             inset
@@ -167,7 +167,6 @@ import useConfigStore from '~/stores/configStore.ts';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
-
 import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
@@ -182,6 +181,8 @@ import {
     VsDetail,
     VsButton,
 } from '@visitscotland/component-library/components';
+
+import VsBrItineraryHero from '../Modules/VsBrItineraryHero.vue';
 
 const configStore = useConfigStore();
 

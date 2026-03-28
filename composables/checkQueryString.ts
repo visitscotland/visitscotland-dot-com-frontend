@@ -12,9 +12,7 @@ const checkQueryString = (str) => {
         console.log(e);
         urlParams = '';
     }
-    
-    
     return false;
-}
+};
 
 export default checkQueryString;

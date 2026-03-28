@@ -8,18 +8,21 @@
         />
 
         <VsBrGtm />
-
         <VsBrPageViewEvent
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
-
-        <VsBrGeneral
-            v-if="pageName === 'general-page' || pageName === 'pagenotfound'"
+        <VsBrFavourites
+            v-if="pageDocument.model.data.displayName === 'favourites'"
             :page="page"
             :component="component"
         />
-
+        <!-- Is there a better way of excluding the favourites page? -->
+        <VsBrGeneral
+            v-if="(pageName === 'general-page' || pageName === 'pagenotfound') && pageDocument.model.data.displayName !== 'favourites'"
+            :page="page"
+            :component="component"
+        />
         <VsBrDestination
             v-if="pageName === 'destination-page'"
             :page="page"
@@ -64,6 +67,7 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
+import VsBrFavourites from '~/components/PageTypes/VsBrFavourites.vue';
 import VsBrItineraryLegacy from '~/components/PageTypes/VsBrItineraryLegacy.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
@@ -144,6 +148,10 @@ if (page.value) {
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
         configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
+        configStore.allowFavourite = componentModels.pageConfiguration.allowFavourite;
+        configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
+        configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
+        configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;

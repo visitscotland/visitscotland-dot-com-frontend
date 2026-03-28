@@ -11,6 +11,6 @@ const checkFlag = (str) => {
         return true;
     }
     return false;
-}
+};
 
 export default checkFlag;
