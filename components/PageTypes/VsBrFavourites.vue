@@ -163,7 +163,7 @@ let documentData : any = {
 
 let otyml : any = null;
 
-let fetchRequestStatus = 'pending';
+const fetchRequestStatus = ref('pending');
 
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
@@ -180,25 +180,28 @@ const requestBody = ref({
 
 const displayData = ref('no data retrieved');
 
-// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8017&vs-no-redirect=true';
+const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+// const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8017&vs-no-redirect=true';
 
 async function getSavedPageData(uuidArray) {
     try {
-        const res = await $fetch(devEndpoint, {
-            method: 'POST',
-            body: uuidArray,
-        });
+        const res = await $fetch(
+            // devEndpoint, 
+            favouritesEndpoint,
+            {
+                method: 'POST',
+                body: uuidArray,
+            });
 
         displayData.value = res;
-        fetchRequestStatus = 'done';
+        fetchRequestStatus.value = 'done';
     } catch (err) {
         console.error('Failed to fetch saved page data:', err);
-        fetchRequestStatus = 'error';
+        fetchRequestStatus.value = 'error';
     }
 }
 
-function refreshState() {
+const refreshState = () => {
     if (JSON.parse(localStorage.getItem('vs-saved-pages')) === null) {
         localStorage.setItem('vs-saved-pages', JSON.stringify([]));
     } else {
@@ -206,7 +209,7 @@ function refreshState() {
         requestBody.value.uuids = savedContentArray.value.map((o) => o.uuid);
         getSavedPageData(requestBody.value);
     };
-}
+};
 
 function removePage(uuid) {
     // Remove from working data:
@@ -219,10 +222,12 @@ function removePage(uuid) {
 
 onMounted(() => {
     refreshState();
-    window.addEventListener('storage', () => {
-        refreshState();
-    });
+    window.addEventListener('storage', refreshState); 
     getSavedPageData(requestBody.value);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('storage', refreshState);
 });
 
 </script>
