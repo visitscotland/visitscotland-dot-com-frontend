@@ -33,15 +33,12 @@
                 </VsBody>
             </VsCol>
             <VsCol
-                v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite"
+                v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkQueryString('favourites')"
                 cols="12"
                 class="mt-200 d-flex flex-column flex-sm-row"
             >
                 <VsBrSaveContentButton
-                    text="Add to favourites"
                     :uuid="content.id"
-                    :title="content.displayName"
-                    :teaser="content.teaser"
                 />
             </VsCol>
         </VsRow>
@@ -50,17 +47,14 @@
         >
             <VsImg
                 :src="imageSrc"
-                :alt="imgAlt"
+                :alt="imageData.altText"
             />
             <VsMediaCaption
                 v-if="imageData?.description || imageData?.credit"
                 data-test="vs-hero-section-image__caption"
                 :right-align="split"
             >
-                <template
-                    v-if="!split"
-                    #caption
-                >
+                <template #caption>
                     {{ imageData?.description }}
                 </template>
                 <template #credit>

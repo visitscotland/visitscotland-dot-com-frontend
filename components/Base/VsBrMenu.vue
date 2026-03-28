@@ -27,16 +27,17 @@
             >
                 <template #third-menu-item>
                     <a
-                        v-if="configStore.featureFavouritesEnabled"
+                        v-if="configStore.featureFavouritesEnabled && checkQueryString('favourites')"
                         :href="configStore.featureFavouritesUrl"
                         class="vs-favourites-link"
+                        :aria-label="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
                     >
                         <VsIcon
                             icon="fa-regular fa-heart"
                             variant="inverse"
                             size="xxs"
                         />
-                        <span class="vs-favourites-link--text d-none d-lg-flex align-middle">
+                        <span class="vs-favourites-link--text d-none d-md-block d-lg-flex align-middle">
                             {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
                         </span>
                     </a>
