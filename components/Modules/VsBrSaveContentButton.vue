@@ -23,12 +23,7 @@ import useConfigStore from '~/stores/configStore.ts';
 const configStore = useConfigStore();
 
 const props = defineProps<{
-    title: string,
-    teaser: string,
     uuid: string,
-    image: string,
-    variant: string,
-    size: string,
 }>();
 
 const savedContentArray = ref([]);

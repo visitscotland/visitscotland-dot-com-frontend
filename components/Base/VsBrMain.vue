@@ -13,13 +13,12 @@
             :page-type="pageName"
         />
         <VsBrFavourites
-            v-if="pageDocument.model.data.displayName === 'favourites'"
+            v-if="configStore.pageItems[0].type === 'FavouriteModule'"
             :page="page"
             :component="component"
         />
-        <!-- Is there a better way of excluding the favourites page? -->
         <VsBrGeneral
-            v-if="(pageName === 'general-page' || pageName === 'pagenotfound') && pageDocument.model.data.displayName !== 'favourites'"
+            v-if="(pageName === 'general-page' || pageName === 'pagenotfound') && configStore.pageItems[0].type !== 'FavouriteModule'"
             :page="page"
             :component="component"
         />
