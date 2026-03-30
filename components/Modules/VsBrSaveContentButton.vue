@@ -13,6 +13,7 @@
 import {
     ref,
     onMounted,
+    onBeforeUnmount,
 } from 'vue';
 
 import { VsButton } from '@visitscotland/component-library/components';
@@ -41,21 +42,23 @@ function pageInSaveList(uuid) {
     return savedContentArray.value.some((item) => item.uuid === uuid);
 }
 
-function refreshState() {
+const refreshState = () => {
     if (JSON.parse(localStorage.getItem(localStoragePropertyName)) === null) {
         localStorage.setItem(localStoragePropertyName, JSON.stringify(savedContentArray.value));
     } else {
         savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
     };
-}
+};
 
 onMounted(() => {
     refreshState();
     buttonSavedState.value = pageInSaveList(props.uuid);
-    window.addEventListener('storage', () => {
-        refreshState();
-        buttonSavedState.value = pageInSaveList(props.uuid);
-    });
+    window.addEventListener('storage', refreshState);
+    buttonSavedState.value = pageInSaveList(props.uuid);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('storage', refreshState);
 });
 
 function savePage(content) {

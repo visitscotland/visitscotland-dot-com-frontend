@@ -74,7 +74,7 @@
                                 <template #vs-card-body>
                                     <div class="px-075">
                                         <VsHeading
-                                            level="3"
+                                            level="2"
                                             heading-style="heading-xxs"
                                         >
                                             <VsLink
@@ -131,7 +131,7 @@
 
 <script lang="ts" setup>
 import {
-    toRefs, ref, onMounted,
+    toRefs, ref, onMounted, onBeforeUnmount,
 } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
@@ -180,14 +180,14 @@ const requestBody = ref({
 
 const displayData = ref('no data retrieved');
 
-const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-// const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8017&vs-no-redirect=true';
+// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8017&vs-no-redirect=true';
 
 async function getSavedPageData(uuidArray) {
     try {
         const res = await $fetch(
-            // devEndpoint, 
-            favouritesEndpoint,
+            devEndpoint, 
+            // favouritesEndpoint,
             {
                 method: 'POST',
                 body: uuidArray,
@@ -233,10 +233,10 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-    .vs-favourite-card .vs-card__header{
+    .vs-favourite-card .vs-card__header {
         position: relative;
     }
-    .vs-favourite-card .vs-remove-content-button{
+    .vs-favourite-card .vs-remove-content-button {
         position: absolute;
         top: 12px;
         right: 12px;

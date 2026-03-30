@@ -169,6 +169,8 @@
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
 
+import { checkQueryString } from '#imports';
+
 import {
     VsPageIntro,
     VsArticleDetails,
@@ -188,6 +190,7 @@ import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
 import VsBrVideoModal from '~/components/Modules/VsBrVideoModal.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrItinerarySummaryBox from '~/components/Modules/VsBrItinerarySummaryBox.vue';
+import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
 
 const configStore = useConfigStore();
 

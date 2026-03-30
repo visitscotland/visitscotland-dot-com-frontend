@@ -116,6 +116,8 @@ import formatLink from '~/composables/formatLink.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 
+import { checkQueryString } from '#imports';
+
 import {
     VsGlobalMenu,
     VsGlobalMenuLanguage,

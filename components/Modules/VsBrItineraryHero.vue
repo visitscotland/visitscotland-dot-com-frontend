@@ -52,7 +52,6 @@
             <VsMediaCaption
                 v-if="imageData?.description || imageData?.credit"
                 data-test="vs-hero-section-image__caption"
-                :right-align="split"
             >
                 <template #caption>
                     {{ imageData?.description }}
@@ -68,6 +67,8 @@
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
 
+import { checkQueryString } from '#imports';
+
 import {
     VsContainer,
     VsRow,
@@ -77,6 +78,8 @@ import {
     VsImg,
     VsMediaCaption,
 } from '@visitscotland/component-library/components';
+
+import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
