@@ -172,26 +172,24 @@ async function search() {
     if (isSearchWidget && isEventWidget) {
         searchOrigin = 'events_page';
         // `external: true` is required here to force a full page reload.
-        // eslint-disable-next-line no-undef
         await navigateTo(
             !searchStore.searchTerm
-            ? `${configStore.globalSearchPath}?category=events`
-            : `${configStore.globalSearchPath}?category=events&search-term=${searchStore.searchTerm}`,
+                ? `${configStore.globalSearchPath}?category=events`
+                : `${configStore.globalSearchPath}?category=events&search-term=${searchStore.searchTerm}`,
             {
                 external: true,
-            }
+            },
         );
     } else if (!isEventWidget && isSearchWidget) {
         searchOrigin = 'home_page';
         // `external: true` is required here to force a full page reload.
-        // eslint-disable-next-line no-undef
         await navigateTo(
             !searchStore.searchTerm
-            ? configStore.globalSearchPath 
-            : `${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, 
+                ? configStore.globalSearchPath 
+                : `${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, 
             {
                 external: true,
-            }
+            },
         );
     } else {
         await searchStore.setUrlParameters();
@@ -203,6 +201,7 @@ async function search() {
         query_input: searchStore.queryInput,
         results_count: searchStore.totalResults,
         search_usage_index: searchStore.searchInSessionCount,
+        search_category: searchStore.categoryKey ? searchStore.categoryKey : 'none selected',
         search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
         search_origin: searchOrigin,
     });
