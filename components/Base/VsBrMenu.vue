@@ -27,7 +27,7 @@
             >
                 <template #third-menu-item>
                     <a
-                        v-if="configStore.featureFavouritesEnabled && checkQueryString('favourites')"
+                        v-if="configStore.featureFavouritesEnabled && checkFlag('favourites')"
                         :href="configStore.featureFavouritesUrl"
                         class="vs-favourites-link"
                         :aria-label="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
@@ -116,7 +116,7 @@ import formatLink from '~/composables/formatLink.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import { checkQueryString } from '#imports';
+import checkFlag from '~/composables/checkFlags';
 
 import {
     VsGlobalMenu,

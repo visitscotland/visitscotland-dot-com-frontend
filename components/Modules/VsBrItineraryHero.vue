@@ -33,7 +33,7 @@
                 </VsBody>
             </VsCol>
             <VsCol
-                v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkQueryString('favourites')"
+                v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkFlag('favourites')"
                 cols="12"
                 class="mt-200 d-flex flex-column flex-sm-row"
             >
@@ -67,7 +67,7 @@
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
 
-import { checkQueryString } from '#imports';
+import checkFlag from '~/composables/checkFlags';
 
 import {
     VsContainer,
