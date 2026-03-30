@@ -180,14 +180,14 @@ const requestBody = ref({
 
 const displayData = ref('no data retrieved');
 
-// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8017&vs-no-redirect=true';
+const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+// const devEndpoint = 'https://feature.visitscotland.com/site/api/favourites/get-favourites?vs_brxm_host=172.28.87.25&vs_brxm_port=8017&vs-no-redirect=true';
 
 async function getSavedPageData(uuidArray) {
     try {
         const res = await $fetch(
-            devEndpoint, 
-            // favouritesEndpoint,
+            // devEndpoint, 
+            favouritesEndpoint,
             {
                 method: 'POST',
                 body: uuidArray,
