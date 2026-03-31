@@ -13,12 +13,13 @@
             :page-type="pageName"
         />
         <VsBrFavourites
-            v-if="configStore.pageItems[0].type === 'FavouriteModule'"
+            v-if="pageDocument.model.data.displayName === 'favourites'"
             :page="page"
             :component="component"
         />
+        <!-- Needs to be based off item.type devModule / bespoken module -->
         <VsBrGeneral
-            v-if="(pageName === 'general-page' || pageName === 'pagenotfound') && configStore.pageItems[0].type !== 'FavouriteModule'"
+            v-if="(pageName === 'general-page' || pageName === 'pagenotfound') && pageDocument.model.data.displayName !== 'favourites'"
             :page="page"
             :component="component"
         />
