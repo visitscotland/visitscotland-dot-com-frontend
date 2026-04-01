@@ -12,14 +12,8 @@
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
-        <VsBrFavourites
-            v-if="pageDocument.model.data.displayName === 'favourites'"
-            :page="page"
-            :component="component"
-        />
-        <!-- Needs to be based off item.type devModule / bespoken module -->
         <VsBrGeneral
-            v-if="(pageName === 'general-page' || pageName === 'pagenotfound') && pageDocument.model.data.displayName !== 'favourites'"
+            v-if="(pageName === 'general-page' || pageName === 'pagenotfound')"
             :page="page"
             :component="component"
         />
@@ -67,7 +61,6 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
-import VsBrFavourites from '~/components/PageTypes/VsBrFavourites.vue';
 import VsBrItineraryLegacy from '~/components/PageTypes/VsBrItineraryLegacy.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
@@ -157,9 +150,14 @@ if (page.value) {
             configStore.searchDmsBased = true;
         }
 
+        if (componentModels.pageConfiguration['favourites-page']) {
+            configStore.isFavouritesPage = true;
+        }
+
         if (componentModels.pageConfiguration.searchWidget) {
             configStore.showSearchWidget = true;
         }
+
     }
 
     const pageContent : any = page.value.getContent(page.value.model.root);

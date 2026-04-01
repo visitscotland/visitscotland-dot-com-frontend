@@ -5,7 +5,7 @@
         :variant="buttonSavedState ? 'primary' : 'secondary'"
         @click="toggleSaved(props.uuid)"
     >
-        {{ buttonSavedState ? configStore.getLabel('favourites', 'favourites.button.remove.text') : configStore.getLabel('favourites', 'favourites.button.add.text') }}
+        {{ buttonSavedState ? configStore.getLabel('favourites-button', 'button.remove.text') : configStore.getLabel('favourites-button', 'button.add.text') }}
     </VsButton>
 </template>
 

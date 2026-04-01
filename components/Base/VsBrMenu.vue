@@ -30,7 +30,7 @@
                         v-if="configStore.featureFavouritesEnabled && checkFlag('favourites')"
                         :href="configStore.featureFavouritesUrl"
                         class="vs-favourites-link"
-                        :aria-label="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
+                        :aria-label="configStore.getLabel('navigation.static', 'favourites.navigation.link.text')"
                     >
                         <VsIcon
                             icon="fa-regular fa-heart"
