@@ -141,7 +141,7 @@ if (page.value) {
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
         configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
-        configStore.allowFavourite = componentModels.pageConfiguration.allowFavourite;
+        configStore.allowFavourite = componentModels.pageConfiguration['allow-favourite'];
         configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
         configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
         configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
@@ -150,7 +150,7 @@ if (page.value) {
             configStore.searchDmsBased = true;
         }
 
-        if (componentModels.pageConfiguration['favourites-page']) {
+        if (componentModels.pageConfiguration['is-favourites-page']) {
             configStore.isFavouritesPage = true;
         }
 
