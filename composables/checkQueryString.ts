@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const checkQueryString = (str) => {
     let urlParams;
     try {
@@ -18,6 +20,6 @@ const checkQueryString = (str) => {
     
     
     return false;
-}
+};
 
 export default checkQueryString;
