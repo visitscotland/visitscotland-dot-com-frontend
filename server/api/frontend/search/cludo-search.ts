@@ -29,9 +29,9 @@ function cleanData(data: any, langString: string) {
     return results;
 }
 
-// eslint-disable-next-line no-undef
+ 
 export default defineEventHandler(async(event) => {
-    // eslint-disable-next-line no-undef
+     
     const body = await readBody(event);
 
     const cludoBaseURL = 'https://api.cludo.com/api/v3';

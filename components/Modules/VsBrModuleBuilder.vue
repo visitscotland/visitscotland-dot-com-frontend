@@ -209,6 +209,19 @@
                 />
             </NuxtLazyHydrate>
         </div>
+
+        <div
+            v-else-if="item.type === 'SearchWidgetModule' && checkFlags('search-widget')"
+        >
+            <NuxtLazyHydrate
+                :when-visible="{ rootMargin: '50px' }"
+            >
+                <VsBrSearchWidget
+                    class="mt-175 mt-md-500 mb-175 mb-md-500"
+                    :module="item"
+                />
+            </NuxtLazyHydrate>
+        </div>
     </div>
 </template>
 

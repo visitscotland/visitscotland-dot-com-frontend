@@ -19,7 +19,7 @@
                     class="vs-search__input w-100"
                     field-name="site-search"
                     name="searchrequest"
-                    :placeholder="configStore.getLabel('search', 'search-label')"
+                    :placeholder="placeholder ? placeholder : configStore.getLabel('search', 'search-label')"
                     type="search"
                     :value="searchStore.searchTerm"
                     @input="updateSearchTerm($event.target.value)"
@@ -29,8 +29,7 @@
             <VsButton
                 class="d-none d-lg-block px-200"
                 :disabled="isLoading"
-                :href="searchLink"
-                @click="search"
+                @click.prevent="search"
             >
                 {{ configStore.getLabel('search', 'search') }}
             </VsButton>
@@ -59,7 +58,8 @@
             :active-filter="searchStore.categoryKey"
             class="mt-200"
             :filter-categories="orderedCategories"
-            :is-search-widget
+            :is-search-widget="isSearchWidget"
+            :is-event-widget="isEventWidget"
             ref="categoryFilter"
             wrap
             @filter-updated="updateCategoryKey"
@@ -108,16 +108,26 @@ const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
 
-// eslint-disable-next-line no-undef
 const route = useRoute();
 const categoryFilter = ref<any>(null);
 const subcategoryFilter = ref<any>(null);
 
 type Props = {
     isSearchWidget?: boolean;
+    isEventWidget?: boolean;
+    autocomplete?: boolean;
+    placeholder?: string;
+    searchCategories?: object;
 }
 
-const { isSearchWidget = false } = defineProps<Props>();
+const {
+    isSearchWidget = false,
+    isEventWidget = false,
+    autocomplete = false,
+    placeholder = '',
+    searchCategories = {
+    },
+} = defineProps<Props>();
 
 const { isLoading } = storeToRefs(searchStore);
 
@@ -126,15 +136,14 @@ const searchSuggestions = ref<string[]>([]);
 async function updateSearchTerm(term: string) {
     searchStore.searchTerm = term.trim();
 
-    if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm) {
-        // eslint-disable-next-line no-undef
+    if (searchStore.searchTerm && route.query['search-term'] !== searchStore.searchTerm && autocomplete) {
         const response: { suggestions: string[], error: SearchApiError } = await $fetch('/api/frontend/search/cludo-autocomplete', {
             method: 'post',
             body: {
                 searchTerm: searchStore.searchTerm,
                 cludoApiKey: configStore.cludoExperienceId,
-                cludoCustomerId: parseInt(configStore.cludoCustomerId, 10),
-                cludoEngineId: parseInt(configStore.cludoEngineId, 10),
+                cludoCustomerId: Number.parseInt(configStore.cludoCustomerId, 10),
+                cludoEngineId: Number.parseInt(configStore.cludoEngineId, 10),
             },
         });
 
@@ -151,6 +160,8 @@ async function updateSearchTerm(term: string) {
 }
 
 async function search() {
+    let searchOrigin = 'results_page';
+
     searchSuggestions.value = [];
     searchStore.currentPage = 1;
     searchStore.fromDate = searchStore.categoryKey === 'events'
@@ -159,15 +170,34 @@ async function search() {
     searchStore.toDate = undefined;
     searchStore.sortBy = undefined;
 
-    if (isSearchWidget) {
+    if (isSearchWidget && isEventWidget) {
+        searchOrigin = 'events_page';
         // `external: true` is required here to force a full page reload.
-        // eslint-disable-next-line no-undef
-        await navigateTo(`${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, {
-            external: true,
-        });
+         
+        await navigateTo(
+            !searchStore.searchTerm
+                ? `${configStore.globalSearchPath}?category=events`
+                : `${configStore.globalSearchPath}?category=events&search-term=${searchStore.searchTerm}`,
+            {
+                external: true,
+            },
+        );
+    } else if (!isEventWidget && isSearchWidget) {
+        searchOrigin = 'home_page';
+        // `external: true` is required here to force a full page reload.
+         
+        await navigateTo(
+            !searchStore.searchTerm
+                ? configStore.globalSearchPath 
+                : `${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, 
+            {
+                external: true,
+            },
+        );
     } else {
         await searchStore.setUrlParameters();
     }
+
 
     dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
         search_query: searchStore.searchTerm,
@@ -175,7 +205,7 @@ async function search() {
         results_count: searchStore.totalResults,
         search_usage_index: searchStore.searchInSessionCount,
         search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
-        search_origin: isSearchWidget ? 'home_page' : 'results_page',
+        search_origin: searchOrigin,
     });
 }
 
@@ -198,7 +228,7 @@ async function suggestedSearch(suggestion: string) {
 
     if (isSearchWidget) {
         // `external: true` is required here to force a full page reload.
-        // eslint-disable-next-line no-undef
+
         await navigateTo(`${configStore.globalSearchPath}?search-term=${suggestion}`, {
             external: true,
         });
@@ -229,7 +259,7 @@ function highlightAutocompleteSuggestion(suggestion: string) {
     return escapeHtml(suggestion).replace(reg, '<strong>$1</strong>');
 }
 
-function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: Boolean) {
+function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: boolean) {
     dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
         interaction_type: 'facet_click',
         search_query: searchStore.searchTerm,
@@ -243,13 +273,17 @@ function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: Boo
     });
 }
 
-const categories = configStore.getLabelMap('search-categories');
+const categories = computed(() => {
+    // Check if searchCategories actaully has anything, otherwise get from label store.
+    if (Object.values(searchCategories).length > 0) return searchCategories;
+    return configStore.getLabelMap('search-categories');
+});
 const orderedCategories = ref<SearchFilterCategory[]>([]);
 
-Object.keys(categories).forEach((key) => {
+Object.keys(categories.value).forEach((key) => {
     orderedCategories.value.push({
         Key: key,
-        Label: categories[key],
+        Label: categories.value[key],
     });
 });
 
@@ -313,6 +347,9 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
             searchStore.subcategoryKeys.splice(index, 1);
         }
     }
+
+    searchStore.currentPage = 1;
+
     await searchStore.setUrlParameters();
 
     if (!searchStore.subcategoryKeys.includes(category.Key)) {
@@ -322,6 +359,7 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const searchLink = computed(() => {
     if (!isSearchWidget) return null;
 

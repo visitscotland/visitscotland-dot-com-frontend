@@ -1,5 +1,21 @@
 <template>
-    <VsContainer>
+    <VsContainer v-if="module">
+        <VsBrSectionHeader
+            :heading="module.title"
+            :lede="module.description"
+        />
+
+        <VsBrSearchInput
+            class="mt-200"
+            is-search-widget
+            :is-event-widget="module?.mainCategory === 'events' ? true : false"
+            :autocomplete="module?.mainCategory === 'events' ? false : true"
+            :search-url="configStore.globalSearchPath"
+            :placeholder="module?.placeholder"
+            :search-categories="module?.mainCategory === 'events' ? module.subcategories : module.categories"
+        />
+    </VsContainer>
+    <VsContainer v-else>
         <VsBrSectionHeader
             :heading="configStore.getLabel('search', 'search.widget-title')"
             :lede="configStore.getLabel('search', 'search.widget-label')"
@@ -21,4 +37,11 @@ import VsBrSectionHeader from './VsBrSectionHeader.vue';
 import VsBrSearchInput from './VsBrSearchInput.vue';
 
 const configStore = useConfigStore();
+
+const props = defineProps({
+    module: {
+        type: Object,
+        default: () => {},
+    },
+});
 </script>
