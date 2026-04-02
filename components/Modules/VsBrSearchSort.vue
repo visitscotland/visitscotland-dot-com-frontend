@@ -118,16 +118,19 @@ const dropdownText = computed(() => {
 
 function updateFromDate(value: string) {
     searchStore.fromDate = value;
+    searchStore.currentPage = 1;
     searchStore.setUrlParameters();
 }
 
 function updateToDate(value: string) {
     searchStore.toDate = value;
+    searchStore.currentPage = 1;
     searchStore.setUrlParameters();
 }
 
 function updateSortBy(value: string) {
     searchStore.sortBy = value;
+    searchStore.currentPage = 1;
     searchStore.setUrlParameters();
 }
 

@@ -29,7 +29,6 @@
             <VsButton
                 class="d-none d-lg-block px-200"
                 :disabled="isLoading"
-                :href="searchLink"
                 @click.prevent="search"
             >
                 {{ configStore.getLabel('search', 'search') }}
@@ -126,7 +125,8 @@ const {
     isEventWidget = false,
     autocomplete = false,
     placeholder = '',
-    searchCategories = {},
+    searchCategories = {
+    },
 } = defineProps<Props>();
 
 const { isLoading } = storeToRefs(searchStore);
@@ -173,17 +173,27 @@ async function search() {
     if (isSearchWidget && isEventWidget) {
         searchOrigin = 'events_page';
         // `external: true` is required here to force a full page reload.
-        // eslint-disable-next-line no-undef
-        await navigateTo(`${configStore.globalSearchPath}?category=events&search-term=${searchStore.searchTerm}`, {
-            external: true,
-        });
+         
+        await navigateTo(
+            !searchStore.searchTerm
+                ? `${configStore.globalSearchPath}?category=events`
+                : `${configStore.globalSearchPath}?category=events&search-term=${searchStore.searchTerm}`,
+            {
+                external: true,
+            },
+        );
     } else if (!isEventWidget && isSearchWidget) {
         searchOrigin = 'home_page';
         // `external: true` is required here to force a full page reload.
-        // eslint-disable-next-line no-undef
-        await navigateTo(`${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, {
-            external: true,
-        });
+         
+        await navigateTo(
+            !searchStore.searchTerm
+                ? configStore.globalSearchPath 
+                : `${configStore.globalSearchPath}?search-term=${searchStore.searchTerm}`, 
+            {
+                external: true,
+            },
+        );
     } else {
         await searchStore.setUrlParameters();
     }
@@ -337,6 +347,9 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
             searchStore.subcategoryKeys.splice(index, 1);
         }
     }
+
+    searchStore.currentPage = 1;
+
     await searchStore.setUrlParameters();
 
     if (!searchStore.subcategoryKeys.includes(category.Key)) {
@@ -346,6 +359,7 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const searchLink = computed(() => {
     if (!isSearchWidget) return null;
 
