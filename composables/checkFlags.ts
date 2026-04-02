@@ -1,5 +1,5 @@
 import checkQueryString from './checkQueryString.ts';
-import { useFlagsStore } from '../stores/flag.tss';
+import { useFlagsStore } from '~/stores/flags.ts';
 
 // this should be used in a conditional, eg:
 // <template v-if="checkFlags('profile-page')">Feature flag enabled</template>
