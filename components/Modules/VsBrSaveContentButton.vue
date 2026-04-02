@@ -43,13 +43,13 @@ const refreshState = () => {
     } else {
         savedContentArray.value = JSON.parse(localStorage.getItem(localStoragePropertyName));
     };
+    buttonSavedState.value = pageInSaveList(props.uuid);
 };
 
 onMounted(() => {
     refreshState();
     buttonSavedState.value = pageInSaveList(props.uuid);
     window.addEventListener('storage', refreshState);
-    buttonSavedState.value = pageInSaveList(props.uuid);
 });
 
 onBeforeUnmount(() => {
