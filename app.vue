@@ -72,7 +72,7 @@ import {
     getCurrentInstance, ref, onMounted, nextTick,
 } from 'vue';
 import mitt from 'mitt';
-import { useFlagsStore } from './stores/flag.ts';
+import { useFlagsStore } from './stores/flags.ts';
 import checkFlag from './composables/checkFlags.ts';
 
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
