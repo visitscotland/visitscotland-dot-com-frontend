@@ -198,10 +198,10 @@ async function search() {
 
     dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
         search_query: searchStore.searchTerm,
+        search_category: searchStore.categoryKey ? searchStore.categoryKey : null,
         query_input: searchStore.queryInput,
         results_count: searchStore.totalResults,
         search_usage_index: searchStore.searchInSessionCount,
-        search_category: searchStore.categoryKey ? searchStore.categoryKey : 'none selected',
         search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
         search_origin: searchOrigin,
     });
