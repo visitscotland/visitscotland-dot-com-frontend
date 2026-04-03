@@ -146,6 +146,14 @@ onMounted(() => {
         const routeSubcategories = route.query.subcategories as string;
 
         searchStore.subcategoryKeys = routeSubcategories.split(',');
+
+        searchStore.subcategoryKeys.forEach((subcategoryKey) => {
+            searchStore.orderedSubcategories.forEach((subcategory) => {
+                if (subcategoryKey === subcategory.Key) {
+                    searchStore.subcategorySelected.push(subcategory);
+                };
+            });
+        });
     }
 
     searchStore.currentPage = Number(route.query.page) || 1;
@@ -174,6 +182,7 @@ onMounted(() => {
         if (route.query['search-term']) {
             dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
                 search_query: searchStore.searchTerm,
+                search_category: searchStore.categoryKey ? searchStore.categoryKey : null,
                 query_input: searchStore.queryInput,
                 results_count: searchStore.totalResults,
                 search_usage_index: searchStore.searchInSessionCount,
