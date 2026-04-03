@@ -65,3 +65,25 @@
 #ccc .ccc-svg-element {
   top: 0 !important;
 }
+
+#ccc .ccc-content--dark #ccc-end .ccc-button-solid:hover span {
+  background: #1F49D6;
+  color: #FFFFFF;
+}
+
+#ccc .ccc-content--dark #ccc-end .ccc-button-solid:hover {
+  background: #1F49D6;
+  color: #FFFFFF;
+}
+
+#ccc .ccc-content--dark #ccc-end .ccc-button-solid span {
+  background-color: rgba(0, 0, 0, 0);
+  color: #FFFFFF;
+  font-weight: normal;
+}
+
+#ccc .ccc-content--dark #ccc-end .ccc-button-solid {
+  font-weight: normal;
+  background: rgba(0, 0, 0, 0);
+  color: #FFFFFF;
+}
