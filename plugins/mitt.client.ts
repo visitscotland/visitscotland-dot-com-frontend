@@ -1,11 +1,15 @@
 import mitt from 'mitt';
 
 export default defineNuxtPlugin(() => {
-    const eventBus = mitt();
+export default defineNuxtPlugin(() => {
+    const EVENT_BUS = mitt();
 
     return {
         provide: {
-            eventBus,
+            eventBus: EVENT_BUS,
+        },
+    };
+});
         },
     };
 });
