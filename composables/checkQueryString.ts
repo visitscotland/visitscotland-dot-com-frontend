@@ -17,8 +17,6 @@ const checkQueryString = (str) => {
         console.log(e);
         urlParams = '';
     }
-    
-    
     return false;
 };
 
