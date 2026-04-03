@@ -476,6 +476,10 @@ provide('page', page.value);
             color: white;
         }
 
+        .dropdown-menu > .vs-navigation-bar-menu-item > a {
+            color: #200f2e;
+        }
+
         .vs-button--icon-only.btn-subtle i {
             color: white !important;
         }
