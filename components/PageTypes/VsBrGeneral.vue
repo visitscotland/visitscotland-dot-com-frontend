@@ -5,12 +5,15 @@
             :light-background="true"
             :blog="documentData.blog"
         />
-
         <VsBrIntroImage
             :image="heroImage"
         />
     </template>
-
+    <template v-else-if="configStore.isFavouritesPage">
+        <VsBrHeroSection
+            :content="documentData"
+        />
+    </template>
     <template v-else-if="documentData.theme === 'Top-Level'">
         <VsBrHeroSection
             v-if="configStore.heroVideo && configStore.isLocalVideoheader"

@@ -3,7 +3,7 @@ def thisAgent
 thisAgent = "docker-02"
 cron_string = ""
 
-// set any environment-specific environment variables here using the format: env.MY_VAR = "conditional_value" }
+// set any environment-specific environment variables here using the format: env.MY_VAR = "conditional_value"
 // please see ci/README_PIPELINE_VARIABLES.md or consult Web Operations for details on environment variables and their purposes
 echo "== Setting conditional environment variables"
 if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?feature.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {

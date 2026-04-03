@@ -125,7 +125,8 @@ const {
     isEventWidget = false,
     autocomplete = false,
     placeholder = '',
-    searchCategories = {},
+    searchCategories = {
+    },
 } = defineProps<Props>();
 
 const { isLoading } = storeToRefs(searchStore);
@@ -183,6 +184,7 @@ async function search() {
     } else if (!isEventWidget && isSearchWidget) {
         searchOrigin = 'home_page';
         // `external: true` is required here to force a full page reload.
+        // eslint-disable-next-line no-undef
         await navigateTo(
             !searchStore.searchTerm
                 ? configStore.globalSearchPath 
@@ -349,6 +351,9 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
             searchStore.subcategoryKeys.splice(index, 1);
         }
     }
+
+    searchStore.currentPage = 1;
+
     await searchStore.setUrlParameters();
 
     if (!searchStore.subcategorySelected.includes(category)) {
@@ -358,6 +363,7 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const searchLink = computed(() => {
     if (!isSearchWidget) return null;
 
