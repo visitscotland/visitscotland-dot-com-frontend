@@ -70,7 +70,7 @@
             v-if="searchStore.categoryKey === 'events' && !isSearchWidget"
             :active-filter="searchStore.subcategoryKeys"
             class="mt-200"
-            :filter-categories="orderedSubcategories"
+            :filter-categories="searchStore.orderedSubcategories"
             :heading="configStore.getLabel('search', 'refine')"
             ref="subcategoryFilter"
             @filter-updated="updateSubcategoryKey"
@@ -257,14 +257,23 @@ function highlightAutocompleteSuggestion(suggestion: string) {
     return escapeHtml(suggestion).replace(reg, '<strong>$1</strong>');
 }
 
-function categoryClickAnalytics(category: SearchFilterCategory, facetStatus: boolean) {
+function categoryClickAnalytics(category: SearchFilterCategory | SearchFilterCategory[], facetStatus: boolean) {
+    
+    const appliedFilters: string[] = [];
+
+    if (Array.isArray(category)) {
+        category.forEach((facet) => {
+            appliedFilters.push(facet.Label);
+        });
+    }
+
     dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
         interaction_type: 'facet_click',
         search_query: searchStore.searchTerm,
         page_number: searchStore.currentPage,
         search_usage_index: searchStore.searchInSessionCount,
         results_count: searchStore.totalResults,
-        click_text: category.Label || category.Key,
+        click_text: Array.isArray(category) ?  appliedFilters.flat().toString() : category.Label || category.Key,
         facet_status: facetStatus ? 'applied' : 'removed',
         search_type: searchStore.searchInSessionCount === 1 ? 'initial' : 'follow-up',
         search_origin: isSearchWidget ? 'home_page' : 'results_page',
@@ -285,17 +294,7 @@ Object.keys(categories.value).forEach((key) => {
     });
 });
 
-const subcategories = configStore.getLabelMap('search-events-filters');
-const orderedSubcategories = ref<SearchFilterCategory[]>([]);
-
-Object.keys(subcategories).forEach((key) => {
-    orderedSubcategories.value.push({
-        Key: key,
-        Label: subcategories[key],
-    });
-});
-
-async function setCategoryAnalytics(category: any, facetStatus?: boolean) {
+async function setCategoryAnalytics(category: SearchFilterCategory | SearchFilterCategory[], facetStatus?: boolean) {
     let facetData;
 
     if (facetStatus === true) {
@@ -337,20 +336,23 @@ async function updateCategoryKey(category: SearchFilterCategory) {
 
 async function updateSubcategoryKey(category: SearchFilterCategory) {
     if (!searchStore.subcategoryKeys.includes(category.Key)) {
+        searchStore.subcategorySelected.push(category);
         searchStore.subcategoryKeys.push(category.Key);
     } else {
+        //const index = searchStore.subcategorySelected.indexOf(category);
         const index = searchStore.subcategoryKeys.indexOf(category.Key);
 
         if (index >= 0) {
+            searchStore.subcategorySelected.splice(index, 1);
             searchStore.subcategoryKeys.splice(index, 1);
         }
     }
     await searchStore.setUrlParameters();
 
-    if (!searchStore.subcategoryKeys.includes(category.Key)) {
-        await setCategoryAnalytics(category, false);
+    if (!searchStore.subcategorySelected.includes(category)) {
+        await setCategoryAnalytics(searchStore.subcategorySelected, false);
     } else {
-        await setCategoryAnalytics(category, true);
+        await setCategoryAnalytics(searchStore.subcategorySelected, true);
     }
 }
 

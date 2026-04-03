@@ -146,6 +146,14 @@ onMounted(() => {
         const routeSubcategories = route.query.subcategories as string;
 
         searchStore.subcategoryKeys = routeSubcategories.split(',');
+
+        searchStore.subcategoryKeys.forEach((subcategoryKey) => {
+            searchStore.orderedSubcategories.forEach((subcategory) => {
+                if (subcategoryKey === subcategory.Key) {
+                    searchStore.subcategorySelected.push(subcategory);
+                };
+            });
+        });
     }
 
     searchStore.currentPage = Number(route.query.page) || 1;
