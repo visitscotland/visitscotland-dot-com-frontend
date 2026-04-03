@@ -79,15 +79,18 @@
 
                                     <VsNavigationBarMenuItem
                                         v-for="(dropdownItem, dropdownIndex) in menuItem.children"
+                                        v-show="getNavLink(dropdownItem)"
                                         :key="dropdownIndex"
                                         :href="getNavLink(dropdownItem)"
                                     >
                                         {{ dropdownItem.model.title }}
                                     </VsNavigationBarMenuItem>
 
-                                    <li class="my-075 mx-100">
+                                    <li
+                                        v-if="menuItem.model.cta"
+                                        class="my-075 mx-100"
+                                    >
                                         <VsLink
-                                            v-if="menuItem.model.cta"
                                             :href="getNavLink(menuItem)"
                                             type="internal"
                                             no-visited-styles
