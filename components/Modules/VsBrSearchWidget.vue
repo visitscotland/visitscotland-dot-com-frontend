@@ -38,6 +38,7 @@ import VsBrSearchInput from './VsBrSearchInput.vue';
 
 const configStore = useConfigStore();
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
     module: {
         type: Object,
