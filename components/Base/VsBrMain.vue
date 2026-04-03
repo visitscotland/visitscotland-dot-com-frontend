@@ -126,6 +126,7 @@ if (page.value) {
     configStore.pageIntro = componentModels.pageIntro;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
+    configStore.mainMapPath = componentModels['main-map-path'];
 
     if (componentModels.heroVideo) {
         configStore.heroVideo = componentModels.heroVideo;

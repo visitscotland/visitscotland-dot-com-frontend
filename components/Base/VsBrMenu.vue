@@ -47,14 +47,14 @@
         >
             <!-- Navbar To Do - Get real labels -->
             <VsNavigationBar
-                sidebar-close-label="Close navigation menu"
-                sidebar-open-label="Main menu"
-                sidebar-title="Navigation menu"
+                :sidebar-close-label="configStore.getLabel('navigation.static', 'meganav.sidebar-close-label')"
+                :sidebar-open-label="configStore.getLabel('navigation.static', 'meganav.sidebar-open-label')"
+                :sidebar-title="configStore.getLabel('navigation.static', 'meganav.sidebar-title')"
                 sidebar-breakpoint="xl"
             >
                 <template #logo-link>
                     <VsSvgLink
-                        link-alt-text="VisitScotland Home"
+                        :link-alt-text="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
                         :href="`/${configStore.langString}`"
                         svg-fill="#5B2487"
                         svg-path="visitscotland-logo"
@@ -65,7 +65,7 @@
 
                 <template #navigation-bar-menu>
                     <VsNavigationBarMenu
-                        menu-aria-label="Main navigation menu"
+                        :menu-aria-label="configStore.getLabel('navigation.static', 'meganav.menu-aria-label')"
                     >
                         <template
                             v-for="(menuItem, index) in menuItems"
@@ -111,7 +111,7 @@
 
                 <template #navigation-bar-utilities>
                     <nav
-                        aria-label="Utility menu"
+                        :aria-label="configStore.getLabel('navigation.static', 'meganav.utility-aria-label')"
                     >
                         <ul class="d-flex">
                             <li class="me-075">
@@ -130,16 +130,16 @@
                                 class="d-none d-md-block me-075"
                             >
                                 <VsTooltip
-                                    title="Map of Scotland"
+                                    :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
                                     subtle
                                     variant="subtle"
                                     size="sm"
                                     icon="fa-regular fa-map"
                                     icon-only
-                                    href="/map"
+                                    :href="configStore.mainMapPath"
                                     class="d-block"
                                 >
-                                    Map of Scotland
+                                    {{ configStore.getLabel('navigation.static', 'meganav.map-link-tooltip') }}
                                 </VsTooltip>
                             </li>
                             <li
@@ -166,7 +166,7 @@
                 <template #sidebar-body>
                     <VsAccordion>
                         <nav
-                            aria-label="Main navigation menu"
+                            :aria-label="configStore.getLabel('navigation.static', 'meganav.menu-aria-label')"
                         >
                             <ul>
                                 <template
@@ -229,16 +229,16 @@
                             <ul class="d-flex justify-content-end">
                                 <li class="d-block d-md-none me-075">
                                     <VsTooltip
-                                        title="Map of Scotland"
+                                        :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
                                         subtle
                                         variant="subtle"
                                         size="sm"
                                         icon="fa-regular fa-map"
                                         icon-only
-                                        href="/map"
+                                        :href="configStore.mainMapPath"
                                         class="d-block"
                                     >
-                                        Map of Scotland
+                                        {{ configStore.getLabel('navigation.static', 'meganav.map-link-tooltip') }}
                                     </VsTooltip>
                                 </li>
                                 <li class="d-block d-md-none">
