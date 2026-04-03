@@ -120,7 +120,7 @@
                                     variant="secondary"
                                     :href="configStore.globalSearchPath"
                                     icon="vs-icon-control-search"
-                                    class="d-none d-sm-block vs-navigation-bar__search-link"
+                                    class="vs-navigation-bar__search-link"
                                     show-label-breakpoint="md"
                                 >
                                     {{ configStore.getLabel('search', 'search') }}
@@ -225,7 +225,7 @@
                     #sidebar-footer
                 >
                     <div class="p-100 pb-300">
-                        <nav aria-label="Sidebar Utility menu">
+                        <nav :aria-label="configStore.getLabel('navigation.static', 'meganav.sidebar-utility-aria-label')">
                             <ul class="d-flex justify-content-end">
                                 <li class="d-block d-md-none me-075">
                                     <VsTooltip
