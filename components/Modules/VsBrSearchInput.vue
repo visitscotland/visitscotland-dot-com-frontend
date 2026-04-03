@@ -347,6 +347,9 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
             searchStore.subcategoryKeys.splice(index, 1);
         }
     }
+
+    searchStore.currentPage = 1;
+
     await searchStore.setUrlParameters();
 
     if (!searchStore.subcategoryKeys.includes(category.Key)) {

@@ -6,6 +6,7 @@
             {{ module.title }}
         </template>
         <VsEmbedWrapper
+            :no-cookies-required="true"
             :no-cookie-text="configStore.getLabel('ugc', 'ugc.no-cookies-message')"
             :error-text="configStore.getLabel('essentials.global', 'third-party-error')"
             :no-js-text="configStore.getLabel('ugc', 'ugc.no-js-message')"
