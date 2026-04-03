@@ -1,11 +1,11 @@
 import mitt from 'mitt';
 
 export default defineNuxtPlugin(() => {
-    const emitter = mitt();
+    const eventBus = mitt();
 
     return {
         provide: {
-            emitter,
+            eventBus,
         },
     };
 });
