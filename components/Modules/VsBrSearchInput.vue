@@ -270,6 +270,7 @@ function categoryClickAnalytics(category: SearchFilterCategory | SearchFilterCat
     dataLayerHelper.createDataLayerObject('siteSearchClickEvent', {
         interaction_type: 'facet_click',
         search_query: searchStore.searchTerm,
+        search_category: searchStore.categoryKey,
         page_number: searchStore.currentPage,
         search_usage_index: searchStore.searchInSessionCount,
         results_count: searchStore.totalResults,

@@ -19,6 +19,7 @@ const siteSearchClickTemplate = [
     'event',
     'interaction_type',
     'search_query',
+    'search_category',
     'query_input',
     'page_number',
     'page_navigation_direction',
