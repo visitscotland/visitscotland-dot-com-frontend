@@ -279,6 +279,21 @@
                         : 'https://www.visitscotland.com/'"
                 >
                     <template #third-menu-item>
+                        <a
+                            v-if="configStore.featureFavouritesEnabled && checkFlag('favourites')"
+                            :href="configStore.featureFavouritesUrl"
+                            class="vs-favourites-link"
+                            :aria-label="configStore.getLabel('navigation.static', 'favourites.navigation.link.text')"
+                        >
+                            <VsIcon
+                                icon="fa-regular fa-heart"
+                                variant="inverse"
+                                size="xxs"
+                            />
+                            <span class="vs-favourites-link--text d-none d-md-block d-lg-flex align-middle">
+                                {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
+                            </span>
+                        </a>
                         <VsGlobalMenuLanguage
                             :language="configStore.locale"
                             :language-label="configStore.getLabel('navigation.static', 'universal.language')"
@@ -357,6 +372,8 @@ import formatLink from '~/composables/formatLink.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 
+import checkFlag from '~/composables/checkFlags.ts';
+
 import {
     VsGlobalMenu,
     VsGlobalMenuLanguage,
@@ -373,6 +390,7 @@ import {
     VsAccordion,
     VsAccordionItem,
     VsButton,
+    VsIcon,
 } from '@visitscotland/component-library/components';
 
 import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
@@ -496,5 +514,27 @@ provide('page', page.value);
                 color: white !important;
             }
         }
+    }
+
+    .vs-favourites-link {
+        font-size: .75rem;
+        gap: 0.25rem;
+        display: flex;
+        align-items: center;
+        color: white;
+        text-decoration: none;
+        height: 100%;
+        padding: 0 1.5rem;
+        transition: all .2s ease-in-out;
+    }
+
+    .vs-favourites-link:hover {
+        background: #33225d;
+        transition: all .2s ease-in-out;
+    }
+
+    .vs-favourites-link:focus {
+        box-shadow: 0 0 0 2px #fffa99 inset;
+        outline: none;
     }
 </style>

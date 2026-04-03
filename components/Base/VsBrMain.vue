@@ -11,18 +11,15 @@
         />
 
         <VsBrGtm />
-
         <VsBrPageViewEvent
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
-
         <VsBrGeneral
-            v-if="pageName === 'general-page' || pageName === 'pagenotfound'"
+            v-if="(pageName === 'general-page' || pageName === 'pagenotfound')"
             :page="page"
             :component="component"
         />
-
         <VsBrDestination
             v-if="pageName === 'destination-page'"
             :page="page"
@@ -148,14 +145,23 @@ if (page.value) {
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
         configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
+        configStore.allowFavourite = componentModels.pageConfiguration['allow-favourite'];
+        configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
+        configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
+        configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
         }
 
+        if (componentModels.pageConfiguration['is-favourites-page']) {
+            configStore.isFavouritesPage = true;
+        }
+
         if (componentModels.pageConfiguration.searchWidget) {
             configStore.showSearchWidget = true;
         }
+
     }
 
     const pageContent : any = page.value.getContent(page.value.model.root);
