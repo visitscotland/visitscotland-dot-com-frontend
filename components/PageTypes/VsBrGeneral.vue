@@ -242,9 +242,7 @@ if (page.value) {
             firstModuleIsLink = true;
         }
 
-        pageItems.forEach((item) => {
-            if (item.type === 'SearchWidgetModule') isSearchWidgetPresent = true;
-        });
+        isSearchWidgetPresent = pageItems.some((item) => item.type === 'SearchWidgetModule');
     }
 
     // Remove trailing slashes from the global search path to remove path ambiguity
