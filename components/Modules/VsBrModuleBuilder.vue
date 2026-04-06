@@ -218,7 +218,7 @@
         </div>
 
         <div
-            v-else-if="item.type === 'SearchWidgetModule' && checkFlags('search-widget')"
+            v-else-if="item.type === 'SearchWidgetModule'"
         >
             <NuxtLazyHydrate
                 :when-visible="{ rootMargin: '50px' }"
