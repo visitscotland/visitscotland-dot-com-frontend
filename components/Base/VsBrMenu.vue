@@ -18,6 +18,7 @@
     </div>
 
     <template v-if="checkFlags('use-navbar')">
+        <VsBrSkipTo />
         <VsBanner
             v-if="banner"
             :close-btn-text="configStore.getLabel('essentials.global', 'close')"
