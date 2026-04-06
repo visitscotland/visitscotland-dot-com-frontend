@@ -130,6 +130,7 @@ export default function dataLayerComposable() {
                 event: eventName,
                 interaction_type: event.interaction_type,
                 search_query: event.search_query,
+                search_category: event.search_category,
                 query_input: event.query_input,
                 page_number: event.page_number,
                 page_navigation_direction: event.page_navigation_direction,

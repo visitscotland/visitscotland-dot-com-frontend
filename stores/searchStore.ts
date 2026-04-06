@@ -1,6 +1,15 @@
-import type { SearchApiResults, SearchApiResult } from '~/types/types.ts';
+import type {
+    SearchApiResults,
+    SearchApiResult,
+    SearchFilterCategory,
+} from '~/types/types.ts';
+
 import { defineStore } from 'pinia';
-import { ref, watchEffect } from 'vue';
+import {
+    computed,
+    ref, 
+    watchEffect,
+} from 'vue';
 
 import useConfigStore from './configStore.ts';
 
@@ -18,6 +27,7 @@ const useSearchStore = defineStore('search', () => {
     // Filter
     const categoryKey = ref<string>();
     const subcategoryKeys = ref<string[]>([]);
+    const subcategorySelected = ref<SearchFilterCategory[]>([]);
 
     // Search sort
     const fromDate = ref<string>();
@@ -49,6 +59,19 @@ const useSearchStore = defineStore('search', () => {
             dateError.value = fromDate.value > toDate.value;
         }
     });
+
+    const orderedSubcategories: SearchFilterCategory[] = computed(() => {
+        const subcategories = configStore.getLabelMap('search-events-filters');
+        const orderedList: SearchFilterCategory[] = [];
+        Object.keys(subcategories).forEach((key) => {
+            orderedList.push({
+                Key: key,
+                Label: subcategories[key],
+            });
+        });
+        return orderedList;
+    });
+
 
     async function getSearchResults(isAutoSearch = false) {
         isLoading.value = true;
@@ -175,6 +198,7 @@ const useSearchStore = defineStore('search', () => {
         getSearchResults,
         isLoading,
         location,
+        orderedSubcategories,
         postcode,
         postcodeareas,
         queryInput,
@@ -185,6 +209,7 @@ const useSearchStore = defineStore('search', () => {
         setUrlParameters,
         sortBy,
         subcategoryKeys,
+        subcategorySelected,
         toDate,
         totalResults,
         totalResultsCludo,
