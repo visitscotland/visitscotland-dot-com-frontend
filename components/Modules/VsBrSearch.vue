@@ -148,11 +148,11 @@ onMounted(() => {
         searchStore.subcategoryKeys = routeSubcategories.split(',');
 
         searchStore.subcategoryKeys.forEach((subcategoryKey) => {
-            searchStore.orderedSubcategories.forEach((subcategory) => {
-                if (subcategoryKey === subcategory.Key) {
-                    searchStore.subcategorySelected.push(subcategory);
-                };
-            });
+            const match = searchStore.orderedSubcategories.find(
+                (subcategory) => subcategoryKey === subcategory.Key,
+            );
+
+            if (match) searchStore.subcategorySelected.push(match);
         });
     }
 
