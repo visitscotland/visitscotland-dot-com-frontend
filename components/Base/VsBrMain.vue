@@ -1,7 +1,10 @@
 <template>
     <div
         class="vs-main-container"
-        :class="{ 'has-edit-button': page.isPreview() }"
+        :class="{
+            'has-edit-button': page.isPreview(),
+            'has-transparent-nav': configStore.isLocalVideoheader && checkFlags('use-navbar'),
+        }"
     >
         <BrManageContentButton
             :content="pageDocument"
@@ -120,6 +123,7 @@ if (page.value) {
     configStore.pageIntro = componentModels.pageIntro;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
+    configStore.mainMapPath = componentModels['main-map-path'];
 
     if (componentModels.heroVideo) {
         configStore.heroVideo = componentModels.heroVideo;
@@ -370,6 +374,15 @@ provide('page', page.value);
 
         @media (min-width: 992px) {
             min-height: calc(100vh - 28rem);
+        }
+    }
+
+    .has-transparent-nav {
+        margin-top: -76px;
+
+        .vs-hero-section__video-overlay {
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 50.48%, rgba(0, 0, 0, 0.30) 89.9%),
+                        linear-gradient(180deg, rgba(0, 0, 0, 0.00) 39.5%, rgba(0, 0, 0, 0.85) 100%);
         }
     }
 </style>
