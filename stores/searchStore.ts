@@ -5,7 +5,11 @@ import type {
 } from '~/types/types.ts';
 
 import { defineStore } from 'pinia';
-import { ref, watchEffect } from 'vue';
+import {
+    computed,
+    ref, 
+    watchEffect,
+} from 'vue';
 
 import useConfigStore from './configStore.ts';
 

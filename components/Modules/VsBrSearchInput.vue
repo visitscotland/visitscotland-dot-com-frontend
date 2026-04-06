@@ -184,7 +184,6 @@ async function search() {
     } else if (!isEventWidget && isSearchWidget) {
         searchOrigin = 'home_page';
         // `external: true` is required here to force a full page reload.
-        // eslint-disable-next-line no-undef
         await navigateTo(
             !searchStore.searchTerm
                 ? configStore.globalSearchPath 
@@ -343,7 +342,6 @@ async function updateSubcategoryKey(category: SearchFilterCategory) {
         searchStore.subcategorySelected.push(category);
         searchStore.subcategoryKeys.push(category.Key);
     } else {
-        //const index = searchStore.subcategorySelected.indexOf(category);
         const index = searchStore.subcategoryKeys.indexOf(category.Key);
 
         if (index >= 0) {
