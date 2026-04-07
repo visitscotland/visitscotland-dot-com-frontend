@@ -24,8 +24,8 @@
                         :centre-info-url="centre.feedURL"
                         :img-src="centreImages[index].url"
                         :img-alt="centreImages[index].alt"
-                        :locale="configStore.locale"
-                        :more-details-link="centre.cmsPage.link"
+                        :locale="configStore.langString || 'en-gb'"
+                        :more-details-link="formatLink(centre.cmsPage.link)"
                         :piste-map-link="centre.pisteMap"
                         :last-updated-label="configStore.getLabel('ski', 'ski-centre.last-updated')"
                         :lifts-label="configStore.getLabel('ski', 'ski-centre.lifts')"
@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable import/no-import-module-exports */
+ 
 
 import { inject } from 'vue';
 
@@ -81,13 +81,15 @@ import {
     VsSkiScotlandCard,
 } from '@visitscotland/component-library/components';
 
+import formatLink from '~/composables/formatLink.ts';
+
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 const page: Page | undefined = inject('page');

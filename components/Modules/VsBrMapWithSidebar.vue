@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable import/no-import-module-exports */
+ 
 
 import { VsMapWithSidebar } from '@visitscotland/component-library/maps';
 import { VsModuleWrapper } from '@visitscotland/component-library/components';
@@ -82,14 +82,23 @@ import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
+import formatLink from '~/composables/formatLink.ts';
+
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 const filteredFeatures = module.geoJson.features.filter(
     (feature: any) => feature.geometry && feature.geometry.type,
 );
+
+for (let x = 0; x < filteredFeatures.length; x++) {
+    if (filteredFeatures[x].properties && filteredFeatures[x].properties.link) {
+        filteredFeatures[x].properties.link.link =
+            formatLink(filteredFeatures[x].properties.link.link);
+    }
+}
 
 let toggleValues = [];
 

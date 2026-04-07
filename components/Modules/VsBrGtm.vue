@@ -2,7 +2,7 @@
     <template v-if="id && !isPreviewMode">
         <noscript>
             <iframe
-            :src="`https://www.googletagmanager.com/ns.html?id=${id}${queryString}`"
+            :src="`https://www.googletagmanager.com/ns.html?id=${id}`"
             height="0"
             width="0"
             style="display:none;visibility:hidden"
@@ -24,13 +24,9 @@ const configStore = useConfigStore();
 const page: Page | undefined = inject('page');
 
 let id = '';
-let queryString = '';
 
 if (configStore.gtm) {
     id = configStore.gtm['gtm.container-id'];
-    queryString = configStore.gtm['gtm.is-production'] === 'true'
-        ? ''
-        : configStore.gtm['gtm.preview-query-string'];
 }
 
 let isPreviewMode = false;
@@ -79,17 +75,17 @@ const attachCivicEvents = (counter = 1) => {
             window.dataLayer.push = (arg) => {
                 let res = null;
 
-                if (arg) {
-                    res = originalDataLayerPush(arg);
-                } else {
-                    return originalDataLayerPush();
+                if (arg && arg !== null && typeof arg !== 'undefined') {
+                    res = originalDataLayerPush.apply(window.dataLayer, [arg]);
+
+                    const eventString = arg.event || (arg.value && arg.value.event) || '';
+
+                    checkEvent(eventString);
+
+                    return res;
                 }
 
-                const eventString = arg?.value?.event ?? arg?.event ?? '';
-
-                checkEvent(eventString);
-
-                return res;
+                return originalDataLayerPush.apply(window.dataLayer, [arg]);
             };
         } else {
             setTimeout(() => {
@@ -105,7 +101,7 @@ if (id && !isPreviewMode) {
             `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl+ '${queryString}';f.parentNode.insertBefore(j,f);
+            '/metrics/?id='+i+dl+'';f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','${id}');`,
         ],
     });

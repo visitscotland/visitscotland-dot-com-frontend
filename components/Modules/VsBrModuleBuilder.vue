@@ -4,11 +4,16 @@
         v-for="(item, index) in modules"
         :key="index"
         :id="`section-${index}`"
-        :class="{ 'has-edit-button': page.isPreview() }"
+        :class="`vs-module-wrapper__outer--${item.themeValue} ${page.isPreview() ? 'has-edit-button' : ''}`"
     >
         <BrManageContentButton
             v-if="item.hippoBean && page"
             :content="hippoContent[index]"
+        />
+
+        <VsBrPreviewError
+            v-if="item.errorMessages && item.errorMessages.length"
+            :messages="item.errorMessages"
         />
 
         <template
@@ -170,6 +175,7 @@
         >
             <VsBrSpotlightSection
                 :module="item"
+                :theme="item.themeValue"
             />
         </NuxtLazyHydrate>
 
@@ -191,6 +197,13 @@
                 :content="hippoContent[index]"
             />
         </NuxtLazyHydrate>
+        
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'FavouriteModule'"
+        >
+            <VsBrFavouritesDisplay />
+        </NuxtLazyHydrate>
 
         <div
             v-else-if="item.type === 'ErrorModule'"
@@ -199,8 +212,20 @@
                 :when-visible="{ rootMargin: '50px' }"
             >
                 <VsBrPreviewError
-                    v-if="page.isPreview()"
                     :messages="item.errorMessages"
+                />
+            </NuxtLazyHydrate>
+        </div>
+
+        <div
+            v-else-if="item.type === 'SearchWidgetModule'"
+        >
+            <NuxtLazyHydrate
+                :when-visible="{ rootMargin: '50px' }"
+            >
+                <VsBrSearchWidget
+                    class="mt-175 mt-md-500 mb-175 mb-md-500"
+                    :module="item"
                 />
             </NuxtLazyHydrate>
         </div>
@@ -229,6 +254,7 @@ import VsBrCannedSearchModule from '~/components/Modules/VsBrCannedSearchModule.
 import VsBrUGCModule from '~/components/Modules/VsBrUGCModule.vue';
 import VsBrSpotlightSection from '~/components/Modules/VsBrSpotlightSection.vue';
 import VsBrDevModule from '~/components/Modules/VsBrDevModule.vue';
+import VsBrFavouritesDisplay from '~/components/Modules/VsBrFavouritesDisplay.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
@@ -259,6 +285,7 @@ if (modules) {
             modules[x].type === 'ListLinksModule'
             || modules[x].type === 'MultiImageLinksModule'
             || modules[x].type === 'SingleImageLinksModule'
+            || modules[x].type === 'CardGroupModule'
         ) {
             if (modules[x].title || currentMegaLinkSection === -1) {
                 currentMegaLinkSection += 1;

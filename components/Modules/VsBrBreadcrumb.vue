@@ -20,7 +20,7 @@
 <script lang="ts" setup>
 /* eslint no-undef: 0 */
 /* eslint vue/html-indent: 0 */
-import { toRefs } from 'vue';
+import { inject } from 'vue';
 
 import {
     VsBreadcrumb,
@@ -33,10 +33,7 @@ import useConfigStore from '~/stores/configStore.ts';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{
-    breadcrumb: any[],
-    isHome: boolean,
-}>();
+const page: any = inject('page');
 
 let rootUrl = window ? window.location.origin : '';
 
@@ -44,38 +41,49 @@ if (configStore.langString) {
     rootUrl = `${rootUrl}/${configStore.langString}`;
 }
 
-const { breadcrumb, isHome } = toRefs(props);
+let breadcrumb = [];
+let isHome = false;
 
-const definedBreadcrumb = breadcrumb.value
-    ? breadcrumb.value
-    : [];
+let definedBreadcrumb = [];
+let itemList : any[] = [];
 
-let itemList : any[] = [
-    {
-        '@type': 'ListItem',
-        position: 1,
-        item: {
-            '@id': `${ rootUrl }/`,
-            name: configStore.getLabel('essentials.global', 'home'),
-        },
-    },
-];
+if (page) {
+    const pageContent : any = page.getContent(page.model.root);
+    const pageModels : any = pageContent.models;
 
-for (let x = 0; x < definedBreadcrumb.length; x++) {
-    itemList = itemList.concat({
-        '@type': 'ListItem',
-        position: x + 2,
-        item: {
-            '@id': `${ rootUrl }${ definedBreadcrumb[x].link.href }`,
-            name: definedBreadcrumb[x].title,
-        },
-    });
+    if (pageModels) {
+        breadcrumb = pageModels.breadcrumb.items;
+        isHome = pageModels.isHome;
+
+        definedBreadcrumb = breadcrumb || [];
+
+        itemList = [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                item: {
+                    '@id': `${ rootUrl }/`,
+                    name: configStore.getLabel('essentials.global', 'home'),
+                },
+            },
+        ];
+
+        for (let x = 0; x < definedBreadcrumb.length; x++) {
+            itemList = itemList.concat({
+                '@type': 'ListItem',
+                position: x + 2,
+                item: {
+                    '@id': `${ rootUrl }${ definedBreadcrumb[x].link.href }`,
+                    name: definedBreadcrumb[x].title,
+                },
+            });
+        }
+
+        useJsonld({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: itemList,
+        });
+    }
 }
-
-useJsonld({
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: itemList,
-});
-
 </script>

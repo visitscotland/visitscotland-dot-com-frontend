@@ -74,3 +74,9 @@ if (page) {
 }
 
 </script>
+
+<style>
+    .vs-social-share__close-btn.btn {
+        position: absolute;
+    }
+</style>

@@ -15,27 +15,33 @@
         :no-results-message="`${configStore.getLabel('map', 'map.no-results-message')}`"
         :reset-map-no-results-message="`${configStore.getLabel('map', 'map.reset')}`"
         :category-labels="module.filters"
-        categories-location="https://static.visitscotland.com/maps-resources/main-map/map-categories.json"
+        categories-location="https://static.visitscotland.com/maps-resources/main-map/map-categories-v2.json"
         :labels="labels"
         :language-code="`${configStore.locale}`"
+        :featured-places="filteredFeatures"
+        :js-disabled="false"
+        :cookie-btn-text="`${configStore.getLabel('essentials.global', 'cookie.link-message')}`"
+        :alert-text="`${configStore.getLabel('map', 'map.google-results-primary-message')}`"
     />
 </template>
 
 <script setup lang="ts">
-// eslint-disable-next-line import/no-import-module-exports
+ 
 import { computed } from 'vue';
-// eslint-disable-next-line import/no-import-module-exports
+ 
 import useConfigStore from '~/stores/configStore.ts';
-// eslint-disable-next-line import/no-unresolved, import/no-import-module-exports
+ 
 import { VsMainMap } from '@visitscotland/component-library/components';
+
+import formatLink from '~/composables/formatLink.ts';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
-const labels: Object = computed(() => ({
-    heading: module.title,
+const labels: object = computed(() => ({
+    heading: module.tabTitle ? module.tabTitle : module.title,
     closeSidebarBtn: configStore.getLabel('map', 'map.close-panel'),
     inputPlaceholder: configStore.getLabel('map', 'map.placeholder'),
     searchButton: configStore.getLabel('map', 'map.search'),
@@ -44,4 +50,16 @@ const labels: Object = computed(() => ({
     searchResults: configStore.getLabel('map', 'map.search-results'),
     openSidebarButton: configStore.getLabel('map', 'map.open-panel'),
 }));
+
+const filteredFeatures = module.geoJson.features.filter(
+    (feature: any) => feature.geometry && feature.geometry.type,
+);
+
+for (let x = 0; x < filteredFeatures.length; x++) {
+    if (filteredFeatures[x].properties && filteredFeatures[x].properties.link) {
+        filteredFeatures[x].properties.link.link = formatLink(
+            filteredFeatures[x].properties.link.link,
+        );
+    }
+}
 </script>

@@ -97,6 +97,8 @@ const configStore = useConfigStore();
 interface IProps {
     image?: any,
     imageString?: string,
+    imageDataSet?: any,
+    imageDescription?: string,
     variant?: string,
     isHero?: boolean,
     isVideo?: boolean,
@@ -114,6 +116,8 @@ interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
     image: null,
     imageString: '',
+    imageDataSet: null,
+    imageDescription: '',
     variant: 'fullwidth',
     isHero: false,
     isVideo: false,
@@ -131,6 +135,8 @@ const props = withDefaults(defineProps<IProps>(), {
 const {
     image,
     imageString,
+    imageDataSet,
+    imageDescription,
     variant,
     isHero,
     isVideo,
@@ -168,6 +174,10 @@ if (page) {
             imageData.coordinates = configStore.heroImage.coordinates;
         }
 
+        if (isHero.value) {
+            imageData.description = configStore.heroImage.description;
+        }
+
         if (imageData.coordinates) {
             if (imageData.coordinates.longitude) {
                 longitude = imageData.coordinates.longitude.toString();
@@ -179,6 +189,8 @@ if (page) {
 
         if (isVideo.value) {
             descriptionString = `${configStore.getLabel('essentials.global', 'image.title')}: ${imageData.description}`;
+        } else if (imageDescription.value) {
+            descriptionString = imageDescription.value;
         } else if (imageData) {
             descriptionString = imageData.description;
         }
@@ -186,6 +198,11 @@ if (page) {
 
     if (imageString.value) {
         imageSrc = imageString.value;
+    }
+
+    if (imageDataSet.value) {
+        imageData = imageDataSet.value;
+        descriptionString = imageData.description;
     }
 }
 

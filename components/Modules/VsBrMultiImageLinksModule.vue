@@ -1,7 +1,7 @@
 <template>
     <VsMegalinks
         :title="module.title"
-        variant="single-image"
+        variant="multi-image"
         :theme="theme"
         :cookie-link-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
         :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
@@ -159,8 +159,8 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable import/no-import-module-exports */
-/* eslint-disable no-undef */
+ 
+ 
 
 import { inject } from 'vue';
 
@@ -184,7 +184,7 @@ const configStore = useConfigStore();
 
 const page: Page | undefined = inject('page');
 
-const props = defineProps<{ module: Object, theme: string }>();
+const props = defineProps<{ module: object, theme: string }>();
 const module: any = props.module;
 const theme: string = props.theme;
 

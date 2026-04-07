@@ -1,33 +1,38 @@
 <template>
     <div
         class="vs-main-container"
-        :class="{ 'has-edit-button': page.isPreview() }"
+        :class="{
+            'has-edit-button': page.isPreview(),
+            'has-transparent-nav': configStore.isLocalVideoheader && checkFlags('use-navbar'),
+        }"
     >
         <BrManageContentButton
             :content="pageDocument"
         />
 
         <VsBrGtm />
-
         <VsBrPageViewEvent
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
-
         <VsBrGeneral
-            v-if="pageName === 'general-page' || pageName === 'pagenotfound'"
+            v-if="(pageName === 'general-page' || pageName === 'pagenotfound')"
             :page="page"
             :component="component"
         />
-
         <VsBrDestination
             v-if="pageName === 'destination-page'"
             :page="page"
             :component="component"
         />
 
+        <VsBrItineraryLegacy
+            v-if="pageName === 'itinerary-page' && hasStops"
+            :page="page"
+            :component="component"
+        />
         <VsBrItinerary
-            v-if="pageName === 'itinerary-page'"
+            v-else-if="pageName === 'itinerary-page' && !hasStops"
             :page="page"
             :component="component"
         />
@@ -53,10 +58,13 @@ import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 
+import forceHttps from '~/composables/forceHttps.ts';
+
 import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
+import VsBrItineraryLegacy from '~/components/PageTypes/VsBrItineraryLegacy.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
@@ -74,6 +82,8 @@ let pageName : string = '';
 
 let pageDocument : any = {
 };
+
+let hasStops = null;
 
 const configStore = useConfigStore();
 
@@ -110,8 +120,10 @@ if (page.value) {
     configStore.heroImage = componentModels.heroImage;
     configStore.labels = componentModels.labels;
     configStore.newsletterSignpost = componentModels.newsletterSignpost;
+    configStore.pageIntro = componentModels.pageIntro;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
+    configStore.mainMapPath = componentModels['main-map-path'];
 
     if (componentModels.heroVideo) {
         configStore.heroVideo = componentModels.heroVideo;
@@ -122,22 +134,34 @@ if (page.value) {
     }
 
     if (componentModels.pageConfiguration) {
+        hasStops = componentModels.pageConfiguration.hasStops;
         configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
         configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];
         configStore.cludoExperienceId = componentModels.pageConfiguration['cludo.experience-id'];
         configStore.cludoEngineId = componentModels.pageConfiguration['cludo.engine-id'];
         configStore.cludoLanguage = componentModels.pageConfiguration.language;
         configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
+        configStore.cludoApiOperator = componentModels.pageConfiguration.cludoApiOperator;
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
+        configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
+        configStore.allowFavourite = componentModels.pageConfiguration['allow-favourite'];
+        configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
+        configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
+        configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
         }
 
+        if (componentModels.pageConfiguration['is-favourites-page']) {
+            configStore.isFavouritesPage = true;
+        }
+
         if (componentModels.pageConfiguration.searchWidget) {
             configStore.showSearchWidget = true;
         }
+
     }
 
     const pageContent : any = page.value.getContent(page.value.model.root);
@@ -146,7 +170,7 @@ if (page.value) {
 
     configStore.pageDocument = pageModels.document;
 
-    configStore.locale = pageDocument.model.data.localeString;
+    configStore.locale = componentModels.pageConfiguration.language;
 
     let langString = '';
 
@@ -176,6 +200,32 @@ if (page.value) {
         configStore.langString = langString;
     }
 
+    const hrefLangs = [];
+
+    if (pageModels.orderedTranslations) {
+        for (let x = 0; x < pageModels.orderedTranslations.length; x++) {
+            const translation = page.value.getContent(pageModels.orderedTranslations[x].$ref);
+            const translationLocale = translation?.model?.data?.localeString;
+
+            if (translationLocale !== configStore.locale) {
+                hrefLangs.push({
+                    rel: 'alternate',
+                    href: forceHttps(translation?.model?.links?.site?.href),
+                    hreflang: translationLocale,
+                });
+            }
+        }
+    }
+
+    const canonicalLink = forceHttps(useRequestURL().toString().split('?')[0]);
+
+    let ogImageSrc = '';
+
+    if (pageDocument.model.data.heroImage.$ref) {
+        const ogImageValue = page.value.getContent(pageDocument.model.data.heroImage.$ref);
+        ogImageSrc = ogImageValue.getOriginal().getUrl();
+    }
+
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
@@ -193,6 +243,62 @@ if (page.value) {
                 name: 'robots',
                 content: pageDocument.model.data.noIndex ? 'noindex' : '',
             },
+            {
+                property: 'og:title',
+                content: pageDocument.model.data.seoTitle,
+            },
+            {
+                property: 'og:description',
+                content: pageDocument.model.data.seoDescription,
+            },
+            {
+                property: 'og:type',
+                content: 'article',
+            },
+            {
+                property: 'og:url',
+                content: canonicalLink,
+            },
+            {
+                property: 'og:site_name',
+                content: configStore.getLabel('seo', 'site-name'),
+            },
+            {
+                property: 'og:locale',
+                content: configStore.locale,
+            },
+            {
+                property: 'og:image',
+                content: ogImageSrc,
+            },
+            {
+                name: 'twitter:card',
+                content: 'summary_large_image',
+            },
+            {
+                name: 'twitter:site',
+                content: configStore.getLabel('seo', 'og.twitter.site'),
+            },
+            {
+                name: 'twitter:title',
+                content: pageDocument.model.data.seoTitle,
+            },
+            {
+                name: 'twitter:description',
+                content: pageDocument.model.data.seoDescription,
+            },
+            {
+                name: 'twitter:image',
+                content: ogImageSrc,
+            },
+            {
+                name: 'search:category',
+                content: pageModels.searchCategory,
+            },
+            {
+                name: 'search:contentType',
+                content: pageModels.searchContentType,
+            },
         ],
         htmlAttrs: {
             lang: langString,
@@ -207,7 +313,7 @@ if (page.value) {
             },
             {
                 rel: 'icon',
-                href: '/icons/favicon.svg',
+                href: '/favicon.svg',
                 type: 'image/svg+xml',
             },
             {
@@ -216,9 +322,17 @@ if (page.value) {
             },
             {
                 rel: 'canonical',
-                href: useRequestURL().toString().split('?')[0],
+                href: canonicalLink,
+            },
+            {
+                rel: 'stylesheet',
+                href: '/assets/styles/civic-cookie-manager.css',
             },
         ],
+    });
+
+    useHead({
+        link: hrefLangs,
     });
 
     if (configStore.searchDmsBased) {
@@ -260,6 +374,15 @@ provide('page', page.value);
 
         @media (min-width: 992px) {
             min-height: calc(100vh - 28rem);
+        }
+    }
+
+    .has-transparent-nav {
+        margin-top: -76px;
+
+        .vs-hero-section__video-overlay {
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 50.48%, rgba(0, 0, 0, 0.30) 89.9%),
+                        linear-gradient(180deg, rgba(0, 0, 0, 0.00) 39.5%, rgba(0, 0, 0, 0.85) 100%);
         }
     }
 </style>

@@ -1,37 +1,58 @@
 <template>
     <div>
-        <VsBrSkeleton
-            v-show="!hideSkeleton"
-        />
-        <div
-            class="hydrate"
-            v-show="isMounted"
-        >
-            <br-page
-                :configuration="configuration"
-                :mapping="mapping"
+        <div v-if="!isInternalResource">
+            <VsBrSkeleton
+                v-show="!hideSkeleton"
+            />
+            <div
+                class="hydrate"
+                v-show="isMounted"
             >
-                <template #default>
-                    <div
-                        :class="!isMounted ? 'no-js' : ''"
-                    >
-                        <br-component component="menu" />
-                        <br-component component="main" />
-                        <NuxtLazyHydrate
-                            :when-visible="{ rootMargin: '50px' }"
+                <br-page
+                    :configuration="configuration"
+                    :mapping="mapping"
+                >
+                    <template #default>
+                        <div
+                            :class="!isMounted ? 'no-js' : ''"
                         >
-                            <br-component component="footer" />
-                        </NuxtLazyHydrate>
-                    </div>
-                </template>
-            </br-page>
+                            <br-component
+                                component="menu"
+                            />
+                            <br-component
+                                component="main"
+                            />
+                            <br-component
+                                component="footer"
+                            />
+                        </div>
+                    </template>
+                </br-page>
+            </div>
+            <noscript>
+                <component :is="'style'">
+                .skeleton-site { display: none !important }
+                .hydrate { display: block !important }
+                </component>
+            </noscript>
         </div>
-        <noscript>
-            <component :is="'style'">
-            .skeleton-site { display: none !important }
-            .hydrate { display: block !important }
-            </component>
-        </noscript>
+        <!-- Alternative templating that is only loaded by the TMS when retrieving the header
+         and footer for external use -->
+        <div v-if="isInternalResource">
+            <div id="start-fragment" style="display: none;" />
+            <div id="__nuxt" class="external-header-integration">
+                <br-page :configuration="configuration" :mapping="mapping">
+                    <template #default>
+                        <Suspense v-if="internalResourceName === 'header'">
+                            <component :is="CssHeader" />
+                        </Suspense>
+                        <br-component component="menu" v-if="internalResourceName === 'header'" />
+                        <br-component component="footer" v-if="internalResourceName === 'footer'" />
+                    </template>
+                </br-page>
+            </div>
+            <div id="end-fragment" style="display: none;" />
+        </div>
     </div>
 </template>
 
@@ -48,14 +69,19 @@
 import axios from 'axios';
 
 import {
-    getCurrentInstance, ref, onMounted,
+    getCurrentInstance, ref, onMounted, nextTick,
 } from 'vue';
 import mitt from 'mitt';
+import { useFlagsStore } from './stores/flags.ts';
+import checkFlag from './composables/checkFlags.ts';
 
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
+import featureFlagsData from './composables/featureFlags.ts';
+
+const CssHeader = defineAsyncComponent(() => import('~/components/InternalResources/CssHeader.vue'));
 
 /**
  * This section sets up all of the information we need to make available for the Bloomreach SDK
@@ -66,6 +92,9 @@ import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
 const app = getCurrentInstance();
 const emitter = mitt();
 app.appContext.config.globalProperties.emitter = emitter;
+
+const checkFlags = () => checkFlag;
+app.appContext.config.globalProperties.checkFlags = checkFlags();
 
 /**
  * The current path, which is then transformed into a resource api endpoint to get from the CMS
@@ -78,6 +107,19 @@ const route = useRoute().path;
  */
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
+
+const flagStore = useFlagsStore();
+
+const fetchFlags = async() => {
+    try {
+        const flags = featureFlagsData;
+        flagStore.flags = flags;
+    } catch (error) {
+        console.error('Error fetching flags:', error);
+    }
+};
+
+await fetchFlags();  
 
 let locale = 'resourceapi';
 
@@ -92,11 +134,32 @@ const localeStrings = [
 const isMounted = ref(false);
 const hideSkeleton = ref(false);
 
-onMounted(() => {
+const scrollToAnchor = (hash, attempts = 0) => {
+    const element = document.querySelector(hash);
+
+    if (element) {
+        element.scrollIntoView({
+            behavior: 'smooth',
+        });
+    } else if (attempts < 20) {
+        setTimeout(() => scrollToAnchor(hash, attempts + 1), 100);
+    }
+};
+
+onMounted(async() => {
     isMounted.value = true;
 
     const hydrationEvent = new Event('vs-app-hydrated');
     window.dispatchEvent(hydrationEvent);
+
+    await nextTick();
+
+    const fullRoute = useRoute();
+
+    // Browsers sometimes fail to find anchor links as they attempt to check when the skeleton
+    // site is still visible. This manually implements the anchor scroll as soon as the page is
+    // actually rendered.
+    if (fullRoute.hash) scrollToAnchor(fullRoute.hash);
 });
 
 let deLocalisedRoute = route;
@@ -121,10 +184,16 @@ const PREVIEW_SERVER_ID_KEY = 'server-id';
 let authorizationToken = '';
 let serverId = '';
 
-if (window && window.location) {
-    const searchParams = new URLSearchParams(window.location.search);
-    authorizationToken = searchParams.get(PREVIEW_TOKEN_KEY);
-    serverId = searchParams.get(PREVIEW_SERVER_ID_KEY);
+const query = useRoute().query;
+
+if (query) {
+    if (query[PREVIEW_TOKEN_KEY]) {
+        authorizationToken = query[PREVIEW_TOKEN_KEY];
+    }
+
+    if (query[PREVIEW_SERVER_ID_KEY]) {
+        serverId = query[PREVIEW_SERVER_ID_KEY];
+    }
 }
 
 /**
@@ -133,8 +202,51 @@ if (window && window.location) {
  */
 const runtimeConfig = useRuntimeConfig();
 
-if (process.server && xForwardedhost.value) {
+if (import.meta.server && xForwardedhost.value) {
     axios.defaults.headers.common.Host = xForwardedhost.value;
+}
+
+let isInternalResource = false;
+let internalResourceName = '';
+
+const determineInternalState = () => {
+    if (process.server) {
+        if (deLocalisedRoute.includes('/data/internal/header')) {
+            return {
+                isInternal: true,
+                name: 'header',
+            };
+        }
+        if (deLocalisedRoute.includes('/data/internal/footer')) {
+            return {
+                isInternal: true,
+                name: 'footer',
+            };
+        }
+    }
+
+    if (process.client) {
+        const el = document.querySelector('.nuxt-internal-wrapper[data-internal-type]');
+        if (el) {
+            return {
+                isInternal: true,
+                name: el.getAttribute('data-internal-type'),
+            };
+        }
+    }
+
+    return {
+        isInternal: false,
+        name: '',
+    };
+};
+
+const state = determineInternalState();
+isInternalResource = state.isInternal;
+internalResourceName = state.name;
+
+if (isInternalResource) {
+    deLocalisedRoute = '/';
 }
 
 /**
@@ -190,5 +302,18 @@ const mapping = {
         z-index: 2;
         position: relative;
         background-color: white;
+    }
+
+    /* When JS is disabled, hide the skeleton and force show the content */
+    .no-js .skeleton-site {
+        display: none !important;
+    }
+
+    .no-js .hydrate {
+        display: block !important;
+    }
+
+    [id] {
+        scroll-margin-top: 4rem;
     }
 </style>

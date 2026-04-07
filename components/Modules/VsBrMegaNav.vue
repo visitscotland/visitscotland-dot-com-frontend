@@ -4,6 +4,7 @@
         :key="index"
     >
         <VsMegaNavDropdownContainer
+            v-if="menuItem.children && menuItem.children.length"
             :href="getNavLink(menuItem)"
             :cta-text="menuItem.model.cta ? menuItem.model.cta : ''"
         >
@@ -72,6 +73,12 @@
                 />
             </template>
         </VsMegaNavDropdownContainer>
+        <VsMegaNavStaticLink
+            v-else
+            :href="getNavLink(menuItem)"
+        >
+            {{ menuItem.model.title }}
+        </VsMegaNavStaticLink>
     </template>
 </template>
 
@@ -80,6 +87,7 @@ import { ref, onMounted } from 'vue';
 
 import {
     VsMegaNavDropdownContainer,
+    VsMegaNavStaticLink,
     VsMegaNavList,
     VsMegaNavListItem,
     VsMegaNavFeaturedEvent,
@@ -99,3 +107,18 @@ onMounted(() => {
 });
 
 </script>
+
+<style>
+    .vs-mega-nav-top-menu {
+        align-items: baseline;
+    }
+
+    .vs-mega-nav-static-link {
+        transform: translateY(2px);
+    }
+
+    .vs-mega-nav-static-link--full-width {
+        transform: translateY(0);
+    }
+
+</style>

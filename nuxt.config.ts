@@ -1,7 +1,7 @@
 /* eslint no-undef: 0 */
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 function bufferFile(relPath: string) {
     return fs.readFileSync(path.join(__dirname, relPath), {
@@ -33,6 +33,7 @@ export default defineNuxtConfig({
     },
 
     experimental: {
+        payloadExtraction: false,
         inlineSSRStyles: false,
     },
 
@@ -45,10 +46,6 @@ export default defineNuxtConfig({
             path: '~/components',
             pathPrefix: false,
         },
-    ],
-
-    buildModules: [
-        '@nuxtjs/dotenv',
     ],
 
     modules: [
@@ -75,4 +72,26 @@ export default defineNuxtConfig({
     },
 
     compatibilityDate: '2025-05-06',
+
+    routeRules: {
+        '/_nuxt/**': {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            },
+        },
+    },
+
+    app: {
+        head: {
+            htmlAttrs: {
+                class: 'no-js',
+            },
+            script: [
+                {
+                    innerHTML: 'document.documentElement.classList.remove(\'no-js\');',
+                    type: 'text/javascript',
+                },
+            ],
+        },
+    },
 });
