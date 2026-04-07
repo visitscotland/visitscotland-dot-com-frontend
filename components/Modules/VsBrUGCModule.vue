@@ -6,6 +6,7 @@
             {{ module.title }}
         </template>
         <VsEmbedWrapper
+            :no-cookies-required="true"
             :no-cookie-text="configStore.getLabel('ugc', 'ugc.no-cookies-message')"
             :error-text="configStore.getLabel('essentials.global', 'third-party-error')"
             :no-js-text="configStore.getLabel('ugc', 'ugc.no-js-message')"
@@ -39,7 +40,7 @@ import VsBrRichText from './VsBrRichText.vue';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 </script>

@@ -77,13 +77,25 @@
         <template
             #vs-intro-content
         >
-            <VsBrRichText :input-content="content.introduction.value" />
-            <p
-                v-if="isListicle"
-                class="mt-200"
-            >
-                {{ configStore.getLabel("listicle", "listicle.disclaimer") }}
-            </p>
+            <div class="d-flex flex-column gap-200">
+                <div class="">
+                    <VsBrRichText :input-content="content.introduction.value" />
+                    <p
+                        v-if="isListicle"
+                        class="mt-200"
+                    >
+                        {{ configStore.getLabel("listicle", "listicle.disclaimer") }}
+                    </p>
+                </div>
+                <div
+                    v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkFlag('favourites')"
+                    class="d-flex flex-column flex-md-row"
+                >
+                    <VsBrSaveContentButton
+                        :uuid="content.id"
+                    />
+                </div>
+            </div>
         </template>
 
         <!-- TODO - Itinerary Summary -->
@@ -92,12 +104,14 @@
             v-if="itinerary"
             #vs-intro-start-finish
         >
-            <dt class="list-inline-item">
-                {{ configStore.getLabel("itinerary", "start-finish") }}
-            </dt>
-            <dd class="list-inline-item">
-                {{ itinerary.firstStopLocation }} / {{ itinerary.lastStopLocation }}
-            </dd>
+            <div :class="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkFlag('favourites') ? 'mt-200' : ''">
+                <dt class="list-inline-item ">
+                    {{ configStore.getLabel("itinerary", "start-finish") }}
+                </dt>
+                <dd class="list-inline-item">
+                    {{ itinerary.firstStopLocation }} / {{ itinerary.lastStopLocation }}
+                </dd>
+            </div>
         </template>
 
         <template
@@ -155,6 +169,8 @@
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
 
+import checkFlag from '~/composables/checkFlags.ts';
+
 import {
     VsPageIntro,
     VsArticleDetails,
@@ -174,6 +190,7 @@ import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
 import VsBrVideoModal from '~/components/Modules/VsBrVideoModal.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrItinerarySummaryBox from '~/components/Modules/VsBrItinerarySummaryBox.vue';
+import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
 
 const configStore = useConfigStore();
 

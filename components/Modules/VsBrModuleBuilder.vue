@@ -197,6 +197,13 @@
                 :content="hippoContent[index]"
             />
         </NuxtLazyHydrate>
+        
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'FavouriteModule'"
+        >
+            <VsBrFavouritesDisplay />
+        </NuxtLazyHydrate>
 
         <div
             v-else-if="item.type === 'ErrorModule'"
@@ -206,6 +213,19 @@
             >
                 <VsBrPreviewError
                     :messages="item.errorMessages"
+                />
+            </NuxtLazyHydrate>
+        </div>
+
+        <div
+            v-else-if="item.type === 'SearchWidgetModule'"
+        >
+            <NuxtLazyHydrate
+                :when-visible="{ rootMargin: '50px' }"
+            >
+                <VsBrSearchWidget
+                    class="mt-175 mt-md-500 mb-175 mb-md-500"
+                    :module="item"
                 />
             </NuxtLazyHydrate>
         </div>
@@ -234,6 +254,7 @@ import VsBrCannedSearchModule from '~/components/Modules/VsBrCannedSearchModule.
 import VsBrUGCModule from '~/components/Modules/VsBrUGCModule.vue';
 import VsBrSpotlightSection from '~/components/Modules/VsBrSpotlightSection.vue';
 import VsBrDevModule from '~/components/Modules/VsBrDevModule.vue';
+import VsBrFavouritesDisplay from '~/components/Modules/VsBrFavouritesDisplay.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';

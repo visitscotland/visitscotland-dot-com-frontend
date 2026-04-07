@@ -5,12 +5,15 @@
             :light-background="true"
             :blog="documentData.blog"
         />
-
         <VsBrIntroImage
             :image="heroImage"
         />
     </template>
-
+    <template v-else-if="configStore.isFavouritesPage">
+        <VsBrHeroSection
+            :content="documentData"
+        />
+    </template>
     <template v-else-if="documentData.theme === 'Top-Level'">
         <VsBrHeroSection
             v-if="configStore.heroVideo && configStore.isLocalVideoheader"
@@ -103,7 +106,7 @@
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
-        v-if="configStore.showSearchWidget"
+        v-if="configStore.showSearchWidget && !isSearchWidgetPresent"
     >
         <div class="mt-175 mt-md-500 mb-175 mb-md-500">
             <VsBrSearchWidget />
@@ -208,6 +211,8 @@ const configStore = useConfigStore();
 let firstModuleIsLink = false;
 let isSearchResultsPage = false;
 
+let isSearchWidgetPresent = false;
+
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
@@ -236,6 +241,8 @@ if (page.value) {
         ) {
             firstModuleIsLink = true;
         }
+
+        isSearchWidgetPresent = pageItems.some((item) => item.type === 'SearchWidgetModule');
     }
 
     // Remove trailing slashes from the global search path to remove path ambiguity

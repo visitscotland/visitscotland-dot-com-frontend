@@ -1,40 +1,50 @@
 <template>
     <VsRow class="vs-search-sort">
-        <VsCol
-            cols="6"
-            md="4"
-        >
-            <label
-                class="vs-search-sort__label"
-                for="vs-search-sort__from-date"
+        <VsCol cols="12" md="8">
+            <fieldset
+                @change="(event) => debounceInput(event)"
             >
-                {{ configStore.getLabel('search', 'date.from') }}
-            </label>
-            <VsInput
-                :auto-complete="false"
-                field-name="vs-search-sort__from-date"
-                type="date"
-                :value="searchStore.fromDate || new Date().toJSON().slice(0, 10)"
-                @input="updateFromDate($event.target.value)"
-            />
-        </VsCol>
-        <VsCol
-            cols="6"
-            md="4"
-        >
-            <label
-                class="vs-search-sort__label"
-                for="vs-search-sort__to-date"
-            >
-                {{ configStore.getLabel('search', 'date.to') }}
-            </label>
-            <VsInput
-                :auto-complete="false"
-                field-name="vs-search-sort__to-date"
-                type="date"
-                :value="searchStore.toDate || ''"
-                @input="updateToDate($event.target.value)"
-            />
+                <VsRow>
+                    <VsCol
+                        cols="6"
+                    >
+                        <label
+                            class="vs-search-sort__label"
+                            for="vs-search-sort__from-date"
+                        >
+                            {{ configStore.getLabel('search', 'date.from') }}
+                        </label>
+                        <VsInput
+                            :auto-complete="false"
+                            field-name="vs-search-sort__from-date"
+                            type="date"
+                            :value="searchStore.fromDate || new Date().toJSON().slice(0, 10)"
+                            :validation-rules="{
+                                min: new Date().toJSON().slice(0, 10),
+                            }"
+                        />
+                    </VsCol>
+                    <VsCol
+                        cols="6"
+                    >
+                        <label
+                            class="vs-search-sort__label"
+                            for="vs-search-sort__to-date"
+                        >
+                            {{ configStore.getLabel('search', 'date.to') }}
+                        </label>
+                        <VsInput
+                            :auto-complete="false"
+                            field-name="vs-search-sort__to-date"
+                            type="date"
+                            :value="searchStore.toDate || ''"
+                            :validation-rules="{
+                                min: searchStore.fromDate,
+                            }"
+                        />
+                    </VsCol>
+                </VsRow>
+            </fieldset>
         </VsCol>
         <VsCol
             class="vs-search-sort__dropdown-wrapper"
@@ -71,6 +81,8 @@ import {
     VsRow,
 } from '@visitscotland/component-library/components';
 
+import debounce from '~/utls/debounce.ts';
+
 import useConfigStore from '~/stores/configStore.ts';
 import useSearchStore from '~/stores/searchStore.ts';
 
@@ -106,18 +118,36 @@ const dropdownText = computed(() => {
 
 function updateFromDate(value: string) {
     searchStore.fromDate = value;
+    searchStore.currentPage = 1;
     searchStore.setUrlParameters();
 }
 
 function updateToDate(value: string) {
     searchStore.toDate = value;
+    searchStore.currentPage = 1;
     searchStore.setUrlParameters();
 }
 
 function updateSortBy(value: string) {
     searchStore.sortBy = value;
+    searchStore.currentPage = 1;
     searchStore.setUrlParameters();
 }
+
+const debounceInput = debounce((event: Event) => {
+    const idStem = 'vs-search-sort';
+
+    if (!event.target) return;
+
+    const id = event.target.id;
+
+    if (id === `${idStem}__from-date`) {
+        updateFromDate(event.target.value);
+    } else if (id === `${idStem}__to-date`) {
+        updateToDate(event.target.value);
+    };
+}, 750);
+
 </script>
 
 <style lang="scss">

@@ -108,7 +108,6 @@ const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
 
-// eslint-disable-next-line no-undef
 const route = useRoute();
 
 type Props = {
@@ -147,6 +146,14 @@ onMounted(() => {
         const routeSubcategories = route.query.subcategories as string;
 
         searchStore.subcategoryKeys = routeSubcategories.split(',');
+
+        searchStore.subcategoryKeys.forEach((subcategoryKey) => {
+            const match = searchStore.orderedSubcategories.find(
+                (subcategory) => subcategoryKey === subcategory.Key,
+            );
+
+            if (match) searchStore.subcategorySelected.push(match);
+        });
     }
 
     searchStore.currentPage = Number(route.query.page) || 1;
@@ -157,6 +164,7 @@ onMounted(() => {
     searchStore.postcode = route.query.postcode as string;
     searchStore.postcodeareas = route.query.postcodeareas as string;
     searchStore.radius = Number(route.query.radius) || 0;
+    searchStore.when = route.query.when as string;
 
     searchStore.getSearchResults();
 
@@ -174,21 +182,20 @@ onMounted(() => {
         if (route.query['search-term']) {
             dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
                 search_query: searchStore.searchTerm,
+                search_category: searchStore.categoryKey ? searchStore.categoryKey : null,
                 query_input: searchStore.queryInput,
                 results_count: searchStore.totalResults,
                 search_usage_index: searchStore.searchInSessionCount,
                 search_type: 'initial',
-                search_origin: 'home_page',
+                search_origin: route.query['category'] === 'events' ? 'events_page' : 'home_page',
             });
-        }
-
-        if (route.query['category']) {
+        } else if (route.query['category']) {
             dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
                 search_category: searchStore.categoryKey,
                 results_count: searchStore.totalResults,
                 search_usage_index: searchStore.searchInSessionCount,
                 search_type: 'initial',
-                search_origin: 'home_page',
+                search_origin: route.query['subcategories'] ? 'events_page' : 'home_page',
                 interaction_type: 'category_click',
             });
         }

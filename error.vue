@@ -90,7 +90,7 @@ if (window && window.location) {
 
 const runtimeConfig = useRuntimeConfig();
 
-if (process.server && xForwardedhost.value) {
+if (import.meta.server && xForwardedhost.value) {
     axios.defaults.headers.common.Host = xForwardedhost.value;
 }
 

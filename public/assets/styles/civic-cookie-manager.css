@@ -1,0 +1,89 @@
+#ccc-content {
+  background-color: #200F2E;
+  font-family: 'source sans pro';
+}
+
+#ccc hr {
+  opacity: 1 !important;
+}
+
+#ccc .checkbox-toggle {
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+#ccc .checkbox-toggle-on {
+  background-color: #E9E9E9;
+  opacity: 1 !important;
+  color: #909090;
+}
+
+#ccc .checkbox-toggle--slider .checkbox-toggle-off {
+  background-color: #E9E9E9;
+  opacity: 1 !important;
+  color: #909090;
+}
+
+#ccc .checkbox-toggle--slider .checkbox-toggle-toggle {
+  background-color: #909090;
+  width: calc(50% - 6px) !important;
+  height: calc(100% - 6px) !important;
+  transform: translate(3px, 3px);
+}
+
+#ccc .checkbox-toggle--slider .checkbox-toggle-text {
+  color: #909090;
+}
+
+#ccc .checkbox-toggle--slider input:checked~ .checkbox-toggle-on {
+  background-color: #1F49D6;
+  opacity: 1;
+}
+
+#ccc .checkbox-toggle--slider input:checked~ .checkbox-toggle-off {
+  background-color: #1F49D6;
+  opacity: 1;
+}
+
+#ccc .checkbox-toggle--slider input:checked~ .checkbox-toggle-toggle {
+  background-color: #FFFFFF;
+}
+
+#ccc .checkbox-toggle--slider input:checked~ .checkbox-toggle-text {
+  color: #FFFFFF;
+}
+
+#ccc #ccc-content button {
+  border-radius: 1000rem;
+}
+
+#ccc #ccc-content button:hover {
+  border-color: #1F49D6;
+  background-color: #1F49D6;
+}
+
+#ccc .ccc-svg-element {
+  top: 0 !important;
+}
+
+#ccc .ccc-content--dark #ccc-end .ccc-button-solid:hover span {
+  background: #1F49D6;
+  color: #FFFFFF;
+}
+
+#ccc .ccc-content--dark #ccc-end .ccc-button-solid:hover {
+  background: #1F49D6;
+  color: #FFFFFF;
+}
+
+#ccc .ccc-content--dark #ccc-end .ccc-button-solid span {
+  background-color: rgba(0, 0, 0, 0);
+  color: #FFFFFF;
+  font-weight: normal;
+}
+
+#ccc .ccc-content--dark #ccc-end .ccc-button-solid {
+  font-weight: normal;
+  background: rgba(0, 0, 0, 0);
+  color: #FFFFFF;
+}

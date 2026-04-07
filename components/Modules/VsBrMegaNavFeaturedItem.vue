@@ -28,7 +28,7 @@ import { VsMegaNavFeaturedItem } from '@visitscotland/component-library/componen
 
 const page: Page | undefined = inject('page');
 
-const props = defineProps<{ link: Object }>();
+const props = defineProps<{ link: object }>();
 const link: any = props.link;
 
 let imageUrl = '';

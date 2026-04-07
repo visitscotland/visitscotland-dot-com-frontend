@@ -37,7 +37,7 @@ import {
 
 import VsBrTravelInformationTab from './VsBrTravelInformationTab.vue';
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 </script>

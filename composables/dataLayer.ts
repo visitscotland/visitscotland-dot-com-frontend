@@ -24,8 +24,8 @@ export default function dataLayerComposable() {
     /**
      * Matches values to a given template, filling missing fields with undefined.
      * @param {Array<string>} template - The array of keys the data layer event requires.
-     * @param {Object} values - The object of values to match against the template.
-     * @returns {Object} An object ready to be pushed to the data-layer.
+     * @param {object} values - The object of values to match against the template.
+     * @returns {object} An object ready to be pushed to the data-layer.
      */
     function templateFiller(template: string[], values: any) {
         const obj: any = {
@@ -54,8 +54,8 @@ export default function dataLayerComposable() {
     /**
      * Compiles the full data layer object by merging GTMData from the store
      * and the specific event values, and adds the hit_timestamp.
-     * @param {Object} templateValues - Event-specific values.
-     * @returns {Object} The complete data layer object for the event.
+     * @param {object} templateValues - Event-specific values.
+     * @returns {object} The complete data layer object for the event.
      */
     function compileFullTemplate(templateValues: any) {
         const storeValues = dataLayerStore.GTMData;
@@ -71,7 +71,7 @@ export default function dataLayerComposable() {
 
     /**
      * Pushes an object to the global window.dataLayer array, ensuring the library is loaded.
-     * @param {Object} object - The data layer object to push.
+     * @param {object} object - The data layer object to push.
      */
     function pushToDataLayer(object: any) {
         if (!dataLayerLoadConfirmed.value) {
@@ -88,7 +88,7 @@ export default function dataLayerComposable() {
     /**
      * Creates and pushes a specific data layer event object.
      * @param {string} type - The type of event (e.g., 'siteSearchOpenEvent').
-     * @param {Object} event - The event data specific to the type.
+     * @param {object} event - The event data specific to the type.
      */
     function createDataLayerObject(type: string, event: any) {
         let eventName;
@@ -130,6 +130,7 @@ export default function dataLayerComposable() {
                 event: eventName,
                 interaction_type: event.interaction_type,
                 search_query: event.search_query,
+                search_category: event.search_category,
                 query_input: event.query_input,
                 page_number: event.page_number,
                 page_navigation_direction: event.page_navigation_direction,
