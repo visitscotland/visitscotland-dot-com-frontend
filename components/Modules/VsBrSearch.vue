@@ -78,6 +78,8 @@
                         :category-btn-text="configStore.getLabel('search', 'filters.category')"
                         heading="Filter by Location"
                         variant="secondary"
+                        @filter-updated="updateLocationKey"
+                        :active-filter="searchStore.locationKeys"
                     />
                 </div>
 
@@ -91,8 +93,6 @@
             </VsWarning>
         </div>
     </VsContainer>
-    <pre>{{ locations }}</pre>
-    <pre>{{ configStore.searchFilters.postcodeareas }}</pre>
 </template>
 
 <script setup lang="ts">
@@ -149,28 +149,7 @@ onBeforeMount(() => {
             Label: location[1].label,
         });
     }
-
-    console.log(locations);
 });
-
-// const locations: SearchFilterLocation[] = [
-//     {
-//         'id': 'EH',
-//         'label': 'Edinburgh',
-//     },
-//     {
-//         'id': 'DD',
-//         'label': 'Dundee',
-//     },
-//     {
-//         'id': 'AB',
-//         'label': 'Aberdeen',
-//     },
-// ];
-
-// const orderedLocations = computed((location) => {
-
-// });
 
 for (let x = 0; x < modules.length; x++) {
     const hippoBean = page?.getContent(modules[x].hippoBean.$ref);
@@ -200,6 +179,12 @@ onMounted(() => {
         const routeSubcategories = route.query.subcategories as string;
 
         searchStore.subcategoryKeys = routeSubcategories.split(',');
+    }
+
+    if (route.query.postcodeareas) {
+        const routeLocations = route.query.postcodeareas as string;
+
+        searchStore.locationKeys = routeLocations.split(',');
     }
 
     searchStore.currentPage = Number(route.query.page) || 1;
@@ -248,6 +233,23 @@ onMounted(() => {
         once: true,
     });
 });
+
+async function updateLocationKey(location: SearchFilterCategory) {
+    if (!searchStore.locationKeys.includes(location.Key)) {
+        searchStore.locationKeys.push(location.Key);
+    } else {
+        const index = searchStore.locationKeys.indexOf(location.Key);
+
+        if (index >= 0) {
+            searchStore.locationKeys.splice(index, 1);
+        }
+    }
+
+    searchStore.currentPage = 1;
+
+    await searchStore.setUrlParameters();
+}
+
 </script>
 
 <style lang="scss">

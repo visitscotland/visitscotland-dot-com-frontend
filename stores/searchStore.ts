@@ -18,6 +18,7 @@ const useSearchStore = defineStore('search', () => {
     // Filter
     const categoryKey = ref<string>();
     const subcategoryKeys = ref<string[]>([]);
+    const locationKeys = ref<string[]>([]);
 
     // Search sort
     const fromDate = ref<string>();
@@ -85,7 +86,7 @@ const useSearchStore = defineStore('search', () => {
                 location: location.value,
                 page: currentPage.value,
                 postcode: postcode.value,
-                postcodeareas: postcodeareas.value,
+                postcodeareas: locationKeys.value || postcodeareas.value,
                 radius: radius.value,
                 searchTerm: searchTerm.value,
                 siteLanguage: configStore.locale,
@@ -152,6 +153,9 @@ const useSearchStore = defineStore('search', () => {
                 ...(postcodeareas.value && {
                     postcodeareas: postcodeareas.value,
                 }),
+                ...(locationKeys.value.length > 0 && {
+                    postcodeareas: locationKeys.value.join(','),
+                }),
                 ...(radius.value && {
                     radius: radius.value,
                 }),
@@ -175,6 +179,7 @@ const useSearchStore = defineStore('search', () => {
         getSearchResults,
         isLoading,
         location,
+        locationKeys,
         postcode,
         postcodeareas,
         queryInput,
