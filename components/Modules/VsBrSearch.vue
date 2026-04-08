@@ -80,6 +80,7 @@
                         variant="secondary"
                         @filter-updated="updateLocationKey"
                         :active-filter="searchStore.locationKeys"
+                        wrap
                     />
                 </div>
 
