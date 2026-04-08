@@ -67,6 +67,20 @@
                     />
                 </div>
 
+                <div class="vs-search__location-filter">
+                    <VsBrSearchFilter
+                        v-if="locations 
+                            && !searchStore.isLoading
+                            && searchStore.categoryKey === 'events'"
+                        :filter-categories="locations"
+                        class="my-200"
+                        ref="locationFilter"
+                        :category-btn-text="configStore.getLabel('search', 'filters.category')"
+                        heading="Filter by Location"
+                        variant="secondary"
+                    />
+                </div>
+
                 <VsLoadingSpinner v-if="searchStore.isLoading" />
 
                 <VsBrSearchResults v-else />
@@ -77,12 +91,18 @@
             </VsWarning>
         </div>
     </VsContainer>
+    <pre>{{ locations }}</pre>
+    <pre>{{ configStore.searchFilters.postcodeareas }}</pre>
 </template>
 
 <script setup lang="ts">
 import type { Page } from '@bloomreach/spa-sdk';
 
-import { inject, onMounted } from 'vue';
+import {
+    inject,
+    onMounted,
+    onBeforeMount,
+} from 'vue';
 import {
     VsContainer,
     VsDetail,
@@ -99,9 +119,11 @@ import dataLayerComposable from '~/composables/dataLayer.ts';
 
 import VsBrDivider from './VsBrDivider.vue';
 import VsBrModuleBuilder from './VsBrModuleBuilder.vue';
+import VsBrSearchFilter from './VsBrSearchFilter.vue';
 import VsBrSearchInput from './VsBrSearchInput.vue';
 import VsBrSearchResults from './VsBrSearchResults.vue';
 import VsBrSearchSort from './VsBrSearchSort.vue';
+import type { SearchFilterCategory } from '~/types/types';
 
 const page: Page | undefined = inject('page');
 const configStore = useConfigStore();
@@ -117,6 +139,38 @@ type Props = {
 const { modules } = defineProps<Props>();
 
 const moduleNames = [];
+
+const locations: SearchFilterCategory[] = [];
+
+onBeforeMount(() => {
+    for (const location of Object.entries(configStore.searchFilters.postcodeareas)) {
+        locations.push({
+            Key: location[1].id,
+            Label: location[1].label,
+        });
+    }
+
+    console.log(locations);
+});
+
+// const locations: SearchFilterLocation[] = [
+//     {
+//         'id': 'EH',
+//         'label': 'Edinburgh',
+//     },
+//     {
+//         'id': 'DD',
+//         'label': 'Dundee',
+//     },
+//     {
+//         'id': 'AB',
+//         'label': 'Aberdeen',
+//     },
+// ];
+
+// const orderedLocations = computed((location) => {
+
+// });
 
 for (let x = 0; x < modules.length; x++) {
     const hippoBean = page?.getContent(modules[x].hippoBean.$ref);
