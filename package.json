@@ -21,7 +21,7 @@
     "@nuxt/eslint-config": "^1.15.2",
     "eslint": "^10.0.3",
     "husky": "^9.1.7",
-    "nuxt": "~3.21.2",
+    "nuxt": "~4.4.2",
     "nuxt-lazy-hydrate": "^1.0.0"
   },
   "dependencies": {
