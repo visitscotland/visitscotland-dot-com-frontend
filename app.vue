@@ -275,12 +275,21 @@ const configuration = {
 if (endpoint.value && endpoint.value.includes('resourceapi')) {
     try {
         const requestConfig = {
+            headers: {
+            },
         };
         const xForwardedHostValue = xForwardedhost.value;
+
         if (import.meta.server && xForwardedHostValue) {
-            requestConfig.headers = {
-                Host: xForwardedHostValue,
-            };
+            requestConfig.headers.Host = xForwardedHostValue;
+        }
+
+        if (authorizationToken) {
+            requestConfig.headers.Authorization = `Bearer ${authorizationToken}`;
+        }
+
+        if (serverId) {
+            requestConfig.headers['Server-Id'] = serverId;
         }
 
         const pageModelResponse = await axios.get(localisedEndpoint + deLocalisedRoute, requestConfig);
