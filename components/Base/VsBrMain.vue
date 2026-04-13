@@ -111,57 +111,8 @@ if (page.value) {
 
     const componentModels = component.value.getModels();
 
-    configStore.activeSite = componentModels['site-id'];
-    configStore.productSearch = componentModels.psrWidget;
-    if (componentModels.otyml) {
-        configStore.otyml = componentModels.otyml;
-    }
-    configStore.pageItems = componentModels.pageItems;
-    configStore.heroImage = componentModels.heroImage;
-    configStore.labels = componentModels.labels;
-    configStore.newsletterSignpost = componentModels.newsletterSignpost;
-    configStore.pageIntro = componentModels.pageIntro;
-    configStore.gtm = componentModels.gtm;
-    configStore.pageMetaData = componentModels.metadata;
-    configStore.mainMapPath = componentModels['main-map-path'];
-
-    if (componentModels.heroVideo) {
-        configStore.heroVideo = componentModels.heroVideo;
-    }
-
-    if (componentModels.videoHeader) {
-        configStore.isLocalVideoheader = true;
-    }
-
-    if (componentModels.pageConfiguration) {
+    if (componentModels.pageConfiguration?.hasStops) {
         hasStops = componentModels.pageConfiguration.hasStops;
-        configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
-        configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];
-        configStore.cludoExperienceId = componentModels.pageConfiguration['cludo.experience-id'];
-        configStore.cludoEngineId = componentModels.pageConfiguration['cludo.engine-id'];
-        configStore.cludoLanguage = componentModels.pageConfiguration.language;
-        configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
-        configStore.cludoApiOperator = componentModels.pageConfiguration.cludoApiOperator;
-        configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
-        configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
-        configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
-        configStore.allowFavourite = componentModels.pageConfiguration['allow-favourite'];
-        configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
-        configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
-        configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
-
-        if (componentModels.pageConfiguration['dms-based']) {
-            configStore.searchDmsBased = true;
-        }
-
-        if (componentModels.pageConfiguration['is-favourites-page']) {
-            configStore.isFavouritesPage = true;
-        }
-
-        if (componentModels.pageConfiguration.searchWidget) {
-            configStore.showSearchWidget = true;
-        }
-
     }
 
     const pageContent : any = page.value.getContent(page.value.model.root);
@@ -169,8 +120,6 @@ if (page.value) {
     pageDocument = page.value.getContent(pageModels.document);
 
     configStore.pageDocument = pageModels.document;
-
-    configStore.locale = componentModels.pageConfiguration.language;
 
     let langString = '';
 

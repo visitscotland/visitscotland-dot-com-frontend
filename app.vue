@@ -74,6 +74,7 @@ import {
 import mitt from 'mitt';
 import { useFlagsStore } from './stores/flags.ts';
 import checkFlag from './composables/checkFlags.ts';
+import loadPageConfig from '~/utls/configLoader.ts';
 
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
@@ -266,9 +267,26 @@ const configuration = {
         serverId,
     } : {
     }),
-    origin: runtimeConfig.public.BR_CMS_ORIGIN_LOCATION,
     debug: runtimeConfig.public.BR_NUXT_APP_DEBUG === 'true',
 };
+
+if (!isInternalResource && endpoint.value && endpoint.value.includes('resourceapi')) {
+    try {
+        const requestConfig = {
+        };
+        const xForwardedHostValue = xForwardedhost.value;
+        if (import.meta.server && xForwardedHostValue) {
+            requestConfig.headers = {
+                Host: xForwardedHostValue,
+            };
+        }
+
+        const pageModelResponse = await axios.get(localisedEndpoint + deLocalisedRoute, requestConfig);
+        loadPageConfig(pageModelResponse.data);
+    } catch (error) {
+        console.error('[app.vue] Failed to load page config:', error?.message || error);
+    }
+}
 
 /**
  * This object maps Bloomreach Components in the CMS data to a set of Vue components. It is
