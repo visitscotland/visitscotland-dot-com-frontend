@@ -63,31 +63,32 @@ function loadPageConfig(pageModel: any): void {
     };
 
     for (const [src, target] of Object.entries(modelFieldMap)) {
-        if (models[src]) {
+        if (models[src] !== undefined) {
             configStore[target] = models[src];
         }
     }
 
     for (const [src, target] of Object.entries(modelBoolFlags)) {
-        if (models[src]) {
+        if (models[src] !== undefined) {
             configStore[target] = true;
         }
     }
 
     for (const [src, target] of Object.entries(pageConfigFieldMap)) {
-        if (pageConfig[src]) {
+        if (pageConfig[src] !== undefined) {
             configStore[target] = pageConfig[src];
         }
     }
 
     for (const [src, target] of Object.entries(pageConfigBoolFlags)) {
-        if (pageConfig[src]) {
+        if (pageConfig[src] !== undefined) {
             configStore[target] = true;
         }
     }
 
     if (pageConfig.language) {
         configStore.locale = pageConfig.language;
+        configStore.langString = pageConfig.language;
     }
 }
 
