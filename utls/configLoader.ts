@@ -3,17 +3,13 @@ import useConfigStore from '~/stores/configStore.ts';
 function loadPageConfig(pageModel: any): void {
     const configStore = useConfigStore();
 
-    const rootRef = pageModel.root?.$ref;
-    const rootId = rootRef?.split('/').pop();
-    const rootComponent = pageModel.page?.[rootId];
-
-    const resolveRef = (ref: any) => {
+    const getContent = (ref: any) => {
         if (!ref?.$ref) return ref;
-        const id = ref.$ref.split('/').pop();
-        return pageModel.page?.[id];
+        return pageModel.page?.[ref.$ref.split('/').pop()];
     };
 
-    const rootChildren = (rootComponent?.children || []).map(resolveRef);
+    const rootComponent = getContent(pageModel.root);
+    const rootChildren = (rootComponent?.children || []).map(getContent);
     const mainComponent = rootChildren.find((c: any) => c?.name === 'main');
 
     if (!mainComponent?.models) {

@@ -272,7 +272,7 @@ const configuration = {
     debug: runtimeConfig.public.BR_NUXT_APP_DEBUG === 'true',
 };
 
-if (!isInternalResource && endpoint.value && endpoint.value.includes('resourceapi')) {
+if (endpoint.value && endpoint.value.includes('resourceapi')) {
     try {
         const requestConfig = {
         };
