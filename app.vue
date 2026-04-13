@@ -11,6 +11,7 @@
                 <br-page
                     :configuration="configuration"
                     :mapping="mapping"
+                    :page="pageModel"
                 >
                     <template #default>
                         <div
@@ -41,7 +42,7 @@
         <div v-if="isInternalResource">
             <div id="start-fragment" style="display: none;" />
             <div id="__nuxt" class="external-header-integration">
-                <br-page :configuration="configuration" :mapping="mapping">
+                <br-page :configuration="configuration" :mapping="mapping" :page="pageModel">
                     <template #default>
                         <Suspense v-if="internalResourceName === 'header'">
                             <component :is="CssHeader" />
@@ -134,6 +135,7 @@ const localeStrings = [
 
 const isMounted = ref(false);
 const hideSkeleton = ref(false);
+const pageModel = ref(null);
 
 const scrollToAnchor = (hash, attempts = 0) => {
     const element = document.querySelector(hash);
@@ -282,6 +284,7 @@ if (!isInternalResource && endpoint.value && endpoint.value.includes('resourceap
         }
 
         const pageModelResponse = await axios.get(localisedEndpoint + deLocalisedRoute, requestConfig);
+        pageModel.value = pageModelResponse.data;
         loadPageConfig(pageModelResponse.data);
     } catch (error) {
         console.error('[app.vue] Failed to load page config:', error?.message || error);
