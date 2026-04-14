@@ -70,7 +70,7 @@ function loadPageConfig(pageModel: any): void {
 
     for (const [src, target] of Object.entries(modelBoolFlags)) {
         if (models[src] !== undefined) {
-            configStore[target] = true;
+            configStore[target] = models[src];
         }
     }
 
@@ -82,7 +82,7 @@ function loadPageConfig(pageModel: any): void {
 
     for (const [src, target] of Object.entries(pageConfigBoolFlags)) {
         if (pageConfig[src] !== undefined) {
-            configStore[target] = true;
+            configStore[target] = models[src];
         }
     }
 
