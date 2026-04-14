@@ -109,10 +109,24 @@ const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 
 const flagStore = useFlagsStore();
+const { data: appConfigEndpoint }  = await useFetch('/api/getFeatureFlagServiceUrl');
 
 const fetchFlags = async() => {
+    let featureFlagsData = {};
     try {
-        const flags = featureFlagsData;
+
+        axios.get(appConfigEndpoint.value)
+        .then(function (response) {
+            console.log('feature flags data fetched successfully', response.data);
+            // handle success
+            featureFlagsData = response;
+        })
+        .catch(function (error) {
+            // handle error
+            console.log('error fetching feature flags data', error); 
+        });
+
+        const flags = featureFlagsData(appConfigEndpoint.value);
         flagStore.flags = flags;
     } catch (error) {
         console.error('Error fetching flags:', error);
