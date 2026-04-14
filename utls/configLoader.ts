@@ -82,13 +82,12 @@ function loadPageConfig(pageModel: any): void {
 
     for (const [src, target] of Object.entries(pageConfigBoolFlags)) {
         if (pageConfig[src] !== undefined) {
-            configStore[target] = models[src];
+            configStore[target] = pageConfig[src];
         }
     }
 
     if (pageConfig.language) {
         configStore.locale = pageConfig.language;
-        configStore.langString = pageConfig.language;
     }
 }
 
