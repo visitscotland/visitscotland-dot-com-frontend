@@ -79,7 +79,6 @@ import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
-import featureFlagsData from './composables/featureFlags.ts';
 
 const CssHeader = defineAsyncComponent(() => import('~/components/InternalResources/CssHeader.vue'));
 
@@ -120,6 +119,8 @@ const fetchFlags = async() => {
             console.log('feature flags data fetched successfully', response.data);
             // handle success
             featureFlagsData = response;
+
+            sessionStorage.setItem('flags', JSON.stringify(featureFlagsData.data));
         })
         .catch(function (error) {
             // handle error
