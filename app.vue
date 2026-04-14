@@ -126,7 +126,7 @@ const fetchFlags = async() => {
             console.log('error fetching feature flags data', error); 
         });
 
-        const flags = featureFlagsData(appConfigEndpoint.value);
+        const flags = featureFlagsData;
         flagStore.flags = flags;
     } catch (error) {
         console.error('Error fetching flags:', error);
