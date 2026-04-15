@@ -92,9 +92,6 @@ const app = getCurrentInstance();
 const emitter = mitt();
 app.appContext.config.globalProperties.emitter = emitter;
 
-const checkFlags = () => checkFlag;
-app.appContext.config.globalProperties.checkFlags = checkFlags();
-
 /**
  * The current path, which is then transformed into a resource api endpoint to get from the CMS
  */
@@ -108,33 +105,29 @@ const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 
 const flagStore = useFlagsStore();
-const { data: appConfigEndpoint }  = await useFetch('/api/getFeatureFlagServiceUrl');
 
-const fetchFlags = async() => {
-    let featureFlagsData = {};
+const { VS_AWS_APPCONFIG_URL } = useRuntimeConfig();
+
+// only get feature flag values when running on server
+if(process.server) {
     try {
-
-        axios.get(appConfigEndpoint.value)
+        axios.get(VS_AWS_APPCONFIG_URL)
         .then(function (response) {
             console.log('feature flags data fetched successfully', response.data);
             // handle success
-            featureFlagsData = response;
-
-            sessionStorage.setItem('flags', JSON.stringify(featureFlagsData.data));
+            flagStore.flags = response.data;
         })
         .catch(function (error) {
             // handle error
             console.log('error fetching feature flags data', error); 
         });
-
-        const flags = featureFlagsData;
-        flagStore.flags = flags;
     } catch (error) {
         console.error('Error fetching flags:', error);
-    }
-};
+    };
+}
 
-await fetchFlags();  
+const checkFlags = () => checkFlag;
+app.appContext.config.globalProperties.checkFlags = checkFlags();   
 
 let locale = 'resourceapi';
 
