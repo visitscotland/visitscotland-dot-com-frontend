@@ -75,7 +75,7 @@
             v-else-if="item.type === 'ArticleModule'"
         >
             <VsBrAccordionModule
-                v-if="item.theme === 'accordion'"
+                v-if="hippoContent[index]?.model?.data?.theme === 'accordion'"
                 :id-prefix="`accordionItem-${index}-`"
                 :module="item"
             />
