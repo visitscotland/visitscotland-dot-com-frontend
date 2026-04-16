@@ -106,8 +106,9 @@ const flagStore = useFlagsStore();
 
 let flags = {};
 
+
 // fetch response from feature flags service api 
-await $fetch('/api/getFeatureFlagValues')
+await $fetch('/api/frontend/getFeatureFlagValues')
     .then((response) => {
         flags = response;
         flagStore.flags = response;        
@@ -121,6 +122,7 @@ app.appContext.config.globalProperties.checkFlag = (str) => {
         return false;
     }
 };
+
 
 let locale = 'resourceapi';
 
