@@ -402,7 +402,6 @@ import { getCurrentInstance } from 'vue'
 
 const { appContext } = getCurrentInstance()
 const globalProperties = appContext.config.globalProperties
-console.log(globalProperties.checkFlag)
 
 const props = defineProps<{ component: Component, page: Page }>();
 

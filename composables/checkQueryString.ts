@@ -19,4 +19,4 @@ const checkQueryString = (str) => {
     return false;
 };
 
-export default await checkQueryString;
+export default checkQueryString;
