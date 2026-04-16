@@ -73,7 +73,6 @@ import {
 } from 'vue';
 import mitt from 'mitt';
 import { useFlagsStore } from './stores/flags.ts';
-import checkFlag from './composables/checkFlags.ts';
 
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
@@ -103,31 +102,25 @@ const route = useRoute().path;
  */
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
-
 const flagStore = useFlagsStore();
 
-const { VS_AWS_APPCONFIG_URL } = useRuntimeConfig();
+let flags = {};
 
-// only get feature flag values when running on server
-if(process.server) {
-    try {
-        axios.get(VS_AWS_APPCONFIG_URL)
-        .then(function (response) {
-            console.log('feature flags data fetched successfully', response.data);
-            // handle success
-            flagStore.flags = response.data;
-        })
-        .catch(function (error) {
-            // handle error
-            console.log('error fetching feature flags data', error); 
-        });
-    } catch (error) {
-        console.error('Error fetching flags:', error);
-    };
-}
+// fetch response from feature flags service api 
+await $fetch('/api/getFeatureFlagValues')
+    .then((response) => {
+        flags = response;
+        flagStore.flags = response;        
+    });
 
-const checkFlags = () => checkFlag;
-app.appContext.config.globalProperties.checkFlags = checkFlags();   
+// set up a global function to allow checking of flags
+app.appContext.config.globalProperties.checkFlag = (str) => {
+    if ((Object.keys(flags).length > 0 && flags.hasOwnProperty(str) && flags[str].enabled) || checkQueryString(str)) {
+        return true;
+    } else {
+        return false;
+    }
+};
 
 let locale = 'resourceapi';
 

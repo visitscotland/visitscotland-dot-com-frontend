@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <template v-if="checkFlags('use-navbar')">
+    <template v-if="checkFlag('use-navbar')">
         <VsBrSkipTo />
         <VsBanner
             v-if="banner"
@@ -373,8 +373,6 @@ import formatLink from '~/composables/formatLink.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import checkFlag from '~/composables/checkFlags.ts';
-
 import {
     VsGlobalMenu,
     VsGlobalMenuLanguage,
@@ -400,6 +398,12 @@ import VsBrDivider from '~/components/Modules/VsBrDivider.vue';
 import VsBrMegaNav from '~/components/Modules/VsBrMegaNav.vue';
 import VsBrAccordionNav from '~/components/Modules/VsBrAccordionNav.vue';
 
+import { getCurrentInstance } from 'vue'
+
+const { appContext } = getCurrentInstance()
+const globalProperties = appContext.config.globalProperties
+console.log(globalProperties.checkFlag)
+
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
@@ -422,7 +426,7 @@ const isFocused = ref(false);
 const scrollY = ref(1);
 
 const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
-    && checkFlags('use-navbar')
+    && globalProperties.checkFlag('use-navbar')
     && scrollY.value === 0
     && !isHovered.value
     && !isFocused.value);
