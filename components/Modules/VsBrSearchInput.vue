@@ -321,6 +321,8 @@ async function setCategoryAnalytics(category: SearchFilterCategory | SearchFilte
 async function updateCategoryKey(category: SearchFilterCategory) {
     searchStore.currentPage = 1;
     searchStore.subcategoryKeys = [];
+    searchStore.selectedLocations = [];
+    searchStore.postcodeareas = undefined;
     searchStore.subcategorySelected = [];
     searchStore.fromDate = category.Key === 'events'
         ? new Date().toJSON().slice(0, 10)

@@ -1,5 +1,6 @@
 export type SearchFilterCategory = {
     Key: string;
+    Parameter?: string,
     Label: string;
     icon?: string;
 };
