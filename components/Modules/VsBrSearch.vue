@@ -181,6 +181,14 @@ onMounted(() => {
         const routeSubcategories = route.query.subcategories as string;
 
         searchStore.subcategoryKeys = routeSubcategories.split(',');
+
+        searchStore.subcategoryKeys.forEach((subcategoryKey) => {
+            const match = searchStore.orderedSubcategories.find(
+                (subcategory) => subcategoryKey === subcategory.Key,
+            );
+
+            if (match) searchStore.subcategorySelected.push(match);
+        });
     }
 
     if (route.query.postcodeareas) {
@@ -227,6 +235,7 @@ onMounted(() => {
         if (route.query['search-term']) {
             dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
                 search_query: searchStore.searchTerm,
+                search_category: searchStore.categoryKey ? searchStore.categoryKey : null,
                 query_input: searchStore.queryInput,
                 results_count: searchStore.totalResults,
                 search_usage_index: searchStore.searchInSessionCount,

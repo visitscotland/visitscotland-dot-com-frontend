@@ -67,7 +67,7 @@
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
 
-import checkFlag from '~/composables/checkFlags';
+import checkFlag from '~/composables/checkFlags.ts';
 
 import {
     VsContainer,
