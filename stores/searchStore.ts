@@ -1,4 +1,8 @@
-import type { SearchApiResults, SearchApiResult } from '~/types/types.ts';
+import type {
+    SearchApiResults,
+    SearchApiResult,
+    SearchFilterCategory,
+} from '~/types/types.ts';
 import { defineStore } from 'pinia';
 import { ref, watchEffect } from 'vue';
 
@@ -18,6 +22,7 @@ const useSearchStore = defineStore('search', () => {
     // Filter
     const categoryKey = ref<string>();
     const subcategoryKeys = ref<string[]>([]);
+    const selectedLocations = ref<SearchFilterCategory[]>([]);
     const locationKeys = ref<string[]>([]);
 
     // Search sort
@@ -86,7 +91,7 @@ const useSearchStore = defineStore('search', () => {
                 location: location.value,
                 page: currentPage.value,
                 postcode: postcode.value,
-                postcodeareas: locationKeys.value || postcodeareas.value,
+                postcodeareas: getSearchFilterParameters(selectedLocations.value).toString() || postcodeareas.value,
                 radius: radius.value,
                 searchTerm: searchTerm.value,
                 siteLanguage: configStore.locale,
@@ -154,7 +159,7 @@ const useSearchStore = defineStore('search', () => {
                     postcodeareas: postcodeareas.value,
                 }),
                 ...(locationKeys.value.length > 0 && {
-                    postcodeareas: locationKeys.value.join(','),
+                    location: getSearchFilterKeys(selectedLocations.value),
                 }),
                 ...(radius.value && {
                     radius: radius.value,
@@ -166,6 +171,22 @@ const useSearchStore = defineStore('search', () => {
         });
 
         getSearchResults();
+    }
+
+    function getSearchFilterParameters(searchFilter: SearchFilterCategory[]) {
+        const arrayOfParameters: string[] = [];
+        searchFilter.forEach((filter => {
+            arrayOfParameters.push(filter.Parameter);
+        }));
+        return arrayOfParameters.toString();
+    }
+
+    function getSearchFilterKeys(searchFilter: SearchFilterCategory[]) {
+        const arraypOfKeys: string[] = [];
+        searchFilter.forEach((filter => {
+            arraypOfKeys.push(filter.Key);
+        }));
+        return arraypOfKeys.toString();
     }
 
     return {
@@ -187,6 +208,7 @@ const useSearchStore = defineStore('search', () => {
         searchInSessionCount,
         searchResults,
         searchTerm,
+        selectedLocations,
         setUrlParameters,
         sortBy,
         subcategoryKeys,

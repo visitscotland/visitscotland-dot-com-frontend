@@ -147,6 +147,7 @@ onBeforeMount(() => {
     for (const location of Object.entries(configStore.searchFilters.postcodeareas)) {
         locations.push({
             Key: location[1].id,
+            Parameter: location[1].parameter,
             Label: location[1].label,
         });
     }
@@ -185,7 +186,7 @@ onMounted(() => {
     if (route.query.postcodeareas) {
         const routeLocations = route.query.postcodeareas as string;
 
-        searchStore.locationKeys = routeLocations.split(',');
+        searchStore.locationKeys.push(routeLocations);
     }
 
     searchStore.currentPage = Number(route.query.page) || 1;
@@ -238,11 +239,13 @@ onMounted(() => {
 async function updateLocationKey(location: SearchFilterCategory) {
     if (!searchStore.locationKeys.includes(location.Key)) {
         searchStore.locationKeys.push(location.Key);
+        searchStore.selectedLocations.push(location);
     } else {
         const index = searchStore.locationKeys.indexOf(location.Key);
 
         if (index >= 0) {
             searchStore.locationKeys.splice(index, 1);
+            searchStore.selectedLocations.splice(index, 1);
         }
     }
 
