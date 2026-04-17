@@ -69,14 +69,15 @@
 
                 <div class="vs-search__location-filter">
                     <VsBrSearchFilter
-                        v-if="locations 
+                        v-if="checkFlags('use-location-filters')
+                            && locations.length 
                             && !searchStore.isLoading
                             && searchStore.categoryKey === 'events'"
                         :filter-categories="locations"
                         class="my-200"
                         ref="locationFilter"
                         :category-btn-text="configStore.getLabel('search', 'filters.category')"
-                        heading="configStore.getLabel('search', 'filters.category')"
+                        heading="Filter by location"
                         variant="secondary"
                         @filter-updated="updateLocationKey"
                         :active-filter="searchStore.getSearchFilterKeys(searchStore.selectedLocations)"
