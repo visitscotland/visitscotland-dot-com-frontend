@@ -108,7 +108,9 @@ const useSearchStore = defineStore('search', () => {
                 location: location.value,
                 page: currentPage.value,
                 postcode: postcode.value,
-                postcodeareas: getSearchFilterParameters(selectedLocations.value).toString() || postcodeareas.value,
+                postcodeareas:  selectedLocations.value.length 
+                    ? getSearchFilterParameters(selectedLocations.value).toString() 
+                    : postcodeareas.value,
                 radius: radius.value,
                 searchTerm: searchTerm.value,
                 siteLanguage: configStore.locale,
@@ -191,19 +193,11 @@ const useSearchStore = defineStore('search', () => {
     }
 
     function getSearchFilterParameters(searchFilter: SearchFilterCategory[]) {
-        const arrayOfParameters: string[] = [];
-        searchFilter.forEach((filter) => {
-            arrayOfParameters.push(filter.Parameter);
-        });
-        return arrayOfParameters;
+        return searchFilter.map((filter) => filter.Parameter);
     }
 
     function getSearchFilterKeys(searchFilter: SearchFilterCategory[]) {
-        const arrayOfKeys: string[] = [];
-        searchFilter.forEach((filter) => {
-            arrayOfKeys.push(filter.Key);
-        });
-        return arrayOfKeys;
+        return searchFilter.map((filter) => filter.Key);
     }
 
     return {

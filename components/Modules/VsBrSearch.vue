@@ -76,7 +76,7 @@
                         class="my-200"
                         ref="locationFilter"
                         :category-btn-text="configStore.getLabel('search', 'filters.category')"
-                        heading="Filter by Location"
+                        heading="configStore.getLabel('search', 'filters.category')"
                         variant="secondary"
                         @filter-updated="updateLocationKey"
                         :active-filter="searchStore.getSearchFilterKeys(searchStore.selectedLocations)"
@@ -144,13 +144,16 @@ const moduleNames = [];
 const locations: SearchFilterCategory[] = [];
 
 onBeforeMount(() => {
-    for (const location of Object.entries(configStore.searchFilters.postcodeareas)) {
-        locations.push({
-            Key: location[1].id,
-            Parameter: location[1].parameter,
-            Label: location[1].label,
-        });
-    }
+    if (configStore.searchFilters.postcodeareas){
+        for (const location of Object.entries(configStore.searchFilters.postcodeareas)) {
+            locations.push({
+                Key: location[1].id,
+                Parameter: location[1].parameter,
+                Label: location[1].label,
+            });
+        }
+    } else return;
+    
 });
 
 for (let x = 0; x < modules.length; x++) {
@@ -193,7 +196,6 @@ onMounted(() => {
 
     if (route.query.postcodeareas) {
         const routePostcodeareas = route.query.postcodeareas as string;
-
         searchStore.postcodeareas = routePostcodeareas;
     }
 
