@@ -258,6 +258,10 @@ onMounted(() => {
 });
 
 async function updateLocationKey(location: SearchFilterCategory) {
+    if (searchStore.postcodeareas) {
+        searchStore.postcodeareas = undefined;
+    }
+
     if (!searchStore.getSearchFilterKeys(searchStore.selectedLocations).includes(location.Key)) {
         searchStore.selectedLocations.push(location);
     } else {
