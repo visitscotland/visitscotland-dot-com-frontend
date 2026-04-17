@@ -11,6 +11,7 @@
                 <br-page
                     :configuration="configuration"
                     :mapping="mapping"
+                    :page="pageModel"
                 >
                     <template #default>
                         <div
@@ -41,7 +42,7 @@
         <div v-if="isInternalResource">
             <div id="start-fragment" style="display: none;" />
             <div id="__nuxt" class="external-header-integration">
-                <br-page :configuration="configuration" :mapping="mapping">
+                <br-page :configuration="configuration" :mapping="mapping" :page="pageModel">
                     <template #default>
                         <Suspense v-if="internalResourceName === 'header'">
                             <component :is="CssHeader" />
@@ -74,6 +75,7 @@ import {
 import mitt from 'mitt';
 import { useFlagsStore } from './stores/flags.ts';
 import checkFlag from './composables/checkFlags.ts';
+import loadPageConfig from '~/utls/configLoader.ts';
 
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
@@ -133,6 +135,7 @@ const localeStrings = [
 
 const isMounted = ref(false);
 const hideSkeleton = ref(false);
+const pageModel = ref(null);
 
 const scrollToAnchor = (hash, attempts = 0) => {
     const element = document.querySelector(hash);
@@ -266,9 +269,36 @@ const configuration = {
         serverId,
     } : {
     }),
-    origin: runtimeConfig.public.BR_CMS_ORIGIN_LOCATION,
     debug: runtimeConfig.public.BR_NUXT_APP_DEBUG === 'true',
 };
+
+if (endpoint.value && endpoint.value.includes('resourceapi')) {
+    try {
+        const requestConfig = {
+            headers: {
+            },
+        };
+        const xForwardedHostValue = xForwardedhost.value;
+
+        if (import.meta.server && xForwardedHostValue) {
+            requestConfig.headers.Host = xForwardedHostValue;
+        }
+
+        if (authorizationToken) {
+            requestConfig.headers.Authorization = `Bearer ${authorizationToken}`;
+        }
+
+        if (serverId) {
+            requestConfig.headers['Server-Id'] = serverId;
+        }
+
+        const pageModelResponse = await axios.get(localisedEndpoint + deLocalisedRoute, requestConfig);
+        pageModel.value = pageModelResponse.data;
+        loadPageConfig(pageModelResponse.data);
+    } catch (error) {
+        console.error('[app.vue] Failed to load page config:', error?.message || error);
+    }
+}
 
 /**
  * This object maps Bloomreach Components in the CMS data to a set of Vue components. It is
