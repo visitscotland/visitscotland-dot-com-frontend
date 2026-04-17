@@ -178,7 +178,7 @@ const useSearchStore = defineStore('search', () => {
                     postcodeareas: postcodeareas.value,
                 }),
                 ...(selectedLocations.value.length > 0 && {
-                    locations: getSearchFilterKeys(selectedLocations.value).toString(),
+                    locations: getSearchFilterKeys(selectedLocations.value).join(','),
                 }),
                 ...(radius.value && {
                     radius: radius.value,
