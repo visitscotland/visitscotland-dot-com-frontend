@@ -1,4 +1,10 @@
 <template>
+    <template v-if="checkFlag('greeting')">
+        <span data-test="GREETING" />
+    </template>
+    <template v-if="checkFlag('profile-page')">
+        <span data-test="profile-page" />
+    </template>
     <template v-if="documentData.blog">
         <VsBrPageIntro
             :content="documentData"

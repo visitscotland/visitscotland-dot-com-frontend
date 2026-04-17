@@ -16,6 +16,8 @@ export default defineNuxtConfig({
     runtimeConfig: {
         BR_RESOURCE_API_ENDPOINT: process.env.BR_RESOURCE_API_ENDPOINT,
         BR_X_FORWARDED_HOST: process.env.BR_X_FORWARDED_HOST,
+        VS_AWS_APPCONFIG_URL: process.env.VS_AWS_APPCONFIG_URL,
+        
         public: {
             BR_CMS_ORIGIN_LOCATION: process.env.BR_CMS_ORIGIN_LOCATION,
             BR_NUXT_APP_DEBUG: process.env.BR_NUXT_APP_DEBUG,
