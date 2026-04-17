@@ -79,7 +79,7 @@
                         heading="Filter by Location"
                         variant="secondary"
                         @filter-updated="updateLocationKey"
-                        :active-filter="searchStore.locationKeys"
+                        :active-filter="searchStore.getSearchFilterKeys(searchStore.selectedLocations)"
                         wrap
                     />
                 </div>
@@ -184,9 +184,21 @@ onMounted(() => {
     }
 
     if (route.query.postcodeareas) {
-        const routeLocations = route.query.postcodeareas as string;
+        const routePostcodeareas = route.query.postcodeareas as string;
 
-        searchStore.locationKeys.push(routeLocations);
+        searchStore.postcodeareas = routePostcodeareas;
+    }
+
+    if(route.query.locations) {
+        const routeLocations = route.query.locations as string;
+
+        const routeLocationKeys = routeLocations.split(',');
+
+        locations.forEach((location) => {
+            if (routeLocationKeys.includes(location.Key)) {
+                searchStore.selectedLocations.push(location);
+            }
+        });
     }
 
     searchStore.currentPage = Number(route.query.page) || 1;
@@ -237,14 +249,12 @@ onMounted(() => {
 });
 
 async function updateLocationKey(location: SearchFilterCategory) {
-    if (!searchStore.locationKeys.includes(location.Key)) {
-        searchStore.locationKeys.push(location.Key);
+    if (!searchStore.getSearchFilterKeys(searchStore.selectedLocations).includes(location.Key)) {
         searchStore.selectedLocations.push(location);
     } else {
-        const index = searchStore.locationKeys.indexOf(location.Key);
+        const index = searchStore.getSearchFilterKeys(searchStore.selectedLocations).indexOf(location.Key);
 
         if (index >= 0) {
-            searchStore.locationKeys.splice(index, 1);
             searchStore.selectedLocations.splice(index, 1);
         }
     }

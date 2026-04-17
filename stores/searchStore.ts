@@ -23,7 +23,6 @@ const useSearchStore = defineStore('search', () => {
     const categoryKey = ref<string>();
     const subcategoryKeys = ref<string[]>([]);
     const selectedLocations = ref<SearchFilterCategory[]>([]);
-    const locationKeys = ref<string[]>([]);
 
     // Search sort
     const fromDate = ref<string>();
@@ -158,8 +157,8 @@ const useSearchStore = defineStore('search', () => {
                 ...(postcodeareas.value && {
                     postcodeareas: postcodeareas.value,
                 }),
-                ...(locationKeys.value.length > 0 && {
-                    location: getSearchFilterKeys(selectedLocations.value),
+                ...(selectedLocations.value.length > 0 && {
+                    locations: getSearchFilterKeys(selectedLocations.value).toString(),
                 }),
                 ...(radius.value && {
                     radius: radius.value,
@@ -175,18 +174,18 @@ const useSearchStore = defineStore('search', () => {
 
     function getSearchFilterParameters(searchFilter: SearchFilterCategory[]) {
         const arrayOfParameters: string[] = [];
-        searchFilter.forEach((filter => {
+        searchFilter.forEach((filter) => {
             arrayOfParameters.push(filter.Parameter);
-        }));
-        return arrayOfParameters.toString();
+        });
+        return arrayOfParameters;
     }
 
     function getSearchFilterKeys(searchFilter: SearchFilterCategory[]) {
-        const arraypOfKeys: string[] = [];
-        searchFilter.forEach((filter => {
-            arraypOfKeys.push(filter.Key);
-        }));
-        return arraypOfKeys.toString();
+        const arrayOfKeys: string[] = [];
+        searchFilter.forEach((filter) => {
+            arrayOfKeys.push(filter.Key);
+        });
+        return arrayOfKeys;
     }
 
     return {
@@ -197,10 +196,10 @@ const useSearchStore = defineStore('search', () => {
         eventsApiError,
         eventHasBeenClicked,
         fromDate,
+        getSearchFilterKeys,
         getSearchResults,
         isLoading,
         location,
-        locationKeys,
         postcode,
         postcodeareas,
         queryInput,
