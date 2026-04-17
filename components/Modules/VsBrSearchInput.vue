@@ -322,7 +322,7 @@ async function setCategoryAnalytics(category: any, facetStatus?: boolean) {
 async function updateCategoryKey(category: SearchFilterCategory) {
     searchStore.currentPage = 1;
     searchStore.subcategoryKeys = [];
-    searchStore.locationKeys = [];
+    searchStore.selectedLocations = [];
     searchStore.postcodeareas = undefined;
     searchStore.fromDate = category.Key === 'events'
         ? new Date().toJSON().slice(0, 10)
