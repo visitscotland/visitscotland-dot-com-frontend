@@ -25,11 +25,17 @@
                         v-for="(item, index) in sections"
                         :key="index"
                         :control-id="`${props.idPrefix}${index}`"
-                        :heading-level="nested ? 4 : 3"
+                        :heading-level="3"
                         variant="transparent"
                     >
                         <template #title>
                             {{ item.heading }}
+                        </template>
+                        <template #icon-open>
+                            <VsIcon icon="fa-regular fa-chevron-up" size="sm" />
+                        </template>
+                        <template #icon-closed>
+                            <VsIcon icon="fa-regular fa-chevron-down" size="sm" />
                         </template>
                         <div class="p-075">
                             <VsBody>
@@ -51,6 +57,7 @@ import {
     VsModuleWrapper,
     VsCol,
     VsBody,
+    VsIcon,
 } from '@visitscotland/component-library/components';
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
