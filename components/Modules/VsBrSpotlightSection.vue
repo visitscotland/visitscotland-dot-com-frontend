@@ -73,4 +73,12 @@ description = decode(description);
             margin-block-start: var(--vs-space-500, 5rem);
         }
     }
+
+    /* TEMP VS-1501: Adds vertical whitepsace between spotlight when adjacent sections are both light theme. */
+    @supports selector(:has(.vs-spotlight-section)) {
+        [class$="--light"] + [id^="section-"]:has(.vs-spotlight-section),
+        [id^="section-"]:has(.vs-spotlight-section) + [id^="section-"]:has(>[class$="--light"]) {
+            margin-block-start: var(--vs-space-500, 5rem);
+        }
+    }
 </style>
