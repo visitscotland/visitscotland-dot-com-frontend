@@ -31,7 +31,7 @@
                 :disabled="isLoading"
                 @click.prevent="search"
             >
-                {{ configStore.getLabel('search', 'search') }}
+                {{ searchBtnText ? searchBtnText : configStore.getLabel('search', 'search') }}
             </VsButton>
         </div>
 
@@ -117,6 +117,7 @@ type Props = {
     isEventWidget?: boolean;
     autocomplete?: boolean;
     placeholder?: string;
+    searchBtnText?: string;
     searchCategories?: object;
 }
 
@@ -125,6 +126,7 @@ const {
     isEventWidget = false,
     autocomplete = false,
     placeholder = '',
+    searchBtnText = '',
     searchCategories = {
     },
 } = defineProps<Props>();
