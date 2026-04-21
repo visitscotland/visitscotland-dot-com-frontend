@@ -7,6 +7,10 @@ import {
     siteSearchUsageTemplate,
     siteSearchClickTemplate,
     siteSearchCloseTemplate,
+    favouriteAddTemplate,
+    favouriteRemoveTemplate,
+    favouritesPageViewTemplate,
+    favouritesClickTemplate,
 } from '~/utls/date-layer-template.ts';
 
 /**
@@ -159,6 +163,54 @@ export default function dataLayerComposable() {
             };
             fullTemplate = compileFullTemplate(templateValues);
             dataLayerData = templateFiller(siteSearchCloseTemplate, fullTemplate);
+            break;
+
+        case 'favouriteAddEvent':
+            eventName = 'favourite_add';
+            templateValues = {
+                event: eventName,
+                content_title: event.content_title ,
+                total_favourites: event.total_favourites,
+                interaction_timestamp_ms: event.interaction_timestamp_ms,
+            };
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(favouriteAddTemplate , fullTemplate);
+            break;
+
+        case 'favouriteRemoveEvent':
+            eventName = 'favourite_remove';
+            templateValues = {
+                event: eventName,
+                content_title: event.content_title ,
+                total_favourites: event.total_favourites,
+                interaction_timestamp_ms: event.interaction_timestamp_ms,
+            };
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(favouriteRemoveTemplate , fullTemplate);
+            break;
+            
+        case 'favouritesPageViewEvent':
+            eventName = 'favourites_page_view' ;
+            templateValues = {
+                event: eventName,
+                favourite_owner: event.favourite_owner,
+                total_favourites: event.total_favourites,
+                shared_list_id: event.shared_list_id,
+            };
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(favouritesPageViewTemplate , fullTemplate);
+            break;
+      
+        case 'favouritesClickEvent':
+            eventName = 'favourites_click';
+            templateValues = {
+                event: eventName,
+                list_position: event.list_position,
+                total_favourites: event.total_favourites,
+                interaction_timestamp_ms: event.interaction_timestamp_ms,
+            };
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(favouritesClickTemplate , fullTemplate);
             break;
 
         default:
