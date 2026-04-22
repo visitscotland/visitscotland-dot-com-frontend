@@ -26,7 +26,7 @@
                     #vs-single-image
                     v-if="module.image"
                 >
-                    <VsBrImageWithCaption
+                    <VsBrMedia
                         :mobile-overlap="true"
                         :alignment="module.alternate === true ? 'left' : 'right'"
                         :image="module.image.cmsImage
@@ -98,7 +98,7 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import formatLink from '~/composables/formatLink.ts';
 
-import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 const configStore = useConfigStore();

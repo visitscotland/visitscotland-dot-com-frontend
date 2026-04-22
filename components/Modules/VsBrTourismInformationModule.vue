@@ -6,7 +6,7 @@
         <VsContainer>
             <VsTourismInfo>
                 <template #tourism-info-image-with-caption>
-                    <VsBrImageWithCaption
+                    <VsBrMedia
                         :image="module.image.cmsImage
                             ? module.image.cmsImage
                             : module.image.externalImage"
@@ -37,7 +37,7 @@ import {
     VsTourismInfo,
 } from '@visitscotland/component-library/components';
 
-import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
+import VsBrMedia from './VsBrMedia.vue';
 import VsBrQuote from './VsBrQuote.vue';
 
 // const configStore = useConfigStore();
