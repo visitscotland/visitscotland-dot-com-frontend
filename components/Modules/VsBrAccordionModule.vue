@@ -26,7 +26,7 @@
                         :key="index"
                         :control-id="`${props.idPrefix}${index}`"
                         :heading-level="3"
-                        variant="transparent"
+                        variant="subtle"
                     >
                         <template #title>
                             {{ item.heading }}
