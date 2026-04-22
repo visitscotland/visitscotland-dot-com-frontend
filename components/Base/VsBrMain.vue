@@ -162,6 +162,10 @@ if (page.value) {
             configStore.showSearchWidget = true;
         }
 
+        if (componentModels.pageConfiguration.filters) {
+            configStore.searchFilters = componentModels.pageConfiguration.filters;
+        }
+
     }
 
     const pageContent : any = page.value.getContent(page.value.model.root);
