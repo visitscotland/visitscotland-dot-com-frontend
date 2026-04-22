@@ -12,3 +12,4 @@ dist
 yalc.lock
 .yalc
 AGENTS.md
+.yarn/
