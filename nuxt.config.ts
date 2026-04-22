@@ -94,4 +94,8 @@ export default defineNuxtConfig({
             ],
         },
     },
+
+    future: {
+        multiApp: true,
+    },
 });
