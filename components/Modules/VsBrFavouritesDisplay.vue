@@ -132,7 +132,7 @@ const requestBody = ref({
 
 const displayData = ref('no data retrieved');
 
-const favouritesEndpoint = `https://release-brc.visitscotland.com/${configStore.featureFavouritesEndpoint}`;
+const favouritesEndpoint = configStore.featureFavouritesEndpoint;
 
 async function getSavedPageData(uuidArray) {
     try {
