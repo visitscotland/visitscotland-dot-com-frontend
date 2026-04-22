@@ -71,7 +71,7 @@ export default defineNuxtConfig({
         ],
     },
 
-    compatibilityDate: '2025-05-06',
+    compatibilityDate: '2025-04-22',
 
     routeRules: {
         '/_nuxt/**': {
