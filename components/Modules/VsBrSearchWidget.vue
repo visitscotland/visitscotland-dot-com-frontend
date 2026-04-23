@@ -14,13 +14,14 @@
             :search-url="configStore.globalSearchPath"
             :placeholder="module?.placeholder"
             :search-btn-text="module?.button"
-            :search-categories="module?.mainCategory === 'events' ? module.subcategories : module.categories"
+            :search-categories="module?.mainCategory === 'events' ? module?.subcategories : module?.categories"
         />
     </VsContainer>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from '#app';
+import { computed } from 'vue';
 import { VsContainer } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
@@ -30,14 +31,9 @@ import VsBrSearchInput from './VsBrSearchInput.vue';
 const configStore = useConfigStore();
 
 const route = useRoute();
-
-const isSiteSearchPage = ref(false);
-
-onMounted(() => {
-    isSiteSearchPage.value = route.path === configStore.globalSearchPath ? true : false;
-});
-
-
+const isSiteSearchPage = computed(
+    () => !!configStore.globalSearchPath && route.path === configStore.globalSearchPath,
+);
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
