@@ -3,7 +3,7 @@
         <VsBrSectionHeader
             v-if="module?.title && !isSiteSearchPage"
             :heading="module?.title"
-            :lede="module?.description"
+            :lede="module.introduction.value"
         />
 
         <VsBrSearchInput
