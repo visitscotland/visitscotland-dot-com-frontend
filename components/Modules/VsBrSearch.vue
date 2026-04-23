@@ -32,12 +32,16 @@
     <VsContainer v-else>
         <div class="vs-search">
             <div class="vs-search__container">
-                <VsBrSearchWidget
-                    :module="searchInputModule[0]"
-                />
+                <div
+                    class="vs-search__widget"
+                    v-if="searchInputModule[0]"
+                >
+                    <VsBrSearchWidget
+                        :module="searchInputModule[0]"
+                    />
 
-                <VsBrDivider />
-
+                    <VsBrDivider />
+                </div>
                 <template
                     v-for="(module, index) in modules"
                     :key="module.id"
