@@ -11,7 +11,7 @@
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
-    "lint": "eslint ./**/*.{js,vue,ts}",
+    "lint": "eslint . --ext .js,.vue,.ts",
     "lint:fix": "yarn lint --fix"
   },
   "lint-staged": {
@@ -19,36 +19,33 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.15.2",
-    "eslint": "^10.0.3",
+    "@types/node": "^22.0.0",
+    "eslint": "^10.2.0",
     "husky": "^9.1.7",
-    "nuxt": "~3.21.2",
+    "nuxt": "^4.0.0",
     "nuxt-lazy-hydrate": "^1.0.0"
   },
   "dependencies": {
-    "@bloomreach/spa-sdk": "^23.4.4",
+    "@bloomreach/spa-sdk": "^27.2.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
-    "@pinia/nuxt": "^0.5.1",
+    "@pinia/nuxt": "^0.11.3",
     "@visitscotland/component-library": "5.47.0",
-    "axios": "^1.13.5",
+    "axios": "^1.15.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "html-entities": "^2.6.0",
-    "lint-staged": "^15.2.10",
+    "lint-staged": "^16.4.0",
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^2.0.8",
-    "pinia": "^3.0.2",
+    "pinia": "^3.0.4",
     "sass": "^1.81.0",
     "standard-version": "^9.5.0",
-    "typescript": "^5.6.3"
-  },
-  "resolutions": {
-    "vite": "^7.0.0"
+    "typescript": "^5.7.0"
   },
   "overrides": {
     "minimist": "latest",
     "@visitscotland/component-library": {
-      "pinia": "^3.0.2",
-      "vite": "^7.0.0"
+      "pinia": "^3.0.4"
     }
   },
   "config": {
