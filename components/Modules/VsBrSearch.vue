@@ -64,6 +64,7 @@
                     <VsBrSearchSort
                         v-if="!searchStore.isLoading
                             && searchStore.categoryKey === 'events'"
+                        :filter-locations="locations"
                     />
                 </div>
 
@@ -104,6 +105,7 @@ import {
     inject,
     onMounted,
     onBeforeMount,
+    provide,
 } from 'vue';
 import {
     VsContainer,
@@ -143,6 +145,7 @@ const { modules } = defineProps<Props>();
 const moduleNames = [];
 
 const locations: SearchFilterCategory[] = [];
+provide('location-filters', locations);
 
 onBeforeMount(() => {
     if (configStore.searchFilters.postcodeareas){

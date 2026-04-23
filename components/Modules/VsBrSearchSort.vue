@@ -1,6 +1,28 @@
 <template>
     <VsRow class="vs-search-sort">
-        <VsCol cols="12" md="8">
+        <VsCol
+            v-if="checkFlags('use-dropdown-location-filter')"
+            class="vs-search-sort__location-filter"
+            cols="12"
+            md="3"
+        >
+            <VsRow>
+                <label
+                    class="vs-search-sort__label mb-025"
+                    for="vs-search-sort__location-filter"
+                >
+                    Location
+                </label>
+                <VsBrDropdownWithSearch
+                    @search-location-updated="updateLocation"
+                />
+            </VsRow>
+        </VsCol>
+        <VsCol
+            class="vs-search-sort__date-picker-wrapper"
+            cols="12"
+            :md="checkFlags('use-dropdown-location-filter') ? 6 : 8"
+        >
             <fieldset
                 @change="(event) => debounceInput(event)"
             >
@@ -49,7 +71,7 @@
         <VsCol
             class="vs-search-sort__dropdown-wrapper"
             cols="12"
-            md="4"
+            :md="checkFlags('use-dropdown-location-filter') ? 3 : 4"
         >
             <VsDropdown
                 id="vs-search-sort__dropdown"
@@ -71,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, provide } from 'vue';
 
 import {
     VsCol,
@@ -85,9 +107,13 @@ import debounce from '~/utls/debounce.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 import useSearchStore from '~/stores/searchStore.ts';
+import type { SearchFilterCategory } from '~/types/types';
 
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
+
+const locations: SearchFilterCategory[] | undefined = inject('location-filters');
+
 
 type SortOption = {
     key: string;
@@ -148,6 +174,20 @@ const debounceInput = debounce((event: Event) => {
     };
 }, 750);
 
+
+function updateLocation(filter: any){
+    console.log(filter);
+
+    searchStore.selectedLocations = [];
+
+    locations?.forEach((location) => {
+        if (location.Key === filter.Key) {
+            searchStore.selectedLocations.push(filter);
+        }
+    });
+
+    searchStore.setUrlParameters();
+}
 </script>
 
 <style lang="scss">
@@ -156,7 +196,7 @@ const debounceInput = debounce((event: Event) => {
         font-weight: 300;
     }
 
-    &__dropdown-wrapper {
+    &__dropdown-wrapper, &__location-filter {
         display: flex;
         align-items: flex-end;
 
