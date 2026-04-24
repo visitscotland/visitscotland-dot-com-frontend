@@ -123,15 +123,6 @@ if (page.value) {
     configStore.pageIntro = componentModels.pageIntro;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
-    configStore.mainMapPath = componentModels['main-map-path'];
-
-    if (componentModels.heroVideo) {
-        configStore.heroVideo = componentModels.heroVideo;
-    }
-
-    if (componentModels.videoHeader) {
-        configStore.isLocalVideoheader = true;
-    }
 
     if (componentModels.pageConfiguration) {
         hasStops = componentModels.pageConfiguration.hasStops;
@@ -149,6 +140,11 @@ if (page.value) {
         configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
         configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
         configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
+        configStore.mainMapPath = componentModels.pageConfiguration['main-map-path'];
+
+        if (componentModels.pageConfiguration['hero-ambient-video']) {
+            configStore.isLocalVideoheader = true;
+        }
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
@@ -160,6 +156,10 @@ if (page.value) {
 
         if (componentModels.pageConfiguration.searchWidget) {
             configStore.showSearchWidget = true;
+        }
+
+        if (componentModels.pageConfiguration.filters) {
+            configStore.searchFilters = componentModels.pageConfiguration.filters;
         }
 
     }

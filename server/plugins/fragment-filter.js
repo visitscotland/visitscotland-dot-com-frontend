@@ -79,6 +79,8 @@ export default defineNitroPlugin((nitroApp) => {
                      * stays unhydrated.
                      */
                     fragment = `</main><div class="no-js">\n${fragment}</div>`;
+                } else {
+                    fragment = '';
                 }
 
                 fragment = `${fragment}<!-- end include -->`;

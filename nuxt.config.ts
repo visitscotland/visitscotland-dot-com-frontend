@@ -73,7 +73,7 @@ export default defineNuxtConfig({
         ],
     },
 
-    compatibilityDate: '2025-05-06',
+    compatibilityDate: '2026-04-22',
 
     routeRules: {
         '/_nuxt/**': {
@@ -95,5 +95,9 @@ export default defineNuxtConfig({
                 },
             ],
         },
+    },
+
+    future: {
+        multiApp: true,
     },
 });
