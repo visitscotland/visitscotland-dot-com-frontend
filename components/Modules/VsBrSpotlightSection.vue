@@ -64,13 +64,16 @@ description = decode(description);
 </script>
 
 <style>
-    /* TEMP VS-580: Add vertical whitespace between spotlight and adjacent grey sections.
-   Remove when grey backgrounds are eliminated from navigation pages OR when layout layer manages inter-module spacing. */
+    /* TEMP VS-580 & VS-1501: Add vertical whitespace between spotlight and adjacent grey sections.
+    Remove when grey backgrounds are eliminated from navigation pages OR when layout layer manages inter-module spacing. */
 
     @supports selector(:has(.vs-spotlight-section)) {
         [class$="--grey"] + [id^="section-"]:has(.vs-spotlight-section),
-        [id^="section-"]:has(.vs-spotlight-section) + [id^="section-"]:has(>[class$="--grey"]) {
+        [id^="section-"]:has(.vs-spotlight-section) + [id^="section-"]:has(>[class$="--grey"]),
+        [id^="section-"]:has(.vs-spotlight-section) + [id^="section-"]:has(>[class^="vs-ugc"]),
+        [id^="section-"]:has(.vs-spotlight-section) + [id^="section-"]:has(>[class^="vs-article"]){
             margin-block-start: var(--vs-space-500, 5rem);
         }
     }
+
 </style>

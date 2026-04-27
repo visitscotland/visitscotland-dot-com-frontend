@@ -1,25 +1,25 @@
 <template>
     <div
         class="vs-main-container"
-        :class="{ 'has-edit-button': page.isPreview() }"
+        :class="{
+            'has-edit-button': page.isPreview(),
+            'has-transparent-nav': configStore.isLocalVideoheader && checkFlags('use-navbar'),
+        }"
     >
         <BrManageContentButton
             :content="pageDocument"
         />
 
         <VsBrGtm />
-
         <VsBrPageViewEvent
             :data="pageDocument.model.data"
             :page-type="pageName"
         />
-
         <VsBrGeneral
-            v-if="pageName === 'general-page' || pageName === 'pagenotfound'"
+            v-if="(pageName === 'general-page' || pageName === 'pagenotfound')"
             :page="page"
             :component="component"
         />
-
         <VsBrDestination
             v-if="pageName === 'destination-page'"
             :page="page"
@@ -124,14 +124,6 @@ if (page.value) {
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
-    if (componentModels.heroVideo) {
-        configStore.heroVideo = componentModels.heroVideo;
-    }
-
-    if (componentModels.videoHeader) {
-        configStore.isLocalVideoheader = true;
-    }
-
     if (componentModels.pageConfiguration) {
         hasStops = componentModels.pageConfiguration.hasStops;
         configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
@@ -144,14 +136,32 @@ if (page.value) {
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
         configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
+        configStore.allowFavourite = componentModels.pageConfiguration['allow-favourite'];
+        configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
+        configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
+        configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
+        configStore.mainMapPath = componentModels.pageConfiguration['main-map-path'];
+
+        if (componentModels.pageConfiguration['hero-ambient-video']) {
+            configStore.isLocalVideoheader = true;
+        }
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
         }
 
+        if (componentModels.pageConfiguration['is-favourites-page']) {
+            configStore.isFavouritesPage = true;
+        }
+
         if (componentModels.pageConfiguration.searchWidget) {
             configStore.showSearchWidget = true;
         }
+
+        if (componentModels.pageConfiguration.filters) {
+            configStore.searchFilters = componentModels.pageConfiguration.filters;
+        }
+
     }
 
     const pageContent : any = page.value.getContent(page.value.model.root);
@@ -364,6 +374,15 @@ provide('page', page.value);
 
         @media (min-width: 992px) {
             min-height: calc(100vh - 28rem);
+        }
+    }
+
+    .has-transparent-nav {
+        margin-top: -76px;
+
+        .vs-hero-section__video-overlay {
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 50.48%, rgba(0, 0, 0, 0.30) 89.9%),
+                        linear-gradient(180deg, rgba(0, 0, 0, 0.00) 39.5%, rgba(0, 0, 0, 0.85) 100%);
         }
     }
 </style>

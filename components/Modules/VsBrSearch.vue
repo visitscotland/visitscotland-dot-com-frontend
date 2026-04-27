@@ -67,6 +67,24 @@
                     />
                 </div>
 
+                <div class="vs-search__location-filter">
+                    <VsBrSearchFilter
+                        v-if="checkFlags('use-location-filters')
+                            && locations.length 
+                            && !searchStore.isLoading
+                            && searchStore.categoryKey === 'events'"
+                        :filter-categories="locations"
+                        class="my-200"
+                        ref="locationFilter"
+                        :category-btn-text="configStore.getLabel('search', 'filters.category')"
+                        heading="Filter by location"
+                        variant="secondary"
+                        @filter-updated="updateLocationKey"
+                        :active-filter="searchStore.getSearchFilterKeys(searchStore.selectedLocations)"
+                        wrap
+                    />
+                </div>
+
                 <VsLoadingSpinner v-if="searchStore.isLoading" />
 
                 <VsBrSearchResults v-else />
@@ -82,7 +100,11 @@
 <script setup lang="ts">
 import type { Page } from '@bloomreach/spa-sdk';
 
-import { inject, onMounted } from 'vue';
+import {
+    inject,
+    onMounted,
+    onBeforeMount,
+} from 'vue';
 import {
     VsContainer,
     VsDetail,
@@ -99,9 +121,11 @@ import dataLayerComposable from '~/composables/dataLayer.ts';
 
 import VsBrDivider from './VsBrDivider.vue';
 import VsBrModuleBuilder from './VsBrModuleBuilder.vue';
+import VsBrSearchFilter from './VsBrSearchFilter.vue';
 import VsBrSearchInput from './VsBrSearchInput.vue';
 import VsBrSearchResults from './VsBrSearchResults.vue';
 import VsBrSearchSort from './VsBrSearchSort.vue';
+import type { SearchFilterCategory } from '~/types/types';
 
 const page: Page | undefined = inject('page');
 const configStore = useConfigStore();
@@ -117,6 +141,21 @@ type Props = {
 const { modules } = defineProps<Props>();
 
 const moduleNames = [];
+
+const locations: SearchFilterCategory[] = [];
+
+onBeforeMount(() => {
+    if (configStore.searchFilters.postcodeareas){
+        for (const location of Object.entries(configStore.searchFilters.postcodeareas)) {
+            locations.push({
+                Key: location[1].id,
+                Parameter: location[1].parameter,
+                Label: location[1].label,
+            });
+        }
+    } else return;
+    
+});
 
 for (let x = 0; x < modules.length; x++) {
     const hippoBean = page?.getContent(modules[x].hippoBean.$ref);
@@ -146,6 +185,31 @@ onMounted(() => {
         const routeSubcategories = route.query.subcategories as string;
 
         searchStore.subcategoryKeys = routeSubcategories.split(',');
+
+        searchStore.subcategoryKeys.forEach((subcategoryKey) => {
+            const match = searchStore.orderedSubcategories.find(
+                (subcategory) => subcategoryKey === subcategory.Key,
+            );
+
+            if (match) searchStore.subcategorySelected.push(match);
+        });
+    }
+
+    if (route.query.postcodeareas) {
+        const routePostcodeareas = route.query.postcodeareas as string;
+        searchStore.postcodeareas = routePostcodeareas;
+    }
+
+    if(route.query.locations) {
+        const routeLocations = route.query.locations as string;
+
+        const routeLocationKeys = routeLocations.split(',');
+
+        locations.forEach((location) => {
+            if (routeLocationKeys.includes(location.Key)) {
+                searchStore.selectedLocations.push(location);
+            }
+        });
     }
 
     searchStore.currentPage = Number(route.query.page) || 1;
@@ -174,6 +238,7 @@ onMounted(() => {
         if (route.query['search-term']) {
             dataLayerHelper.createDataLayerObject('siteSearchUsageEvent', {
                 search_query: searchStore.searchTerm,
+                search_category: searchStore.categoryKey ? searchStore.categoryKey : null,
                 query_input: searchStore.queryInput,
                 results_count: searchStore.totalResults,
                 search_usage_index: searchStore.searchInSessionCount,
@@ -194,6 +259,27 @@ onMounted(() => {
         once: true,
     });
 });
+
+async function updateLocationKey(location: SearchFilterCategory) {
+    if (searchStore.postcodeareas) {
+        searchStore.postcodeareas = undefined;
+    }
+
+    if (!searchStore.getSearchFilterKeys(searchStore.selectedLocations).includes(location.Key)) {
+        searchStore.selectedLocations.push(location);
+    } else {
+        const index = searchStore.getSearchFilterKeys(searchStore.selectedLocations).indexOf(location.Key);
+
+        if (index >= 0) {
+            searchStore.selectedLocations.splice(index, 1);
+        }
+    }
+
+    searchStore.currentPage = 1;
+
+    await searchStore.setUrlParameters();
+}
+
 </script>
 
 <style lang="scss">
