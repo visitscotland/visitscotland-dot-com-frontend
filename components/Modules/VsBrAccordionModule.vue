@@ -1,52 +1,44 @@
 <template>
-    <VsModuleWrapper
-        :anchor-id="anchor || null"
-        business-support
-        :class="nested ? 'pt-0' : null"
-        :heading-level="nested ? 3 : 2"
-        :heading-style="nested ? 'heading-m' : 'heading-xl'"
-        :theme="themeValue"
+    <VsSectionHeader
+        :heading="title"
+        class="mb-250"
     >
-        <template #vs-module-wrapper-heading>
-            {{ title }}
-        </template>
-
         <template
-            #vs-module-wrapper-intro
+            #:section-header-lede
             v-if="introduction.value"
         >
-            <VsBrRichText :input-content="introduction.value" />
+            <div v-html="introduction.value" />
         </template>
+    </VsSectionHeader>
 
-        <VsContainer>
-            <VsCol class="col-md-8">
-                <VsAccordion>
-                    <VsAccordionItem
-                        v-for="(item, index) in sections"
-                        :key="index"
-                        :control-id="`${props.idPrefix}${index}`"
-                        :heading-level="3"
-                        variant="subtle"
-                    >
-                        <template #title>
-                            {{ item.heading }}
-                        </template>
-                        <template #icon-open>
-                            <VsIcon icon="fa-regular fa-chevron-up" size="sm" />
-                        </template>
-                        <template #icon-closed>
-                            <VsIcon icon="fa-regular fa-chevron-down" size="sm" />
-                        </template>
-                        <div class="p-075">
-                            <VsBody>
-                                <VsBrRichText :input-content="item.copy.value" />
-                            </VsBody>
-                        </div>
-                    </VsAccordionItem>
-                </VsAccordion>
-            </VsCol>
-        </VsContainer>
-    </VsModuleWrapper>
+    <VsContainer>
+        <VsCol class="col-md-8">
+            <VsAccordion>
+                <VsAccordionItem
+                    v-for="(item, index) in sections"
+                    :key="index"
+                    :control-id="`${props.idPrefix}${index}`"
+                    :heading-level="3"
+                    variant="subtle"
+                >
+                    <template #title>
+                        {{ item.heading }}
+                    </template>
+                    <template #icon-open>
+                        <VsIcon icon="fa-regular fa-chevron-up" size="sm" />
+                    </template>
+                    <template #icon-closed>
+                        <VsIcon icon="fa-regular fa-chevron-down" size="sm" />
+                    </template>
+                    <div class="p-075">
+                        <VsBody>
+                            <VsBrRichText :input-content="item.copy.value" />
+                        </VsBody>
+                    </div>
+                </VsAccordionItem>
+            </VsAccordion>
+        </VsCol>
+    </VsContainer>
 </template>
 
 <script setup lang="ts">
@@ -54,7 +46,7 @@ import {
     VsAccordion,
     VsAccordionItem,
     VsContainer,
-    VsModuleWrapper,
+    VsSectionHeader,
     VsCol,
     VsBody,
     VsIcon,
