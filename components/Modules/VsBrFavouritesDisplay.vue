@@ -120,7 +120,7 @@ import useConfigStore from '~/stores/configStore.ts';
 import dataLayerComposable from '~/composables/dataLayer.ts';
 
 const configStore = useConfigStore();
-const dataLayerHelper =dataLayerComposable(); 
+const dataLayerHelper = dataLayerComposable(); 
 
 const fetchRequestStatus = ref('pending');
 
@@ -176,7 +176,7 @@ function removePage(uuid, title) {
 };
 
 function gtmPush() {
-    dataLayerHelper.createDataLayerObject('favouritesClickTemplateEvent', {
+    dataLayerHelper.createDataLayerObject('favouritesClickEvent', {
         list_position: 2,
         total_favourites: configStore.getFavouritesCount(),
         interaction_timestamp_ms: Date.now(),

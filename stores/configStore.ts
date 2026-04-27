@@ -17,7 +17,6 @@ interface IConfigState {
     isLocalVideoheader: boolean,
     allowFavourite: boolean,
     isFavouritesPage: boolean,
-    favouriteTitle: string,
     featureFavouritesEnabled: boolean,
     featureFavouritesUrl: string,
     featureFavouritesEndpoint: string,
@@ -99,8 +98,15 @@ const useConfigStore = defineStore('configStore', {
 
             return this.labels[section];
         },
-        getFavouritesCount() {
-            return JSON.parse(localStorage.getItem('vs-saved-pages'))?.length;
+
+        getFavouritesCount(): number {
+            try {
+                const raw = localStorage.getItem('vs-saved-pages');
+                const parsed = raw ? JSON.parse(raw) : null;
+                return Array.isArray(parsed) ? parsed.length : 0;
+            } catch {
+                return 0;
+            }
         },
     },
 });

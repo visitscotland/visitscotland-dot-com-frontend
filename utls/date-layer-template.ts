@@ -46,7 +46,6 @@ const favouriteAddTemplate = [
     'event',
     'content_title',
     'total_favourites',
-    // 'usage_index',
     'interaction_timestamp_ms',
 ];
 
@@ -54,7 +53,6 @@ const favouriteRemoveTemplate = [
     'event',
     'content_title',
     'total_favourites',
-    // 'usage_index',
     'interaction_timestamp_ms',
 ];
 

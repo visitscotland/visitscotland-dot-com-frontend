@@ -169,26 +169,26 @@ export default function dataLayerComposable() {
             eventName = 'favourite_add';
             templateValues = {
                 event: eventName,
-                content_title: event.content_title ,
+                content_title: event.content_title,
                 total_favourites: event.total_favourites,
                 interaction_timestamp_ms: event.interaction_timestamp_ms,
             };
             fullTemplate = compileFullTemplate(templateValues);
-            dataLayerData = templateFiller(favouriteAddTemplate , fullTemplate);
+            dataLayerData = templateFiller(favouriteAddTemplate, fullTemplate);
             break;
 
         case 'favouriteRemoveEvent':
             eventName = 'favourite_remove';
             templateValues = {
                 event: eventName,
-                content_title: event.content_title ,
+                content_title: event.content_title,
                 total_favourites: event.total_favourites,
                 interaction_timestamp_ms: event.interaction_timestamp_ms,
             };
             fullTemplate = compileFullTemplate(templateValues);
-            dataLayerData = templateFiller(favouriteRemoveTemplate , fullTemplate);
+            dataLayerData = templateFiller(favouriteRemoveTemplate, fullTemplate);
             break;
-            
+
         case 'favouritesPageViewEvent':
             eventName = 'favourites_page_view' ;
             templateValues = {
@@ -198,9 +198,9 @@ export default function dataLayerComposable() {
                 shared_list_id: event.shared_list_id,
             };
             fullTemplate = compileFullTemplate(templateValues);
-            dataLayerData = templateFiller(favouritesPageViewTemplate , fullTemplate);
+            dataLayerData = templateFiller(favouritesPageViewTemplate, fullTemplate);
             break;
-      
+
         case 'favouritesClickEvent':
             eventName = 'favourites_click';
             templateValues = {
@@ -210,7 +210,7 @@ export default function dataLayerComposable() {
                 interaction_timestamp_ms: event.interaction_timestamp_ms,
             };
             fullTemplate = compileFullTemplate(templateValues);
-            dataLayerData = templateFiller(favouritesClickTemplate , fullTemplate);
+            dataLayerData = templateFiller(favouritesClickTemplate, fullTemplate);
             break;
 
         default:
