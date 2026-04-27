@@ -9,7 +9,37 @@
                     :cta-text="module.cta.label"
                     :description="description"
                     :compact="module.layout === 'compact' ? true : false"
-                />
+                >
+                    <template
+                        v-if="module.ambientVideo"
+                        #vs-spotlight-section-media
+                    >
+                        <VsVideo
+                            video-type="html5"
+                            :video-src="module.ambientVideo"
+                            ref="spotlightVideo"
+                            post-image-src="image"
+                            :play-button-label="configStore.getLabel('ambient-video', 'play-button.text')"
+                            :pause-button-label="configStore.getLabel('ambient-video', 'pause-button.text')"
+                            :show-toggle="false"
+                        />
+                    </template>
+
+                    <template
+                        v-if="module.ambientVideo"
+                        #vs-spotlight-section-overlay-controls
+                    >
+                        <VsToggleButton
+                            variant="overlay"
+                            icon="vs-icon-control-pause"
+                            pressed-icon="vs-icon-control-play"
+                            :label="configStore.getLabel('ambient-video', 'play-button.text')"
+                            :pressed-label="configStore.getLabel('ambient-video', 'pause-button.text')"
+                            aria-controls="spotlight-video"
+                            @click="toggleVideo()"
+                        />
+                    </template>
+                </VsSpotlightSection>
             </VsCol>
         </VsRow>
     </VsContainer>
@@ -18,7 +48,7 @@
 <script lang="ts" setup>
  
 
-import { inject } from 'vue';
+import { inject, ref } from 'vue';
 
 import { decode } from 'html-entities';
 
@@ -29,9 +59,17 @@ import {
     VsContainer,
     VsRow,
     VsCol,
+    VsVideo,
+    VsToggleButton,
 } from '@visitscotland/component-library/components';
 
 import formatLink from '~/composables/formatLink.ts';
+
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
+
+const spotlightVideo = ref(null);
 
 const page: Page | undefined = inject('page');
 
@@ -60,6 +98,12 @@ if (image.startsWith('assets')) {
 let description = module.copy.value.replace(/<[^>]+>/g, '');
 // Parse html entities that the editor is sending
 description = decode(description);
+
+const toggleVideo = () => {
+    if (spotlightVideo.value) {
+        spotlightVideo.value.toggleVideo();
+    }
+};
 
 </script>
 
