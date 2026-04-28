@@ -5,9 +5,9 @@ const checkQueryString = (str) => {
         const urlParams = new URLSearchParams(window.location.search);
         const flagID = urlParams.get('flag');
         if (flagID === str) {
-            sessionStorage.setItem('flag', flagID);
+            sessionStorage.setItem('queryStr', flagID);
             return true;
-        } else if (sessionStorage.getItem('flag') === str) {
+        } else if (sessionStorage.getItem('queryStr') === str) {
             return true;
         }
     } catch(e) {
