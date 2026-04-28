@@ -72,9 +72,17 @@
                     v-if="!searchStore.isLoading
                         && searchStore.selectedLocations.length > 0"
                 >
-                    <VsDetail>
-                        <b>Selected Filters:</b>
-                    </VsDetail>
+                    <div class="vs-search__filter-header">
+                        <VsDetail>
+                            <b>Selected Filters:</b>
+                        </VsDetail>
+                        <VsLink
+                            href="#"
+                            @click="clearSelectedLocations"
+                        >
+                            Clear all
+                        </VsLink>
+                    </div>
                     <VsTag
                         v-for="location in searchStore.selectedLocations"
                         :key="location.Key"
@@ -121,10 +129,11 @@ import {
     VsDetail,
     VsEmbedWrapper,
     VsHeading,
-    VsLoadingSpinner,
-    VsWarning,
-    VsTag,
     VsIcon,
+    VsLink,
+    VsLoadingSpinner,
+    VsTag,
+    VsWarning,
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
@@ -273,26 +282,10 @@ onMounted(() => {
     });
 });
 
-async function updateLocationKey(location: SearchFilterCategory) {
-    if (searchStore.postcodeareas) {
-        searchStore.postcodeareas = undefined;
-    }
-
-    if (!searchStore.getSearchFilterKeys(searchStore.selectedLocations).includes(location.Key)) {
-        searchStore.selectedLocations.push(location);
-    } else {
-        const index = searchStore.getSearchFilterKeys(searchStore.selectedLocations).indexOf(location.Key);
-
-        if (index >= 0) {
-            searchStore.selectedLocations.splice(index, 1);
-        }
-    }
-
-    searchStore.currentPage = 1;
-
-    await searchStore.setUrlParameters();
+function clearSelectedLocations() {
+    searchStore.selectedLocations = [];
+    searchStore.setUrlParameters();
 }
-
 </script>
 
 <style lang="scss">
@@ -314,6 +307,12 @@ async function updateLocationKey(location: SearchFilterCategory) {
 
     &__filter-tag {
         cursor: pointer;
+    }
+
+    &__filter-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
     }
 }
 
