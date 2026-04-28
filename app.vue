@@ -72,8 +72,6 @@ import {
     getCurrentInstance, ref, onMounted, nextTick,
 } from 'vue';
 import mitt from 'mitt';
-import { useFlagsStore } from './stores/flags.ts';
-
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
@@ -102,27 +100,35 @@ const route = useRoute().path;
  */
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
-const flagStore = useFlagsStore();
-
-let flags = {};
 
 
-// fetch response from feature flags service api 
-await $fetch('/api/frontend/getFeatureFlagValues')
-    .then((response) => {
-        flags = response;
-        flagStore.flags = response;        
-    });
+let featureFlags = {flags:{}};
+
+
+// only get flags from API if we don't have them in session storage already
+if (!process.server && sessionStorage.getItem('flags') && sessionStorage.getItem('flags').length > 0) {
+    featureFlags.flags = JSON.parse(sessionStorage.getItem('flags'));
+} else {
+    await $fetch('/api/frontend/getFeatureFlagValues')
+        .then((response) => {        
+            if (!process.server) {
+                featureFlags = response;
+                sessionStorage.setItem('flags', JSON.stringify(response));
+            }       
+        });
+}
 
 // set up a global function to allow checking of flags
 app.appContext.config.globalProperties.checkFlag = (str) => {
-    if ((Object.keys(flags).length > 0 && flags.hasOwnProperty(str) && flags[str].enabled) || checkQueryString(str)) {
+    if (typeof(featureFlags.flags) !== 'undefined'
+        && typeof(featureFlags.flags[str]) !== 'undefined'
+        && featureFlags.flags[str].enabled
+        || checkQueryString(str)) {
         return true;
     } else {
         return false;
     }
 };
-
 
 let locale = 'resourceapi';
 
