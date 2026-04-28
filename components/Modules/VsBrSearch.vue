@@ -134,7 +134,6 @@ import dataLayerComposable from '~/composables/dataLayer.ts';
 
 import VsBrDivider from './VsBrDivider.vue';
 import VsBrModuleBuilder from './VsBrModuleBuilder.vue';
-import VsBrSearchFilter from './VsBrSearchFilter.vue';
 import VsBrSearchInput from './VsBrSearchInput.vue';
 import VsBrSearchResults from './VsBrSearchResults.vue';
 import VsBrSearchSort from './VsBrSearchSort.vue';
@@ -311,6 +310,10 @@ async function updateLocationKey(location: SearchFilterCategory) {
 
     &__error--no-js {
         display: none;
+    }
+
+    &__filter-tag {
+        cursor: pointer;
     }
 }
 
