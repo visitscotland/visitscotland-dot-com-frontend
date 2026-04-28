@@ -67,23 +67,33 @@
                     />
                 </div>
 
-                <div class="vs-search__location-filter">
-                    <VsBrSearchFilter
-                        v-if="checkFlags('use-location-filters')
-                            && locations.length 
-                            && !searchStore.isLoading
-                            && searchStore.categoryKey === 'events'"
-                        :filter-categories="locations"
-                        class="my-200"
-                        ref="locationFilter"
-                        :category-btn-text="configStore.getLabel('search', 'filters.category')"
-                        heading="Filter by location"
-                        variant="secondary"
-                        @filter-updated="updateLocationKey"
-                        :active-filter="searchStore.getSearchFilterKeys(searchStore.selectedLocations)"
-                        wrap
-                    />
+                <div
+                    class="vs-search__selected_filters"
+                    v-if="!searchStore.isLoading
+                        && searchStore.selectedLocations.length > 0"
+                >
+                    <VsDetail>
+                        <b>Selected Filters:</b>
+                    </VsDetail>
+                    <VsTag
+                        v-for="location in searchStore.selectedLocations"
+                        :key="location.Key"
+                        class="vs-search__filter-tag"
+                        @click="searchStore.removeSelectedLocationByLocation(location)"
+                        :aria-label="`Remove location filter ${location.Label}`"
+                    >
+                        <template #default>
+                            <b>LOCATION: </b>
+                            <span class="me-050">{{ location.Label }}</span>
+                            <VsIcon
+                                icon="fa-regular fa-xmark"
+                                size="xxs"
+                            />
+                        </template>
+                    </VsTag>
                 </div>
+
+                <VsBrDivider class="mb-200" />
 
                 <VsLoadingSpinner v-if="searchStore.isLoading" />
 
@@ -113,6 +123,8 @@ import {
     VsHeading,
     VsLoadingSpinner,
     VsWarning,
+    VsTag,
+    VsIcon,
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';

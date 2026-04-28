@@ -2,7 +2,7 @@
     <div class="vs-search-sort">
         <div
             class="vs-search-sort__location-filter"
-            v-if="checkFlags('use-dropdown-location-filter')"
+            v-if="checkFlags('use-location-filter')"
         >
             <label
                 class="vs-search-sort__label mb-025"
@@ -157,24 +157,16 @@ const debounceInput = debounce((event: Event) => {
 
 function updateLocation(filter: SearchFilterCategory){
 
-    // if(filter.Key === searchStore.selectedLocations[0].Key) {
-    //     console.log('FILTER ALREADY APPLIED');
-    // }
-
     if(searchStore.selectedLocations.includes(filter)){
-        const index = searchStore.selectedLocations.indexOf(filter);
-        searchStore.selectedLocations.splice(index, 1);
+        searchStore.removeSelectedLocationByLocation(filter);
     } else {
         locations?.forEach((location) => {
             if (location.Key === filter.Key) {
                 searchStore.selectedLocations.push(filter);
             }
         });
+        searchStore.setUrlParameters();
     }
-
-    
-
-    searchStore.setUrlParameters();
 }
 </script>
 

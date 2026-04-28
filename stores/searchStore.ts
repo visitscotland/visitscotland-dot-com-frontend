@@ -200,6 +200,12 @@ const useSearchStore = defineStore('search', () => {
         return searchFilter.map((filter) => filter.Key);
     }
 
+    function removeSelectedLocationByLocation(searchFilter: SearchFilterCategory) {
+        const index = selectedLocations.value.indexOf(searchFilter);
+        selectedLocations.value.splice(index, 1);
+        setUrlParameters();
+    }
+
     return {
         categoryKey,
         cludoApiError,
@@ -217,6 +223,7 @@ const useSearchStore = defineStore('search', () => {
         postcodeareas,
         queryInput,
         radius,
+        removeSelectedLocationByLocation,
         searchInSessionCount,
         searchResults,
         searchTerm,
