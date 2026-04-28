@@ -32,15 +32,10 @@ const searchStore = useSearchStore();
 defineEmits(['search-location-updated']);
 
 const locations: SearchFilterCategory[] | undefined = inject('location-filters');
-console.log(searchStore.getSearchFilterKeys(searchStore.selectedLocations));
 </script>
 
 <style lang="scss">
-    #vs-search-sort__dropdown {
-        width: 100%;
-        text-align: left;
-    }
     .dropdown-menu {
         max-height: 33dvh!important;
-    }
+    } 
 </style>

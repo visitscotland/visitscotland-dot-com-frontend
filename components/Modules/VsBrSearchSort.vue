@@ -1,78 +1,60 @@
 <template>
-    <VsRow class="vs-search-sort">
-        <VsCol
-            v-if="checkFlags('use-dropdown-location-filter')"
+    <div class="vs-search-sort">
+        <div
             class="vs-search-sort__location-filter"
-            cols="12"
-            md="3"
+            v-if="checkFlags('use-dropdown-location-filter')"
         >
-            <VsRow>
-                <label
-                    class="vs-search-sort__label mb-025"
-                    for="vs-search-sort__location-filter"
-                >
-                    Location
-                </label>
-                <VsBrDropdownWithSearch
-                    @search-location-updated="updateLocation"
-                />
-            </VsRow>
-        </VsCol>
-        <VsCol
-            class="vs-search-sort__date-picker-wrapper"
-            cols="12"
-            :md="checkFlags('use-dropdown-location-filter') ? 6 : 8"
-        >
-            <fieldset
-                @change="(event) => debounceInput(event)"
+            <label
+                class="vs-search-sort__label mb-025"
+                for="vs-search-sort__location-filter"
             >
-                <VsRow>
-                    <VsCol
-                        cols="6"
-                    >
-                        <label
-                            class="vs-search-sort__label"
-                            for="vs-search-sort__from-date"
-                        >
-                            {{ configStore.getLabel('search', 'date.from') }}
-                        </label>
-                        <VsInput
-                            :auto-complete="false"
-                            field-name="vs-search-sort__from-date"
-                            type="date"
-                            :value="searchStore.fromDate || new Date().toJSON().slice(0, 10)"
-                            :validation-rules="{
-                                min: new Date().toJSON().slice(0, 10),
-                            }"
-                        />
-                    </VsCol>
-                    <VsCol
-                        cols="6"
-                    >
-                        <label
-                            class="vs-search-sort__label"
-                            for="vs-search-sort__to-date"
-                        >
-                            {{ configStore.getLabel('search', 'date.to') }}
-                        </label>
-                        <VsInput
-                            :auto-complete="false"
-                            field-name="vs-search-sort__to-date"
-                            type="date"
-                            :value="searchStore.toDate || ''"
-                            :validation-rules="{
-                                min: searchStore.fromDate,
-                            }"
-                        />
-                    </VsCol>
-                </VsRow>
-            </fieldset>
-        </VsCol>
-        <VsCol
-            class="vs-search-sort__dropdown-wrapper"
-            cols="12"
-            :md="checkFlags('use-dropdown-location-filter') ? 3 : 4"
+                Location
+            </label>
+            <VsBrDropdownWithSearch
+                @search-location-updated="updateLocation"
+            />
+        </div>
+        <fieldset
+            @change="(event) => debounceInput(event)"
         >
+            <div class="vs-search-sort__date-filters">
+                <div class="vs-search-sort__date-picker">
+                    <label
+                        class="vs-search-sort__label"
+                        for="vs-search-sort__from-date"
+                    >
+                        {{ configStore.getLabel('search', 'date.from') }}
+                    </label>
+                    <VsInput
+                        :auto-complete="false"
+                        field-name="vs-search-sort__from-date"
+                        type="date"
+                        :value="searchStore.fromDate || new Date().toJSON().slice(0, 10)"
+                        :validation-rules="{
+                            min: new Date().toJSON().slice(0, 10),
+                        }"
+                    />
+                </div>
+                <div class="vs-search-sort__date-picker">
+                    <label
+                        class="vs-search-sort__label"
+                        for="vs-search-sort__to-date"
+                    >
+                        {{ configStore.getLabel('search', 'date.to') }}
+                    </label>
+                    <VsInput
+                        :auto-complete="false"
+                        field-name="vs-search-sort__to-date"
+                        type="date"
+                        :value="searchStore.toDate || ''"
+                        :validation-rules="{
+                            min: searchStore.fromDate,
+                        }"
+                    />
+                </div>
+            </div>
+        </fieldset>
+        <div class="vs-search-sort__sort-by">
             <VsDropdown
                 id="vs-search-sort__dropdown"
                 name="vs-search-sort__dropdown"
@@ -88,19 +70,17 @@
                     {{ sortOption.label }}
                 </VsDropdownItem>
             </VsDropdown>
-        </VsCol>
-    </VsRow>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
-import { computed, provide } from 'vue';
+import { computed } from 'vue';
 
 import {
-    VsCol,
     VsDropdown,
     VsDropdownItem,
     VsInput,
-    VsRow,
 } from '@visitscotland/component-library/components';
 
 import debounce from '~/utls/debounce.ts';
@@ -191,14 +171,47 @@ function updateLocation(filter: any){
 </script>
 
 <style lang="scss">
+
 .vs-search-sort {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 1em 1em;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+        margin-top: 1em;
+        justify-content: flex-start;
+
+        fieldset {
+            width: 100%;
+        }
+    }
+
     &__label {
         font-weight: 300;
     }
 
-    &__dropdown-wrapper, &__location-filter {
+    &__date-filters {
         display: flex;
-        align-items: flex-end;
+        flex-direction: row;
+        column-gap: 1em;
+
+        @media (max-width: 768px) {
+            flex-basis: 100%;
+        }
+    }
+
+    &__date-picker {
+        width: 100%;
+    }
+
+    &__sort-by, &__location-filter {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        flex-direction: column;
 
         button {
             /*Gives sort dropdown extra height to visually balance
@@ -208,10 +221,11 @@ function updateLocation(filter: any){
 
         @media (max-width: 768px) {
             display: block;
-            margin-top: 1rem;
+            flex-basis: 100%;
 
-            button {
+            #vs-search-sort__dropdown {
                 width: 100%;
+                text-align: center;
             }
         }
     }

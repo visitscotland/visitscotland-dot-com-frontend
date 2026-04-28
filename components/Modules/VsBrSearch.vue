@@ -64,7 +64,6 @@
                     <VsBrSearchSort
                         v-if="!searchStore.isLoading
                             && searchStore.categoryKey === 'events'"
-                        :filter-locations="locations"
                     />
                 </div>
 
