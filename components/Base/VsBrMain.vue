@@ -142,6 +142,10 @@ if (page.value) {
         configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
         configStore.mainMapPath = componentModels.pageConfiguration['main-map-path'];
 
+        if (componentModels.heroVideo) {
+            configStore.heroVideo = componentModels.heroVideo;
+        }
+
         if (componentModels.pageConfiguration['hero-ambient-video']) {
             configStore.isLocalVideoheader = true;
         }
