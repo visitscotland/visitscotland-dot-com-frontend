@@ -2,13 +2,13 @@
     <VsDropdown
         id="vs-search-sort__dropdown"
         name="vs-search-sort__dropdown"
-        :text="searchStore.selectedLocations[0] ? searchStore.selectedLocations[0].Label : 'All of Scotland'"
+        :text="dropdownText"
         variant="secondary"
     >
         <VsDropdownItem
             v-for="filter in locations"
             :key="filter.Key"
-            :active="searchStore.selectedLocations[0]?.Key === filter.Key"
+            :active="searchStore.selectedLocations.includes(filter)"
             @click="$emit('search-location-updated', filter)"
         >
             {{ filter.Label }}
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
+import { computed, inject } from 'vue';
 
 import {
     VsDropdown,
@@ -32,6 +32,15 @@ const searchStore = useSearchStore();
 defineEmits(['search-location-updated']);
 
 const locations: SearchFilterCategory[] | undefined = inject('location-filters');
+
+const dropdownText = computed(() => {
+    if(searchStore.selectedLocations.length === 1) {
+        return searchStore.selectedLocations[0]?.Label;
+    } else if(searchStore.selectedLocations.length > 1) {
+        return `${searchStore.selectedLocations[0]?.Label} +${searchStore.selectedLocations.length - 1}`;
+    }
+    return 'All of Scotland';
+});
 </script>
 
 <style lang="scss">

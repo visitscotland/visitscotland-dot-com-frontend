@@ -155,16 +155,24 @@ const debounceInput = debounce((event: Event) => {
 }, 750);
 
 
-function updateLocation(filter: any){
-    console.log(filter);
+function updateLocation(filter: SearchFilterCategory){
 
-    searchStore.selectedLocations = [];
+    // if(filter.Key === searchStore.selectedLocations[0].Key) {
+    //     console.log('FILTER ALREADY APPLIED');
+    // }
 
-    locations?.forEach((location) => {
-        if (location.Key === filter.Key) {
-            searchStore.selectedLocations.push(filter);
-        }
-    });
+    if(searchStore.selectedLocations.includes(filter)){
+        const index = searchStore.selectedLocations.indexOf(filter);
+        searchStore.selectedLocations.splice(index, 1);
+    } else {
+        locations?.forEach((location) => {
+            if (location.Key === filter.Key) {
+                searchStore.selectedLocations.push(filter);
+            }
+        });
+    }
+
+    
 
     searchStore.setUrlParameters();
 }
