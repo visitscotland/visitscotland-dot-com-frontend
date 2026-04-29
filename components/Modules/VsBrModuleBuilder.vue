@@ -74,7 +74,14 @@
             :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'ArticleModule'"
         >
+            <VsBrAccordionModule
+                v-if="hippoContent[index]?.model?.data?.theme === 'accordion'"
+                :id-prefix="`accordionItem-${index}-`"
+                :module="item"
+            />
+
             <VsBrArticleModule
+                v-else
                 :module="item"
             />
         </NuxtLazyHydrate>

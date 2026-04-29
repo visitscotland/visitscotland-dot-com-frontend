@@ -56,7 +56,7 @@
                                         icon-only
                                         icon="fa-solid fa-heart"
                                         size="sm"
-                                        @click="removePage(data.uuid)"
+                                        @click="removePage(data.uuid, data.title)"
                                     >
                                         {{ configStore.getLabel('favourites-button', 'button.remove.text') }}
                                     </VsButton>
@@ -77,6 +77,7 @@
                                             :href="data.url"
                                             class="stretched-link"
                                             variant="secondary"
+                                            @click="gtmPush"
                                         >
                                             {{ data.title }}
                                         </VsLink>
@@ -116,8 +117,10 @@ import {
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
+import dataLayerComposable from '~/composables/dataLayer.ts';
 
 const configStore = useConfigStore();
+const dataLayerHelper = dataLayerComposable(); 
 
 const fetchRequestStatus = ref('pending');
 
@@ -158,16 +161,34 @@ const refreshState = () => {
     };
 };
 
-function removePage(uuid) {
+function removePage(uuid, title) {
     // Remove from working data:
     savedContentArray.value = savedContentArray.value.filter((item) => item.uuid !== uuid);
     // Remove from display data:
     displayData.value.cards = displayData.value.cards.filter((o) => o.uuid !== uuid);
     // Update localStorage:
     localStorage.setItem('vs-saved-pages', JSON.stringify(savedContentArray.value));
+    dataLayerHelper.createDataLayerObject('favouriteRemoveEvent', {
+        content_title: title,
+        total_favourites: configStore.getFavouritesCount(),
+        interaction_timestamp_ms: Date.now(),
+    });
+};
+
+function gtmPush() {
+    dataLayerHelper.createDataLayerObject('favouritesClickEvent', {
+        list_position: 2,
+        total_favourites: configStore.getFavouritesCount(),
+        interaction_timestamp_ms: Date.now(),
+    });
 };
 
 onMounted(() => {
+    dataLayerHelper.createDataLayerObject('favouritesPageViewEvent', {
+        favourite_owner: 'self',
+        total_favourites: configStore.getFavouritesCount(),
+        shared_list_id: ' ',
+    });
     refreshState();
     window.addEventListener('storage', refreshState); 
     getSavedPageData(requestBody.value);

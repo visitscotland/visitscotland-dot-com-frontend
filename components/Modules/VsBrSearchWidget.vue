@@ -12,6 +12,7 @@
             :autocomplete="module?.mainCategory === 'events' ? false : true"
             :search-url="configStore.globalSearchPath"
             :placeholder="module?.placeholder"
+            :search-btn-text="module?.button"
             :search-categories="module?.mainCategory === 'events' ? module.subcategories : module.categories"
         />
     </VsContainer>
