@@ -12,7 +12,7 @@
             @click="$emit('search-location-updated', filter)"
         >
             <VsCheckbox
-                field-name="filter.Key"
+                :field-name="filter.Key"
                 :label="filter.Label"
                 size="sm"
                 :value="searchStore.selectedLocations.includes(filter) ? undefined : 'checked'"
@@ -32,8 +32,8 @@ import {
 } from '@visitscotland/component-library/components';
 import type { SearchFilterCategory } from '~/types/types';
 
-import useSearchStore from '~/stores/searchStore';
-import useConfigStore from '~/stores/configStore';
+import useSearchStore from '~/stores/searchStore.ts';
+import useConfigStore from '~/stores/configStore.ts';
 
 const searchStore = useSearchStore();
 const configStore = useConfigStore();
@@ -52,7 +52,7 @@ const dropdownText = computed(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .dropdown-menu {
         max-height: 33dvh!important;
     } 

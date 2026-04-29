@@ -201,8 +201,11 @@ const useSearchStore = defineStore('search', () => {
     }
 
     function removeSelectedLocationByLocation(searchFilter: SearchFilterCategory) {
-        const index = selectedLocations.value.indexOf(searchFilter);
+        const index = selectedLocations.value.findIndex((location) => location.Key === searchFilter.Key);
+        if (index === -1) return;
+
         selectedLocations.value.splice(index, 1);
+        currentPage.value = 1;
         setUrlParameters();
     }
 

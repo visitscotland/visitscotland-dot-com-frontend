@@ -78,7 +78,7 @@
                         </VsDetail>
                         <VsLink
                             href="#"
-                            @click="clearSelectedLocations"
+                            @click.prevent="clearSelectedLocations"
                         >
                             {{ configStore.getLabel('search', 'remove-filters') }}
                         </VsLink>
@@ -284,6 +284,7 @@ onMounted(() => {
 
 function clearSelectedLocations() {
     searchStore.selectedLocations = [];
+    searchStore.currentPage = 1;
     searchStore.setUrlParameters();
 }
 </script>

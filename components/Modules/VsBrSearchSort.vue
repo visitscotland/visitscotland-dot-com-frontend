@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 
 import {
     VsDropdown,
@@ -156,7 +156,6 @@ const debounceInput = debounce((event: Event) => {
 
 
 function updateLocation(filter: SearchFilterCategory){
-
     if(searchStore.selectedLocations.includes(filter)){
         searchStore.removeSelectedLocationByLocation(filter);
     } else {
@@ -165,6 +164,7 @@ function updateLocation(filter: SearchFilterCategory){
                 searchStore.selectedLocations.push(filter);
             }
         });
+        searchStore.currentPage = 1;
         searchStore.setUrlParameters();
     }
 }
