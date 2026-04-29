@@ -223,7 +223,7 @@ function updateLocation(filter: SearchFilterCategory){
             display: block;
             flex-basis: 100%;
 
-            #vs-search-sort__dropdown {
+            #vs-search-sort__dropdown, #vs-search-sort__location-filter {
                 width: 100%;
                 text-align: center;
             }

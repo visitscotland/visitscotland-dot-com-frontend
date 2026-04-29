@@ -1,6 +1,6 @@
 <template>
     <VsDropdown
-        id="vs-search-sort__dropdown"
+        id="vs-search-sort__location-filter"
         name="vs-search-sort__dropdown"
         :text="dropdownText"
         variant="secondary"
@@ -11,7 +11,13 @@
             :active="searchStore.selectedLocations.includes(filter)"
             @click="$emit('search-location-updated', filter)"
         >
-            {{ filter.Label }}
+            <VsCheckbox
+                field-name="filter.Key"
+                :label="filter.Label"
+                size="sm"
+                :value="searchStore.selectedLocations.includes(filter) ? undefined : 'checked'"
+                @click.prevent
+            />
         </VsDropdownItem>
     </VsDropdown>
 </template>
@@ -20,6 +26,7 @@
 import { computed, inject } from 'vue';
 
 import {
+    VsCheckbox,
     VsDropdown,
     VsDropdownItem,
 } from '@visitscotland/component-library/components';
