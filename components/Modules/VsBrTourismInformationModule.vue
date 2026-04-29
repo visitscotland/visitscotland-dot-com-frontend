@@ -11,6 +11,7 @@
                             ? module.image.cmsImage
                             : module.image.externalImage"
                         :no-alt-text="true"
+                        class="text-start"
                     />
                 </template>
                 <template
