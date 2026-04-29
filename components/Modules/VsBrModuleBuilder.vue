@@ -80,10 +80,8 @@
                 :module="item"
             />
 
-            <!-- Switch to real flag -->
-
             <VsBrRichArticleModule
-                v-if="checkFlags('use-rich-articles')"
+                v-else-if="checkFlags('use-rich-articles')"
                 :module="item"
             />
 
