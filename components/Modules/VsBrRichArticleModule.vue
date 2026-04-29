@@ -84,11 +84,9 @@ import {
     VsCol,
     VsHeading,
     VsBody,
-    VsImg,
-    VsMediaCaption,
 } from '@visitscotland/component-library/components';
 
-
+import VsBrVideoModal from './VsBrVideoModal.vue';
 import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
