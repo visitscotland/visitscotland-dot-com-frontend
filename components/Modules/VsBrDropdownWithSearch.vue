@@ -33,8 +33,10 @@ import {
 import type { SearchFilterCategory } from '~/types/types';
 
 import useSearchStore from '~/stores/searchStore';
+import useConfigStore from '~/stores/configStore';
 
 const searchStore = useSearchStore();
+const configStore = useConfigStore();
 
 defineEmits(['search-location-updated']);
 
@@ -46,7 +48,7 @@ const dropdownText = computed(() => {
     } else if(searchStore.selectedLocations.length > 1) {
         return `${searchStore.selectedLocations[0]?.Label} +${searchStore.selectedLocations.length - 1}`;
     }
-    return 'All of Scotland';
+    return configStore.getLabel('search', 'events.all-locations');
 });
 </script>
 

@@ -74,13 +74,13 @@
                 >
                     <div class="vs-search__filter-header">
                         <VsDetail>
-                            <b>Selected Filters:</b>
+                            <b>{{ configStore.getLabel('search', 'selected-filters-label') }}:</b>
                         </VsDetail>
                         <VsLink
                             href="#"
                             @click="clearSelectedLocations"
                         >
-                            Clear all
+                            {{ configStore.getLabel('search', 'remove-filters') }}
                         </VsLink>
                     </div>
                     <VsTag
@@ -88,10 +88,10 @@
                         :key="location.Key"
                         class="vs-search__filter-tag"
                         @click="searchStore.removeSelectedLocationByLocation(location)"
-                        :aria-label="`Remove location filter ${location.Label}`"
+                        :aria-label="`${configStore.getLabel('search', 'events.location-filter-tag-aria-label')} ${location.Label}`"
                     >
                         <template #default>
-                            <b>LOCATION: </b>
+                            <b>{{ configStore.getLabel('search', 'events.location-filter-tag') }}: </b>
                             <span class="me-050">{{ location.Label }}</span>
                             <VsIcon
                                 icon="fa-regular fa-xmark"

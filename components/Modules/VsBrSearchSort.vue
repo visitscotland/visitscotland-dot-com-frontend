@@ -8,7 +8,7 @@
                 class="vs-search-sort__label mb-025"
                 for="vs-search-sort__location-filter"
             >
-                Location
+                {{ configStore.getLabel('search', 'events.location-filter-title') }}
             </label>
             <VsBrDropdownWithSearch
                 @search-location-updated="updateLocation"
