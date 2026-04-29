@@ -32,6 +32,7 @@
                     :src="imageSrc"
                     :alt="altText"
                     class="vs-br-media__img"
+                    :class="rounded ? 'rounded-2' : ''"
                 />
             </div>
             <VsMediaCaption
@@ -100,6 +101,7 @@ interface IProps {
     useLazyLoading?: boolean,
     noAltText?: boolean,
     showToggle?: boolean,
+    rounded?: boolean,
 };
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -119,6 +121,7 @@ const props = withDefaults(defineProps<IProps>(), {
     videoId: '',
     videoTitle: '',
     videoBtn: '',
+    rounded: false,
 });
 
 const {
