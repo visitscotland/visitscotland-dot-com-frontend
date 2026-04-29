@@ -52,8 +52,8 @@ const dropdownText = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped>
-    .dropdown-menu {
-        max-height: 33dvh!important;
+<style lang="scss">
+    .vs-search-sort__location-filter .dropdown-menu {
+        max-height: 20em!important;
     } 
 </style>
