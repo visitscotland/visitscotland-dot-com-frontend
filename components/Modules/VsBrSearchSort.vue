@@ -10,6 +10,8 @@
                 {{ configStore.getLabel('search', 'events.location-filter-title') }}
             </label>
             <VsBrDropdownWithSearch
+                :items="locations"
+                :selectedItems="searchStore.selectedLocations"
                 @search-location-updated="updateLocation"
             />
         </div>
@@ -119,6 +121,16 @@ const dropdownText = computed(() => {
     }
 
     return sortLabel;
+});
+
+const selLocs = computed(() => {
+    const locationKeys: string[] = [];
+
+    searchStore.selectedLocations.forEach((location) => {
+        locationKeys.push(location.Key);
+    });
+
+    return locationKeys;
 });
 
 function updateFromDate(value: string) {
