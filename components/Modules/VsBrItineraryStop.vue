@@ -8,7 +8,7 @@
         :stop-label="stop.title"
         :stop-title="stop.subTitle ? stop.subTitle : ''"
     >
-        <VsBrImageWithCaption
+        <VsBrMedia
             v-if="stop.image"
             :image="stop.image.cmsImage ? stop.image.cmsImage : null"
             :image-string="stop.image.externalImage ? stop.image.externalImage : ''"
@@ -132,7 +132,7 @@
 <script lang="ts" setup>
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
