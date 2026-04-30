@@ -58,7 +58,7 @@
                 v-if="configStore.labels"
             >
                 <template #title>
-                    Find us on
+                    {{ configStore.getLabel('navigation.static', 'footer.find-us-on') }}
                 </template>
 
                 <VsFooterSocialItem

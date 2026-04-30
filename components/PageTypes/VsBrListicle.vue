@@ -37,7 +37,7 @@
                                 v-if="item.image"
                             >
                                 <div>
-                                    <VsBrImageWithCaption
+                                    <VsBrMedia
                                         :image="item.image.cmsImage ? item.image.cmsImage : null"
                                         :image-string="!item.image.cmsImage ? item.image.externalImage : ''"
                                         :image-data-set="!item.image.cmsImage ? item.image : null"
@@ -166,7 +166,7 @@ import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
-import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 

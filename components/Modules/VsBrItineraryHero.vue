@@ -39,6 +39,7 @@
             >
                 <VsBrSaveContentButton
                     :uuid="content.id"
+                    :gtm-data="{ title: content.title }"
                 />
             </VsCol>
         </VsRow>
