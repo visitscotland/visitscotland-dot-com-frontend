@@ -32,7 +32,7 @@
     <VsContainer v-else>
         <div class="vs-search">
             <div class="vs-search__container">
-                <div
+                <div 
                     class="vs-search__widget"
                     v-if="searchInputModule[0]"
                 >
