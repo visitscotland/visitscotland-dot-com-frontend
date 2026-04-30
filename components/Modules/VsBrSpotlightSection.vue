@@ -22,6 +22,7 @@
                             :play-button-label="configStore.getLabel('ambient-video', 'play-button.text')"
                             :pause-button-label="configStore.getLabel('ambient-video', 'pause-button.text')"
                             :show-toggle="false"
+                            :video-id="videoId"
                         />
                     </template>
 
@@ -35,7 +36,7 @@
                             pressed-icon="vs-icon-control-play"
                             :label="configStore.getLabel('ambient-video', 'play-button.text')"
                             :pressed-label="configStore.getLabel('ambient-video', 'pause-button.text')"
-                            aria-controls="spotlight-video"
+                            :aria-controls="videoId"
                             @click="toggleVideo()"
                         />
                     </template>
@@ -48,7 +49,7 @@
 <script lang="ts" setup>
  
 
-import { inject, ref } from 'vue';
+import { inject, ref, getCurrentInstance } from 'vue';
 
 import { decode } from 'html-entities';
 
@@ -75,6 +76,9 @@ const page: Page | undefined = inject('page');
 
 const props = defineProps<{ module: object }>();
 const module: any = props.module;
+
+const instance = getCurrentInstance();
+const videoId = `spotlight-video-${instance?.uid}`;
 
 let image: any = null;
 
