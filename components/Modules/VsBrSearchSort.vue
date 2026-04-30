@@ -2,7 +2,6 @@
     <div class="vs-search-sort">
         <div
             class="vs-search-sort__location-filter"
-            v-if="checkFlags('use-location-filter')"
         >
             <label
                 class="vs-search-sort__label mb-025"
