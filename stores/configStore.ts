@@ -101,7 +101,7 @@ const useConfigStore = defineStore('configStore', {
 
             return this.labels[section];
         },
-
+        // Abstract these when the use cases are clear
         getFavouritesCount(): number {
             try {
                 const raw = localStorage.getItem('vs-saved-pages');
@@ -109,6 +109,14 @@ const useConfigStore = defineStore('configStore', {
                 return Array.isArray(parsed) ? parsed.length : 0;
             } catch {
                 return 0;
+            }
+        },
+        getShareId(): string {
+            try {
+                const raw = localStorage.getItem('vs-share-id');
+                return raw;
+            } catch {
+                return 'error';
             }
         },
     },

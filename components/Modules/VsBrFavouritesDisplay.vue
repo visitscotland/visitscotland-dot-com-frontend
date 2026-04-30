@@ -38,6 +38,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="" v-if="savedContentArray.length > 0">
+                    <VsButton
+                        @click="handleShare" class="mb-150"
+                    >
+                        Share label TBA
+                    </VsButton>
+                    {{ savedShareId }}
+                    {{ savesUpdated }}
+                    {{ configStore.getShareId() }}
+                </div>
                 <VsCardGroup
                     variant="grid"
                     :cards-per-row="3"
@@ -126,13 +136,15 @@ const fetchRequestStatus = ref('pending');
 
 
 const savedContentArray = ref([]);
+const savedShareId = ref([]);
+const savesUpdated =ref(true);
 const requestBody = ref({
     uuids: [],
 });
 
 const displayData = ref('no data retrieved');
 
-const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+const favouritesEndpoint = `https://release-brc.visitscotland.com/${configStore.featureFavouritesEndpoint}`;
 
 async function getSavedPageData(uuidArray) {
     try {
@@ -152,6 +164,11 @@ async function getSavedPageData(uuidArray) {
 }
 
 const refreshState = () => {
+    // Initialise vs-share-id
+    if (localStorage.getItem('vs-share-id') === null) {
+        localStorage.setItem('vs-share-id','');
+    };
+    // Initialise vs-saved-pages or copy to local state and fetch
     if (JSON.parse(localStorage.getItem('vs-saved-pages')) === null) {
         localStorage.setItem('vs-saved-pages', JSON.stringify([]));
     } else {
@@ -159,6 +176,7 @@ const refreshState = () => {
         requestBody.value.uuids = savedContentArray.value.map((o) => o.uuid);
         getSavedPageData(requestBody.value);
     };
+    savesUpdated.value = true;
 };
 
 function removePage(uuid, title) {
@@ -173,6 +191,8 @@ function removePage(uuid, title) {
         total_favourites: configStore.getFavouritesCount(),
         interaction_timestamp_ms: Date.now(),
     });
+    // Flag to update remote DB on share
+    savesUpdated.value = true;
 };
 
 function gtmPush() {
@@ -183,14 +203,63 @@ function gtmPush() {
     });
 };
 
+const createListEndpoint = 'http://localhost:8080/favourites/create-list';
+// const getListEndpoint = 'localhost:8080/favourites/get-list';
+
+async function createList(uuidArray) {
+    try {
+        const res = await $fetch(
+            createListEndpoint,
+            {
+                method: 'POST',
+                body: uuidArray,
+            });
+        savedShareId.value = res.favId;
+        console.log(res);
+        localStorage.setItem('vs-share-id', savedShareId.value);
+
+    } catch (err) {
+        console.error('Failed to fetch share ID:', err);
+    }
+};
+
+// function updateList(shareId, uuidArray) {
+//     try {
+//         const res = await $fetch(
+//             favouritesEndpoint,
+//             {
+//                 method: 'POST',
+//                 body: uuidArray,
+//             });
+
+//         displayData.value = res;
+//         fetchRequestStatus.value = 'done';
+//     } catch (err) {
+//         console.error('Failed to fetch saved page data:', err);
+//         fetchRequestStatus.value = 'error';
+//     }
+// };
+
+
+function handleShare() {
+    if (configStore.getShareId() === 0) {
+        createList(requestBody.value);
+    };
+    if (configStore.getShareId().length > 2) {
+        alert("call for updates");
+    }
+    
+    savesUpdated.value = false;
+};
+
 onMounted(() => {
     dataLayerHelper.createDataLayerObject('favouritesPageViewEvent', {
         favourite_owner: 'self',
         total_favourites: configStore.getFavouritesCount(),
         shared_list_id: ' ',
     });
-    refreshState();
     window.addEventListener('storage', refreshState); 
+    refreshState();
     getSavedPageData(requestBody.value);
 });
 
