@@ -15,14 +15,14 @@
                         #vs-spotlight-section-media
                     >
                         <VsVideo
+                        <VsVideo
                             video-type="html5"
                             :video-src="module.ambientVideo"
                             ref="spotlightVideo"
-                            post-image-src="image"
+                            :post-image-src="image"
                             :play-button-label="configStore.getLabel('ambient-video', 'play-button.text')"
                             :pause-button-label="configStore.getLabel('ambient-video', 'pause-button.text')"
                             :show-toggle="false"
-                            :video-id="videoId"
                         />
                     </template>
 
