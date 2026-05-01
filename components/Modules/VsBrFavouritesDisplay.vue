@@ -142,7 +142,7 @@ const dataLayerHelper = dataLayerComposable();
 const fetchRequestStatus = ref('pending');
 const displayData = ref('no data retrieved');
 
-const favouritesEndpoint = `https://release-brc.visitscotland.com${configStore.featureFavouritesEndpoint}`;
+const favouritesEndpoint = configStore.featureFavouritesEndpoint;
 
 // Fetch CMS data for a list of UUIDs
 async function getSavedPageData(uuidArray) {
