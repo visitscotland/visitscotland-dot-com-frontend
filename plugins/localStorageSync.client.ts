@@ -58,7 +58,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         // Only handle keys that exist in the store
         if (event.key in store.$state) {
             try {
-                const parsed = event.newValue ? JSON.parse(event.newValue) : null;
+                const parsed = event.newValue ? JSON.parse(event.newValue) : '';
 
                 store.$patch({
                     [event.key]: parsed,
