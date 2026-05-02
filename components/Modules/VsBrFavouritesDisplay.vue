@@ -2,7 +2,6 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol>
-                <!-- Error state -->
                 <div v-if="uiState === 'error'">
                     <div class="d-flex justify-content-center">
                         <div
