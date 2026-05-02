@@ -75,7 +75,7 @@
                                             icon-only
                                             icon="fa-solid fa-heart"
                                             size="sm"
-                                            @click="removePage(data.uuid, data.title)"
+                                            @click="removeContent(data.uuid, data.title)"
                                         >
                                             {{ configStore.getLabel('favourites-button', 'button.remove.text') }}
                                         </VsButton>
@@ -170,7 +170,7 @@ const cardData = ref<any[]>([]);
 const favouritesEndpoint = `https://release-brc.visitscotland.com${configStore.featureFavouritesEndpoint}`;
 
 // Fetch CMS data for a list of UUIDs
-async function getSavedPageData(uuidArray) {
+async function getSavedContentData(uuidArray) {
     try {
         const res = await $fetch(
             favouritesEndpoint,
@@ -185,13 +185,13 @@ async function getSavedPageData(uuidArray) {
         cardData.value = Array.isArray(res.cards) ? res.cards : [];
         fetchRequestStatus.value = 'done';
     } catch (err) {
-        console.error('Failed to fetch saved page data:', err);
+        console.error('Failed to fetch saved content data:', err);
         fetchRequestStatus.value = 'error';
     }
 }
 
-// Remove a page from the favourites list and update display data
-function removePage(uuid, title) {
+// Remove content from the favourites list and update display data
+function removeContent(uuid, title) {
     // Update store
     localStorageStore.favourites = localStorageStore.favourites.filter(
         (item) => item !== uuid,
@@ -229,14 +229,14 @@ onMounted(() => {
     });
 
     // Initial fetch
-    getSavedPageData(localStorageStore.favourites);
+    getSavedContentData(localStorageStore.favourites);
 });
 
 // Re-fetch CMS data whenever the favourites list changes
 watch(
     () => localStorageStore.favourites,
     (newList) => {
-        getSavedPageData(newList);
+        getSavedContentData(newList);
     },
     {
         deep: true,
