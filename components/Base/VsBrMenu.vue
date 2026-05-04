@@ -281,7 +281,7 @@
                 >
                     <template #third-menu-item>
                         <a
-                            v-if="configStore.featureFavouritesEnabled && checkFlag('favourites')"
+                            v-if="configStore.featureFavouritesEnabled"
                             :href="configStore.featureFavouritesUrl"
                             class="vs-favourites-link"
                             :aria-label="configStore.getLabel('navigation.static', 'favourites.navigation.link.text')"
@@ -372,8 +372,6 @@ import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 import formatLink from '~/composables/formatLink.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
-
-import checkFlag from '~/composables/checkFlags.ts';
 
 import {
     VsGlobalMenu,

@@ -88,11 +88,12 @@
                     </p>
                 </div>
                 <div
-                    v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkFlag('favourites')"
+                    v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite"
                     class="d-flex flex-column flex-md-row"
                 >
                     <VsBrSaveContentButton
                         :uuid="content.id"
+                        :gtm-data="{ title: content.title, }"
                     />
                 </div>
             </div>
@@ -104,7 +105,7 @@
             v-if="itinerary"
             #vs-intro-start-finish
         >
-            <div :class="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkFlag('favourites') ? 'mt-200' : ''">
+            <div :class="configStore.featureFavouritesEnabled && configStore.allowFavourite ? 'mt-200' : ''">
                 <dt class="list-inline-item ">
                     {{ configStore.getLabel("itinerary", "start-finish") }}
                 </dt>
@@ -168,8 +169,6 @@
 
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
-
-import checkFlag from '~/composables/checkFlags.ts';
 
 import {
     VsPageIntro,

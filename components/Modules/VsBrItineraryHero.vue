@@ -33,12 +33,13 @@
                 </VsBody>
             </VsCol>
             <VsCol
-                v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkFlag('favourites')"
+                v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite"
                 cols="12"
                 class="mt-200 d-flex flex-column flex-sm-row"
             >
                 <VsBrSaveContentButton
                     :uuid="content.id"
+                    :gtm-data="{ title: content.title }"
                 />
             </VsCol>
         </VsRow>
@@ -66,8 +67,6 @@
 
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
-
-import checkFlag from '~/composables/checkFlags.ts';
 
 import {
     VsContainer,

@@ -32,10 +32,16 @@
     <VsContainer v-else>
         <div class="vs-search">
             <div class="vs-search__container">
-                <VsBrSearchInput />
+                <div 
+                    class="vs-search__widget"
+                    v-if="searchInputModule[0]"
+                >
+                    <VsBrSearchWidget
+                        :module="searchInputModule[0]"
+                    />
 
-                <VsBrDivider />
-
+                    <VsBrDivider />
+                </div>
                 <template
                     v-for="(module, index) in modules"
                     :key="module.id"
@@ -143,7 +149,7 @@ import dataLayerComposable from '~/composables/dataLayer.ts';
 
 import VsBrDivider from './VsBrDivider.vue';
 import VsBrModuleBuilder from './VsBrModuleBuilder.vue';
-import VsBrSearchInput from './VsBrSearchInput.vue';
+import VsBrSearchWidget from './VsBrSearchWidget.vue';
 import VsBrSearchResults from './VsBrSearchResults.vue';
 import VsBrSearchSort from './VsBrSearchSort.vue';
 import type { SearchFilterCategory } from '~/types/types';
@@ -152,6 +158,8 @@ const page: Page | undefined = inject('page');
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
+let pageItems;
+const searchInputModule: any = [];
 
 const route = useRoute();
 
@@ -183,6 +191,14 @@ for (let x = 0; x < modules.length; x++) {
     const hippoBean = page?.getContent(modules[x].hippoBean.$ref);
 
     moduleNames.push(hippoBean?.model.data.name);
+}
+
+if (page) {
+    pageItems = configStore.pageItems;
+
+    pageItems.some((item) => {
+        if (item.type === 'SearchWidgetModule') searchInputModule.push(item);
+    });
 }
 
 function pageCloseAnalytics() {
