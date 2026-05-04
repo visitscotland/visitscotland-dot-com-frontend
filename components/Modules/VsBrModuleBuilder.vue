@@ -80,6 +80,11 @@
                 :module="item"
             />
 
+            <VsBrRichArticleModule
+                v-else-if="checkFlags('use-rich-articles')"
+                :module="item"
+            />
+
             <VsBrArticleModule
                 v-else
                 :module="item"
@@ -252,6 +257,7 @@ import VsBrCardGroupModule from '~/components/Modules/VsBrCardGroupModule.vue';
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
 import VsBrTourismInformationModule from '~/components/Modules/VsBrTourismInformationModule.vue';
+import VsBrRichArticleModule from '~/components/Modules/VsBrRichArticleModule.vue';
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
 import VsBrSkiListModule from '~/components/Modules/VsBrSkiListModule.vue';
