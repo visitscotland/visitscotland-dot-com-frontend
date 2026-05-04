@@ -373,8 +373,6 @@ import formatLink from '~/composables/formatLink.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import checkFlags from '~/composables/checkFlags.ts';
-
 import {
     VsGlobalMenu,
     VsGlobalMenuLanguage,
