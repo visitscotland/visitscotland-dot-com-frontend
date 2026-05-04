@@ -8,6 +8,7 @@
 
         <VsBrSearchInput
             class="mt-200"
+            data-test="vs-search-widget"
             :is-search-widget="!isSiteSearchPage"
             :is-event-widget="module?.mainCategory === 'events' ? true : false"
             :autocomplete="module?.mainCategory === 'events' ? false : true"
