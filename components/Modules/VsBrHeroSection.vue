@@ -4,9 +4,10 @@
         :lede="content.teaser"
         :img-src="imageSrc"
         :video-src="video ? video.link : null"
-        :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
         :img-caption="imageData?.description"
         :img-credit="imageData?.credit"
+        :play-button-label="configStore.getLabel('ambient-video', 'play-button.text')"
+        :pause-button-label="configStore.getLabel('ambient-video', 'pause-button.text')"
     />
 </template>
 

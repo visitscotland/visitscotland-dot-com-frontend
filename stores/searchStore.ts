@@ -3,7 +3,6 @@ import type {
     SearchApiResult,
     SearchFilterCategory,
 } from '~/types/types.ts';
-
 import { defineStore } from 'pinia';
 import {
     computed,
@@ -27,6 +26,7 @@ const useSearchStore = defineStore('search', () => {
     // Filter
     const categoryKey = ref<string>();
     const subcategoryKeys = ref<string[]>([]);
+    const selectedLocations = ref<SearchFilterCategory[]>([]);
     const subcategorySelected = ref<SearchFilterCategory[]>([]);
 
     // Search sort
@@ -108,7 +108,9 @@ const useSearchStore = defineStore('search', () => {
                 location: location.value,
                 page: currentPage.value,
                 postcode: postcode.value,
-                postcodeareas: postcodeareas.value,
+                postcodeareas:  selectedLocations.value.length 
+                    ? getSearchFilterParameters(selectedLocations.value).toString() 
+                    : postcodeareas.value,
                 radius: radius.value,
                 searchTerm: searchTerm.value,
                 siteLanguage: configStore.locale,
@@ -175,6 +177,9 @@ const useSearchStore = defineStore('search', () => {
                 ...(postcodeareas.value && {
                     postcodeareas: postcodeareas.value,
                 }),
+                ...(selectedLocations.value.length > 0 && {
+                    locations: getSearchFilterKeys(selectedLocations.value).join(','),
+                }),
                 ...(radius.value && {
                     radius: radius.value,
                 }),
@@ -187,6 +192,14 @@ const useSearchStore = defineStore('search', () => {
         getSearchResults();
     }
 
+    function getSearchFilterParameters(searchFilter: SearchFilterCategory[]) {
+        return searchFilter.map((filter) => filter.Parameter);
+    }
+
+    function getSearchFilterKeys(searchFilter: SearchFilterCategory[]) {
+        return searchFilter.map((filter) => filter.Key);
+    }
+
     return {
         categoryKey,
         cludoApiError,
@@ -195,6 +208,7 @@ const useSearchStore = defineStore('search', () => {
         eventsApiError,
         eventHasBeenClicked,
         fromDate,
+        getSearchFilterKeys,
         getSearchResults,
         isLoading,
         location,
@@ -206,6 +220,7 @@ const useSearchStore = defineStore('search', () => {
         searchInSessionCount,
         searchResults,
         searchTerm,
+        selectedLocations,
         setUrlParameters,
         sortBy,
         subcategoryKeys,

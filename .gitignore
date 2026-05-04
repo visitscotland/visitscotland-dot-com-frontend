@@ -11,7 +11,5 @@ dist
 .clversion
 yalc.lock
 .yalc
-
-.idea
 AGENTS.md
-
+.yarn/

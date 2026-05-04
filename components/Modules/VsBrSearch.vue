@@ -32,10 +32,16 @@
     <VsContainer v-else>
         <div class="vs-search">
             <div class="vs-search__container">
-                <VsBrSearchInput />
+                <div 
+                    class="vs-search__widget"
+                    v-if="searchInputModule[0]"
+                >
+                    <VsBrSearchWidget
+                        :module="searchInputModule[0]"
+                    />
 
-                <VsBrDivider />
-
+                    <VsBrDivider />
+                </div>
                 <template
                     v-for="(module, index) in modules"
                     :key="module.id"
@@ -67,6 +73,24 @@
                     />
                 </div>
 
+                <div class="vs-search__location-filter">
+                    <VsBrSearchFilter
+                        v-if="checkFlags('use-location-filters')
+                            && locations.length 
+                            && !searchStore.isLoading
+                            && searchStore.categoryKey === 'events'"
+                        :filter-categories="locations"
+                        class="my-200"
+                        ref="locationFilter"
+                        :category-btn-text="configStore.getLabel('search', 'filters.category')"
+                        heading="Filter by location"
+                        variant="secondary"
+                        @filter-updated="updateLocationKey"
+                        :active-filter="searchStore.getSearchFilterKeys(searchStore.selectedLocations)"
+                        wrap
+                    />
+                </div>
+
                 <VsLoadingSpinner v-if="searchStore.isLoading" />
 
                 <VsBrSearchResults v-else />
@@ -82,7 +106,11 @@
 <script setup lang="ts">
 import type { Page } from '@bloomreach/spa-sdk';
 
-import { inject, onMounted } from 'vue';
+import {
+    inject,
+    onMounted,
+    onBeforeMount,
+} from 'vue';
 import {
     VsContainer,
     VsDetail,
@@ -99,14 +127,18 @@ import dataLayerComposable from '~/composables/dataLayer.ts';
 
 import VsBrDivider from './VsBrDivider.vue';
 import VsBrModuleBuilder from './VsBrModuleBuilder.vue';
-import VsBrSearchInput from './VsBrSearchInput.vue';
+import VsBrSearchFilter from './VsBrSearchFilter.vue';
+import VsBrSearchWidget from './VsBrSearchWidget.vue';
 import VsBrSearchResults from './VsBrSearchResults.vue';
 import VsBrSearchSort from './VsBrSearchSort.vue';
+import type { SearchFilterCategory } from '~/types/types';
 
 const page: Page | undefined = inject('page');
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
+let pageItems;
+const searchInputModule: any = [];
 
 const route = useRoute();
 
@@ -118,10 +150,33 @@ const { modules } = defineProps<Props>();
 
 const moduleNames = [];
 
+const locations: SearchFilterCategory[] = [];
+
+onBeforeMount(() => {
+    if (configStore.searchFilters.postcodeareas){
+        for (const location of Object.entries(configStore.searchFilters.postcodeareas)) {
+            locations.push({
+                Key: location[1].id,
+                Parameter: location[1].parameter,
+                Label: location[1].label,
+            });
+        }
+    } else return;
+    
+});
+
 for (let x = 0; x < modules.length; x++) {
     const hippoBean = page?.getContent(modules[x].hippoBean.$ref);
 
     moduleNames.push(hippoBean?.model.data.name);
+}
+
+if (page) {
+    pageItems = configStore.pageItems;
+
+    pageItems.some((item) => {
+        if (item.type === 'SearchWidgetModule') searchInputModule.push(item);
+    });
 }
 
 function pageCloseAnalytics() {
@@ -153,6 +208,23 @@ onMounted(() => {
             );
 
             if (match) searchStore.subcategorySelected.push(match);
+        });
+    }
+
+    if (route.query.postcodeareas) {
+        const routePostcodeareas = route.query.postcodeareas as string;
+        searchStore.postcodeareas = routePostcodeareas;
+    }
+
+    if(route.query.locations) {
+        const routeLocations = route.query.locations as string;
+
+        const routeLocationKeys = routeLocations.split(',');
+
+        locations.forEach((location) => {
+            if (routeLocationKeys.includes(location.Key)) {
+                searchStore.selectedLocations.push(location);
+            }
         });
     }
 
@@ -203,6 +275,27 @@ onMounted(() => {
         once: true,
     });
 });
+
+async function updateLocationKey(location: SearchFilterCategory) {
+    if (searchStore.postcodeareas) {
+        searchStore.postcodeareas = undefined;
+    }
+
+    if (!searchStore.getSearchFilterKeys(searchStore.selectedLocations).includes(location.Key)) {
+        searchStore.selectedLocations.push(location);
+    } else {
+        const index = searchStore.getSearchFilterKeys(searchStore.selectedLocations).indexOf(location.Key);
+
+        if (index >= 0) {
+            searchStore.selectedLocations.splice(index, 1);
+        }
+    }
+
+    searchStore.currentPage = 1;
+
+    await searchStore.setUrlParameters();
+}
+
 </script>
 
 <style lang="scss">

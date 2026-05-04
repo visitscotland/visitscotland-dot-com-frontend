@@ -223,6 +223,18 @@ const determineInternalState = () => {
                 name: 'footer',
             };
         }
+        if (deLocalisedRoute.includes('/data/internal/script-footer')) {
+            return {
+                isInternal: true,
+                name: 'script-footer',
+            };
+        }
+        if (deLocalisedRoute.includes('/data/internal/css-header')) {
+            return {
+                isInternal: true,
+                name: 'css-header',
+            };
+        }
     }
 
     if (process.client) {

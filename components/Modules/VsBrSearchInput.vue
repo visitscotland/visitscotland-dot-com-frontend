@@ -19,7 +19,7 @@
                     class="vs-search__input w-100"
                     field-name="site-search"
                     name="searchrequest"
-                    :placeholder="placeholder ? placeholder : configStore.getLabel('search', 'search-label')"
+                    :placeholder="placeholder"
                     type="search"
                     :value="searchStore.searchTerm"
                     @input="updateSearchTerm($event.target.value)"
@@ -31,7 +31,7 @@
                 :disabled="isLoading"
                 @click.prevent="search"
             >
-                {{ configStore.getLabel('search', 'search') }}
+                {{ searchBtnText }}
             </VsButton>
         </div>
 
@@ -116,7 +116,8 @@ type Props = {
     isSearchWidget?: boolean;
     isEventWidget?: boolean;
     autocomplete?: boolean;
-    placeholder?: string;
+    placeholder: string;
+    searchBtnText: string;
     searchCategories?: object;
 }
 
@@ -124,7 +125,6 @@ const {
     isSearchWidget = false,
     isEventWidget = false,
     autocomplete = false,
-    placeholder = '',
     searchCategories = {
     },
 } = defineProps<Props>();
@@ -321,6 +321,8 @@ async function setCategoryAnalytics(category: SearchFilterCategory | SearchFilte
 async function updateCategoryKey(category: SearchFilterCategory) {
     searchStore.currentPage = 1;
     searchStore.subcategoryKeys = [];
+    searchStore.selectedLocations = [];
+    searchStore.postcodeareas = undefined;
     searchStore.subcategorySelected = [];
     searchStore.fromDate = category.Key === 'events'
         ? new Date().toJSON().slice(0, 10)
