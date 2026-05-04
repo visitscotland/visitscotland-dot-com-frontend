@@ -88,7 +88,7 @@
                     </p>
                 </div>
                 <div
-                    v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkFlags('favourites')"
+                    v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite"
                     class="d-flex flex-column flex-md-row"
                 >
                     <VsBrSaveContentButton
@@ -105,7 +105,7 @@
             v-if="itinerary"
             #vs-intro-start-finish
         >
-            <div :class="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkFlags('favourites') ? 'mt-200' : ''">
+            <div :class="configStore.featureFavouritesEnabled && configStore.allowFavourite ? 'mt-200' : ''">
                 <dt class="list-inline-item ">
                     {{ configStore.getLabel("itinerary", "start-finish") }}
                 </dt>

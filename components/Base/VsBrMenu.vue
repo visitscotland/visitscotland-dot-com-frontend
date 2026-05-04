@@ -281,7 +281,7 @@
                 >
                     <template #third-menu-item>
                         <a
-                            v-if="configStore.featureFavouritesEnabled && checkFlags('favourites')"
+                            v-if="configStore.featureFavouritesEnabled"
                             :href="configStore.featureFavouritesUrl"
                             class="vs-favourites-link"
                             :aria-label="configStore.getLabel('navigation.static', 'favourites.navigation.link.text')"

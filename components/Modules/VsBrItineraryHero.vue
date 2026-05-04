@@ -33,7 +33,7 @@
                 </VsBody>
             </VsCol>
             <VsCol
-                v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite && checkFlags('favourites')"
+                v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite"
                 cols="12"
                 class="mt-200 d-flex flex-column flex-sm-row"
             >
