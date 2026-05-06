@@ -1,42 +1,61 @@
-import { useLocalStorageStore } from '@/stores/localStorageStore.ts';
-import type { ILocalStorageState } from '@/stores/localStorageStore';
 import { watch } from 'vue';
+import { useFavourites } from '@/stores/favouritesStore.ts';
+import type { IFavouritesState } from '@/stores/favouritesStore';
+
+/**
+ * Keys that are persisted for reload / refresh
+ */
+const PERSIST_KEYS: (keyof IFavouritesState)[] = [
+    'pages',
+    'shareId',
+    'revision',
+    'lastSharedRevision',
+];
+
+/**
+ * Keys that are live‑synced across tabs
+ */
+const LIVE_SYNC_KEYS: (keyof IFavouritesState)[] = ['pages', 'shareId'];
 
 export default defineNuxtPlugin((nuxtApp) => {
-    const store = useLocalStorageStore(nuxtApp.$pinia);
+    const favouritesStore = useFavourites(nuxtApp.$pinia);
 
     // -----------------------------
     // 1. Hydrate store from localStorage
     // -----------------------------
-    for (const key of Object.keys(store.$state) as (keyof ILocalStorageState)[]) {
+    for (const key of PERSIST_KEYS) {
         const raw = window.localStorage.getItem(key);
 
         if (raw !== null) {
             try {
-                store.$patch({
-                    [key]: JSON.parse(raw),
-                });
-            } catch (error) {
-                console.log(
-                    `Failed to parse localStorage value for key "${key}". Raw value:`,
-                    raw,
-                    error,
-                );
+                const parsed = JSON.parse(raw);
+
+                if (key === 'pages') {
+                    favouritesStore.pages = Array.isArray(parsed) ? parsed : [];
+                } else {
+                    favouritesStore.$patch({ 
+                        [key]: parsed,
+                    });
+                }
+            } catch {
+                // ignore malformed values
             }
         }
     }
 
     // -----------------------------
-    // 2. Persist store → localStorage on any change
+    // 2. Persist store → localStorage
     // -----------------------------
     watch(
-        () => store.$state,
-        (newState) => {
-            for (const key of Object.keys(newState) as (keyof ILocalStorageState)[]) {
-                window.localStorage.setItem(
-                    key,
-                    JSON.stringify(newState[key]),
-                );
+        () => ({
+            pages: favouritesStore.pages,
+            shareId: favouritesStore.shareId,
+            revision: favouritesStore.revision,
+            lastSharedRevision: favouritesStore.lastSharedRevision,
+        }),
+        (state) => {
+            for (const key of PERSIST_KEYS) {
+                window.localStorage.setItem(key, JSON.stringify(state[key]));
             }
         },
         {
@@ -45,31 +64,47 @@ export default defineNuxtPlugin((nuxtApp) => {
     );
 
     // -----------------------------
-    // 3. Cross‑tab sync:
-    //    When another tab updates localStorage,
-    //    patch THIS tab's store so UI updates instantly.
+    // 3. Cross‑tab live sync (one‑way)
     // -----------------------------
     window.addEventListener('storage', (event) => {
-        // Ignore events without a key
         if (!event.key) {
             return;
         }
 
-        // Only handle keys that exist in the store
-        if (event.key in store.$state) {
-            try {
-                const parsed = event.newValue ? JSON.parse(event.newValue) : '';
+        if (!LIVE_SYNC_KEYS.includes(event.key as keyof IFavouritesState)) {
+            return;
+        }
 
-                store.$patch({
-                    [event.key]: parsed,
-                });
-            } catch (error) {
-                console.log(
-                    `Failed to parse updated localStorage value for key "${event.key}".`,
-                    event.newValue,
-                    error,
-                );
+        try {
+            const value = event.newValue ? JSON.parse(event.newValue) : [];
+
+            // Special handling for pages
+            if (event.key === 'pages') {
+                const current = favouritesStore.pages;
+
+                // Only react if the array actually changed
+                const changed =
+                    JSON.stringify(value) !== JSON.stringify(current);
+
+                if (!changed) {
+                    return;
+                }
+
+                // Assign directly instead of $patch
+                favouritesStore.pages = value;
+
+                // Record that this tab observed a mutation
+                favouritesStore.revision += 1;
+
+                return;
             }
+
+            // ✅ unchanged behavior for other live‑sync keys (e.g. shareId)
+            favouritesStore.$patch({
+                [event.key]: value,
+            });
+        } catch {
+            // ignore malformed values
         }
     });
 });

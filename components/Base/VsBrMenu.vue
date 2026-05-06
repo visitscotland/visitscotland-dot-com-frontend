@@ -287,7 +287,7 @@
                             :aria-label="configStore.getLabel('navigation.static', 'favourites.navigation.link.text')"
                         >
                             <VsIcon
-                                icon="fa-regular fa-heart"
+                                :icon="favourites.pages.length !== 0 ? 'fa-heart fa-solid' : 'fa-heart fa-regular'"
                                 variant="inverse"
                                 size="xxs"
                             />
@@ -371,8 +371,6 @@ import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
 import formatLink from '~/composables/formatLink.ts';
 
-import useConfigStore from '~/stores/configStore.ts';
-
 import {
     VsGlobalMenu,
     VsGlobalMenuLanguage,
@@ -397,6 +395,11 @@ import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
 import VsBrDivider from '~/components/Modules/VsBrDivider.vue';
 import VsBrMegaNav from '~/components/Modules/VsBrMegaNav.vue';
 import VsBrAccordionNav from '~/components/Modules/VsBrAccordionNav.vue';
+
+import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '~/stores/favouritesStore.ts';
+
+const favourites = useFavourites();
 
 const props = defineProps<{ component: Component, page: Page }>();
 

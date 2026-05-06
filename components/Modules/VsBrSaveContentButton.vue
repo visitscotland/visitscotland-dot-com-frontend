@@ -18,11 +18,11 @@ import { computed } from 'vue';
 import { VsButton } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
-import { useLocalStorageStore } from '~/stores/localStorageStore.ts';
+import { useFavourites } from '~/stores/favouritesStore.ts';
 import dataLayerComposable from '~/composables/dataLayer.ts';
 
 const configStore = useConfigStore();
-const localStorageStore = useLocalStorageStore();
+const favourites = useFavourites();
 const dataLayerHelper = dataLayerComposable();
 
 const props = defineProps<{
@@ -32,30 +32,32 @@ const props = defineProps<{
 
 // Derived state: is this page saved?
 const buttonSavedState = computed(() => {
-    return localStorageStore.favourites.includes(props.uuid);
+    return favourites.pages.includes(props.uuid);
 });
 
 // Toggle logic using the Pinia store
 function toggleSaved(uuid: string) {
-    if (localStorageStore.favourites.includes(uuid)) {
-        localStorageStore.favourites = localStorageStore.favourites.filter(
+    if (favourites.pages.includes(uuid)) {
+        favourites.pages = favourites.pages.filter(
             (item) => item !== uuid,
         );
-
+        favourites.revision += 1;
+        // Analytics event
         dataLayerHelper.createDataLayerObject('favouriteRemoveEvent', {
             content_title: props.gtmData.title,
-            total_favourites: configStore.getFavouritesCount(),
+            total_favourites: configStore.favourites.pages.length,
             interaction_timestamp_ms: Date.now(),
         });
     } else {
-        localStorageStore.favourites = [
-            ...localStorageStore.favourites,
+        favourites.pages = [
+            ...favourites.pages,
             uuid,
         ];
-
+        favourites.revision += 1;
+        // Analytics event
         dataLayerHelper.createDataLayerObject('favouriteAddEvent', {
             content_title: props.gtmData.title,
-            total_favourites: configStore.getFavouritesCount(),
+            total_favourites: configStore.favourites.pages.length,
             interaction_timestamp_ms: Date.now(),
         });
     }

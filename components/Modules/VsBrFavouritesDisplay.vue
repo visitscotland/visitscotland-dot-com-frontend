@@ -2,6 +2,7 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol>
+                <VsBrSaveContentShare />
                 <div v-if="uiState === 'error'">
                     <div class="d-flex justify-content-center">
                         <div
@@ -125,6 +126,8 @@ import {
     onMounted,
 } from 'vue';
 
+import VsBrSaveContentShare from './VsBrSaveContentShare.vue';
+
 import {
     VsCard,
     VsImg,
@@ -139,11 +142,11 @@ import {
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
-import { useLocalStorageStore } from '~/stores/localStorageStore.ts';
+import { useFavourites } from '~/stores/favouritesStore.ts';
 import dataLayerComposable from '~/composables/dataLayer.ts';
 
 const configStore = useConfigStore();
-const localStorageStore = useLocalStorageStore();
+const favourites = useFavourites();
 const dataLayerHelper = dataLayerComposable();
 
 const uiState = computed(() => {
@@ -153,7 +156,7 @@ const uiState = computed(() => {
     if (fetchRequestStatus.value === 'pending') {
         return 'loading';
     }
-    if (localStorageStore.favourites.length === 0) {
+    if (favourites.pages.length === 0) {
         return 'empty';
     }
     if (cardData.value.length === 0) {
@@ -165,17 +168,17 @@ const uiState = computed(() => {
 const fetchRequestStatus = ref('pending');
 const cardData = ref<any[]>([]);
 
-const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-
+// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+const favouritesEndpoint = `https://release-brc.visitscotland.com${configStore.featureFavouritesEndpoint}`;
 // Fetch CMS data for a list of UUIDs
-async function getSavedContentData(uuidArray) {
+async function getSavedContentData() {
     try {
         const res = await $fetch(
             favouritesEndpoint,
             {
                 method: 'POST',
                 body: {
-                    uuids: uuidArray,
+                    uuids: favourites.pages,
                 },
             },
         );
@@ -191,29 +194,28 @@ async function getSavedContentData(uuidArray) {
 // Remove content from the favourites list and update display data
 function removeContent(uuid, title) {
     // Update store
-    localStorageStore.favourites = localStorageStore.favourites.filter(
+    favourites.pages = favourites.pages.filter(
         (item) => item !== uuid,
     );
-
     // Update rendered CMS data
     if (cardData.value) {
         cardData.value = cardData.value.filter(
             (o) => o.uuid !== uuid,
         );
     }
-
     dataLayerHelper.createDataLayerObject('favouriteRemoveEvent', {
         content_title: title,
-        total_favourites: configStore.getFavouritesCount(),
+        total_favourites: favourites.pages.length,
         interaction_timestamp_ms: Date.now(),
     });
+    favourites.revision += 1;
 }
 
 // Analytics helper
 function gtmPush() {
     dataLayerHelper.createDataLayerObject('favouritesClickEvent', {
         list_position: 2,
-        total_favourites: configStore.getFavouritesCount(),
+        total_favourites: favourites.pages.length,
         interaction_timestamp_ms: Date.now(),
     });
 }
@@ -222,17 +224,17 @@ function gtmPush() {
 onMounted(() => {
     dataLayerHelper.createDataLayerObject('favouritesPageViewEvent', {
         favourite_owner: 'self',
-        total_favourites: configStore.getFavouritesCount(),
+        total_favourites: favourites.pages.length,
         shared_list_id: ' ',
     });
 
     // Initial fetch
-    getSavedContentData(localStorageStore.favourites);
+    getSavedContentData(favourites.pages);
 });
 
 // Re-fetch CMS data whenever the favourites list changes
 watch(
-    () => localStorageStore.favourites,
+    () => favourites.pages,
     (newList) => {
         getSavedContentData(newList);
     },
