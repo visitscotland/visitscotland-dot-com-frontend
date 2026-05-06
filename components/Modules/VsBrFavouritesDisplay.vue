@@ -168,8 +168,8 @@ const uiState = computed(() => {
 const fetchRequestStatus = ref('pending');
 const cardData = ref<any[]>([]);
 
-// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-const favouritesEndpoint = `https://release-brc.visitscotland.com${configStore.featureFavouritesEndpoint}`;
+const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+// const favouritesEndpoint = `https://release-brc.visitscotland.com${configStore.featureFavouritesEndpoint}`;
 // Fetch CMS data for a list of UUIDs
 async function getSavedContentData() {
     try {
