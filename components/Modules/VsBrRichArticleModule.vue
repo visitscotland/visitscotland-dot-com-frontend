@@ -73,6 +73,13 @@
             </VsCol>
         </VsRow>
     </VsContainer>
+
+    <VsBrMedia
+        v-if="module.image && checkFlags('rich-article-images')"
+        :image="module.image.cmsImage"
+        :image-description="module.image.description"
+        :full-bleed="true"
+    />
 </template>
 
 <script lang="ts" setup>
