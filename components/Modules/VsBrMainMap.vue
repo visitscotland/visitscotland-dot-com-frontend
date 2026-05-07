@@ -49,6 +49,9 @@ const labels: object = computed(() => ({
     subFilterHeader: configStore.getLabel('map', 'map.sub-filter'),
     searchResults: configStore.getLabel('map', 'map.search-results'),
     openSidebarButton: configStore.getLabel('map', 'map.open-panel'),
+    resetLocation: configStore.getLabel('map', 'resetLocation'),
+    locationSelect: configStore.getLabel('map', 'locationSelect'),
+    searchAreaButton: configStore.getLabel('map', 'searchAreaButton'),
 }));
 
 const filteredFeatures = module.geoJson.features.filter(
