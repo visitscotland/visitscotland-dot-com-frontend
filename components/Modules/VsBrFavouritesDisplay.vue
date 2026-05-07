@@ -2,7 +2,6 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol>
-                <VsBrSaveContentShare />
                 <div v-if="uiState === 'error'">
                     <div class="d-flex justify-content-center">
                         <div
@@ -126,8 +125,6 @@ import {
     onMounted,
 } from 'vue';
 
-import VsBrSaveContentShare from './VsBrSaveContentShare.vue';
-
 import {
     VsCard,
     VsImg,
@@ -169,7 +166,7 @@ const fetchRequestStatus = ref('pending');
 const cardData = ref<any[]>([]);
 
 const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-// const favouritesEndpoint = `https://release-brc.visitscotland.com${configStore.featureFavouritesEndpoint}`;
+
 // Fetch CMS data for a list of UUIDs
 async function getSavedContentData() {
     try {
