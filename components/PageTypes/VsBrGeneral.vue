@@ -104,15 +104,6 @@
         />
     </NuxtLazyHydrate>
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-        v-if="configStore.showSearchWidget && !isSearchWidgetPresent"
-    >
-        <div class="mt-175 mt-md-500 mb-175 mb-md-500">
-            <VsBrSearchWidget />
-        </div>
-    </NuxtLazyHydrate>
-
     <template
         v-if="isSearchResultsPage"
     >
@@ -241,8 +232,6 @@ if (page.value) {
         ) {
             firstModuleIsLink = true;
         }
-
-        isSearchWidgetPresent = pageItems.some((item) => item.type === 'SearchWidgetModule');
     }
 
     // Remove trailing slashes from the global search path to remove path ambiguity
