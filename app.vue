@@ -109,13 +109,17 @@ let featureFlags = {flags:{}};
 if (!process.server && sessionStorage.getItem('flags') && sessionStorage.getItem('flags').length > 0) {
     featureFlags.flags = JSON.parse(sessionStorage.getItem('flags'));
 } else {
-    await $fetch('/api/frontend/getFeatureFlagValues')
-        .then((response) => {        
-            if (!process.server) {
-                featureFlags = response;
-                sessionStorage.setItem('flags', JSON.stringify(response));
-            }       
-        });
+    try {
+        await $fetch('/api/frontend/getFeatureFlagValues')
+            .then((response) => {        
+                if (!process.server) {
+                    featureFlags = response;
+                    sessionStorage.setItem('flags', JSON.stringify(response));
+                }       
+            });
+    } catch (error) {
+        console.log('error fetching flags', error);
+    }
 }
 
 // set up a global function to allow checking of flags
