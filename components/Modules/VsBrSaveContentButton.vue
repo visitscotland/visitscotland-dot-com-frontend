@@ -45,7 +45,7 @@ function toggleSaved(uuid: string) {
         // Analytics event
         dataLayerHelper.createDataLayerObject('favouriteRemoveEvent', {
             content_title: props.gtmData.title,
-            total_favourites: configStore.favourites.pages.length,
+            total_favourites: favourites.pages.length,
             interaction_timestamp_ms: Date.now(),
         });
     } else {
@@ -57,7 +57,7 @@ function toggleSaved(uuid: string) {
         // Analytics event
         dataLayerHelper.createDataLayerObject('favouriteAddEvent', {
             content_title: props.gtmData.title,
-            total_favourites: configStore.favourites.pages.length,
+            total_favourites: favourites.pages.length,
             interaction_timestamp_ms: Date.now(),
         });
     }

@@ -123,6 +123,7 @@ import {
     ref,
     watch,
     onMounted,
+    computed,
 } from 'vue';
 
 import {
@@ -165,17 +166,17 @@ const uiState = computed(() => {
 const fetchRequestStatus = ref('pending');
 const cardData = ref<any[]>([]);
 
-const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-
+// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+const favouritesEndpoint = `https://release-brc.visitscotland.com${configStore.featureFavouritesEndpoint}`;
 // Fetch CMS data for a list of UUIDs
-async function getSavedContentData() {
+async function getSavedContentData(endpoint, data) {
     try {
         const res = await $fetch(
-            favouritesEndpoint,
+            endpoint,
             {
                 method: 'POST',
                 body: {
-                    uuids: favourites.pages,
+                    uuids: data,
                 },
             },
         );
@@ -226,17 +227,14 @@ onMounted(() => {
     });
 
     // Initial fetch
-    getSavedContentData(favourites.pages);
+    getSavedContentData(favouritesEndpoint, favourites.pages);
 });
 
 // Re-fetch CMS data whenever the favourites list changes
 watch(
     () => favourites.pages,
     (newList) => {
-        getSavedContentData(newList);
-    },
-    {
-        deep: true,
+        getSavedContentData(favouritesEndpoint, newList);
     },
 );
 </script>
