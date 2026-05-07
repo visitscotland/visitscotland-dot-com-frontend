@@ -388,5 +388,9 @@ provide('page', page.value);
             background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 50.48%, rgba(0, 0, 0, 0.30) 89.9%),
                         linear-gradient(180deg, rgba(0, 0, 0, 0.00) 39.5%, rgba(0, 0, 0, 0.85) 100%);
         }
+
+        .vs-hero-section__video .vs-video-html5__toggle-video {
+            z-index: 10000;
+        }
     }
 </style>
