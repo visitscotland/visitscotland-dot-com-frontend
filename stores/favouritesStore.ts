@@ -20,7 +20,8 @@ export const useFavourites = defineStore('favourites', {
                 return;
             };
             this.pages.push(uuid);
-            this.revision += 1;
+            // IFF previously shared, update db on copy link
+            if (this.shareId){ this.revision += 1; }
         },
         remove(uuid) {
             if (!this.pages.includes(uuid)) {
@@ -29,7 +30,8 @@ export const useFavourites = defineStore('favourites', {
             this.pages = this.pages.filter(
                 (item) => item !== uuid,
             );
-            this.revision += 1;
+            // IFF previously shared, update db on copy link
+            if (this.shareId){ this.revision += 1; }
         },
     },
 });

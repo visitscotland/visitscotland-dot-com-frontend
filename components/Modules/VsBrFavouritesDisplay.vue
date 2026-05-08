@@ -2,18 +2,6 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol>
-                <p>
-                    favourites pages {{ favourites.pages }}
-                </p>
-                <p>
-                    favourites shareId {{ favourites.shareId }}
-                </p>
-                <p>
-                    favourites revision {{ favourites.revision }}
-                </p>
-                <p>
-                    favourites last shared revision {{ favourites.lastSharedRevision }}
-                </p>
                 <div v-if="uiState === 'error'">
                     <div class="d-flex justify-content-center">
                         <div
@@ -178,8 +166,10 @@ const uiState = computed(() => {
 const fetchRequestStatus = ref('pending');
 const cardData = ref<any[]>([]);
 
-// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-const favouritesEndpoint = 'https://release-brc.visitscotland.com/api/favourites/get-favourites';
+const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+// This will be removed before release
+// const favouritesEndpoint = 'https://release-brc.visitscotland.com/api/favourites/get-favourites';
+
 // Fetch CMS data for a list of UUIDs
 async function getSavedContentData(endpoint, data) {
     try {

@@ -1,114 +1,85 @@
-import { watch } from 'vue';
-import { useFavourites } from '@/stores/favouritesStore.ts';
-import type { IFavouritesState } from '@/stores/favouritesStore';
+import type { PiniaPluginContext } from 'pinia';
 
-/**
- * Keys that are persisted for reload / refresh
- */
-const PERSIST_KEYS: (keyof IFavouritesState)[] = [
-    'pages',
-    'shareId',
-    'revision',
-    'lastSharedRevision',
-];
+type SyncConfig = Record<string, string[]>;
 
-/**
- * Keys that are live‑synced across tabs
- */
-const LIVE_SYNC_KEYS: (keyof IFavouritesState)[] = ['pages', 'shareId'];
+const SYNC_CONFIG: SyncConfig = {
+    favourites: ['pages', 'shareId', 'revision'],
+};
 
 export default defineNuxtPlugin((nuxtApp) => {
-    const favouritesStore = useFavourites(nuxtApp.$pinia);
+    const pinia = nuxtApp.$pinia;
 
-    // -----------------------------
-    // 1. Hydrate store from localStorage
-    // -----------------------------
-    for (const key of PERSIST_KEYS) {
-        const raw = window.localStorage.getItem(key);
+    pinia.use(({ store }: PiniaPluginContext) => {
+        const paths = SYNC_CONFIG[store.$id];
+        if (!paths) return;
 
-        if (raw !== null) {
+        const storageKey = `vs-${store.$id}`;
+
+        // This is a guard against the store and storage
+        // getting in a recursive update loop. 
+        let syncingFromStorage = false;
+
+        // -----------------------------
+        // 1. Hydrate store
+        // -----------------------------
+        const raw = localStorage.getItem(storageKey);
+        if (raw) {
             try {
                 const parsed = JSON.parse(raw);
+                syncingFromStorage = true;
 
-                if (key === 'pages') {
-                    favouritesStore.pages = Array.isArray(parsed) ? parsed : [];
-                } else {
-                    favouritesStore.$patch({ 
-                        [key]: parsed,
-                    });
-                }
+                store.$patch((state) => {
+                    for (const key of paths) {
+                        if (key in parsed) {
+                            (state as any)[key] = parsed[key];
+                        }
+                    }
+                });
             } catch {
-                // ignore malformed values
+                // ignore
+            } finally {
+                syncingFromStorage = false;
             }
         }
-    }
 
-    // -----------------------------
-    // 2. Persist store → localStorage
-    // -----------------------------
-
-    let syncingFromStorage = false;
-
-    watch(
-        () => ({
-            pages: favouritesStore.pages,
-            shareId: favouritesStore.shareId,
-            revision: favouritesStore.revision,
-            lastSharedRevision: favouritesStore.lastSharedRevision,
-        }),
-        (state) => {
+        // -----------------------------
+        // 2. Store → localStorage
+        // -----------------------------
+        store.$subscribe((_mutation, state) => {
             if (syncingFromStorage) return;
-            for (const key of PERSIST_KEYS) {
-                window.localStorage.setItem(key, JSON.stringify(state[key]));
-            }
-        },
-        {
-            deep: true,
-        },
-    );
 
-    // -----------------------------
-    // 3. Cross‑tab live sync (one‑way)
-    // -----------------------------
-    window.addEventListener('storage', async(event) => {
-        if (!event.key) {
-            return;
-        }
-        if (!LIVE_SYNC_KEYS.includes(event.key as keyof IFavouritesState)) {
-            return;
-        }
-        syncingFromStorage = true;
-        try {
-            const value = event.newValue ? JSON.parse(event.newValue) : [];
-
-            // Special handling for pages
-            if (event.key === 'pages') {
-                const current = favouritesStore.pages;
-
-                // Only react if the array actually changed
-                const changed =
-                    JSON.stringify(value) !== JSON.stringify(current);
-
-                if (!changed) {
-                    return;
-                }
-
-                // Assign directly instead of $patch
-                favouritesStore.pages = value;
-
-                // Record that this tab observed a mutation
-                favouritesStore.revision += 1;
-                await nextTick();
-                return;
+            const payload: Record<string, unknown> = {
+                
+            };
+            for (const key of paths) {
+                payload[key] = (state as any)[key];
             }
 
-            favouritesStore.$patch({
-                [event.key]: value,
-            });
-        } catch {
-            // ignore malformed values
-        } finally {
-            syncingFromStorage = false;
-        }
+            localStorage.setItem(storageKey, JSON.stringify(payload));
+        });
+
+        // -----------------------------
+        // 3. Cross‑tab sync
+        // -----------------------------
+        window.addEventListener('storage', (event) => {
+            if (event.key !== storageKey || !event.newValue) return;
+
+            try {
+                const parsed = JSON.parse(event.newValue);
+                syncingFromStorage = true;
+
+                store.$patch((state) => {
+                    for (const key of paths) {
+                        if (key in parsed) {
+                            (state as any)[key] = parsed[key];
+                        }
+                    }
+                });
+            } catch {
+                // ignore
+            } finally {
+                syncingFromStorage = false;
+            }
+        });
     });
 });
