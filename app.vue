@@ -160,6 +160,13 @@ onMounted(async() => {
     // site is still visible. This manually implements the anchor scroll as soon as the page is
     // actually rendered.
     if (fullRoute.hash) scrollToAnchor(fullRoute.hash);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const clearFlags = urlParams.get('clear-flags');
+
+    if (clearFlags) {
+        sessionStorage.setItem('activeFlags', '{}');
+    }
 });
 
 let deLocalisedRoute = route;
