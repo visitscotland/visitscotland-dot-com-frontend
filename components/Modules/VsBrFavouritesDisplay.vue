@@ -163,8 +163,16 @@ const uiState = computed(() => {
     return 'ready';
 });
 
+interface FavouriteCard {
+    uuid: string;
+    title: string;
+    image: string;
+    url: string;
+    teaser: string;
+}
+
 const fetchRequestStatus = ref('pending');
-const cardData = ref<any[]>([]);
+const cardData = ref<FavouriteCard[]>([]);
 
 const favouritesEndpoint = configStore.featureFavouritesEndpoint;
 // This will be removed before release
@@ -183,7 +191,7 @@ async function getSavedContentData(endpoint, data) {
             },
         );
 
-        cardData.value = Array.isArray(res.cards) ? res.cards : [];
+        cardData.value = Array.isArray(res?.cards) ? res.cards : [];
         fetchRequestStatus.value = 'done';
     } catch (err) {
         console.error('Failed to fetch saved content data:', err);
