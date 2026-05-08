@@ -27,7 +27,7 @@ const dataLayerHelper = dataLayerComposable();
 
 const props = defineProps<{
     uuid: string,
-    gtmData: object,
+    gtmData?: Record<string, unknown>
 }>();
 
 // Derived state: is this page saved?
