@@ -35,13 +35,10 @@ const buttonSavedState = computed(() => {
     return favourites.pages.includes(props.uuid);
 });
 
-// Toggle logic using the Pinia store
 function toggleSaved(uuid: string) {
     if (favourites.pages.includes(uuid)) {
-        favourites.pages = favourites.pages.filter(
-            (item) => item !== uuid,
-        );
-        favourites.revision += 1;
+        favourites.remove(uuid);
+        
         // Analytics event
         dataLayerHelper.createDataLayerObject('favouriteRemoveEvent', {
             content_title: props.gtmData.title,
@@ -49,11 +46,8 @@ function toggleSaved(uuid: string) {
             interaction_timestamp_ms: Date.now(),
         });
     } else {
-        favourites.pages = [
-            ...favourites.pages,
-            uuid,
-        ];
-        favourites.revision += 1;
+        favourites.add(uuid);
+
         // Analytics event
         dataLayerHelper.createDataLayerObject('favouriteAddEvent', {
             content_title: props.gtmData.title,

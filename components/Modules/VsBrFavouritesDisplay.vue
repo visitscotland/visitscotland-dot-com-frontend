@@ -2,6 +2,18 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol>
+                <p>
+                    favourites pages {{ favourites.pages }}
+                </p>
+                <p>
+                    favourites shareId {{ favourites.shareId }}
+                </p>
+                <p>
+                    favourites revision {{ favourites.revision }}
+                </p>
+                <p>
+                    favourites last shared revision {{ favourites.lastSharedRevision }}
+                </p>
                 <div v-if="uiState === 'error'">
                     <div class="d-flex justify-content-center">
                         <div
@@ -74,7 +86,7 @@
                                             icon-only
                                             icon="fa-solid fa-heart"
                                             size="sm"
-                                            @click="removeContent(data.uuid, data.title)"
+                                            @click="removeFavourite(data.uuid, data.title)"
                                         >
                                             {{ configStore.getLabel('favourites-button', 'button.remove.text') }}
                                         </VsButton>
@@ -166,8 +178,8 @@ const uiState = computed(() => {
 const fetchRequestStatus = ref('pending');
 const cardData = ref<any[]>([]);
 
-const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-
+// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+const favouritesEndpoint = 'https://release-brc.visitscotland.com/api/favourites/get-favourites';
 // Fetch CMS data for a list of UUIDs
 async function getSavedContentData(endpoint, data) {
     try {
@@ -189,24 +201,21 @@ async function getSavedContentData(endpoint, data) {
     }
 }
 
-// Remove content from the favourites list and update display data
-function removeContent(uuid, title) {
-    // Update store
-    favourites.pages = favourites.pages.filter(
-        (item) => item !== uuid,
-    );
-    // Update rendered CMS data
+function removeFavourite(uuid, title) {
+    // Remove from display (fetched data)
     if (cardData.value) {
         cardData.value = cardData.value.filter(
             (o) => o.uuid !== uuid,
         );
     }
+    // Remove from store
+    favourites.remove(uuid);
+    // Emit analytics event
     dataLayerHelper.createDataLayerObject('favouriteRemoveEvent', {
         content_title: title,
         total_favourites: favourites.pages.length,
         interaction_timestamp_ms: Date.now(),
     });
-    favourites.revision += 1;
 }
 
 // Analytics helper

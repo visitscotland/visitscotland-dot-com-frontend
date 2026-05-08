@@ -46,6 +46,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     // -----------------------------
     // 2. Persist store → localStorage
     // -----------------------------
+
+    let syncingFromStorage = false;
+
     watch(
         () => ({
             pages: favouritesStore.pages,
@@ -54,6 +57,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             lastSharedRevision: favouritesStore.lastSharedRevision,
         }),
         (state) => {
+            if (syncingFromStorage) return;
             for (const key of PERSIST_KEYS) {
                 window.localStorage.setItem(key, JSON.stringify(state[key]));
             }
@@ -66,15 +70,14 @@ export default defineNuxtPlugin((nuxtApp) => {
     // -----------------------------
     // 3. Cross‑tab live sync (one‑way)
     // -----------------------------
-    window.addEventListener('storage', (event) => {
+    window.addEventListener('storage', async(event) => {
         if (!event.key) {
             return;
         }
-
         if (!LIVE_SYNC_KEYS.includes(event.key as keyof IFavouritesState)) {
             return;
         }
-
+        syncingFromStorage = true;
         try {
             const value = event.newValue ? JSON.parse(event.newValue) : [];
 
@@ -95,16 +98,17 @@ export default defineNuxtPlugin((nuxtApp) => {
 
                 // Record that this tab observed a mutation
                 favouritesStore.revision += 1;
-
+                await nextTick();
                 return;
             }
 
-            // ✅ unchanged behavior for other live‑sync keys (e.g. shareId)
             favouritesStore.$patch({
                 [event.key]: value,
             });
         } catch {
             // ignore malformed values
+        } finally {
+            syncingFromStorage = false;
         }
     });
 });
