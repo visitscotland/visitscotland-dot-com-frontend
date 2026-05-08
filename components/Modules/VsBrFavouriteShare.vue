@@ -1,16 +1,18 @@
 <template>
     <VsButton
         :disabled="shareState === 'empty'"
+        :variant="linkCopied ? 'primary' : 'secondary'"
+        icon="fa-link fa-regular"
         @click="handleClick"
     >
-        {{ activeText }}
+        {{ linkCopied ? 'Link copied' : 'Copy share link' }}
     </VsButton>
+
     <p>share id: {{ favourites.shareId }}</p>
     <p>share state: {{ shareState }}</p>
     <p>revision {{  favourites.revision }}</p>
     <p>last shared revision: {{  favourites.lastSharedRevision }}</p>
     <p>needsUpdate: {{ needsUpdate }}</p>
-    <!-- <p>favourites.pages {{ favourites.pages }}</p> -->
     <p>sharedFavouritesUrl {{ sharedFavouritesUrl }}</p>
 </template>
 
@@ -42,11 +44,16 @@ const updateListEndpoint = 'http://localhost:8080/favourites/update-list';
 const sharedFavouritesUrl = ref(`${sharedListAddress}?share=${favourites.shareId}`);
 
 // These will come from labels when they're available
-const ctaText = {
-    getLink: 'Get sharable link',
-    gotLink: 'Link copied to clipboard!',
+
+const linkCopied = ref(false);
+
+const copyUrl = () => {
+    navigator.clipboard.writeText(sharedFavouritesUrl.value);
+    linkCopied.value = true;
+    setTimeout(() => {
+        linkCopied.value = false;
+    }, 5000);
 };
-const activeText = ref(ctaText.getLink);
 
 async function handleClick() {
     if (shareState.value === 'no share id') {
@@ -59,14 +66,6 @@ async function handleClick() {
         favourites.lastSharedRevision = favourites.revision;
     };
     copyUrl();
-};
-
-const copyUrl = () => {
-    navigator.clipboard.writeText(sharedFavouritesUrl.value);
-    activeText.value = ctaText.gotLink;
-    setTimeout(() => {
-        activeText.value = ctaText.getLink;
-    }, 5000);
 };
 
 async function createList() {
