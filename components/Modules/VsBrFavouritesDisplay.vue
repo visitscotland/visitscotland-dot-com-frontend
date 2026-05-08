@@ -2,6 +2,7 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol>
+                <VsBrFavouriteShare />
                 <div v-if="uiState === 'error'">
                     <div class="d-flex justify-content-center">
                         <div
@@ -138,6 +139,8 @@ import {
     VsCardGroup,
     VsButton,
 } from '@visitscotland/component-library/components';
+
+import VsBrFavouriteShare from './VsBrFavouriteShare.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 import { useFavourites } from '~/stores/favouritesStore.ts';
