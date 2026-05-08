@@ -37,7 +37,7 @@
                 cols="12"
                 class="mt-200 d-flex flex-column flex-sm-row"
             >
-                <VsBrSaveContentButton
+                <VsBrFavouriteButton
                     :uuid="content.id"
                     :gtm-data="{ title: content.title }"
                 />
@@ -78,7 +78,7 @@ import {
     VsMediaCaption,
 } from '@visitscotland/component-library/components';
 
-import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
+import VsBrFavouriteButton from '~/components/Modules/VsBrFavouriteButton.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 

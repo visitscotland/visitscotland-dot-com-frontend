@@ -91,7 +91,7 @@
                     v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite"
                     class="d-flex flex-column flex-md-row"
                 >
-                    <VsBrSaveContentButton
+                    <VsBrFavouriteButton
                         :uuid="content.id"
                         :gtm-data="{ title: content.title, }"
                     />
@@ -189,7 +189,7 @@ import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
 import VsBrVideoModal from '~/components/Modules/VsBrVideoModal.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrItinerarySummaryBox from '~/components/Modules/VsBrItinerarySummaryBox.vue';
-import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
+import VsBrFavouriteButton from '~/components/Modules/VsBrFavouriteButton.vue';
 
 const configStore = useConfigStore();
 
