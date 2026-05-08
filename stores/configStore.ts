@@ -27,7 +27,6 @@ interface IConfigState {
     cludoLanguage: string,
     searchDmsBased: boolean,
     eventsApiUrl: string,
-    showSearchWidget: boolean,
     searchFilters: object,
     cludoApiOperator: string,
     googleMapApiKey: string,
@@ -71,7 +70,6 @@ const useConfigStore = defineStore('configStore', {
         cludoLanguage: '',
         searchDmsBased: false,
         eventsApiUrl: '',
-        showSearchWidget: false,
         searchFilters: {
         },
         cludoApiOperator: 'or',

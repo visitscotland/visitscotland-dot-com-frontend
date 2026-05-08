@@ -19,7 +19,7 @@
                     class="vs-search__input w-100"
                     field-name="site-search"
                     name="searchrequest"
-                    :placeholder="placeholder ? placeholder : configStore.getLabel('search', 'search-label')"
+                    :placeholder="placeholder"
                     type="search"
                     :value="searchStore.searchTerm"
                     @input="updateSearchTerm($event.target.value)"
@@ -30,8 +30,9 @@
                 class="d-none d-lg-block px-200"
                 :disabled="isLoading"
                 @click.prevent="search"
+                data-test="vs-search-input__search-button"
             >
-                {{ searchBtnText ? searchBtnText : configStore.getLabel('search', 'search') }}
+                {{ searchBtnText }}
             </VsButton>
         </div>
 
@@ -116,8 +117,8 @@ type Props = {
     isSearchWidget?: boolean;
     isEventWidget?: boolean;
     autocomplete?: boolean;
-    placeholder?: string;
-    searchBtnText?: string;
+    placeholder: string;
+    searchBtnText: string;
     searchCategories?: object;
 }
 
@@ -125,8 +126,6 @@ const {
     isSearchWidget = false,
     isEventWidget = false,
     autocomplete = false,
-    placeholder = '',
-    searchBtnText = '',
     searchCategories = {
     },
 } = defineProps<Props>();
