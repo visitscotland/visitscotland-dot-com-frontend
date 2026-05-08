@@ -390,7 +390,8 @@ provide('page', page.value);
         }
 
         .vs-hero-section__video .vs-video-html5__toggle-video {
-            z-index: 10000;
+            top: auto;
+            bottom: 1.25rem;
         }
     }
 </style>
