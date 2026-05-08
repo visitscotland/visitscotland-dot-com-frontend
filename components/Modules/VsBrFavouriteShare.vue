@@ -93,7 +93,7 @@ async function updateList() {
                 method: 'POST',
                 body: {
                     favId: favourites.shareId,
-                    uuids: favourites.favourites,
+                    uuids: favourites.pages,
                 },
             },
         );
