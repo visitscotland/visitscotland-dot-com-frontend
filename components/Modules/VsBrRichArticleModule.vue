@@ -79,6 +79,7 @@
         :image="module.image.cmsImage"
         :image-description="module.image.description"
         :full-bleed="true"
+        class="mt-n250 mb-n250"
     />
 </template>
 
