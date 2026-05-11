@@ -78,6 +78,7 @@
                                             class="stretched-link"
                                             variant="secondary"
                                             @click="gtmPush"
+                                            :no-visited-styles="true"
                                         >
                                             {{ data.title }}
                                         </VsLink>
