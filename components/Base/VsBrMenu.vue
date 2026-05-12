@@ -136,7 +136,7 @@
                                 v-if="configStore.featureFavouritesEnabled"
                             >
                                 <VsTooltip
-                                    :title="configStore.getLabel('navigation.static', 'favourites.navigation.link.text')"
+                                    :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
                                     subtle
                                     variant="subtle"
                                     size="sm"
@@ -255,7 +255,7 @@
                                     v-if="configStore.featureFavouritesEnabled"
                                 >
                                     <VsTooltip
-                                        :title="configStore.getLabel('navigation.static', 'favourites.navigation.link.text')"
+                                        :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
                                         subtle
                                         variant="subtle"
                                         size="sm"
