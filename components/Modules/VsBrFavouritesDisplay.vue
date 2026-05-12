@@ -232,7 +232,6 @@ onMounted(() => {
         total_favourites: favourites.pages.length,
         shared_list_id: ' ',
     });
-
     // Initial fetch
     getSavedContentData(favouritesEndpoint, favourites.pages);
 });
