@@ -1,71 +1,78 @@
 <template>
-    <VsModuleWrapper
-        :theme="theme"
+    <VsSectionHeader
+        :heading="module.title"
+        class="mb-250 mt-250"
     >
-        <template #vs-module-wrapper-heading>
-            {{ module.title }}
-        </template>
-
         <template
-            #vs-module-wrapper-intro
+            #section-header-lede
             v-if="module.introduction && module.introduction.value"
         >
-            <VsBrRichText :input-content="module.introduction.value" />
+            <div v-html="module.introduction.value" />
         </template>
+    </VsSectionHeader>
 
-        <VsCarousel
-            :next-text="configStore.getLabel('essentials.pagination', 'page.next')"
-            :prev-text="configStore.getLabel('essentials.pagination', 'page.previous')"
-            :slides-xs="1"
-            :slides-sm="2"
-            :slides-md="3"
-            :slides-lg="4"
-        >
-            <template #vs-carousel-navigate>
-                {{ configStore.getLabel('essentials.pagination', 'page.navigate-to-page') }}
-            </template>
+    <VsContainer>
+        <VsRow>
+            <VsCol>
+                <VsContentSwiper
+                    :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
+                    :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
+                    :slides-per-view-xs="1"
+                    :slides-per-view-sm="2"
+                    :slides-per-view-md="3"
+                    :slides-per-view-lg="4"
+                >
+                    <VsContentSwiperSlide
+                        v-for="(link, index) in links"
+                        :key="index"
+                    >
+                        <VsCard>
+                            <template
+                                #vs-card-header
+                                v-if="link.image"
+                            >
+                                <VsBrMedia
+                                    :image-string="link.image"
+                                    image-classes="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
+                                />
+                            </template>
 
-            <template #vs-carousel-of>
-                {{ configStore.getLabel('essentials.pagination', 'page.of') }}
-            </template>
-
-            <VsCarouselSlide
-                v-for="(link, index) in links"
-                :key="index"
-                :slide-index="`${index}`"
-                :link-url="link.url"
-                :link-type="link.type"
-                :img-src="link.image ? link.image : ''"
-                :category-label="link.categoryLabel"
-                :category="link.category"
-                :transport-name="link.transportName"
-                :transport="link.transport"
-                :days-label="link.daysLabel"
-                :days="link.itineraryDays.toString()"
-            >
-                <template #vs-carousel-slide-heading>
-                    {{ link.label }}
-                </template>
-            </VsCarouselSlide>
-        </VsCarousel>
-    </VsModuleWrapper>
+                            <template #vs-card-body>
+                                <VsHeading
+                                    level="3"
+                                    heading-style="heading-xs"
+                                >
+                                    <VsLink
+                                        :href="link.url"
+                                        class="stretched-link"
+                                        variant="secondary"
+                                    >
+                                        {{ link.label }}
+                                    </VsLink>
+                                </VsHeading>
+                            </template>
+                        </VsCard>
+                    </VsContentSwiperSlide>
+                </VsContentSwiper>
+            </VsCol>
+        </VsRow>
+    </VsContainer>
 </template>
 
 <script lang="ts" setup>
- 
- 
-
 import { inject } from 'vue';
 
 import type { Page } from '@bloomreach/spa-sdk';
 
 import {
-    VsModuleWrapper,
-    VsCarousel,
-    VsCarouselSlide,
+    VsContentSwiper,
+    VsContentSwiperSlide,
+    VsCard,
+    VsHeading,
+    VsLink,
+    VsSectionHeader,
 } from '@visitscotland/component-library/components';
 
-import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
@@ -75,7 +82,6 @@ const configStore = useConfigStore();
 
 const props = defineProps<{ module: object, theme: string }>();
 const module: any = props.module;
-const theme: string = props.theme;
 
 const page: Page | undefined = inject('page');
 const links: any[] = [];
@@ -122,11 +128,3 @@ if (page && module.links) {
 }
 
 </script>
-
-<style>
-    div.link-list-module {
-        span {
-            display: block;
-        }
-    }
-</style>

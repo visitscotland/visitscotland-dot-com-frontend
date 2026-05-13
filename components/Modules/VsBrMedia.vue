@@ -35,7 +35,7 @@
                     :src="imageSrc"
                     :alt="altText"
                     class="vs-br-media__img"
-                    :class="rounded ? 'rounded-2' : ''"
+                    :class="`${imageClasses} ${rounded ? 'rounded-2' : ''}`"
                 />
             </div>
             <VsMediaCaption
@@ -92,6 +92,7 @@ interface IProps {
     imageString?: string,
     imageDataSet?: any,
     imageDescription?: string,
+    imageClasses?: string,
     variant?: string,
     isHero?: boolean,
     isVideo?: boolean,
@@ -113,6 +114,7 @@ const props = withDefaults(defineProps<IProps>(), {
     imageString: '',
     imageDataSet: null,
     imageDescription: '',
+    imageClasses: '',
     variant: 'fullwidth',
     isHero: false,
     isVideo: false,
@@ -134,6 +136,7 @@ const {
     imageString,
     imageDataSet,
     imageDescription,
+    imageClasses,
     variant,
     isHero,
     isVideo,
