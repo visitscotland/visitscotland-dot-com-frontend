@@ -42,6 +42,7 @@
                                                 :href="link.link"
                                                 class="stretched-link"
                                                 variant="secondary"
+                                                :no-visited-styles="true"
                                             >
                                                 {{ link.label }}
                                             </VsLink>

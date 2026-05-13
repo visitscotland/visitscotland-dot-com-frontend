@@ -30,6 +30,7 @@
                 class="d-none d-lg-block px-200"
                 :disabled="isLoading"
                 @click.prevent="search"
+                data-test="vs-search-input__search-button"
             >
                 {{ searchBtnText }}
             </VsButton>

@@ -4,7 +4,7 @@
         class="mb-250 mt-250"
     >
         <template
-            #:section-header-lede
+            #section-header-lede
             v-if="introduction.value"
         >
             <div v-html="introduction.value" />
@@ -60,11 +60,8 @@ const props = defineProps<{
 }>();
 
 const {
-    anchor,
     introduction,
-    nested,
     sections,
-    themeValue,
     title,
 } = props.module;
 </script>

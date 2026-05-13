@@ -19,6 +19,7 @@
                                         :href="formatLink(card.link)"
                                         class="stretched-link text-decoration-none"
                                         variant="on-dark"
+                                        :no-visited-styles="true"
                                     >
                                         {{ card.label }}
                                     </VsLink>

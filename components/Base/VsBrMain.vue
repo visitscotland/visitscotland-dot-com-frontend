@@ -1,5 +1,5 @@
 <template>
-    <div
+    <main
         class="vs-main-container"
         :class="{
             'has-edit-button': page.isPreview(),
@@ -48,7 +48,7 @@
             :page="page"
             :component="component"
         />
-    </div>
+    </main>
 </template>
 
 <script lang="ts" setup>
@@ -387,6 +387,11 @@ provide('page', page.value);
         .vs-hero-section__video-overlay {
             background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 50.48%, rgba(0, 0, 0, 0.30) 89.9%),
                         linear-gradient(180deg, rgba(0, 0, 0, 0.00) 39.5%, rgba(0, 0, 0, 0.85) 100%);
+        }
+
+        .vs-hero-section__video .vs-video-html5__toggle-video {
+            top: auto;
+            bottom: 1.25rem;
         }
     }
 </style>

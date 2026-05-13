@@ -27,7 +27,6 @@ interface IConfigState {
     cludoLanguage: string,
     searchDmsBased: boolean,
     eventsApiUrl: string,
-    showSearchWidget: boolean,
     searchFilters: object,
     cludoApiOperator: string,
     googleMapApiKey: string,
@@ -71,7 +70,6 @@ const useConfigStore = defineStore('configStore', {
         cludoLanguage: '',
         searchDmsBased: false,
         eventsApiUrl: '',
-        showSearchWidget: false,
         searchFilters: {
         },
         cludoApiOperator: 'or',
@@ -100,6 +98,16 @@ const useConfigStore = defineStore('configStore', {
             }
 
             return this.labels[section];
+        },
+
+        getFavouritesCount(): number {
+            try {
+                const raw = localStorage.getItem('vs-saved-pages');
+                const parsed = raw ? JSON.parse(raw) : null;
+                return Array.isArray(parsed) ? parsed.length : 0;
+            } catch {
+                return 0;
+            }
         },
     },
 });
