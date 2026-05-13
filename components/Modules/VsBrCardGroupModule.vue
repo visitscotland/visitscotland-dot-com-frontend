@@ -19,42 +19,48 @@
                 <VsContainer>
                     <VsRow>
                         <VsCol>
-                            <VsCardGroup
-                                scroll-snap
-                                :cards-per-row="cardsPerRow"
+                            <VsContentSwiper
+                                :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
+                                :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
+                                :slides-per-view-xs="1.2"
+                                :slides-per-view-sm="2.2"
+                                :slides-per-view-md="2.7"
+                                :slides-per-view-lg="4"
                             >
-                                <VsCard
+                                <VsContentSwiperSlide
                                     v-for="(link, index) in links"
                                     :key="index"
                                 >
-                                    <template #vs-card-header>
-                                        <VsImg
-                                            :src="link.image"
-                                            class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
-                                        />
-                                    </template>
-                                    <template #vs-card-body>
-                                        <VsHeading
-                                            level="3"
-                                            heading-style="heading-xs"
-                                        >
-                                            <VsLink
-                                                :href="link.link"
-                                                class="stretched-link"
-                                                variant="secondary"
-                                                :no-visited-styles="true"
+                                    <VsCard>
+                                        <template #vs-card-header>
+                                            <VsImg
+                                                :src="link.image"
+                                                class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
+                                            />
+                                        </template>
+                                        <template #vs-card-body>
+                                            <VsHeading
+                                                level="3"
+                                                heading-style="heading-xs"
                                             >
-                                                {{ link.label }}
-                                            </VsLink>
-                                        </VsHeading>
-                                        <VsBody class="mb-150">
-                                            <p class="truncate-2-lines">
-                                                {{ link.teaser }}
-                                            </p>
-                                        </VsBody>
-                                    </template>
-                                </VsCard>
-                            </VsCardGroup>
+                                                <VsLink
+                                                    :href="link.link"
+                                                    class="stretched-link"
+                                                    variant="secondary"
+                                                    :no-visited-styles="true"
+                                                >
+                                                    {{ link.label }}
+                                                </VsLink>
+                                            </VsHeading>
+                                            <VsBody class="mb-150">
+                                                <p class="truncate-2-lines">
+                                                    {{ link.teaser }}
+                                                </p>
+                                            </VsBody>
+                                        </template>
+                                    </VsCard>
+                                </VsContentSwiperSlide>
+                            </VsContentSwiper>
                         </VsCol>
                     </VsRow>
                 </VsContainer>
@@ -75,7 +81,6 @@ import { inject } from 'vue';
 import type { Page } from '@bloomreach/spa-sdk';
 
 import {
-    VsCardGroup,
     VsCard,
     VsImg,
     VsHeading,
@@ -84,9 +89,15 @@ import {
     VsContainer,
     VsRow,
     VsCol,
+    VsContentSwiper,
+    VsContentSwiperSlide,
 } from '@visitscotland/component-library/components';
 
 import formatLink from '~/composables/formatLink.ts';
+
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
 
 import VsBrSectionHeader from './VsBrSectionHeader.vue';
 
