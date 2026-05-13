@@ -41,12 +41,12 @@ export const useFavourites = defineStore('favourites', {
             const oldRaw = localStorage.getItem(oldKey);
             if (!oldRaw) {
                 return;
-            }
+            };
 
             const oldData = JSON.parse(oldRaw);
             if (!Array.isArray(oldData) || oldData.length === 0) {
                 return;
-            }
+            };
 
             const uuids = oldData.map((item) => item.uuid);
 
@@ -57,14 +57,14 @@ export const useFavourites = defineStore('favourites', {
 
             if (!Array.isArray(favData.pages)) {
                 favData.pages = [];
-            }
+            };
 
             uuids.forEach((uuid) => {
                 if (!favData.pages.includes(uuid)) {
                     favData.pages.push(uuid);
                 }
             });
-
+            this.pages = [...favData.pages];
             localStorage.setItem(newKey, JSON.stringify(favData));
             localStorage.removeItem(oldKey);
         },
