@@ -130,8 +130,27 @@
                                     {{ configStore.getLabel('search', 'search') }}
                                 </VsButton>
                             </li>
+
                             <li
-                                class="d-none d-md-block me-075"
+                                class="d-none d-md-block me-025"
+                                v-if="configStore.featureFavouritesEnabled"
+                            >
+                                <VsTooltip
+                                    :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
+                                    subtle
+                                    variant="subtle"
+                                    size="sm"
+                                    icon="fa-regular fa-heart"
+                                    icon-only
+                                    :href="configStore.featureFavouritesUrl"
+                                    class="d-block"
+                                >
+                                    {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
+                                </VsTooltip>
+                            </li>
+
+                            <li
+                                class="d-none d-md-block me-025"
                             >
                                 <VsTooltip
                                     :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
@@ -231,6 +250,24 @@
                     <div class="p-100 pb-300">
                         <nav :aria-label="configStore.getLabel('navigation.static', 'meganav.sidebar-utility-aria-label')">
                             <ul class="d-flex justify-content-end">
+                                <li
+                                    class="d-block d-md-none me-075"
+                                    v-if="configStore.featureFavouritesEnabled"
+                                >
+                                    <VsTooltip
+                                        :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
+                                        subtle
+                                        variant="subtle"
+                                        size="sm"
+                                        icon="fa-regular fa-heart"
+                                        icon-only
+                                        :href="configStore.featureFavouritesUrl"
+                                        class="d-block"
+                                    >
+                                        {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
+                                    </VsTooltip>
+                                </li>
+
                                 <li class="d-block d-md-none me-075">
                                     <VsTooltip
                                         :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
