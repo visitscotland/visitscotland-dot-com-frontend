@@ -73,7 +73,6 @@ import {
     VsSectionHeader,
 } from '@visitscotland/component-library/components';
 
-
 import useConfigStore from '~/stores/configStore.ts';
 
 import formatLink from '~/composables/formatLink.ts';
