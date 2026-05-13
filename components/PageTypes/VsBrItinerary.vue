@@ -1,10 +1,15 @@
 <template>
     <div class="d-flex flex-column gap-500 pt-150 pt-lg-300">
-        <VsBrItineraryHero
+        <VsBrHeroInset
             :content="documentData"
             :image="heroImage"
-            inset
-        />
+        >
+            <VsBrSaveContentButton
+                v-if="configStore.allowFavourite"
+                :uuid="documentData.id"
+                :gtm-data="{ title: documentData.title }"
+            />
+        </VsBrHeroInset>
         <VsContainer>
             <VsRow>
                 <VsCol>
@@ -168,6 +173,8 @@ import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksM
 
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
+import VsBrHeroInset from '../Modules/VsBrHeroInset.vue';
+import VsBrSaveContentButton from '../Modules/VsBrSaveContentButton.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
@@ -182,7 +189,6 @@ import {
     VsButton,
 } from '@visitscotland/component-library/components';
 
-import VsBrItineraryHero from '../Modules/VsBrItineraryHero.vue';
 
 const configStore = useConfigStore();
 

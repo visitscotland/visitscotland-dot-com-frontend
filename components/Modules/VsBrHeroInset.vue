@@ -37,30 +37,30 @@
                 cols="12"
                 class="mt-200 d-flex flex-column flex-sm-row"
             >
-                <VsBrSaveContentButton
-                    :uuid="content.id"
-                    :gtm-data="{ title: content.title }"
-                />
+                <slot/>
             </VsCol>
         </VsRow>
         <VsRow
             class="mt-300"
         >
-            <VsImg
-                :src="imageSrc"
-                :alt="imageData.altText"
-            />
-            <VsMediaCaption
-                v-if="imageData?.description || imageData?.credit"
-                data-test="vs-hero-section-image__caption"
-            >
-                <template #caption>
-                    {{ imageData?.description }}
-                </template>
-                <template #credit>
-                    {{ imageData?.credit }}
-                </template>
-            </VsMediaCaption>
+            <VsCol>
+                <VsImg
+                    :src="imageSrc"
+                    :alt="imageData.altText"
+                    fluid
+                />
+                <VsMediaCaption
+                    v-if="imageData?.description || imageData?.credit"
+                    data-test="vs-hero-section-image__caption"
+                >
+                    <template #caption>
+                        {{ imageData?.description }}
+                    </template>
+                    <template #credit>
+                        {{ imageData?.credit }}
+                    </template>
+                </VsMediaCaption>
+            </VsCol>
         </VsRow>
     </VsContainer>
 </template>
@@ -77,8 +77,6 @@ import {
     VsImg,
     VsMediaCaption,
 } from '@visitscotland/component-library/components';
-
-import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
