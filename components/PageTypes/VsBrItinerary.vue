@@ -4,11 +4,12 @@
             :content="documentData"
             :image="heroImage"
         >
-            <VsBrSaveContentButton
-                v-if="configStore.allowFavourite"
-                :uuid="documentData.id"
-                :gtm-data="{ title: documentData.title }"
-            />
+            <template #button v-if="configStore.allowFavourite">
+                <VsBrSaveContentButton 
+                    :uuid="documentData.id"
+                    :gtm-data="{ title: documentData.title }"
+                />
+            </template>
         </VsBrHeroInset>
         <VsContainer>
             <VsRow>

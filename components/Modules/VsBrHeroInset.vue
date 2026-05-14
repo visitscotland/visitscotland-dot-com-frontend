@@ -33,11 +33,11 @@
                 </VsBody>
             </VsCol>
             <VsCol
-                v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite"
+                v-if="$slots.button"
                 cols="12"
                 class="mt-200 d-flex flex-column flex-sm-row"
             >
-                <slot/>
+                <slot name="button"/>
             </VsCol>
         </VsRow>
         <VsRow
@@ -77,10 +77,6 @@ import {
     VsImg,
     VsMediaCaption,
 } from '@visitscotland/component-library/components';
-
-import useConfigStore from '~/stores/configStore.ts';
-
-const configStore = useConfigStore();
 
 const page: any = inject('page');
 
