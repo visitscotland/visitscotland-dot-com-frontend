@@ -175,8 +175,6 @@ const fetchRequestStatus = ref('pending');
 const cardData = ref<FavouriteCard[]>([]);
 
 const favouritesEndpoint = configStore.featureFavouritesEndpoint;
-// This will be removed before release
-// const favouritesEndpoint = 'https://release-brc.visitscotland.com/api/favourites/get-favourites';
 
 // Fetch CMS data for a list of UUIDs
 async function getSavedContentData(endpoint, data) {
