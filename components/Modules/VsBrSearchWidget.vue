@@ -1,13 +1,17 @@
 <template>
-    <VsContainer>
+    <VsContainer
+        data-test="vs-search-widget"
+    >
         <VsBrSectionHeader
             v-if="module?.title && !isSiteSearchPage"
             :heading="module?.title"
             :lede="module?.introduction.value"
+            data-test="vs-search-widget__header"
         />
 
         <VsBrSearchInput
             class="mt-200"
+            data-test="vs-search-widget__input"
             :is-search-widget="!isSiteSearchPage"
             :is-event-widget="module?.mainCategory === 'events' ? true : false"
             :autocomplete="module?.mainCategory === 'events' ? false : true"

@@ -130,8 +130,27 @@
                                     {{ configStore.getLabel('search', 'search') }}
                                 </VsButton>
                             </li>
+
                             <li
-                                class="d-none d-md-block me-075"
+                                class="d-none d-md-block me-025"
+                                v-if="configStore.featureFavouritesEnabled"
+                            >
+                                <VsTooltip
+                                    :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
+                                    subtle
+                                    variant="subtle"
+                                    size="sm"
+                                    icon="fa-regular fa-heart"
+                                    icon-only
+                                    :href="configStore.featureFavouritesUrl"
+                                    class="d-block"
+                                >
+                                    {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
+                                </VsTooltip>
+                            </li>
+
+                            <li
+                                class="d-none d-md-block me-025"
                             >
                                 <VsTooltip
                                     :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
@@ -231,6 +250,24 @@
                     <div class="p-100 pb-300">
                         <nav :aria-label="configStore.getLabel('navigation.static', 'meganav.sidebar-utility-aria-label')">
                             <ul class="d-flex justify-content-end">
+                                <li
+                                    class="d-block d-md-none me-075"
+                                    v-if="configStore.featureFavouritesEnabled"
+                                >
+                                    <VsTooltip
+                                        :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
+                                        subtle
+                                        variant="subtle"
+                                        size="sm"
+                                        icon="fa-regular fa-heart"
+                                        icon-only
+                                        :href="configStore.featureFavouritesUrl"
+                                        class="d-block"
+                                    >
+                                        {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
+                                    </VsTooltip>
+                                </li>
+
                                 <li class="d-block d-md-none me-075">
                                     <VsTooltip
                                         :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
@@ -281,7 +318,7 @@
                 >
                     <template #third-menu-item>
                         <a
-                            v-if="configStore.featureFavouritesEnabled && checkFlag('favourites')"
+                            v-if="configStore.featureFavouritesEnabled"
                             :href="configStore.featureFavouritesUrl"
                             class="vs-favourites-link"
                             :aria-label="configStore.getLabel('navigation.static', 'favourites.navigation.link.text')"
@@ -372,8 +409,6 @@ import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 import formatLink from '~/composables/formatLink.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
-
-import checkFlag from '~/composables/checkFlags.ts';
 
 import {
     VsGlobalMenu,
