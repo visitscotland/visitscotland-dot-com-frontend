@@ -46,7 +46,7 @@
             <VsCol>
                 <VsImg
                     :src="imageSrc"
-                    :alt="imageData.altText"
+                    :alt="imageData?.altText"
                     fluid
                 />
                 <VsMediaCaption
