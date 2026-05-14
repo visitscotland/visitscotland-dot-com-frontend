@@ -407,7 +407,7 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
 import formatLink from '~/composables/formatLink.ts';
-
+import { useFavourites } from '~/stores/favouritesStore.ts';
 import useConfigStore from '~/stores/configStore.ts';
 
 import {
@@ -435,6 +435,7 @@ import VsBrDivider from '~/components/Modules/VsBrDivider.vue';
 import VsBrMegaNav from '~/components/Modules/VsBrMegaNav.vue';
 import VsBrAccordionNav from '~/components/Modules/VsBrAccordionNav.vue';
 
+const favourites = useFavourites();
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
@@ -469,6 +470,7 @@ function handleScroll() {
 onMounted(() => {
     scrollY.value = window.scrollY;
     window.addEventListener('scroll', handleScroll);
+    favourites.migrateSavedPages(); // To be removed - see DS-2083
 });
 
 onUnmounted(() => {
