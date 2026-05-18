@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="mb-250">
+        <div class="mb-050">
             <VsBrSectionHeader
                 :heading="module.title"
                 :lede="module.introduction?.value"

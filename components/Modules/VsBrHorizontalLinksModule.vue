@@ -1,7 +1,7 @@
 <template>
     <VsSectionHeader
         :heading="module.title"
-        class="mb-250 mt-250"
+        class="mb-050 mt-250"
     >
         <template
             #section-header-lede
