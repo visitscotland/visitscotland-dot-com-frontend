@@ -19,8 +19,8 @@
                     :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
                     :slides-per-view-xs="1"
                     :slides-per-view-sm="2"
-                    :slides-per-view-md="3"
-                    :slides-per-view-lg="4"
+                    :slides-per-view-lg="3"
+                    :slides-per-view-xl="4"
                 >
                     <VsContentSwiperSlide
                         v-for="(link, index) in links"
