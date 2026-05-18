@@ -46,7 +46,16 @@
                         <Suspense v-if="internalResourceName === 'header'">
                             <component :is="CssHeader" />
                         </Suspense>
-                        <br-component component="menu" v-if="internalResourceName === 'header'" />
+                        <br-component
+                            v-if="internalResourceName === 'header'"
+                            component="menu"
+                        />
+                        <div style="display: none">
+                            <br-component
+                                v-if="internalResourceName === 'header'"
+                                component="main"
+                            />
+                        </div>
                         <br-component component="footer" v-if="internalResourceName === 'footer'" />
                     </template>
                 </br-page>
