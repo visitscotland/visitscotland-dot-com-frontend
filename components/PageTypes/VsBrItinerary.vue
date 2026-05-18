@@ -1,16 +1,32 @@
 <template>
     <div class="d-flex flex-column gap-500 pt-150 pt-lg-300">
-        <VsBrHeroInset
-            :content="documentData"
-            :image="heroImage"
-        >
-            <template #button v-if="configStore.allowFavourite">
-                <VsBrSaveContentButton 
-                    :uuid="documentData.id"
-                    :gtm-data="{ title: documentData.title }"
-                />
-            </template>
-        </VsBrHeroInset>
+        <VsContainer>
+            <VsRow>
+                <VsBrHeroHeading
+                    :content="documentData"
+                >
+                    <template
+                        #button
+                    >
+                        <VsBrSaveContentButton 
+                            :uuid="documentData.id"
+                            :gtm-data="
+                                { title: documentData.title }
+                            "
+                        />
+                    </template>
+                </VsBrHeroHeading>
+            </VsRow>
+            <VsRow
+                class="mt-300"
+            >
+                <VsCol>
+                    <VsBrImageWithMediaCaption
+                        :image="documentData.image"
+                    />
+                </VsCol>
+            </VsRow>
+        </VsContainer>
         <VsContainer>
             <VsRow>
                 <VsCol>
@@ -174,7 +190,7 @@ import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksM
 
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
-import VsBrHeroInset from '../Modules/VsBrHeroInset.vue';
+import VsBrHeroHeading from '../Modules/VsBrHeroHeading.vue';
 import VsBrSaveContentButton from '../Modules/VsBrSaveContentButton.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
@@ -198,8 +214,6 @@ const props = defineProps<{ component: Component, page: Page }>();
 const { page, component } = toRefs(props);
 
 let documentData : any = {
-};
-let heroImage = {
 };
 let pageIntro = {
 };
@@ -256,7 +270,6 @@ if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
-    heroImage = documentData.heroImage;
     itineraryMap = documentData.mapLink;
 
     if (configStore.otyml) {

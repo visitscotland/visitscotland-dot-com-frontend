@@ -10,9 +10,13 @@
         />
     </template>
     <template v-else-if="configStore.isFavouritesPage">
-        <VsBrHeroSection
-            :content="documentData"
-        />
+        <VsContainer class="mt-075 py-150 py-lg-300 ">
+            <VsRow>
+                <VsBrHeroHeading
+                    :content="documentData"
+                />
+            </VsRow>
+        </VsContainer>
     </template>
     <template v-else-if="documentData.theme === 'Top-Level'">
         <VsBrHeroSection
