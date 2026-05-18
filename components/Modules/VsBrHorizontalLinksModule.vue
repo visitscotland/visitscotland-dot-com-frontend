@@ -29,23 +29,34 @@
                         <VsCard>
                             <template
                                 #vs-card-header
-                                v-if="link.image"
+                                v-if="link.image || link.category"
                             >
                                 <VsBrMedia
+                                    v-if="link.image"
                                     :image-string="link.image"
                                     image-classes="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                                 />
+
+                                <VsDetail
+                                    v-if=link.category
+                                    color="tertiary"
+                                    class="mb-0"
+                                >
+                                    {{ link.category }}
+                                </VsDetail>
                             </template>
 
                             <template #vs-card-body>
                                 <VsHeading
                                     level="3"
                                     heading-style="heading-xs"
+                                    class="mt-050"
                                 >
                                     <VsLink
                                         :href="link.url"
                                         class="stretched-link"
                                         variant="secondary"
+                                        :type="link.type"
                                     >
                                         {{ link.label }}
                                     </VsLink>
@@ -71,6 +82,7 @@ import {
     VsHeading,
     VsLink,
     VsSectionHeader,
+    VsDetail,
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';

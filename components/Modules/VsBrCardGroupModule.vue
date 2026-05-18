@@ -1,72 +1,57 @@
 <template>
-    <VsContainer class="mt-500">
-        <VsRow>
-            <VsCol>
-                <template
-                    v-if="module.introduction"
-                    #vs-megalinks-intro
-                >
-                    <VsBrRichText :input-content="module.introduction.value" />
-                </template>
+    <div>
+        <div class="mb-250">
+            <VsBrSectionHeader
+                :heading="module.title"
+                :lede="module.introduction?.value"
+            />
+        </div>
 
-                <div class="mb-250">
-                    <VsBrSectionHeader
-                        :heading="module.title"
-                        :lede="module.introduction?.value"
-                    />
-                </div>
-
-                <VsContentSwiper
-                    class=""
-                    :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
-                    :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
-                    :slides-per-view-xs="1.7"
-                    :slides-per-view-sm="1.9"
-                    :slides-per-view-md="2"
-                    :slides-per-view-lg="2.6"
-                    :slides-per-view-xl="3"
-                >
-                    <VsContentSwiperSlide
-                        v-for="(link, index) in links"
-                        :key="index"
-                    >
-                        <VsCard>
-                            <template #vs-card-header>
-                                <VsImg
-                                    :src="link.image"
-                                    class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
-                                />
-                            </template>
-                            <template #vs-card-body>
-                                <VsHeading
-                                    level="3"
-                                    heading-style="heading-xs"
-                                >
-                                    <VsLink
-                                        :href="link.link"
-                                        class="stretched-link"
-                                        variant="secondary"
-                                        :no-visited-styles="true"
-                                    >
-                                        {{ link.label }}
-                                    </VsLink>
-                                </VsHeading>
-                                <VsBody class="mb-150">
-                                    <p class="truncate-2-lines">
-                                        {{ link.teaser }}
-                                    </p>
-                                </VsBody>
-                            </template>
-                        </VsCard>
-                    </VsContentSwiperSlide>
-                </VsContentSwiper>
-
-                <template #vs-megalinks-button v-if="module.cta">
-                    {{ module.cta.label }}
-                </template>
-            </VsCol>
-        </VsRow>
-    </VsContainer>
+        <VsContentSwiper
+            class=""
+            :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
+            :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
+            :slides-per-view-xs="1.7"
+            :slides-per-view-sm="1.9"
+            :slides-per-view-md="2"
+            :slides-per-view-lg="2.6"
+            :slides-per-view-xl="3"
+        >
+            <VsContentSwiperSlide
+                v-for="(link, index) in links"
+                :key="index"
+            >
+                <VsCard>
+                    <template #vs-card-header>
+                        <VsImg
+                            :src="link.image"
+                            class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
+                        />
+                    </template>
+                    <template #vs-card-body>
+                        <VsHeading
+                            level="3"
+                            heading-style="heading-xs"
+                        >
+                            <VsLink
+                                :href="link.link"
+                                class="stretched-link"
+                                variant="secondary"
+                                :no-visited-styles="true"
+                            >
+                                {{ link.label }}
+                            </VsLink>
+                        </VsHeading>
+                        <VsBody class="mb-150">
+                            <p class="truncate-2-lines">
+                                {{ link.teaser }}
+                            </p>
+                        </VsBody>
+                    </template>
+                </VsCard>
+            </VsContentSwiperSlide>
+        </VsContentSwiper>
+    </div>
 </template>
 
 <script lang="ts" setup>

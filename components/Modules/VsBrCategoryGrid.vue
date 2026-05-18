@@ -1,5 +1,5 @@
 <template>
-    <VsContainer>
+    <div>
         <VsContentSwiper
             class="mt-075 mt-lg-200 mx-n050 mx-sm-n075"
             :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
@@ -47,7 +47,7 @@
                 </VsCard>
             </VsContentSwiperSlide>
         </VsContentSwiper>
-    </VsContainer>
+    </div>
 </template>
 
 <script lang="ts" setup>
