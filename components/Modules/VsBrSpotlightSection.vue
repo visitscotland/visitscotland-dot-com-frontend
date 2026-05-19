@@ -15,7 +15,6 @@
                         #vs-spotlight-section-media
                     >
                         <VsVideo
-                        <VsVideo
                             video-type="html5"
                             :video-src="module.ambientVideo"
                             ref="spotlightVideo"

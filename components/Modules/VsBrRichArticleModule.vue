@@ -73,6 +73,15 @@
             </VsCol>
         </VsRow>
     </VsContainer>
+
+    <VsBrMedia
+        v-if="module.image && checkFlags('rich-article-images')"
+        :image="module.image.cmsImage"
+        :image-description="module.image.description"
+        :full-bleed="true"
+        class="mt-n250"
+        :class="nextModuleArticle ? 'mb-n250' : ''"
+    />
 </template>
 
 <script lang="ts" setup>
@@ -95,7 +104,12 @@ import useConfigStore from '~/stores/configStore.ts';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: object }>();
+const props = defineProps<{
+    module: object,
+    nextModuleArticle: boolean,
+}>();
+
 const module: any = props.module;
+const nextModuleArticle: boolean = props.nextModuleArticle;
 
 </script>

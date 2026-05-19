@@ -2,6 +2,7 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol>
+                {{ favourites.pages }}
                 <VsBrFavouriteShare />
                 <div v-if="uiState === 'error'">
                     <div class="d-flex justify-content-center">
@@ -179,7 +180,7 @@ const cardData = ref<FavouriteCard[]>([]);
 
 // const favouritesEndpoint = configStore.featureFavouritesEndpoint;
 // This will be removed before release
-const favouritesEndpoint = 'https://release-brc.visitscotland.com/api/favourites/get-favourites';
+const favouritesEndpoint = `https://feature.visitscotland.com/${configStore.featureFavouritesEndpoint}?vs_brxm_host=172.28.87.25&vs_brxm_port=8020&vs-no-redirect=true`;
 
 // Fetch CMS data for a list of UUIDs
 async function getSavedContentData(endpoint, data) {
@@ -235,7 +236,6 @@ onMounted(() => {
         total_favourites: favourites.pages.length,
         shared_list_id: ' ',
     });
-
     // Initial fetch
     getSavedContentData(favouritesEndpoint, favourites.pages);
 });

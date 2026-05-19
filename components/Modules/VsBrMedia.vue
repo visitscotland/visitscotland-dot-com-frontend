@@ -25,7 +25,10 @@
     <template v-else>
         <div
             class="vs-br-media"
-            :class="{ 'vs-br-media--mobile-overlap': mobileOverlap }"
+            :class="{
+                'vs-br-media--mobile-overlap': mobileOverlap,
+                'vs-br-media--full-bleed': fullBleed,
+            }"
         >
             <div class="vs-br-media__img-wrapper">
                 <VsImg
@@ -102,6 +105,7 @@ interface IProps {
     noAltText?: boolean,
     showToggle?: boolean,
     rounded?: boolean,
+    fullBleed?: boolean,
 };
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -122,6 +126,7 @@ const props = withDefaults(defineProps<IProps>(), {
     videoTitle: '',
     videoBtn: '',
     rounded: false,
+    fullBleed: false,
 });
 
 const {
@@ -141,6 +146,7 @@ const {
     useLazyLoading,
     noAltText,
     showToggle,
+    fullBleed,
 } = toRefs(props);
 
 const page: Page | undefined = inject('page');
@@ -207,19 +213,35 @@ if (page) {
 <style lang="scss">
     .vs-br-media__img-wrapper {
         position: relative;
-            aspect-ratio: 3/2;
+        aspect-ratio: 3/2;
 
-            @supports not (aspect-ratio: 3/2) {
-                padding-bottom: 66.6%;
+        @supports not (aspect-ratio: 3/2) {
+            padding-bottom: 66.6%;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            align-self: flex-start;
+            flex-shrink: 0; // IE11 fix, prevents image vertical stretching
+        }
+    }
+
+    .vs-br-media--full-bleed {
+        .vs-br-media__img-wrapper {
+            width: 100%;
+            height: 386px;
+            object-fit: cover;
+
+            @media (min-width: 576px) {
+                height: 514px;
             }
 
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                align-self: flex-start;
-                flex-shrink: 0; // IE11 fix, prevents image vertical stretching
+            @media (min-width: 992px) {
+                height: 648px;
             }
+        }
     }
 
     @media (min-width: 992px) {
