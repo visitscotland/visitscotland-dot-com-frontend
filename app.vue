@@ -90,7 +90,11 @@ import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
 import featureFlagsData from './composables/featureFlags.ts';
 
+import useConfigStore from '~/stores/configStore.ts';
+
 const CssHeader = defineAsyncComponent(() => import('~/components/InternalResources/CssHeader.vue'));
+
+const configStore = useConfigStore();
 
 /**
  * This section sets up all of the information we need to make available for the Bloomreach SDK
@@ -272,6 +276,8 @@ const determineInternalState = () => {
 const state = determineInternalState();
 isInternalResource = state.isInternal;
 internalResourceName = state.name;
+
+configStore.isInternalResource = isInternalResource;
 
 if (isInternalResource) {
     deLocalisedRoute = '/';
