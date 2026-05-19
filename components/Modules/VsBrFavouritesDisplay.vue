@@ -2,7 +2,10 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol>
-                {{ favourites.pages }}
+                <!-- {{ favourites.pages }} -->
+                <!-- {{  configStore.featureFavouritesShareBaseUrl }} -->
+                   <p>favourites {{ configStore.isFavouritesPage }}</p>
+                   <p>favourites share {{ configStore.isFavouritesSharePage }}</p>
                 <VsBrFavouriteShare />
                 <div v-if="uiState === 'error'">
                     <div class="d-flex justify-content-center">
@@ -71,7 +74,10 @@
                                 :key="data.uuid"
                                 card-style="outlined">
                                 <template #vs-card-header>
-                                    <div class="vs-remove-content-button">
+                                    <div
+                                        v-if="!configStore.isFavouritesSharePage"
+                                        class="vs-remove-content-button"
+                                    >
                                         <VsButton
                                             icon-only
                                             icon="fa-solid fa-heart"

@@ -140,6 +140,7 @@ if (page.value) {
         configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
         configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
         configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
+        configStore.featureFavouritesShareBaseUrl = componentModels.pageConfiguration['feature.favourites.share-service-base-url'];
         configStore.mainMapPath = componentModels.pageConfiguration['main-map-path'];
 
         if (componentModels.heroVideo) {
@@ -156,6 +157,9 @@ if (page.value) {
 
         if (componentModels.pageConfiguration['is-favourites-page']) {
             configStore.isFavouritesPage = true;
+        }
+        if (componentModels.pageConfiguration['is-favourites-share-page']) {
+            configStore.isFavouritesSharePage = true;
         }
 
         if (componentModels.pageConfiguration.searchWidget) {
