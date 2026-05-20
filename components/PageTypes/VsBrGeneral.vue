@@ -10,13 +10,20 @@
         />
     </template>
     <template v-else-if="configStore.isFavouritesPage">
-        <VsBrHeroInset
-            :content="documentData"
-        >
-            <template v-if="configStore.isFavouritesPage && !configStore.isFavouritesSharePage" #button>
-                <VsBrFavouriteShare />
-            </template>
-        </VsBrHeroInset>
+        <VsContainer class="mt-075 py-150 py-lg-300 ">
+            <VsRow>
+                <VsBrHeroHeading
+                    :content="documentData"
+                >
+                    <template
+                        v-if="!configStore.isFavouritesSharePage"
+                        #button
+                    >
+                        <VsBrFavouriteShare />
+                    </template>
+                </VsBrHeroHeading>
+            </VsRow>
+        </VsContainer>
     </template>
     <template v-else-if="documentData.theme === 'Top-Level'">
         <VsBrHeroSection
