@@ -46,7 +46,16 @@
                         <Suspense v-if="internalResourceName === 'header'">
                             <component :is="CssHeader" />
                         </Suspense>
-                        <br-component component="menu" v-if="internalResourceName === 'header'" />
+                        <br-component
+                            v-if="internalResourceName === 'header'"
+                            component="menu"
+                        />
+                        <div style="display: none">
+                            <br-component
+                                v-if="internalResourceName === 'header'"
+                                component="main"
+                            />
+                        </div>
                         <br-component component="footer" v-if="internalResourceName === 'footer'" />
                     </template>
                 </br-page>
@@ -81,7 +90,11 @@ import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
 import featureFlagsData from './composables/featureFlags.ts';
 
+import useConfigStore from '~/stores/configStore.ts';
+
 const CssHeader = defineAsyncComponent(() => import('~/components/InternalResources/CssHeader.vue'));
+
+const configStore = useConfigStore();
 
 /**
  * This section sets up all of the information we need to make available for the Bloomreach SDK
@@ -263,6 +276,8 @@ const determineInternalState = () => {
 const state = determineInternalState();
 isInternalResource = state.isInternal;
 internalResourceName = state.name;
+
+configStore.isInternalResource = isInternalResource;
 
 if (isInternalResource) {
     deLocalisedRoute = '/';
