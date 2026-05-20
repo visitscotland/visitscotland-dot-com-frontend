@@ -10,9 +10,13 @@
         />
     </template>
     <template v-else-if="configStore.isFavouritesPage">
-        <VsBrHeroSection
+        <VsBrHeroInset
             :content="documentData"
-        />
+        >
+            <template v-if="configStore.isFavouritesPage && !configStore.isFavouritesSharePage" #button>
+                <VsBrFavouriteShare />
+            </template>
+        </VsBrHeroInset>
     </template>
     <template v-else-if="documentData.theme === 'Top-Level'">
         <VsBrHeroSection

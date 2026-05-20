@@ -7,19 +7,18 @@
     >
         {{ linkCopied ? 'Link copied' : 'Copy share link' }}
     </VsButton>
-
-    <p>share id: {{ favourites.shareId }}</p>
-    <p>share state: {{ shareState }}</p>
-    <p>revision {{  favourites.revision }}</p>
-    <p>last shared revision: {{  favourites.lastSharedRevision }}</p>
-    <p>needsUpdate: {{ needsUpdate }}</p>
-    <p>sharedFavouritesUrl {{ sharedFavouritesUrl }}</p>
 </template>
 
 <script setup lang="ts">
 import { VsButton } from '@visitscotland/component-library/components';
 import { useFavourites } from '~/stores/favouritesStore.ts';
+import useConfigStore from '~/stores/configStore.ts';
+
 const favourites = useFavourites();
+const configStore = useConfigStore();
+
+const createListEndpoint = `${configStore.featureFavouritesShareBaseUrl}/create-list`;
+const updateListEndpoint = `${configStore.featureFavouritesShareBaseUrl}/update-list`;
 
 const shareState = computed(() => {
     if (favourites.pages.length === 0) {
@@ -37,36 +36,39 @@ const needsUpdate = computed(() => {
     );
 });
 
-const sharedListAddress = 'http://localhost:8080/shared-content/';
-const createListEndpoint = 'http://localhost:8080/favourites/create-list';
-const updateListEndpoint = 'http://localhost:8080/favourites/update-list';
+const sharedFavouritesLink = computed(() => (
+    `${configStore.featureFavouritesShareUrl}?share-id=${favourites.shareId}`
+));
 
-const sharedFavouritesUrl = ref(`${sharedListAddress}?share=${favourites.shareId}`);
 
 // These will come from labels when they're available
 
 const linkCopied = ref(false);
 
+
 const copyUrl = () => {
-    navigator.clipboard.writeText(sharedFavouritesUrl.value);
+    navigator.clipboard.writeText(sharedFavouritesLink.value);
     linkCopied.value = true;
     setTimeout(() => {
         linkCopied.value = false;
     }, 5000);
 };
 
+
 async function handleClick() {
     if (shareState.value === 'no share id') {
         const { favId: newId } = await createList();
         favourites.shareId = newId;
         favourites.lastSharedRevision = favourites.revision;
-    };
+    }
+
     if (shareState.value === 'ready' && needsUpdate.value) {
-        updateList();
+        await updateList();
         favourites.lastSharedRevision = favourites.revision;
-    };
+    }
+
     copyUrl();
-};
+}
 
 async function createList() {
     try {

@@ -141,6 +141,7 @@ if (page.value) {
         configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
         configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
         configStore.featureFavouritesShareBaseUrl = componentModels.pageConfiguration['feature.favourites.share-service-base-url'];
+        configStore.featureFavouritesShareUrl = componentModels.pageConfiguration['feature.favourites.share-url'];
         configStore.mainMapPath = componentModels.pageConfiguration['main-map-path'];
 
         if (componentModels.heroVideo) {
