@@ -1,5 +1,3 @@
-
-```js
 <template>
     <div class="d-flex flex-column gap-500 pt-150 pt-lg-300">
         <VsContainer>
@@ -195,6 +193,7 @@ import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 import VsBrHeroHeading from '../Modules/VsBrHeroHeading.vue';
 import VsBrFavouriteButton from '../Modules/VsBrFavouriteButton.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrImageWithMediaCaption from '~/components/Modules/VsBrImageWithMediaCaption.vue';
 
 import {
     VsBody,
@@ -291,5 +290,3 @@ if (page.value) {
     }
 }
 </script>
-
-```

@@ -141,8 +141,6 @@ import {
     VsButton,
 } from '@visitscotland/component-library/components';
 
-import VsBrFavouriteShare from './VsBrFavouriteShare.vue';
-
 import useConfigStore from '~/stores/configStore.ts';
 import { useFavourites } from '~/stores/favouritesStore.ts';
 import dataLayerComposable from '~/composables/dataLayer.ts';
@@ -186,8 +184,8 @@ const fetchRequestStatus = ref('pending');
 const cardData = ref<FavouriteCard[]>([]);
 
 // Retrieve My Favourites
-const favouritesEndpoint = `https://feature.visitscotland.com/${configStore.featureFavouritesEndpoint}?vs_brxm_host=172.28.87.25&vs_brxm_port=8020&vs-no-redirect=true`;
-// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+// const favouritesEndpoint = `https://feature.visitscotland.com/${configStore.featureFavouritesEndpoint}?vs_brxm_host=172.28.87.25&vs_brxm_port=8020&vs-no-redirect=true`;
+const favouritesEndpoint = configStore.featureFavouritesEndpoint;
 
 
 // Fetch UUID list for a shared collection
@@ -215,6 +213,13 @@ async function getCollectionList(shareId) {
 
 // Fetch CMS data for a list of UUIDs
 async function getCollectionData(endpoint, data) {
+
+    if (!data || data.length === 0) {
+        cardData.value = [];
+        fetchRequestStatus.value = 'done';
+        return;
+    }
+
     try {
         fetchRequestStatus.value = 'pending';
 
@@ -228,7 +233,7 @@ async function getCollectionData(endpoint, data) {
         cardData.value = Array.isArray(res?.cards) ? res.cards : [];
         fetchRequestStatus.value = 'done';
     } catch (err) {
-        console.error('Failed to fetch saved content data:', err);
+        console.error(err);
         fetchRequestStatus.value = 'error';
     }
 }
@@ -265,26 +270,37 @@ onMounted(() => {
         total_favourites: favourites.pages.length,
         shared_list_id: ' ',
     });
-    sharedCollectionId.value = window.location.href.split('?share-id=')[1];
+
+    const id = window.location.href.split('?share-id=')[1] || '';
+    sharedCollectionId.value = id.trim() || null;
+
     // Initial fetch
-    if (configStore.isFavouritesSharePage && sharedCollectionId.value) {
-        getCollectionList(sharedCollectionId.value);
-        // alert("tried");
-    } else {
-        getCollectionData(favouritesEndpoint, favourites.pages);
+    if (configStore.isFavouritesSharePage) {
+        if (sharedCollectionId.value) {
+            getCollectionList(sharedCollectionId.value);
+        } else {
+            // force empty state
+            cardData.value = [];
+            fetchRequestStatus.value = 'done';
+        }
+        return;
     }
 });
 
 // Re-fetch CMS data whenever the favourites list changes
+
 watch(
     () => favourites.pages,
     (newList) => {
-        if (configStore.isFavouritesSharePage) {
-            return;
-        }
+        if (configStore.isFavouritesSharePage) return;
+
         getCollectionData(favouritesEndpoint, newList);
     },
+    {
+        immediate: true,
+    },
 );
+
 
 </script>
 
