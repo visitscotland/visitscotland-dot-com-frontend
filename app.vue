@@ -43,9 +43,9 @@
             <div id="__nuxt" class="external-header-integration">
                 <br-page :configuration="configuration" :mapping="mapping">
                     <template #default>
-                        <Suspense v-if="internalResourceName === 'header'">
-                            <component :is="CssHeader" />
-                        </Suspense>
+                        <CssHeader
+                            v-if="internalResourceName === 'header'"
+                        />
                         <br-component
                             v-if="internalResourceName === 'header'"
                             component="menu"
@@ -89,9 +89,11 @@ import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
 import featureFlagsData from './composables/featureFlags.ts';
 
+import CssHeader from '~/components/InternalResources/CssHeader.vue';
+
 import useConfigStore from '~/stores/configStore.ts';
 
-const CssHeader = defineAsyncComponent(() => import('~/components/InternalResources/CssHeader.vue'));
+
 
 const configStore = useConfigStore();
 
