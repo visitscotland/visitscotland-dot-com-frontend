@@ -52,7 +52,6 @@
                         />
                         <div style="display: none">
                             <br-component
-                                v-if="internalResourceName === 'header'"
                                 component="main"
                             />
                         </div>
