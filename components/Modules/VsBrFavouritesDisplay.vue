@@ -184,8 +184,8 @@ const fetchRequestStatus = ref('pending');
 const cardData = ref<FavouriteCard[]>([]);
 
 // Retrieve My Favourites
-// const favouritesEndpoint = `https://feature.visitscotland.com/${configStore.featureFavouritesEndpoint}?vs_brxm_host=172.28.87.25&vs_brxm_port=8020&vs-no-redirect=true`;
-const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+const favouritesEndpoint = `https://feature.visitscotland.com/${configStore.featureFavouritesEndpoint}?vs_brxm_host=172.28.87.25&vs_brxm_port=8020&vs-no-redirect=true`;
+// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
 
 
 // Fetch UUID list for a shared collection
