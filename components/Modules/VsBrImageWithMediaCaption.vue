@@ -2,6 +2,7 @@
     <VsImg
         :src="imageSrc"
         :alt="imageData?.altText"
+        fluid-grow
     />
     <VsMediaCaption
         v-if="imageData?.description || imageData?.credit"
@@ -28,6 +29,7 @@ const page: any = inject('page');
 
 const props = defineProps<{
     image?: any,
+    inset?: boolean,
 }>();
 
 const { image } = toRefs(props);

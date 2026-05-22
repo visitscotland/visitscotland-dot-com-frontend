@@ -47,14 +47,14 @@
                                 heading-style="heading-l">
                                 {{
                                     configStore.isFavouritesSharePage
-                                        ? '[Collection empty or invalid]'
+                                        ? configStore.getLabel('favourites', 'favourites.error.empty-state.heading')
                                         : configStore.getLabel('favourites', 'favourites.error.empty-state.heading')
                                 }}
                             </VsHeading>
                             <p class="text-center">
                                 {{
                                     configStore.isFavouritesSharePage
-                                        ? '[The share link you followed is empty or has expired]'
+                                        ? configStore.getLabel('favoutites','favourites.message.not-found')
                                         : configStore.getLabel('favourites', 'favourites.error.empty-state.text')
                                 }}
                             </p>
@@ -184,8 +184,8 @@ const fetchRequestStatus = ref('pending');
 const cardData = ref<FavouriteCard[]>([]);
 
 // Retrieve My Favourites
-const favouritesEndpoint = `https://feature.visitscotland.com/${configStore.featureFavouritesEndpoint}?vs_brxm_host=172.28.87.25&vs_brxm_port=8020&vs-no-redirect=true`;
-// const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+// const favouritesEndpoint = `https://feature.visitscotland.com/${configStore.featureFavouritesEndpoint}?vs_brxm_host=172.28.87.25&vs_brxm_port=8020&vs-no-redirect=true`;
+const favouritesEndpoint = configStore.featureFavouritesEndpoint;
 
 
 // Fetch UUID list for a shared collection

@@ -1,32 +1,28 @@
 <template>
-    <div class="d-flex flex-column gap-500 pt-150 pt-lg-300">
-        <VsContainer>
-            <VsRow>
-                <VsBrHeroHeading
-                    :content="documentData"
-                >
-                    <template
-                        #button
-                    >
-                        <VsBrFavouriteButton 
-                            :uuid="documentData.id"
-                            :gtm-data="
-                                { title: documentData.title }
-                            "
-                        />
-                    </template>
-                </VsBrHeroHeading>
-            </VsRow>
-            <VsRow
-                class="mt-300"
+    <VsContainer class="pt-300 pt-lg-500">
+        <VsRow>
+            <VsBrHeroHeading
+                :content="documentData"
             >
-                <VsCol>
-                    <VsBrImageWithMediaCaption
-                        :image="documentData.image"
+                <template
+                    #button
+                >
+                    <VsBrFavouriteButton 
+                        :uuid="documentData.id"
+                        :gtm-data="
+                            { title: documentData.title }
+                        "
                     />
-                </VsCol>
-            </VsRow>
-        </VsContainer>
+                </template>
+            </VsBrHeroHeading>
+        </VsRow>
+        <div class="mt-300">
+            <VsBrImageWithMediaCaption
+                :image="documentData.image"
+            />
+        </div>
+    </VsContainer>
+    <div class="d-flex flex-column gap-500 mt-500">
         <VsContainer>
             <VsRow>
                 <VsCol>
