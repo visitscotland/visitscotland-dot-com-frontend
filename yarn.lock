@@ -3361,6 +3361,11 @@ __metadata:
       built: true
   checksum: 10c0/194537f025bd532872adf6aa9014bf0b03b7fcc44167cfe51f02f93e64c6240985b15266da584ee581c9420e0fc589fe4bafa892ae2de1b1610e4f092554dfa9
   languageName: node
+  linkType: hard
+
+"@vitejs/plugin-vue-jsx@npm:^5.1.4":
+  version: 5.1.5
+  resolution: "@vitejs/plugin-vue-jsx@npm:5.1.5"
   dependencies:
     "@babel/core": "npm:^7.29.0"
     "@babel/plugin-syntax-typescript": "npm:^7.28.6"
