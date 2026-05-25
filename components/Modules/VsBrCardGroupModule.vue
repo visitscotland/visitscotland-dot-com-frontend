@@ -15,7 +15,7 @@
             :slides-per-view-sm="1.9"
             :slides-per-view-md="2"
             :slides-per-view-lg="2.6"
-            :slides-per-view-xl="3"
+            :slides-per-view-xl="cardsPerRow"
         >
             <VsContentSwiperSlide
                 v-for="(link, index) in links"
@@ -67,9 +67,6 @@ import {
     VsHeading,
     VsLink,
     VsBody,
-    VsContainer,
-    VsRow,
-    VsCol,
     VsContentSwiper,
     VsContentSwiperSlide,
 } from '@visitscotland/component-library/components';
