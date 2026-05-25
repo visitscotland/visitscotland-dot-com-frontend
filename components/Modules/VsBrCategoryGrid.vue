@@ -1,7 +1,7 @@
 <template>
     <div>
         <VsContentSwiper
-            class="mt-075 mt-lg-200 mx-n050 mx-sm-n075"
+            class="mt-075 mt-lg-200 mx-n050 mx-sm-n150"
             :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
             :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
             :slides-per-view-xs="1.2"
