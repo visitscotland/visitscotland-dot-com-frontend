@@ -1,10 +1,17 @@
 import { defineStore } from 'pinia';
 
 export interface IFavouritesState {
-  pages: string[];
-  shareId: string;
-  revision: number;
-  lastSharedRevision: number;
+    pages: string[];                        // CMS page UUIDs
+    shareId: string;                        // db collection number
+    revision: number;                       // changes to collection
+    lastSharedRevision: number;             // only update db after changes
+    allowFavourite: boolean,                // per-page BR API setting
+    featureFavouritesEnabled: boolean,      // per-instance BR API setting
+    isFavouritesPage: boolean,              // my- or share- favourites
+    isFavouritesSharePage: boolean,         // share-favourites only
+    featureFavouritesUrl: string,           // my-favourites url (label)
+    featureFavouritesEndpoint: string,      // CMS get-favourites url (label)
+    featureFavouritesShareBaseUrl: string,  // share-favourites url (label)
 }
 
 export const useFavourites = defineStore('favourites', {
@@ -13,6 +20,13 @@ export const useFavourites = defineStore('favourites', {
         shareId: '',
         revision: 0,
         lastSharedRevision: 0,
+        allowFavourite: false,
+        featureFavouritesEnabled: false,
+        isFavouritesPage: false,
+        isFavouritesSharePage: false,
+        featureFavouritesUrl: '',
+        featureFavouritesEndpoint: '',
+        featureFavouritesShareBaseUrl: '',
     }),
     actions: {
         add(uuid) {

@@ -9,6 +9,7 @@
                             style="max-width: 478px"
                         >
                             <svg
+
                                 width="189" height="189" viewBox="0 0 189 189" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -46,14 +47,14 @@
                                 level="2"
                                 heading-style="heading-l">
                                 {{
-                                    configStore.isFavouritesSharePage
+                                    favourites.isFavouritesSharePage
                                         ? configStore.getLabel('favourites', 'favourites.error.empty-state.heading')
                                         : configStore.getLabel('favourites', 'favourites.error.empty-state.heading')
                                 }}
                             </VsHeading>
                             <p class="text-center">
                                 {{
-                                    configStore.isFavouritesSharePage
+                                    favourites.isFavouritesSharePage
                                         ? configStore.getLabel('favoutites','favourites.message.not-found')
                                         : configStore.getLabel('favourites', 'favourites.error.empty-state.text')
                                 }}
@@ -73,7 +74,7 @@
                                 card-style="outlined">
                                 <template #vs-card-header>
                                     <div
-                                        v-if="!configStore.isFavouritesSharePage"
+                                        v-if="!favourites.isFavouritesSharePage"
                                         class="vs-remove-content-button">
                                         <VsButton
                                             icon-only
@@ -156,7 +157,7 @@ const uiState = computed(() => {
     if (fetchRequestStatus.value === 'pending') {
         return 'loading';
     }
-    if (configStore.isFavouritesSharePage) {
+    if (favourites.isFavouritesSharePage) {
         if (cardData.value.length === 0) {
             return 'empty';
         }
@@ -184,15 +185,15 @@ const fetchRequestStatus = ref('pending');
 const cardData = ref<FavouriteCard[]>([]);
 
 // Retrieve My Favourites
-// const favouritesEndpoint = `https://feature.visitscotland.com/${configStore.featureFavouritesEndpoint}?vs_brxm_host=172.28.87.25&vs_brxm_port=8020&vs-no-redirect=true`;
-const favouritesEndpoint = configStore.featureFavouritesEndpoint;
+// const favouritesEndpoint = `https://feature.visitscotland.com/${favourites.featureFavouritesEndpoint}?vs_brxm_host=172.28.87.25&vs_brxm_port=8020&vs-no-redirect=true`;
+const favouritesEndpoint = favourites.featureFavouritesEndpoint;
 
 
 // Fetch UUID list for a shared collection
 async function getCollectionList(shareId) {
     try {
         const res = await $fetch(
-            `${configStore.featureFavouritesShareBaseUrl}/get-list`,
+            `${favourites.featureFavouritesShareBaseUrl}/get-list`,
             {
                 method: 'POST',
                 body: {
@@ -266,7 +267,7 @@ function gtmPush() {
 
 onMounted(() => {
     dataLayerHelper.createDataLayerObject('favouritesPageViewEvent', {
-        favourite_owner: configStore.isFavouritesSharePage ? 'other' : 'self',
+        favourite_owner: favourites.isFavouritesSharePage ? 'other' : 'self',
         total_favourites: favourites.pages.length,
         shared_list_id: ' ',
     });
@@ -275,7 +276,7 @@ onMounted(() => {
     sharedCollectionId.value = id.trim() || null;
 
     // Initial fetch
-    if (configStore.isFavouritesSharePage) {
+    if (favourites.isFavouritesSharePage) {
         if (sharedCollectionId.value) {
             getCollectionList(sharedCollectionId.value);
         } else {
@@ -292,7 +293,7 @@ onMounted(() => {
 watch(
     () => favourites.pages,
     (newList) => {
-        if (configStore.isFavouritesSharePage) return;
+        if (favourites.isFavouritesSharePage) return;
 
         getCollectionData(favouritesEndpoint, newList);
     },
