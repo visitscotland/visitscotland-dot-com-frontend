@@ -130,8 +130,27 @@
                                     {{ configStore.getLabel('search', 'search') }}
                                 </VsButton>
                             </li>
+
                             <li
-                                class="d-none d-md-block me-075"
+                                class="d-none d-md-block me-025"
+                                v-if="configStore.featureFavouritesEnabled"
+                            >
+                                <VsTooltip
+                                    :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
+                                    subtle
+                                    variant="subtle"
+                                    size="sm"
+                                    icon="fa-regular fa-heart"
+                                    icon-only
+                                    :href="configStore.featureFavouritesUrl"
+                                    class="d-block"
+                                >
+                                    {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
+                                </VsTooltip>
+                            </li>
+
+                            <li
+                                class="d-none d-md-block me-025"
                             >
                                 <VsTooltip
                                     :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
@@ -231,6 +250,24 @@
                     <div class="p-100 pb-300">
                         <nav :aria-label="configStore.getLabel('navigation.static', 'meganav.sidebar-utility-aria-label')">
                             <ul class="d-flex justify-content-end">
+                                <li
+                                    class="d-block d-md-none me-075"
+                                    v-if="configStore.featureFavouritesEnabled"
+                                >
+                                    <VsTooltip
+                                        :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
+                                        subtle
+                                        variant="subtle"
+                                        size="sm"
+                                        icon="fa-regular fa-heart"
+                                        icon-only
+                                        :href="configStore.featureFavouritesUrl"
+                                        class="d-block"
+                                    >
+                                        {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
+                                    </VsTooltip>
+                                </li>
+
                                 <li class="d-block d-md-none me-075">
                                     <VsTooltip
                                         :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
@@ -370,7 +407,7 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
 import formatLink from '~/composables/formatLink.ts';
-
+import { useFavourites } from '~/stores/favouritesStore.ts';
 import useConfigStore from '~/stores/configStore.ts';
 
 import {
@@ -398,6 +435,7 @@ import VsBrDivider from '~/components/Modules/VsBrDivider.vue';
 import VsBrMegaNav from '~/components/Modules/VsBrMegaNav.vue';
 import VsBrAccordionNav from '~/components/Modules/VsBrAccordionNav.vue';
 
+const favourites = useFavourites();
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
@@ -432,6 +470,7 @@ function handleScroll() {
 onMounted(() => {
     scrollY.value = window.scrollY;
     window.addEventListener('scroll', handleScroll);
+    favourites.migrateSavedPages(); // To be removed - see DS-2083
 });
 
 onUnmounted(() => {
@@ -447,6 +486,12 @@ if (page.value) {
     if (configStore.pathIfError) {
         for (let x = 0; x < localisedUrls.length; x++) {
             localisedUrls[x].url = localisedUrls[x].url.replace('/servererror', configStore.pathIfError);
+        }
+    }
+
+    if (configStore.isInternalResource) {
+        for (let x = 0; x < localisedUrls.length; x++) {
+            localisedUrls[x].url = `${localisedUrls[x].url}/[PATH-PLACEHOLDER]`;
         }
     }
 
