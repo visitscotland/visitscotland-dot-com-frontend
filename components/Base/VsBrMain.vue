@@ -162,13 +162,6 @@ if (page.value) {
             configStore.searchDmsBased = true;
         }
 
-        // if (componentModels.pageConfiguration['is-favourites-page']) {
-        //     favourites.isFavouritesPage = true;
-        // }
-        // if (componentModels.pageConfiguration['is-favourites-share-page']) {
-        //     favourites.isFavouritesSharePage = true;
-        // }
-
         if (componentModels.pageConfiguration.searchWidget) {
             configStore.showSearchWidget = true;
         }

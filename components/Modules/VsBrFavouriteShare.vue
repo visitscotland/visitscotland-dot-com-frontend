@@ -5,7 +5,11 @@
         icon="fa-link fa-regular"
         @click="handleClick"
     >
-        {{ linkCopied ? 'Link copied' : 'Copy share link' }}
+        {{
+            linkCopied
+                ? configStore.getLabel('favourites','favourites.share-button.link-copied-message')
+                : configStore.getLabel('favourites','favourites.share-button.text')
+        }}
     </VsButton>
 </template>
 
@@ -17,8 +21,8 @@ import useConfigStore from '~/stores/configStore.ts';
 const favourites = useFavourites();
 const configStore = useConfigStore();
 
-const createListEndpoint = `${configStore.featureFavouritesShareBaseUrl}/create-list`;
-const updateListEndpoint = `${configStore.featureFavouritesShareBaseUrl}/update-list`;
+const createListEndpoint = `${favourites.featureFavouritesShareBaseUrl}/create-list`;
+const updateListEndpoint = `${favourites.featureFavouritesShareBaseUrl}/update-list`;
 
 const shareState = computed(() => {
     if (favourites.pages.length === 0) {
@@ -37,14 +41,11 @@ const needsUpdate = computed(() => {
 });
 
 const sharedFavouritesLink = computed(() => (
-    `${configStore.featureFavouritesShareUrl}?share-id=${favourites.shareId}`
+    `${favourites.featureFavouritesShareUrl}?share-id=${favourites.shareId}`
 ));
 
-
-// These will come from labels when they're available
-
 const linkCopied = ref(false);
-
+// const shareButtonText = ref()
 
 const copyUrl = () => {
     navigator.clipboard.writeText(sharedFavouritesLink.value);

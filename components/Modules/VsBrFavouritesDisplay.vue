@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div v-else-if="uiState === 'ready'">
-                    <VsCardGroup
+                    <VsCardGroup 
                         variant="grid"
                         :cards-per-row="3">
                         <TransitionGroup name="fade">
@@ -185,7 +185,7 @@ const fetchRequestStatus = ref('pending');
 const cardData = ref<FavouriteCard[]>([]);
 
 // Retrieve My Favourites
-// const favouritesEndpoint = `https://feature.visitscotland.com/${favourites.featureFavouritesEndpoint}?vs_brxm_host=172.28.87.25&vs_brxm_port=8020&vs-no-redirect=true`;
+// const favouritesEndpoint = `https://develop-brc.visitscotland.com${favourites.featureFavouritesEndpoint}`;
 const favouritesEndpoint = favourites.featureFavouritesEndpoint;
 
 
