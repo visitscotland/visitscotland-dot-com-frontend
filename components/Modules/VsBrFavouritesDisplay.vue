@@ -47,14 +47,14 @@
                                 level="2"
                                 heading-style="heading-l">
                                 {{
-                                    favourites.isFavouritesSharePage
+                                    favourites.isSharePage
                                         ? configStore.getLabel('favourites', 'favourites.error.empty-state.heading')
                                         : configStore.getLabel('favourites', 'favourites.error.empty-state.heading')
                                 }}
                             </VsHeading>
                             <p class="text-center">
                                 {{
-                                    favourites.isFavouritesSharePage
+                                    favourites.isSharePage
                                         ? configStore.getLabel('favoutites','favourites.message.not-found')
                                         : configStore.getLabel('favourites', 'favourites.error.empty-state.text')
                                 }}
@@ -74,7 +74,7 @@
                                 card-style="outlined">
                                 <template #vs-card-header>
                                     <div
-                                        v-if="!favourites.isFavouritesSharePage"
+                                        v-if="!favourites.isSharePage"
                                         class="vs-remove-content-button">
                                         <VsButton
                                             icon-only
@@ -157,7 +157,7 @@ const uiState = computed(() => {
     if (fetchRequestStatus.value === 'pending') {
         return 'loading';
     }
-    if (favourites.isFavouritesSharePage) {
+    if (favourites.isSharePage) {
         if (cardData.value.length === 0) {
             return 'empty';
         }
@@ -185,8 +185,8 @@ const fetchRequestStatus = ref('pending');
 const cardData = ref<FavouriteCard[]>([]);
 
 // Retrieve My Favourites
-// const favouritesEndpoint = `https://develop-brc.visitscotland.com${favourites.featureFavouritesEndpoint}`;
-const favouritesEndpoint = favourites.featureFavouritesEndpoint;
+const favouritesEndpoint = `https://develop-brc.visitscotland.com${favourites.featureFavouritesEndpoint}`;
+// const favouritesEndpoint = favourites.featureFavouritesEndpoint;
 
 
 // Fetch UUID list for a shared collection
@@ -267,7 +267,7 @@ function gtmPush() {
 
 onMounted(() => {
     dataLayerHelper.createDataLayerObject('favouritesPageViewEvent', {
-        favourite_owner: favourites.isFavouritesSharePage ? 'other' : 'self',
+        favourite_owner: favourites.isSharePage ? 'other' : 'self',
         total_favourites: favourites.pages.length,
         shared_list_id: ' ',
     });
@@ -276,7 +276,7 @@ onMounted(() => {
     sharedCollectionId.value = id.trim() || null;
 
     // Initial fetch
-    if (favourites.isFavouritesSharePage) {
+    if (favourites.isSharePage) {
         if (sharedCollectionId.value) {
             getCollectionList(sharedCollectionId.value);
         } else {
@@ -293,7 +293,7 @@ onMounted(() => {
 watch(
     () => favourites.pages,
     (newList) => {
-        if (favourites.isFavouritesSharePage) return;
+        if (favourites.isSharePage) return;
 
         getCollectionData(favouritesEndpoint, newList);
     },

@@ -9,14 +9,14 @@
             :image="heroImage"
         />
     </template>
-    <template v-else-if="favourites.isFavouritesPage">
+    <template v-else-if="favourites.isDisplayPage">
         <VsContainer class="mt-075 py-150 py-lg-300 ">
             <VsRow>
                 <VsBrHeroHeading
                     :content="documentData"
                 >
                     <template
-                        v-if="!favourites.isFavouritesSharePage"
+                        v-if="favourites.isDisplayPage && !favourites.isSharePage"
                         #button
                     >
                         <VsBrFavouriteShare />

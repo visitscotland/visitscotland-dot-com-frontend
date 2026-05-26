@@ -139,8 +139,8 @@ if (page.value) {
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
         configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
 
-        favourites.isFavouritesPage = componentModels.pageConfiguration['is-favourites-page'];
-        favourites.isFavouritesSharePage = componentModels.pageConfiguration['is-favourites-share-page'];
+        favourites.isDisplayPage = componentModels.pageConfiguration['is-favourites-page'];
+        favourites.isSharePage = componentModels.pageConfiguration['is-favourites-share-page'];
         favourites.pageEnabled = componentModels.pageConfiguration['allow-favourite'];
         favourites.featureEnable = componentModels.pageConfiguration['feature.favourites.enable'];
         favourites.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
