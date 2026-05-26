@@ -5,13 +5,13 @@ export interface IFavouritesState {
     shareId: string;                        // db collection number
     revision: number;                       // changes to collection
     lastSharedRevision: number;             // only update db after changes
-    allowFavourite: boolean,                // per-page BR API setting
-    featureFavouritesEnabled: boolean,      // per-instance BR API setting
-    isFavouritesPage: boolean,              // my- or share- favourites
-    isFavouritesSharePage: boolean,         // share-favourites only
-    featureFavouritesUrl: string,           // my-favourites url (label)
-    featureFavouritesEndpoint: string,      // CMS get-favourites url (label)
-    featureFavouritesShareBaseUrl: string,  // share-favourites url (label)
+    pageEnabled: boolean,                // per-page BR API setting - pageEnabled
+    featureFavouritesEnabled: boolean,      // per-instance BR API setting - featureEnabled
+    isFavouritesPage: boolean,              // my- or share- favourites - isDisplayFavePage
+    isFavouritesSharePage: boolean,         // share-favourites only - isSharedFavesPage
+    featureFavouritesUrl: string,           // my-favourites url (label) - myFavesUrl
+    featureFavouritesEndpoint: string,      // CMS get-favourites url (label) - brGetFaveEndpoint
+    featureFavouritesShareBaseUrl: string,  // share-favourites url (label) - sharedFaveUrl
 }
 
 export const useFavourites = defineStore('favourites', {
@@ -20,7 +20,7 @@ export const useFavourites = defineStore('favourites', {
         shareId: '',
         revision: 0,
         lastSharedRevision: 0,
-        allowFavourite: false,
+        pageEnabled: false,
         featureFavouritesEnabled: false,
         isFavouritesPage: false,
         isFavouritesSharePage: false,

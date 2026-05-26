@@ -141,7 +141,7 @@ if (page.value) {
 
         favourites.isFavouritesPage = componentModels.pageConfiguration['is-favourites-page'];
         favourites.isFavouritesSharePage = componentModels.pageConfiguration['is-favourites-share-page'];
-        favourites.allowFavourite = componentModels.pageConfiguration['allow-favourite'];
+        favourites.pageEnabled = componentModels.pageConfiguration['allow-favourite'];
         favourites.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
         favourites.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
         favourites.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
