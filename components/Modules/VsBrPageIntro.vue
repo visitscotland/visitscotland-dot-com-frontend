@@ -88,7 +88,7 @@
                     </p>
                 </div>
                 <div
-                    v-if="favourites.featureFavouritesEnabled && favourites.pageEnabled"
+                    v-if="favourites.featureEnabled && favourites.pageEnabled"
                     class="d-flex flex-column flex-md-row"
                 >
                     <VsBrFavouriteButton
@@ -105,7 +105,7 @@
             v-if="itinerary"
             #vs-intro-start-finish
         >
-            <div :class="favourites.featureFavouritesEnabled && favourites.pageEnabled ? 'mt-200' : ''">
+            <div :class="favourites.featureEnabled && favourites.pageEnabled ? 'mt-200' : ''">
                 <dt class="list-inline-item ">
                     {{ configStore.getLabel("itinerary", "start-finish") }}
                 </dt>

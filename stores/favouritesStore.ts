@@ -5,8 +5,8 @@ export interface IFavouritesState {
     shareId: string;                        // db collection number
     revision: number;                       // changes to collection
     lastSharedRevision: number;             // only update db after changes
-    pageEnabled: boolean,                // per-page BR API setting - pageEnabled
-    featureFavouritesEnabled: boolean,      // per-instance BR API setting - featureEnabled
+    pageEnabled: boolean,                   // per-page BR API property
+    featureEnabled: boolean,                // per-instance BR API setting
     isFavouritesPage: boolean,              // my- or share- favourites - isDisplayFavePage
     isFavouritesSharePage: boolean,         // share-favourites only - isSharedFavesPage
     featureFavouritesUrl: string,           // my-favourites url (label) - myFavesUrl
@@ -21,7 +21,7 @@ export const useFavourites = defineStore('favourites', {
         revision: 0,
         lastSharedRevision: 0,
         pageEnabled: false,
-        featureFavouritesEnabled: false,
+        featureEnabled: false,
         isFavouritesPage: false,
         isFavouritesSharePage: false,
         featureFavouritesUrl: '',
