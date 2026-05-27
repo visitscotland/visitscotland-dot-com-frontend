@@ -63,43 +63,50 @@
                     </div>
                 </div>
                 <div v-else-if="uiState === 'ready'">
-                    <VsCardGroup 
+                    <VsCardGroup
                         variant="grid"
-                        :cards-per-row="3">
+                        :cards-per-row="3"
+                    >
                         <TransitionGroup name="fade">
                             <VsCard
                                 class="vs-favourite-card rounded-2"
                                 v-for="data in cardData"
                                 :key="data.uuid"
-                                card-style="outlined">
+                                card-style="outlined"
+                            >
                                 <template #vs-card-header>
                                     <div
                                         v-if="!favourites.isSharePage"
-                                        class="vs-remove-content-button">
+                                        class="vs-remove-content-button"
+                                    >
                                         <VsButton
                                             icon-only
                                             icon="fa-solid fa-heart"
                                             size="sm"
-                                            @click="removeFavourite(data.uuid, data.title)">
+                                            @click="removeFavourite(data.uuid, data.title)"
+                                        >
                                             {{ configStore.getLabel('favourites-button', 'button.remove.text') }}
                                         </VsButton>
                                     </div>
 
                                     <VsImg
                                         :src="data.image"
-                                        class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover" />
+                                        class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
+                                    />
                                 </template>
 
                                 <template #vs-card-body>
                                     <div class="px-075">
                                         <VsHeading
                                             level="2"
-                                            heading-style="heading-xxs">
+                                            heading-style="heading-xxs"
+                                        >
                                             <VsLink
                                                 :href="data.url"
                                                 class="stretched-link"
                                                 variant="secondary"
-                                                @click="gtmPush">
+                                                @click="gtmPush"
+                                            >
                                                 {{ data.title }}
                                             </VsLink>
                                         </VsHeading>
@@ -201,7 +208,6 @@ async function getCollectionList(shareId) {
                 },
             },
         );
-        // alert(res);
         const uuids = res?.uuids || [];
         sharedCollection.value = uuids;
         // use returned list to populate page
@@ -234,7 +240,7 @@ async function getCollectionData(endpoint, data) {
         cardData.value = Array.isArray(res?.cards) ? res.cards : [];
         fetchRequestStatus.value = 'done';
     } catch (err) {
-        console.error(err);
+        console.warn(err);
         fetchRequestStatus.value = 'error';
     }
 }

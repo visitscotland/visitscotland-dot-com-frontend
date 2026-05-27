@@ -158,7 +158,6 @@ if (page.value) {
             configStore.isLocalVideoheader = true;
         }
 
-
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
         }
