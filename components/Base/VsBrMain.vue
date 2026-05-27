@@ -142,7 +142,7 @@ if (page.value) {
         favourites.isDisplayPage = componentModels.pageConfiguration['is-favourites-page'];
         favourites.isSharePage = componentModels.pageConfiguration['is-favourites-share-page'];
         favourites.pageEnabled = componentModels.pageConfiguration['allow-favourite'];
-        favourites.featureEnable = componentModels.pageConfiguration['feature.favourites.enable'];
+        favourites.featureEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
         favourites.displaySavedUrl = componentModels.pageConfiguration['feature.favourites.url'];
         favourites.brGetPagesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
         favourites.serviceUrl = componentModels.pageConfiguration['feature.favourites.share-service-base-url'];
@@ -157,6 +157,7 @@ if (page.value) {
         if (componentModels.pageConfiguration['hero-ambient-video']) {
             configStore.isLocalVideoheader = true;
         }
+
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;

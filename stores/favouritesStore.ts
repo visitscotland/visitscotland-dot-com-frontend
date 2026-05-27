@@ -7,12 +7,12 @@ export interface IFavouritesState {
     lastSharedRevision: number;             // only update db after changes
     pageEnabled: boolean,                   // per-page BR API property
     featureEnabled: boolean,                // per-instance BR API setting
-    isDisplayPage: boolean,              // my- or share- favourites
-    isSharePage: boolean,         // shared-favourites
-    displaySavedUrl: string,           // my-favourites url (label) - myFavesUrl
-    brGetPagesEndpoint: string,      // CMS get-favourites url (label) - brGetFaveEndpoint
-    displaySharedUrl: string,  // share-favourites url (label) - sharedFaveUrl
-    serviceUrl: string, // share service base URL (get-list | update-list | create-list)
+    isDisplayPage: boolean,                 // my- or share- favourites
+    isSharePage: boolean,                   // shared-favourites
+    displaySavedUrl: string,                // my-favourites url (label) - myFavesUrl
+    brGetPagesEndpoint: string,             // CMS get-favourites url (label) - brGetFaveEndpoint
+    displaySharedUrl: string,               // share-favourites url (label) - sharedFaveUrl
+    serviceUrl: string,                     // share service base URL (get-list | update-list | create-list)
 }
 
 export const useFavourites = defineStore('favourites', {
