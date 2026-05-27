@@ -133,7 +133,7 @@
 
                             <li
                                 class="d-none d-md-block me-025"
-                                v-if="favourites.featureFavouritesEnabled"
+                                v-if="favourites.featureEnabled"
                             >
                                 <VsTooltip
                                     :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
@@ -142,7 +142,7 @@
                                     size="sm"
                                     icon="fa-regular fa-heart"
                                     icon-only
-                                    :href="favourites.featureFavouritesUrl"
+                                    :href="favourites.displaySavedUrl"
                                     class="d-block"
                                 >
                                     {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
@@ -252,7 +252,7 @@
                             <ul class="d-flex justify-content-end">
                                 <li
                                     class="d-block d-md-none me-075"
-                                    v-if="favourites.featureFavouritesEnabled"
+                                    v-if="favourites.featureEnabled"
                                 >
                                     <VsTooltip
                                         :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
@@ -261,7 +261,7 @@
                                         size="sm"
                                         icon="fa-regular fa-heart"
                                         icon-only
-                                        :href="favourites.featureFavouritesUrl"
+                                        :href="favourites.displaySavedUrl"
                                         class="d-block"
                                     >
                                         {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
@@ -318,8 +318,8 @@
                 >
                     <template #third-menu-item>
                         <a
-                            v-if="favourites.featureFavouritesEnabled"
-                            :href="favourites.featureFavouritesUrl"
+                            v-if="favourites.featureEnabled"
+                            :href="favourites.displaySavedUrl"
                             class="vs-favourites-link"
                             :aria-label="configStore.getLabel('navigation.static', 'favourites.navigation.link.text')"
                         >

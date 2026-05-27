@@ -143,10 +143,10 @@ if (page.value) {
         favourites.isSharePage = componentModels.pageConfiguration['is-favourites-share-page'];
         favourites.pageEnabled = componentModels.pageConfiguration['allow-favourite'];
         favourites.featureEnable = componentModels.pageConfiguration['feature.favourites.enable'];
-        favourites.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
-        favourites.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
-        favourites.featureFavouritesShareBaseUrl = componentModels.pageConfiguration['feature.favourites.share-service-base-url'];
-        favourites.featureFavouritesShareUrl = componentModels.pageConfiguration['feature.favourites.share-url'];
+        favourites.displaySavedUrl = componentModels.pageConfiguration['feature.favourites.url'];
+        favourites.brGetPagesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
+        favourites.serviceUrl = componentModels.pageConfiguration['feature.favourites.share-service-base-url'];
+        favourites.displaySharedUrl = componentModels.pageConfiguration['feature.favourites.share-url'];
 
         configStore.mainMapPath = componentModels.pageConfiguration['main-map-path'];
 

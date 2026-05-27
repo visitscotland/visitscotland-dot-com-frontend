@@ -185,15 +185,15 @@ const fetchRequestStatus = ref('pending');
 const cardData = ref<FavouriteCard[]>([]);
 
 // Retrieve My Favourites
-const favouritesEndpoint = `https://develop-brc.visitscotland.com${favourites.featureFavouritesEndpoint}`;
-// const favouritesEndpoint = favourites.featureFavouritesEndpoint;
+// const favouritesEndpoint = `https://develop-brc.visitscotland.com${favourites.brGetPagesEndpoint}`;
+const favouritesEndpoint = favourites.brGetPagesEndpoint;
 
 
 // Fetch UUID list for a shared collection
 async function getCollectionList(shareId) {
     try {
         const res = await $fetch(
-            `${favourites.featureFavouritesShareBaseUrl}/get-list`,
+            `${favourites.serviceUrl}/get-list`,
             {
                 method: 'POST',
                 body: {
