@@ -58,7 +58,7 @@ const copyUrl = () => {
 async function handleClick() {
     if (shareState.value === 'no share id') {
         const newDbCollection = await createList();
-        if (!newCollection?.favId) {
+        if (!newDbCollection?.favId) {
             return;
         }
         favourites.shareId = newDbCollection.favId;
