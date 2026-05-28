@@ -57,13 +57,19 @@ const copyUrl = () => {
 
 async function handleClick() {
     if (shareState.value === 'no share id') {
-        const { favId: newId } = await createList();
-        favourites.shareId = newId;
+        const newDbCollection = await createList();
+        if (!newCollection?.favId) {
+            return;
+        }
+        favourites.shareId = newDbCollection.favId;
         favourites.lastSharedRevision = favourites.revision;
     }
 
     if (shareState.value === 'ready' && needsUpdate.value) {
-        await updateList();
+        const updated = await updateList();
+        if (!updated) {
+            return;
+        }
         favourites.lastSharedRevision = favourites.revision;
     }
 
@@ -81,9 +87,10 @@ async function createList() {
                 },
             },
         );
-        return(res);
+        return res;
     } catch (err) {
-        console.error('Failed to create share id:', err);
+        console.warn('Failed to create share id:', err);
+        return null;
     }
 };
 
@@ -99,8 +106,10 @@ async function updateList() {
                 },
             },
         );
+        return true;
     } catch (err) {
-        console.error('Failed to update list:', err);
+        console.warn('Failed to update list:', err);
+        return false;
     }
 };
 

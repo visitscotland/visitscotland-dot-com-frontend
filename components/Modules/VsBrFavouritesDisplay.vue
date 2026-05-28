@@ -193,7 +193,7 @@ interface FavouriteCard {
 
 
 const sharedCollectionId = ref('');
-const sharedCollection = ref('');
+const sharedCollection = ref([]);
 
 const fetchRequestStatus = ref('pending');
 const cardData = ref<FavouriteCard[]>([]);
@@ -286,7 +286,7 @@ onMounted(() => {
     });
 
     const id = window.location.href.split('?share-id=')[1] || '';
-    sharedCollectionId.value = id.trim() || null;
+    sharedCollectionId.value = id.trim();
 
     // Initial fetch
     if (favourites.isSharePage) {
