@@ -52,11 +52,34 @@ const shareMessage = computed(() => {
 });
 
 const copyUrl = () => {
-    navigator.clipboard.writeText(sharedFavouritesLink.value);
+    const text = sharedFavouritesLink.value;
+
+    if (!text) {
+        return;
+    }
+
+    // This is an established workaround to povide a fallback action for 
+    // ios and safari browsers
+    navigator.clipboard.writeText(text).catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    });
+
     if (shareState.value === 'ready' && needsUpdate.value) {
         updateCollection();
-    };
+    }
+
     linkCopied.value = true;
+
     setTimeout(() => {
         linkCopied.value = false;
     }, 5000);
