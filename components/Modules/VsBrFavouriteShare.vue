@@ -57,10 +57,11 @@ const copyUrl = () => {
     if (!text) {
         return;
     }
-
-    // This is an established workaround to povide a fallback action for 
-    // ios and safari browsers
-    navigator.clipboard.writeText(text).catch(() => {
+    // This is fallback behviour for ios and safari
+    try {
+        // call directly, no chaining
+        navigator.clipboard.writeText(text);
+    } catch {
         const textarea = document.createElement('textarea');
         textarea.value = text;
         textarea.style.position = 'fixed';
@@ -72,7 +73,7 @@ const copyUrl = () => {
 
         document.execCommand('copy');
         document.body.removeChild(textarea);
-    });
+    }
 
     if (shareState.value === 'ready' && needsUpdate.value) {
         updateCollection();
