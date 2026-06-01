@@ -1,5 +1,5 @@
 <template>
-    <VsButton
+    <button
         :disabled="shareState !== 'ready' || !sharedFavouritesLink"
         :variant="linkCopied ? 'primary' : 'secondary'"
         icon="fa-link fa-regular"
@@ -7,7 +7,7 @@
         :aria-label="shareMessage"
     >
         {{ shareMessage }}
-    </VsButton>
+</button>
 </template>
 
 <script setup lang="ts">
