@@ -1,6 +1,6 @@
 <template>
     <VsButton
-        :disabled="shareState === 'empty' || !sharedFavouritesLink"
+        :disabled="shareState !== 'ready' || !sharedFavouritesLink"
         :variant="linkCopied ? 'primary' : 'secondary'"
         icon="fa-link fa-regular"
         @click="copyUrl"
@@ -38,9 +38,13 @@ const needsUpdate = computed(() => {
     );
 });
 
-const sharedFavouritesLink = computed(() => (
-    `${favourites.displaySharedUrl}?share-id=${favourites.shareId}`
-));
+const sharedFavouritesLink = computed(() => {
+    if (!favourites.displaySharedUrl || !favourites.shareId) {
+        return null;
+    }
+
+    return `${favourites.displaySharedUrl}?share-id=${favourites.shareId}`;
+});
 
 const linkCopied = ref(false);
 const shareMessage = computed(() => {
