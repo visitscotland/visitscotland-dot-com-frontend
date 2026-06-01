@@ -1,9 +1,9 @@
 <template>
     <VsButton
-        :disabled="shareState === 'empty'"
+        :disabled="shareState === 'empty' || !sharedFavouritesLink"
         :variant="linkCopied ? 'primary' : 'secondary'"
         icon="fa-link fa-regular"
-        @click="handleClick"
+        @click="copyUrl"
         :aria-label="shareMessage"
     >
         {{ shareMessage }}
@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { VsButton } from '@visitscotland/component-library/components';
 import { useFavourites } from '~/stores/favouritesStore.ts';
 import useConfigStore from '~/stores/configStore.ts';
@@ -48,14 +49,16 @@ const shareMessage = computed(() => {
 
 const copyUrl = () => {
     navigator.clipboard.writeText(sharedFavouritesLink.value);
+    if (shareState.value === 'ready' && needsUpdate.value) {
+        updateCollection();
+    };
     linkCopied.value = true;
     setTimeout(() => {
         linkCopied.value = false;
     }, 5000);
 };
 
-
-async function handleClick() {
+async function ensureCollectionExists() {
     if (shareState.value === 'no share id') {
         const newDbCollection = await createList();
         if (!newDbCollection?.favId) {
@@ -64,17 +67,18 @@ async function handleClick() {
         favourites.shareId = newDbCollection.favId;
         favourites.lastSharedRevision = favourites.revision;
     }
+    return;
+};
 
-    if (shareState.value === 'ready' && needsUpdate.value) {
-        const updated = await updateList();
-        if (!updated) {
-            return;
-        }
-        favourites.lastSharedRevision = favourites.revision;
+async function updateCollection() {
+    const updated = await updateList();
+    if (!updated) {
+        return;
     }
+    favourites.lastSharedRevision = favourites.revision;
+};
 
-    copyUrl();
-}
+onMounted(() => ensureCollectionExists());
 
 async function createList() {
     try {
