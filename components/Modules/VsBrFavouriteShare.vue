@@ -59,7 +59,7 @@ const copyUrl = () => {
 };
 
 async function ensureCollectionExists() {
-    if (shareState.value === 'no share id') {
+    if (shareState.value === 'no share id' && shareState.value !== 'empty' ) {
         const newDbCollection = await createList();
         if (!newDbCollection?.favId) {
             return;
