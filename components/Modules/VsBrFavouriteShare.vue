@@ -43,8 +43,7 @@ const sharedFavouritesLink = computed(() => {
         return null;
     }
 
-    return `http://localhost:3000/sandbox/pages/share-favourites?share-id=${favourites.shareId}`;
-    // return `${favourites.displaySharedUrl}?share-id=${favourites.shareId}`;
+    return `${favourites.displaySharedUrl}?share-id=${favourites.shareId}`;
 });
 
 const linkCopied = ref(false);
