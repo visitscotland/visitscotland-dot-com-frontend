@@ -1,5 +1,5 @@
 <template>
-    <button
+    <VsButton
         :disabled="shareState !== 'ready' || !sharedFavouritesLink"
         :variant="linkCopied ? 'primary' : 'secondary'"
         icon="fa-link fa-regular"
@@ -7,7 +7,7 @@
         :aria-label="shareMessage"
     >
         {{ shareMessage }}
-</button>
+    </VsButton>
 </template>
 
 <script setup lang="ts">
@@ -43,7 +43,8 @@ const sharedFavouritesLink = computed(() => {
         return null;
     }
 
-    return `${favourites.displaySharedUrl}?share-id=${favourites.shareId}`;
+    return `http://localhost:3000/sandbox/pages/share-favourites?share-id=${favourites.shareId}`;
+    // return `${favourites.displaySharedUrl}?share-id=${favourites.shareId}`;
 });
 
 const linkCopied = ref(false);
