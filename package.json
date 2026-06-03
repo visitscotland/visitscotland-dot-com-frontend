@@ -29,7 +29,7 @@
     "@bloomreach/spa-sdk": "^27.2.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^0.11.3",
-    "@visitscotland/component-library": "5.57.1",
+    "@visitscotland/component-library": "5.59.4",
     "axios": "^1.15.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
@@ -38,7 +38,7 @@
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^2.0.8",
     "pinia": "^3.0.4",
-    "sass": "^1.81.0",
+    "sass": "^1.99.0",
     "standard-version": "^9.5.0",
     "typescript": "^5.7.0"
   },
