@@ -38,35 +38,37 @@
                                 :src="imageSrc"
                                 :alt="altText"
                                 class="vs-br-media__img"
-                                :class="rounded ? 'rounded-2' : ''"
+                                :class="`${imageClasses} ${rounded ? 'rounded-2' : ''}`"
                             />
                         </div>
-                        <VsMediaCaption
-                            v-if="imageData"
-                            :right-align="alignment === 'right'"
-                        >
-                            <template #caption>
-                                {{ descriptionString }}
-                            </template>
-                            <template #credit>
-                                <template
-                                    v-if="imageData.source"
-                                >
-                                    <VsSocialCreditLink
-                                        :credit="imageData.credit
-                                            ? imageData.credit
-                                            : configStore.getLabel('essentials.global', 'image.no.credit')"
-                                        :social-post-url="imageData.postUrl ? imageData.postUrl : ''"
-                                        :source="imageData.source"
-                                    />
+                        <figcaption>
+                            <VsMediaCaption
+                                v-if="imageData"
+                                :right-align="alignment === 'right'"
+                            >
+                                <template #caption>
+                                    {{ descriptionString }}
                                 </template>
-                                <template
-                                    v-if="!imageData.source && imageData.credit"
-                                >
-                                    &copy; {{ imageData.credit }}
+                                <template #credit>
+                                    <template
+                                        v-if="imageData.source"
+                                    >
+                                        <VsSocialCreditLink
+                                            :credit="imageData.credit
+                                                ? imageData.credit
+                                                : configStore.getLabel('essentials.global', 'image.no.credit')"
+                                            :social-post-url="imageData.postUrl ? imageData.postUrl : ''"
+                                            :source="imageData.source"
+                                        />
+                                    </template>
+                                    <template
+                                        v-if="!imageData.source && imageData.credit"
+                                    >
+                                        &copy; {{ imageData.credit }}
+                                    </template>
                                 </template>
-                            </template>
-                        </VsMediaCaption>
+                            </VsMediaCaption>
+                        </figcaption>
                     </div>
                 </VsCol>
             </VsRow>
@@ -101,6 +103,7 @@ interface IProps {
     imageString?: string,
     imageDataSet?: any,
     imageDescription?: string,
+    imageClasses?: string,
     variant?: string,
     isHero?: boolean,
     isVideo?: boolean,
@@ -122,6 +125,7 @@ const props = withDefaults(defineProps<IProps>(), {
     imageString: '',
     imageDataSet: null,
     imageDescription: '',
+    imageClasses: '',
     variant: 'fullwidth',
     isHero: false,
     isVideo: false,
@@ -143,6 +147,7 @@ const {
     imageString,
     imageDataSet,
     imageDescription,
+    imageClasses,
     variant,
     isHero,
     isVideo,
