@@ -26,7 +26,7 @@
         <VsContainer>
             <VsRow>
                 <VsCol>
-                    <div
+                    <figure
                         class="vs-br-media"
                         :class="{
                             'vs-br-media--mobile-overlap': mobileOverlap,
@@ -69,7 +69,7 @@
                                 </template>
                             </VsMediaCaption>
                         </figcaption>
-                    </div>
+                    </figure>
                 </VsCol>
             </VsRow>
         </VsContainer>

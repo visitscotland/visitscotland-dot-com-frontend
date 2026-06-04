@@ -85,6 +85,27 @@
             :full-bleed="true"
             class="mt-n250"
         />
+
+        <VsContentSwiper
+            v-if="module.mediaSection.type === 'carousel'"
+            :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
+            :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
+            :contained="false"
+            :slides-per-view-lg="2.2"
+        >
+            <VsContentSwiperSlide
+                v-for="(image, index) in module.mediaSection.items"
+                :key="'image-group-' + index"
+                v-show="image.cmsImage"
+            >
+                <figure class="w-100">
+                    <VsBrMedia
+                        :image="image.cmsImage"
+                        :image-description="image.description"
+                    />
+                </figure>
+            </VsContentSwiperSlide>
+        </VsContentSwiper>
     </div>
 </template>
 
@@ -97,6 +118,9 @@ import {
     VsCol,
     VsHeading,
     VsBody,
+    VsContentSwiper,
+    VsContentSwiperSlide,
+    VsMediaCaption,
 } from '@visitscotland/component-library/components';
 
 import VsBrVideoModal from './VsBrVideoModal.vue';
