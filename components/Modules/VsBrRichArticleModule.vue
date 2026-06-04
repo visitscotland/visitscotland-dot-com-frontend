@@ -74,14 +74,18 @@
         </VsRow>
     </VsContainer>
 
-    <VsBrMedia
-        v-if="module.image && checkFlags('rich-article-images')"
-        :image="module.image.cmsImage"
-        :image-description="module.image.description"
-        :full-bleed="true"
-        class="mt-n250"
+    <div
+        v-if="module.mediaSection && checkFlags('rich-article-images')"
         :class="nextModuleArticle ? 'mb-n250' : ''"
-    />
+    >
+        <VsBrMedia
+            v-if="module.mediaSection.type === 'image'"
+            :image="module.mediaSection.image.cmsImage"
+            :image-description="module.mediaSection.image.description"
+            :full-bleed="true"
+            class="mt-n250"
+        />
+    </div>
 </template>
 
 <script lang="ts" setup>

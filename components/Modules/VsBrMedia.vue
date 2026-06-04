@@ -23,48 +23,54 @@
         </template>
     </VsBrImageWithCaption>
     <template v-else>
-        <div
-            class="vs-br-media"
-            :class="{
-                'vs-br-media--mobile-overlap': mobileOverlap,
-                'vs-br-media--full-bleed': fullBleed,
-            }"
-        >
-            <div class="vs-br-media__img-wrapper">
-                <VsImg
-                    :src="imageSrc"
-                    :alt="altText"
-                    class="vs-br-media__img"
-                    :class="rounded ? 'rounded-2' : ''"
-                />
-            </div>
-            <VsMediaCaption
-                v-if="imageData"
-                :right-align="alignment === 'right'"
-            >
-                <template #caption>
-                    {{ descriptionString }}
-                </template>
-                <template #credit>
-                    <template
-                        v-if="imageData.source"
+        <VsContainer>
+            <VsRow>
+                <VsCol>
+                    <div
+                        class="vs-br-media"
+                        :class="{
+                            'vs-br-media--mobile-overlap': mobileOverlap,
+                            'vs-br-media--full-bleed': fullBleed,
+                        }"
                     >
-                        <VsSocialCreditLink
-                            :credit="imageData.credit
-                                ? imageData.credit
-                                : configStore.getLabel('essentials.global', 'image.no.credit')"
-                            :social-post-url="imageData.postUrl ? imageData.postUrl : ''"
-                            :source="imageData.source"
-                        />
-                    </template>
-                    <template
-                        v-if="!imageData.source && imageData.credit"
-                    >
-                        &copy; {{ imageData.credit }}
-                    </template>
-                </template>
-            </VsMediaCaption>
-        </div>
+                        <div class="vs-br-media__img-wrapper">
+                            <VsImg
+                                :src="imageSrc"
+                                :alt="altText"
+                                class="vs-br-media__img"
+                                :class="rounded ? 'rounded-2' : ''"
+                            />
+                        </div>
+                        <VsMediaCaption
+                            v-if="imageData"
+                            :right-align="alignment === 'right'"
+                        >
+                            <template #caption>
+                                {{ descriptionString }}
+                            </template>
+                            <template #credit>
+                                <template
+                                    v-if="imageData.source"
+                                >
+                                    <VsSocialCreditLink
+                                        :credit="imageData.credit
+                                            ? imageData.credit
+                                            : configStore.getLabel('essentials.global', 'image.no.credit')"
+                                        :social-post-url="imageData.postUrl ? imageData.postUrl : ''"
+                                        :source="imageData.source"
+                                    />
+                                </template>
+                                <template
+                                    v-if="!imageData.source && imageData.credit"
+                                >
+                                    &copy; {{ imageData.credit }}
+                                </template>
+                            </template>
+                        </VsMediaCaption>
+                    </div>
+                </VsCol>
+            </VsRow>
+        </VsContainer>
     </template>
 </template>
 
@@ -79,6 +85,9 @@ import {
     VsImg,
     VsMediaCaption,
     VsSocialCreditLink,
+    VsContainer,
+    VsRow,
+    VsCol,
 } from '@visitscotland/component-library/components';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
