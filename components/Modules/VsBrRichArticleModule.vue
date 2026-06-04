@@ -92,6 +92,7 @@
             :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
             :contained="false"
             :slides-per-view-lg="2.2"
+            class="mt-n250"
         >
             <VsContentSwiperSlide
                 v-for="(image, index) in module.mediaSection.items"
