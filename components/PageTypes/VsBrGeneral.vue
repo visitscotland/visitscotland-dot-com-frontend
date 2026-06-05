@@ -16,7 +16,7 @@
                     :content="documentData"
                 >
                     <template
-                        v-if="favourites.isDisplayPage && !favourites.isSharePage"
+                        v-if="favourites.isDisplayPage && !favourites.isSharePage && checkFlags('show-share')"
                         #button
                     >
                         <VsBrFavouriteShare />
