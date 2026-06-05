@@ -99,12 +99,11 @@
                 :key="'image-group-' + index"
                 v-show="image.cmsImage"
             >
-                <figure class="w-100">
-                    <VsBrMedia
-                        :image="image.cmsImage"
-                        :image-description="image.description"
-                    />
-                </figure>
+                <VsBrMedia
+                    :image="image.cmsImage"
+                    :image-description="image.description"
+                    class="w-100"
+                />
             </VsContentSwiperSlide>
         </VsContentSwiper>
     </div>
