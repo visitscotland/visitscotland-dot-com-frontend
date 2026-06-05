@@ -19,8 +19,8 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.15.2",
-    "@types/node": "^22.0.0",
-    "eslint": "^10.2.0",
+    "@types/node": "^25.9.1",
+    "eslint": "^10.4.0",
     "husky": "^9.1.7",
     "nuxt": "^4.0.0",
     "nuxt-lazy-hydrate": "^1.0.0"
@@ -29,8 +29,8 @@
     "@bloomreach/spa-sdk": "^27.2.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^0.11.3",
-    "@visitscotland/component-library": "5.53.1",
-    "axios": "^1.15.0",
+    "@visitscotland/component-library": "5.59.4",
+    "axios": "^1.16.1",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "html-entities": "^2.6.0",
@@ -38,9 +38,9 @@
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^2.0.8",
     "pinia": "^3.0.4",
-    "sass": "^1.81.0",
+    "sass": "^1.99.0",
     "standard-version": "^9.5.0",
-    "typescript": "^5.7.0"
+    "typescript": "^6.0.3"
   },
   "overrides": {
     "minimist": "latest",
