@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mt-500">
         <div class="mb-050">
             <VsBrSectionHeader
                 :heading="module.title"
