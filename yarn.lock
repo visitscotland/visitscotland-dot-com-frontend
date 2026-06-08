@@ -3698,9 +3698,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@visitscotland/component-library@npm:5.59.4":
-  version: 5.59.4
-  resolution: "@visitscotland/component-library@npm:5.59.4"
+"@visitscotland/component-library@npm:5.59.5":
+  version: 5.59.5
+  resolution: "@visitscotland/component-library@npm:5.59.5"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.6"
     "@googlemaps/js-api-loader": "npm:^2.0.1"
@@ -3732,7 +3732,7 @@ __metadata:
   dependenciesMeta:
     husky:
       built: true
-  checksum: 10c0/04656ad59b66d2de5462993ff556a9b340b8d84942b23fa405bf42e1556a5ef0543ef0345827ee5eed1a1e418e13218bf3ec8569a88b0bc6b451fb783192ae98
+  checksum: 10c0/95dc092e56e948f2939a7e78686a02fc6e9ac5b7381071e1377b4f559f76906f94b7a33441e18ff75a906522fa7716b428af7ce66c83d10ccde79fa79e2c7bf8
   languageName: node
   linkType: hard
 
@@ -10230,7 +10230,7 @@ __metadata:
     "@nuxt/eslint-config": "npm:^1.15.2"
     "@pinia/nuxt": "npm:^0.11.3"
     "@types/node": "npm:^25.9.1"
-    "@visitscotland/component-library": "npm:5.59.4"
+    "@visitscotland/component-library": "npm:5.59.5"
     axios: "npm:^1.16.1"
     commitizen: "npm:^4.3.1"
     cz-conventional-changelog: "npm:^3.3.0"
