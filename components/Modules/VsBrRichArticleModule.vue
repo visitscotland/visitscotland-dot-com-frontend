@@ -88,7 +88,7 @@
 
         <VsBrMedia
             v-else-if="module.mediaSection.type === 'video'"
-            video-id="Nz2iwpqsPlI"
+            :video-id="module.mediaSection.video.youtubeId"
             :video-with-media-caption="true"
             class="mt-n250"
         >
@@ -106,15 +106,27 @@
             class="mt-n250"
         >
             <VsContentSwiperSlide
-                v-for="(image, index) in module.mediaSection.items"
+                v-for="(slide, index) in module.mediaSection.items"
                 :key="'image-group-' + index"
-                v-show="image.cmsImage"
             >
                 <VsBrMedia
-                    :image="image.cmsImage"
-                    :image-description="image.description"
+                    v-if="slide.type === 'VIDEO'"
+                    :video-id="slide.youtubeId"
+                    :video-with-media-caption="true"
+                    class="w-100"
+                >
+                    <template #video-title>
+                        {{ slide.label }}
+                    </template>
+                </VsBrMedia>
+
+                <VsBrMedia
+                    v-else
+                    :image="slide.cmsImage"
+                    :image-description="slide.description"
                     class="w-100"
                 />
+
             </VsContentSwiperSlide>
         </VsContentSwiper>
     </div>
