@@ -9,10 +9,21 @@
             :image="heroImage"
         />
     </template>
-    <template v-else-if="configStore.isFavouritesPage">
-        <VsBrHeroSection
-            :content="documentData"
-        />
+    <template v-else-if="favourites.isDisplayPage">
+        <VsContainer class="mt-075 py-150 py-lg-300 ">
+            <VsRow>
+                <VsBrHeroHeading
+                    :content="documentData"
+                >
+                    <template
+                        v-if="favourites.isDisplayPage && !favourites.isSharePage && checkFlags('show-share')"
+                        #button
+                    >
+                        <VsBrFavouriteShare />
+                    </template>
+                </VsBrHeroHeading>
+            </VsRow>
+        </VsContainer>
     </template>
     <template v-else-if="documentData.theme === 'Top-Level'">
         <VsBrHeroSection
@@ -165,6 +176,7 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
 import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
@@ -198,6 +210,7 @@ let heroImage = {
 let otyml : any = null;
 
 const configStore = useConfigStore();
+const favourites = useFavourites();
 
 let firstModuleIsLink = false;
 let isSearchResultsPage = false;

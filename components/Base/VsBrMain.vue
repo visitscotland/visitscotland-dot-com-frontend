@@ -61,6 +61,7 @@ import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 import forceHttps from '~/composables/forceHttps.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
@@ -86,6 +87,7 @@ let pageDocument : any = {
 let hasStops = null;
 
 const configStore = useConfigStore();
+const favourites = useFavourites();
 
 if (page.value) {
     pageComponent = page.value.getComponent();
@@ -136,10 +138,16 @@ if (page.value) {
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
         configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
-        configStore.allowFavourite = componentModels.pageConfiguration['allow-favourite'];
-        configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
-        configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
-        configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
+
+        favourites.isDisplayPage = componentModels.pageConfiguration['is-favourites-page'];
+        favourites.isSharePage = componentModels.pageConfiguration['is-favourites-share-page'];
+        favourites.pageEnabled = componentModels.pageConfiguration['allow-favourite'];
+        favourites.featureEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
+        favourites.displaySavedUrl = componentModels.pageConfiguration['feature.favourites.url'];
+        favourites.brGetPagesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
+        favourites.serviceUrl = componentModels.pageConfiguration['feature.favourites.share-service-base-url'];
+        favourites.displaySharedUrl = componentModels.pageConfiguration['feature.favourites.share-url'];
+
         configStore.mainMapPath = componentModels.pageConfiguration['main-map-path'];
 
         if (componentModels.heroVideo) {
@@ -152,10 +160,6 @@ if (page.value) {
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
-        }
-
-        if (componentModels.pageConfiguration['is-favourites-page']) {
-            configStore.isFavouritesPage = true;
         }
 
         if (componentModels.pageConfiguration.searchWidget) {

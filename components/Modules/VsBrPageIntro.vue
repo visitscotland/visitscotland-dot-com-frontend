@@ -88,10 +88,10 @@
                     </p>
                 </div>
                 <div
-                    v-if="configStore.featureFavouritesEnabled && configStore.allowFavourite"
+                    v-if="favourites.featureEnabled && favourites.pageEnabled"
                     class="d-flex flex-column flex-md-row"
                 >
-                    <VsBrSaveContentButton
+                    <VsBrFavouriteButton
                         :uuid="content.id"
                         :gtm-data="{ title: content.title, }"
                     />
@@ -105,7 +105,7 @@
             v-if="itinerary"
             #vs-intro-start-finish
         >
-            <div :class="configStore.featureFavouritesEnabled && configStore.allowFavourite ? 'mt-200' : ''">
+            <div :class="favourites.featureEnabled && favourites.pageEnabled ? 'mt-200' : ''">
                 <dt class="list-inline-item ">
                     {{ configStore.getLabel("itinerary", "start-finish") }}
                 </dt>
@@ -181,6 +181,7 @@ import {
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 import themeCalculator from '~/composables/themeCalculator.ts';
 import extractYoutubeId from '~/composables/extractYoutubeId.ts';
 
@@ -189,9 +190,10 @@ import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
 import VsBrVideoModal from '~/components/Modules/VsBrVideoModal.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrItinerarySummaryBox from '~/components/Modules/VsBrItinerarySummaryBox.vue';
-import VsBrSaveContentButton from '~/components/Modules/VsBrSaveContentButton.vue';
+import VsBrFavouriteButton from '~/components/Modules/VsBrFavouriteButton.vue';
 
 const configStore = useConfigStore();
+const favourites = useFavourites();
 
 const page: any = inject('page');
 
