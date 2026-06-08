@@ -1,6 +1,6 @@
 <template>
     <VsBrImageWithCaption
-        v-if="videoId"
+        v-if="videoId && !videoWithMediaCaption"
         :image="image"
         :image-string="imageString"
         :image-data-set="imageDataSet"
@@ -33,7 +33,10 @@
                             'vs-br-media--full-bleed': fullBleed,
                         }"
                     >
-                        <div class="vs-br-media__img-wrapper">
+                        <div
+                            class="vs-br-media__img-wrapper"
+                            v-if="!videoId"
+                        >
                             <VsImg
                                 :src="imageSrc"
                                 :alt="altText"
@@ -41,6 +44,16 @@
                                 :class="`${imageClasses} ${rounded ? 'rounded-2' : ''}`"
                             />
                         </div>
+                        <div v-else>
+                            <VsVideo
+                                :video-id="videoId"
+                                :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
+                                :no-js-message="configStore.getLabel('video', 'video.no-js')"
+                                :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
+                                :cookie-link-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+                            />
+                        </div>
+
                         <figcaption>
                             <VsMediaCaption
                                 v-if="imageData"
@@ -68,6 +81,14 @@
                                     </template>
                                 </template>
                             </VsMediaCaption>
+                            <VsMediaCaption
+                                v-else-if="videoId"
+                                :video-id="videoId"
+                            >
+                                <template #caption>
+                                    <slot name="video-title" />
+                                </template>
+                            </VsMediaCaption>
                         </figcaption>
                     </figure>
                 </VsCol>
@@ -90,6 +111,7 @@ import {
     VsContainer,
     VsRow,
     VsCol,
+    VsVideo,
 } from '@visitscotland/component-library/components';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
@@ -118,6 +140,7 @@ interface IProps {
     showToggle?: boolean,
     rounded?: boolean,
     fullBleed?: boolean,
+    videoWithMediaCaption?: boolean,
 };
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -140,6 +163,7 @@ const props = withDefaults(defineProps<IProps>(), {
     videoBtn: '',
     rounded: false,
     fullBleed: false,
+    videoWithMediaCaption: false,
 });
 
 const {
@@ -161,6 +185,7 @@ const {
     noAltText,
     showToggle,
     fullBleed,
+    videoWithMediaCaption,
 } = toRefs(props);
 
 const page: Page | undefined = inject('page');

@@ -86,8 +86,19 @@
             class="mt-n250"
         />
 
+        <VsBrMedia
+            v-else-if="module.mediaSection.type === 'video'"
+            video-id="Nz2iwpqsPlI"
+            :video-with-media-caption="true"
+            class="mt-n250"
+        >
+            <template #video-title>
+                {{ module.mediaSection.video.label }}
+            </template>
+        </VsBrMedia>
+
         <VsContentSwiper
-            v-if="module.mediaSection.type === 'carousel'"
+            v-else-if="module.mediaSection.type === 'carousel'"
             :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
             :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
             :contained="false"
@@ -120,7 +131,6 @@ import {
     VsBody,
     VsContentSwiper,
     VsContentSwiperSlide,
-    VsMediaCaption,
 } from '@visitscotland/component-library/components';
 
 import VsBrVideoModal from './VsBrVideoModal.vue';
