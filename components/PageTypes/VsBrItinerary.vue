@@ -1,5 +1,5 @@
 <template>
-    <VsContainer class="mt-200">
+    <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol
                 cols="10"
@@ -9,7 +9,7 @@
             </VsCol>
         </VsRow>
     </VsContainer>
-    <VsContainer class="mt-150 mt-lg-250">
+    <VsContainer class="mt-250">
         <VsRow>
             <VsBrHeroHeading
                 :content="documentData"
