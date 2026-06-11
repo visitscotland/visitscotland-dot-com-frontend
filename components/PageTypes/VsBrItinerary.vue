@@ -1,5 +1,15 @@
 <template>
-    <VsContainer class="pt-300 pt-lg-500">
+    <VsContainer class="mt-075 mt-lg-200">
+        <VsRow>
+            <VsCol
+                cols="10"
+                lg="8"
+            >
+                <VsBrBreadcrumb />
+            </VsCol>
+        </VsRow>
+    </VsContainer>
+    <VsContainer class="mt-250">
         <VsRow>
             <VsBrHeroHeading
                 :content="documentData"
