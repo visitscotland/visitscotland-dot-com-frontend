@@ -282,7 +282,7 @@ onMounted(() => {
     dataLayerHelper.createDataLayerObject('favouritesPageViewEvent', {
         favourite_owner: favourites.isSharePage ? 'other' : 'self',
         total_favourites: favourites.pages.length,
-        shared_list_id: ' ',
+        shared_list_id: favourites.shareId,
     });
 
     const id = window.location.href.split('?share-id=')[1] || '';

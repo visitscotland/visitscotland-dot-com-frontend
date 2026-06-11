@@ -11,6 +11,7 @@ import {
     favouriteRemoveTemplate,
     favouritesPageViewTemplate,
     favouritesClickTemplate,
+    favouritesShareTemplate,
 } from '~/utls/date-layer-template.ts';
 
 /**
@@ -211,6 +212,18 @@ export default function dataLayerComposable() {
             };
             fullTemplate = compileFullTemplate(templateValues);
             dataLayerData = templateFiller(favouritesClickTemplate, fullTemplate);
+            break;
+
+        case 'favouritesShareEvent':
+            eventName = 'favourites_share';
+            templateValues = {
+                event: eventName,
+                favourite_owner: event.favourite_owner,
+                total_favourites: event.total_favourites,
+                shared_list_id: event.shared_list_id,
+            };
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(favouritesShareTemplate, fullTemplate);
             break;
 
         default:
