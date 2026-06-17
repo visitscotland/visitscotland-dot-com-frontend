@@ -63,20 +63,25 @@
                     <VsHeading level="3" class="sr-only">
                         Transport
                     </VsHeading>
-                    <ul class="d-inline-flex gap-050">
-                        <li
-                            v-for="type in transportTypes"
-                            :key="type.key"
-                            class="itinerary-inline-list-item d-inline-flex gap-050 align-items-baseline vs-detail--tertiary"
-                        >
-                            <VsIcon
-                                size="xs"
-                                :icon="transportIcon[type.key]"
-                                variant="tertiary"
-                            />
-                            {{ type.displayName }} 
-                        </li>
-                    </ul>   
+                    <VsDetail
+                        no-margins
+                        color="tertiary"
+                    >
+                        <ul class="d-inline-flex gap-050">
+                            <li
+                                v-for="type in transportTypes"
+                                :key="type.key"
+                                class="itinerary-inline-list-item d-inline-flex gap-050 align-items-baseline"
+                            >
+                                <VsIcon
+                                    size="xs"
+                                    :icon="transportIcon[type.key]"
+                                    variant="tertiary"
+                                />
+                                {{ type.displayName }} 
+                            </li>
+                        </ul>
+                    </VsDetail>
                     <VsHeading level="3" class="sr-only">
                         Distance
                     </VsHeading>
@@ -89,13 +94,32 @@
                         {{ distanceText }}
                     </VsDetail>
                     <VsHeading level="3" class="sr-only">
-                        Seasons
+                        Seasons to visit
                     </VsHeading>
+                    <VsDetail
+                        no-margins
+                        color="tertiary"
+                    >
+                        <ul class="d-inline-flex gap-050 flex-wrap">
+                            <li
+                                v-for="season in seasonInfo"
+                                :key="season.key"
+                                class="itinerary-inline-list-item d-inline-flex gap-050 align-items-baseline"
+                            >
+                                <VsIcon
+                                    size="xs"
+                                    :icon="seasonIcon[season.key]"
+                                    variant="tertiary"
+                                />
+                                {{ season.displayName }} 
+                            </li>
+                        </ul>
+                    </VsDetail> 
                     <div
                         class="
-                        d-flex flex-column
-                        flex-md-row
-                        gap-075 gap-md-150
+                            d-flex flex-column
+                            flex-md-row
+                            gap-075 gap-md-150
                         "
                     >
                         <VsButton
@@ -321,8 +345,8 @@ const daySingular = configStore.getLabel('itinerary', 'day').toLowerCase();
 const daysPlural = configStore.getLabel('itinerary', 'days').toLowerCase();
 let durationText = null;
 
-let locationNames = '';
-// let seasonsText = '';
+let locationNames = [];
+let seasonInfo = [];
 let transportTypes = [];
 
 const iframeMap = '<iframe src="https://www.google.com/maps/d/embed?mid=1opRH3EcaGmDNxCc11CWWqGJzNf4xr4k&ehbc=2E312F" width="640" height="480"></iframe>';
@@ -358,6 +382,12 @@ const themeIcon = {
     whisky: 'fa-regular fa-whiskey-glass-ice',
     sightseeing: 'fa-regular fa-binoculars',
 };
+const seasonIcon = {
+    spring: 'vs-icon-season-spring',
+    summer: 'vs-icon-season-summer',
+    autumn: 'vs-icon-season-autumn',
+    winter: 'vs-icon-season-winter',
+};
 
 let otyml : any = null;
 
@@ -383,13 +413,9 @@ if (page.value) {
         distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm }${ kmLabel })`;
 
         locationNames = component.value.model.models.pageIntro.locations;
-        // seasonsText = component.value.model.models.pageIntro.seasons.join(' | ');
+        seasonInfo = component.value.model.models.pageIntro.seasons;
         transportTypes = component.value.model.models.pageIntro.transports;
     }
-
-    // const transportsText = computed(() => {
-    //     return component.value.model.models.pageIntro.transports.map((item) => item.key ).join(' | ');
-    // });
 }
 </script>
 
