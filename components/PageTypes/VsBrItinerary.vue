@@ -21,6 +21,97 @@
                 :image="documentData.image"
             />
         </div>
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+                <VsPanel>
+                    <VsHeading level="2" heading-style="heading-s" no-margins>
+                        {{ configStore.getLabel('itinerary', 'key-information') }}
+                    </VsHeading>
+                    <VsHeading level="3" class="sr-only">
+                        Locations
+                    </VsHeading>
+                    <VsDetail
+                        no-margins
+                        color="tertiary"
+                        icon="fa-regular fa-location-dot"
+                        icon-variant="tertiary"
+                    >
+
+                        <ul 
+                            class="d-inline-flex gap-050"
+                        >
+                            <li
+                                v-for="location in locationNames"
+                                :key="location"
+                                class="itinerary-inline-list-item d-inline-flex gap-050 align-items-baseline"
+                            >
+                                {{ location.charAt(0).toUpperCase() + location.slice(1) }}
+                            </li>
+                        </ul>
+                        <VsHeading level="3" class="sr-only">
+                            Duration
+                        </VsHeading>
+                    </VsDetail>
+                    <VsDetail
+                        no-margins
+                        color="tertiary"
+                        icon="fa-regular fa-calendar-range"
+                        icon-variant="tertiary"
+                    >
+                        {{ durationText }}
+                    </VsDetail>
+                    <VsHeading level="3" class="sr-only">
+                        Transport
+                    </VsHeading>
+                    <ul class="d-inline-flex gap-050">
+                        <li
+                            v-for="type in transportTypes"
+                            :key="type.key"
+                            class="itinerary-inline-list-item d-inline-flex gap-050 align-items-baseline vs-detail--tertiary"
+                        >
+                            <VsIcon
+                                size="xs"
+                                :icon="transportIcon[type.key]"
+                                variant="tertiary"
+                            />
+                            {{ type.displayName }} 
+                        </li>
+                    </ul>   
+                    <VsHeading level="3" class="sr-only">
+                        Distance
+                    </VsHeading>
+                    <VsDetail
+                        no-margins
+                        color="tertiary"
+                        icon="fa-regular fa-route"
+                        icon-variant="tertiary"
+                    >
+                        {{ distanceText }}
+                    </VsDetail>
+                    <VsHeading level="3" class="sr-only">
+                        Seasons
+                    </VsHeading>
+                    <div
+                        class="
+                        d-flex flex-column
+                        flex-md-row
+                        gap-075 gap-md-150
+                        "
+                    >
+                        <VsButton
+                            :href="itineraryMap.link"
+                            icon="fa-regular fa-binoculars"
+                            size="md"
+                        >
+                            {{ itineraryCta }}
+                        </VsButton>
+                    </div>
+                </VsPanel>
+            </div>
+            <div class="col-12 col-md-6 col-lg-8 mt-075 mt-md-0 responsive-map">
+                <div v-html="iframeMap" class=""/>
+            </div>  
+        </div>
     </VsContainer>
     <div class="d-flex flex-column gap-500 mt-500">
         <VsContainer>
@@ -201,6 +292,7 @@ import {
     VsIllustratedMap,
     VsDetail,
     VsButton,
+    VsIcon,
 } from '@visitscotland/component-library/components';
 
 
@@ -228,6 +320,12 @@ let numberOfDays = null;
 const daySingular = configStore.getLabel('itinerary', 'day').toLowerCase();
 const daysPlural = configStore.getLabel('itinerary', 'days').toLowerCase();
 let durationText = null;
+
+let locationNames = '';
+// let seasonsText = '';
+let transportTypes = [];
+
+const iframeMap = '<iframe src="https://www.google.com/maps/d/embed?mid=1opRH3EcaGmDNxCc11CWWqGJzNf4xr4k&ehbc=2E312F" width="640" height="480"></iframe>';
 
 const milesLabel = configStore.getLabel('itinerary', 'miles');
 const kmLabel = configStore.getLabel('itinerary', 'kilometres-abbreviation');
@@ -283,6 +381,38 @@ if (page.value) {
         numberOfMiles = Math.round(pageIntro.distance);
         numberOfKm = Math.round(numberOfMiles * 1.6093);
         distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm }${ kmLabel })`;
+
+        locationNames = component.value.model.models.pageIntro.locations;
+        // seasonsText = component.value.model.models.pageIntro.seasons.join(' | ');
+        transportTypes = component.value.model.models.pageIntro.transports;
     }
+
+    // const transportsText = computed(() => {
+    //     return component.value.model.models.pageIntro.transports.map((item) => item.key ).join(' | ');
+    // });
 }
 </script>
+
+<style>
+.responsive-map {
+    position:relative;
+    overflow:hidden;
+    padding-bottom: 56.25%;
+    height: 0;
+    border-radius: 12px;
+}
+
+.responsive-map iframe {
+    left: 0;
+    top: 0;
+    height:100%;
+    width:100%;
+    position: absolute;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+li.itinerary-inline-list-item + li.itinerary-inline-list-item::before {
+    content: "|  ";
+}
+</style>
