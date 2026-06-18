@@ -27,6 +27,7 @@
                     <VsHeading level="2" heading-style="heading-s" no-margins>
                         {{ configStore.getLabel('itinerary', 'key-information') }}
                     </VsHeading>
+                    <div class="d-flex flex-column gap-100 mt-175 mb-150">
                     <VsHeading level="3" class="sr-only">
                         Locations
                     </VsHeading>
@@ -115,6 +116,7 @@
                             </li>
                         </ul>
                     </VsDetail> 
+                    </div>
                     <div
                         class="
                             d-flex flex-column
