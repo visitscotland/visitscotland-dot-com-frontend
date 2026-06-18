@@ -4457,7 +4457,7 @@ __metadata:
 
 "bootstrap-vue-next@npm:^0.45.4":
   version: 0.45.5
-  resolution: "bootstrap-vue-next@npm:0.45.5"
+  resolution: "bootstrap-vue-next@npm:0.45.4"
   dependencies:
     "@floating-ui/core": "npm:^1.7.5"
     "@floating-ui/vue": "npm:^1.1.11"
