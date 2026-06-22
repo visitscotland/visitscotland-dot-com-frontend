@@ -235,8 +235,8 @@ let pageItems = {
 let areaList = null;
 
 let numberOfDays = null;
-const daySingular = configStore.getLabel('itinerary', 'day').toLowerCase();
-const daysPlural = configStore.getLabel('itinerary', 'days').toLowerCase();
+const daySingular = configStore.getLabel('itinerary', 'day');
+const daysPlural = configStore.getLabel('itinerary', 'days');
 let durationText = null;
 
 const milesLabel = configStore.getLabel('itinerary', 'miles');
@@ -292,7 +292,7 @@ if (page.value) {
         durationText = `${ numberOfDays } ${ numberOfDays === 1 ? daySingular : daysPlural }`;
         numberOfMiles = Math.round(pageIntro.distance);
         numberOfKm = Math.round(numberOfMiles * 1.6093);
-        distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm }${ kmLabel })`;
+        distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm } ${ kmLabel })`;
     }
 }
 </script>
