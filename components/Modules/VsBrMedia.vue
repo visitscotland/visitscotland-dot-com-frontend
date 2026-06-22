@@ -50,7 +50,7 @@
                                 :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
                                 :no-js-message="configStore.getLabel('video', 'video.no-js')"
                                 :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
-                                :cookie-link-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+                                :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
                             />
                         </div>
 
