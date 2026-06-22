@@ -41,13 +41,10 @@
                                 icon-variant="tertiary"
                             >
 
-                                <ul 
-                                    class="d-inline-flex gap-050 flex-wrap"
-                                >
+                                <ul class="vs-itinerary-inline-list">
                                     <li
                                         v-for="location in locationNames"
                                         :key="location"
-                                        class="vs-itinerary-inline-list-item"
                                     >
                                         {{ location.charAt(0).toUpperCase() + location.slice(1) }}
                                     </li>
@@ -71,11 +68,10 @@
                                 no-margins
                                 color="tertiary"
                             >
-                                <ul class="d-inline-flex gap-050">
+                                <ul class="vs-itinerary-inline-list">
                                     <li
                                         v-for="type in transportTypes"
                                         :key="type.key"
-                                        class="vs-itinerary-inline-list-item"
                                     >
                                         <VsIcon
                                             size="xs"
@@ -111,12 +107,11 @@
                                 color="tertiary"
                             >
                                 <ul
-                                    class="d-inline-flex flex-wrap gap-050"
+                                    class="vs-itinerary-inline-list"
                                 >
                                     <li
                                         v-for="season in seasonInfo"
                                         :key="season.key"
-                                        class="vs-itinerary-inline-list-item"
                                     >
                                         <VsIcon
                                             size="xs"
@@ -339,7 +334,7 @@ if (page.value) {
 }
 </script>
 
-<style>
+<style scoped>
 
 .vs-itinerary-map {
     position:relative;
@@ -363,13 +358,19 @@ if (page.value) {
     padding-right: 12px;
 }
 
-.vs-itinerary-inline-list-item {
+.vs-itinerary-inline-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.vs-itinerary-inline-list li {
     display: inline-flex;
     align-items: baseline;
     gap: 0.5rem;
 }
 
-.vs-itinerary-inline-list-item + .vs-itinerary-inline-list-item::before {
+.vs-itinerary-inline-list li + li::before {
     content: "|  ";
 }
 </style>
