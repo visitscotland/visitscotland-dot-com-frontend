@@ -21,101 +21,113 @@
                 :image="documentData.image"
             />
         </div>
-        <div class="row">
-            <div class="col-12 col-md-6 col-lg-4">
-                <VsPanel>
-                    <VsHeading level="2" heading-style="heading-s" no-margins>
-                        {{ configStore.getLabel('itinerary', 'key-information') }}
-                    </VsHeading>
-                    <div class="d-flex flex-column gap-100 mt-175 mb-150">
-                    <VsHeading level="3" class="sr-only">
-                        Locations
-                    </VsHeading>
-                    <VsDetail
-                        no-margins
-                        color="tertiary"
-                        icon="fa-regular fa-location-dot"
-                        icon-variant="tertiary"
-                    >
-
-                        <ul 
-                            class="d-inline-flex gap-050"
-                        >
-                            <li
-                                v-for="location in locationNames"
-                                :key="location"
-                                class="itinerary-inline-list-item d-inline-flex gap-050 align-items-baseline"
-                            >
-                                {{ location.charAt(0).toUpperCase() + location.slice(1) }}
-                            </li>
-                        </ul>
-                        <VsHeading level="3" class="sr-only">
-                            Duration
+        <VsRow class="mt-025">
+            <div
+                class="col-12 col-md-6 col-lg-4"
+            >
+                <VsPanel class="d-flex flex-column justify-content-between">
+                    <div>
+                        <VsHeading level="2" heading-style="heading-s" no-margins>
+                            {{ configStore.getLabel('itinerary', 'key-information') }}
                         </VsHeading>
-                    </VsDetail>
-                    <VsDetail
-                        no-margins
-                        color="tertiary"
-                        icon="fa-regular fa-calendar-range"
-                        icon-variant="tertiary"
-                    >
-                        {{ durationText }}
-                    </VsDetail>
-                    <VsHeading level="3" class="sr-only">
-                        Transport
-                    </VsHeading>
-                    <VsDetail
-                        no-margins
-                        color="tertiary"
-                    >
-                        <ul class="d-inline-flex gap-050">
-                            <li
-                                v-for="type in transportTypes"
-                                :key="type.key"
-                                class="itinerary-inline-list-item d-inline-flex gap-050 align-items-baseline"
+                        <div class="d-flex flex-column gap-100 mt-175 mb-150">
+                            <VsHeading level="3" class="sr-only">
+                                Locations
+                            </VsHeading>
+                            <VsDetail
+                                no-margins
+                                color="tertiary"
+                                icon="fa-regular fa-location-dot"
+                                icon-variant="tertiary"
                             >
-                                <VsIcon
-                                    size="xs"
-                                    :icon="transportIcon[type.key]"
-                                    variant="tertiary"
-                                />
-                                {{ type.displayName }} 
-                            </li>
-                        </ul>
-                    </VsDetail>
-                    <VsHeading level="3" class="sr-only">
-                        Distance
-                    </VsHeading>
-                    <VsDetail
-                        no-margins
-                        color="tertiary"
-                        icon="fa-regular fa-route"
-                        icon-variant="tertiary"
-                    >
-                        {{ distanceText }}
-                    </VsDetail>
-                    <VsHeading level="3" class="sr-only">
-                        Seasons to visit
-                    </VsHeading>
-                    <VsDetail
-                        no-margins
-                        color="tertiary"
-                    >
-                        <ul class="d-inline-flex gap-050 flex-wrap">
-                            <li
-                                v-for="season in seasonInfo"
-                                :key="season.key"
-                                class="itinerary-inline-list-item d-inline-flex gap-050 align-items-baseline"
+
+                                <ul 
+                                    class="d-inline-flex gap-050 flex-wrap"
+                                >
+                                    <li
+                                        v-for="location in locationNames"
+                                        :key="location"
+                                        class="vs-itinerary-inline-list-item"
+                                    >
+                                        {{ location.charAt(0).toUpperCase() + location.slice(1) }}
+                                    </li>
+                                </ul>
+                                <VsHeading level="3" class="sr-only">
+                                    Duration
+                                </VsHeading>
+                            </VsDetail>
+                            <VsDetail
+                                no-margins
+                                color="tertiary"
+                                icon="fa-regular fa-calendar-range"
+                                icon-variant="tertiary"
                             >
-                                <VsIcon
-                                    size="xs"
-                                    :icon="seasonIcon[season.key]"
-                                    variant="tertiary"
-                                />
-                                {{ season.displayName }} 
-                            </li>
-                        </ul>
-                    </VsDetail> 
+                                {{ durationText }}
+                            </VsDetail>
+                            <VsHeading level="3" class="sr-only">
+                                Transport
+                            </VsHeading>
+                            <VsDetail
+                                no-margins
+                                color="tertiary"
+                            >
+                                <ul class="d-inline-flex gap-050">
+                                    <li
+                                        v-for="type in transportTypes"
+                                        :key="type.key"
+                                        class="vs-itinerary-inline-list-item"
+                                    >
+                                        <VsIcon
+                                            size="xs"
+                                            :icon="transportIcon[type.key]"
+                                            variant="tertiary"
+                                        />
+                                        {{ type.displayName }} 
+                                    </li>
+                                </ul>
+                            </VsDetail>
+                            <VsHeading
+                                level="3"
+                                class="sr-only"
+                            >
+                                Distance
+                            </VsHeading>
+                            <VsDetail
+                                no-margins
+                                color="tertiary"
+                                icon="fa-regular fa-route"
+                                icon-variant="tertiary"
+                            >
+                                {{ distanceText }}
+                            </VsDetail>
+                            <VsHeading
+                                level="3"
+                                class="sr-only"
+                            >
+                                Seasons to visit
+                            </VsHeading>
+                            <VsDetail
+                                no-margins
+                                color="tertiary"
+                            >
+                                <ul
+                                    class="d-inline-flex flex-wrap gap-050"
+                                >
+                                    <li
+                                        v-for="season in seasonInfo"
+                                        :key="season.key"
+                                        class="vs-itinerary-inline-list-item"
+                                    >
+                                        <VsIcon
+                                            size="xs"
+                                            :icon="seasonIcon[season.key]"
+                                            variant="tertiary"
+                                        />
+                                        {{ season.displayName }} 
+                                    </li>
+                                </ul>
+                            </VsDetail> 
+                        </div>
                     </div>
                     <div
                         class="
@@ -134,16 +146,25 @@
                     </div>
                 </VsPanel>
             </div>
-            <div class="col-12 col-md-6 col-lg-8 mt-075 mt-md-0 responsive-map">
-                <div v-html="iframeMap" class=""/>
+            <div
+                class="
+                    vs-itinerary-map
+                    col-12 col-md-6 col-lg-8
+                    mt-075 mt-md-0
+                ">
+                <div v-html="pageIntro.iframeMap"/>
             </div>  
-        </div>
+        </VsRow>
     </VsContainer>
-    <div class="d-flex flex-column gap-500 mt-500">
+    <div
+        class="
+            d-flex flex-column gap-500
+            mt-500
+        ">
         <VsContainer>
             <VsRow>
                 <VsCol>
-                    <span class="vs-section-header__divider mb-0" />
+                    <span class="vs-section-header__divider mb-0"/>
                 </VsCol>
             </VsRow>
             <div class="row gap-175 gap-lg-0">
@@ -164,96 +185,16 @@
                     cols="12"
                     lg="8"
                 >
-                    <div class="d-flex flex-column gap-150 gap-md-300">
+                    <div
+                        class="
+                            d-flex flex-column
+                            gap-150 gap-md-300
+                    ">
                         <VsBody>
                             <VsBrRichText
                                 :input-content="documentData.introduction.value"
                             />
                         </VsBody>
-                        <VsPanel>
-                            <VsContainer>
-                                <VsRow class="align-items-center">
-                                    <VsCol cols="12" md="9" class="mb-175 mb-md-0">
-                                        <VsHeading
-                                            heading-style="heading-xs"
-                                            level="3"
-                                            no-margins
-                                            class="mb-125"
-                                        >
-                                            {{ configStore.getLabel('itinerary', 'highlights') }}
-                                        </VsHeading>
-                                        <div class="d-flex flex-wrap column-gap-300 row-gap-150 align-items-end">
-                                            <VsDetail
-                                                no-margins
-                                                color="tertiary"
-                                                :icon="themeIcon[pageIntro.theme.key]"
-                                                icon-variant="tertiary"
-                                            >
-                                                {{ pageIntro.theme.displayName }}
-                                            </VsDetail>
-
-                                            <VsDetail
-                                                no-margins
-                                                color="tertiary"
-                                                icon="fa-regular fa-route"
-                                                icon-variant="tertiary"
-                                            >
-                                                {{ distanceText }}
-                                            </VsDetail>
-
-                                            <VsDetail
-                                                no-margins
-                                                color="tertiary"
-                                                icon="fa-regular fa-calendar-range"
-                                                icon-variant="tertiary"
-                                            >
-                                                {{ durationText }}
-                                            </VsDetail>
-
-                                            <VsDetail
-                                                no-margins
-                                                color="tertiary"
-                                                :icon="transportIcon[pageIntro.transports[0].key]"
-                                                icon-variant="tertiary"
-                                            >
-                                                {{ pageIntro.transports[0].displayName }}
-                                            </VsDetail>
-
-                                            <VsDetail
-                                                no-margins
-                                                color="tertiary"
-                                                icon="fa-regular fa-location-dot"
-                                                icon-variant="tertiary"
-                                            >
-                                                {{ areaList }}
-                                            </VsDetail>
-                                        </div>
-                                    </VsCol>
-                                    <VsCol cols="12" md="3">
-                                        <VsIllustratedMap
-                                            width="145px"
-                                            class="d-block mx-auto"
-                                            :highlighted-regions="mapAreas"
-                                        />
-                                    </VsCol>
-                                </VsRow>
-                            </VsContainer>
-                        </VsPanel>
-                        <div
-                            class="
-                            d-flex flex-column
-                            flex-md-row
-                            gap-075 gap-md-150
-                        "
-                        >
-                            <VsButton
-                                :href="itineraryMap.link"
-                                icon="fa-regular fa-binoculars"
-                                size="md"
-                            >
-                                {{ itineraryCta }}
-                            </VsButton>
-                        </div>
                     </div>
                 </VsCol>
             </div>
@@ -315,7 +256,6 @@ import {
     VsRow,
     VsCol,
     VsPanel,
-    VsIllustratedMap,
     VsDetail,
     VsButton,
     VsIcon,
@@ -330,17 +270,13 @@ const { page, component } = toRefs(props);
 
 let documentData : any = {
 };
-let pageIntro = {
-};
-let mapAreas = null;
-let itineraryMap = null;
-
-let numberOfMiles = null;
-let numberOfKm = null;
-
 let pageItems = {
 };
-let areaList = null;
+let pageIntro = {
+};
+let itineraryMap = null;
+let numberOfMiles = null;
+let numberOfKm = null;
 
 let numberOfDays = null;
 const daySingular = configStore.getLabel('itinerary', 'day').toLowerCase();
@@ -350,8 +286,6 @@ let durationText = null;
 let locationNames = [];
 let seasonInfo = [];
 let transportTypes = [];
-
-const iframeMap = '<iframe src="https://www.google.com/maps/d/embed?mid=1opRH3EcaGmDNxCc11CWWqGJzNf4xr4k&ehbc=2E312F" width="640" height="480"></iframe>';
 
 const milesLabel = configStore.getLabel('itinerary', 'miles');
 const kmLabel = configStore.getLabel('itinerary', 'kilometres-abbreviation');
@@ -370,20 +304,6 @@ const transportIcon = {
     walking: 'fa-regular fa-person-walking',
 };
 
-const themeIcon = {
-    acti: 'fa-regular fa-person-hiking',
-    castle: 'fa-regular fa-chess-rook',
-    city: 'fa-regular fa-city',
-    familyev: 'fa-regular fa-family',
-    history: 'fa-regular fa-landmark',
-    islands: 'fa-regular fa-island-tropical',
-    landscape: 'fa-regular fa-mountain',
-    landscapes: 'fa-regular fa-mountains',
-    filmev: 'fa-regular fa-camera-movie',
-    spahealth: 'fa-regular fa-spa',
-    whisky: 'fa-regular fa-whiskey-glass-ice',
-    sightseeing: 'fa-regular fa-binoculars',
-};
 const seasonIcon = {
     spring: 'vs-icon-season-spring',
     summer: 'vs-icon-season-summer',
@@ -406,8 +326,6 @@ if (page.value) {
     if (component.value) {
         pageItems = component.value.model.models.pageItems;
         pageIntro = component.value.model.models.pageIntro;
-        mapAreas = pageIntro.areas.map((area) => area.key);
-        areaList = pageIntro.areas.map((area) => area.displayName).join('; ');
         numberOfDays = pageIntro.dayCount;
         durationText = `${ numberOfDays } ${ numberOfDays === 1 ? daySingular : daysPlural }`;
         numberOfMiles = Math.round(pageIntro.distance);
@@ -422,15 +340,20 @@ if (page.value) {
 </script>
 
 <style>
-.responsive-map {
+
+.vs-itinerary-map {
     position:relative;
     overflow:hidden;
-    padding-bottom: 56.25%;
-    height: 0;
-    border-radius: 12px;
+    height: 75vh;
 }
 
-.responsive-map iframe {
+@media (min-width: 767px) {
+    .vs-itinerary-map {
+        height: auto;
+    }
+}
+
+.vs-itinerary-map iframe {
     left: 0;
     top: 0;
     height:100%;
@@ -440,7 +363,13 @@ if (page.value) {
     padding-right: 12px;
 }
 
-li.itinerary-inline-list-item + li.itinerary-inline-list-item::before {
+.vs-itinerary-inline-list-item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.vs-itinerary-inline-list-item + .vs-itinerary-inline-list-item::before {
     content: "|  ";
 }
 </style>
