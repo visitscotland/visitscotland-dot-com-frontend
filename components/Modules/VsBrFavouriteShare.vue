@@ -15,9 +15,11 @@ import { onMounted } from 'vue';
 import { VsButton } from '@visitscotland/component-library/components';
 import { useFavourites } from '~/stores/favouritesStore.ts';
 import useConfigStore from '~/stores/configStore.ts';
+import dataLayerComposable from '~/composables/dataLayer.ts';
 
 const favourites = useFavourites();
 const configStore = useConfigStore();
+const dataLayerHelper = dataLayerComposable();
 
 const createListEndpoint = `${favourites.serviceUrl}/create-list`;
 const updateListEndpoint = `${favourites.serviceUrl}/update-list`;
@@ -80,6 +82,11 @@ const copyUrl = () => {
     }
 
     linkCopied.value = true;
+    dataLayerHelper.createDataLayerObject('favouritesShareEvent', {
+        favourite_owner: 'self',
+        total_favourites: favourites.pages.length,
+        shared_list_id: favourites.shareId,
+    });
 
     setTimeout(() => {
         linkCopied.value = false;

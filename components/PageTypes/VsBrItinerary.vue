@@ -1,5 +1,15 @@
 <template>
-    <VsContainer class="pt-300 pt-lg-500">
+    <VsContainer class="mt-075 mt-lg-200">
+        <VsRow>
+            <VsCol
+                cols="10"
+                lg="8"
+            >
+                <VsBrBreadcrumb />
+            </VsCol>
+        </VsRow>
+    </VsContainer>
+    <VsContainer class="mt-250">
         <VsRow>
             <VsBrHeroHeading
                 :content="documentData"
@@ -285,8 +295,8 @@ let numberOfMiles = null;
 let numberOfKm = null;
 
 let numberOfDays = null;
-const daySingular = configStore.getLabel('itinerary', 'day').toLowerCase();
-const daysPlural = configStore.getLabel('itinerary', 'days').toLowerCase();
+const daySingular = configStore.getLabel('itinerary', 'day');
+const daysPlural = configStore.getLabel('itinerary', 'days');
 let durationText = null;
 
 let locationNames = [];
@@ -337,8 +347,7 @@ if (page.value) {
         durationText = `${ numberOfDays } ${ numberOfDays === 1 ? daySingular : daysPlural }`;
         numberOfMiles = Math.round(pageIntro.distance);
         numberOfKm = Math.round(numberOfMiles * 1.6093);
-        distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm }${ kmLabel })`;
-
+        distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm } ${ kmLabel })`;
         locationNames = component.value.model.models.pageIntro.locations;
         seasonInfo = component.value.model.models.pageIntro.seasons;
         transportTypes = component.value.model.models.pageIntro.transports;

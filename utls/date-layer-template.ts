@@ -70,6 +70,13 @@ const favouritesClickTemplate = [
     'interaction_timestamp_ms',
 ];
 
+const favouritesShareTemplate = [
+    'event',
+    'favourite_owner',
+    'total_favourites',
+    'shared_list_id',
+];
+
 export {
     siteSearchOpenTemplate,
     siteSearchUsageTemplate,
@@ -79,4 +86,5 @@ export {
     favouriteRemoveTemplate,
     favouritesPageViewTemplate,
     favouritesClickTemplate,
+    favouritesShareTemplate,
 };
