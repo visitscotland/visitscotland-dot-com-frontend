@@ -470,7 +470,6 @@ function handleScroll() {
 onMounted(() => {
     scrollY.value = window.scrollY;
     window.addEventListener('scroll', handleScroll);
-    favourites.migrateSavedPages(); // To be removed - see DS-2083
 });
 
 onUnmounted(() => {
