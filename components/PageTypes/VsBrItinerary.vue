@@ -27,7 +27,11 @@
             >
                 <VsPanel class="d-flex flex-column justify-content-between">
                     <div>
-                        <VsHeading level="2" heading-style="heading-s" no-margins>
+                        <VsHeading
+                            level="2"
+                            heading-style="heading-s"
+                            no-margins
+                        >
                             {{ configStore.getLabel('itinerary', 'key-information') }}
                         </VsHeading>
                         <div class="d-flex flex-column gap-100 mt-175 mb-150">
@@ -49,7 +53,10 @@
                                         {{ location.charAt(0).toUpperCase() + location.slice(1) }}
                                     </li>
                                 </ul>
-                                <VsHeading level="3" class="sr-only">
+                                <VsHeading
+                                    level="3"
+                                    class="sr-only"
+                                >
                                     Duration
                                 </VsHeading>
                             </VsDetail>
@@ -61,7 +68,10 @@
                             >
                                 {{ durationText }}
                             </VsDetail>
-                            <VsHeading level="3" class="sr-only">
+                            <VsHeading
+                                level="3"
+                                class="sr-only"
+                            >
                                 Transport
                             </VsHeading>
                             <VsDetail
