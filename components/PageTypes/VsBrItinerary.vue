@@ -146,7 +146,8 @@
                     vs-itinerary-map
                     col-12 col-md-6 col-lg-8
                     mt-075 mt-md-0
-                ">
+                "
+            >
                 <div v-html="pageIntro.iframeMap"/>
             </div>  
         </VsRow>
@@ -304,6 +305,7 @@ const seasonIcon = {
     summer: 'vs-icon-season-summer',
     autumn: 'vs-icon-season-autumn',
     winter: 'vs-icon-season-winter',
+    all: 'fa-regular fa-clock',
 };
 
 let otyml : any = null;
@@ -334,11 +336,10 @@ if (page.value) {
 }
 </script>
 
-<style scoped>
+<style>
 
 .vs-itinerary-map {
-    position:relative;
-    overflow:hidden;
+    position: relative;
     height: 75vh;
 }
 
@@ -349,11 +350,11 @@ if (page.value) {
 }
 
 .vs-itinerary-map iframe {
-    left: 0;
-    top: 0;
-    height:100%;
-    width:100%;
     position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
     padding-left: 12px;
     padding-right: 12px;
 }
