@@ -370,9 +370,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bloomreach/spa-sdk@npm:^27.2.0":
-  version: 27.2.0
-  resolution: "@bloomreach/spa-sdk@npm:27.2.0"
+"@bloomreach/spa-sdk@npm:^27.3.1":
+  version: 27.3.1
+  resolution: "@bloomreach/spa-sdk@npm:27.3.1"
   dependencies:
     cookie: "npm:0.7.2"
     dom-serializer: "npm:2.0.0"
@@ -381,7 +381,7 @@ __metadata:
     htmlparser2: "npm:8.0.2"
     inversify: "npm:5.1.1"
     reflect-metadata: "npm:0.1.13"
-  checksum: 10c0/6ce5960780d8c7471497d77ae81c4b112391227fcb1b28700d10c980878b1669318fd0608c5c95861b65b92f6f688feb33c71e45b8d290a69995996a3eb7f81c
+  checksum: 10c0/c2c99af6ef6258902f498d708a4cebbd611b897c13b6833f2bd61d61bc5b2f35a6333719585fda8f148d1d90ccd43ae8af76a1e4feb22bb86b92b62c2e777ee5
   languageName: node
   linkType: hard
 
@@ -9960,7 +9960,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nuxt-bloomreach-headless-white-label@workspace:."
   dependencies:
-    "@bloomreach/spa-sdk": "npm:^27.2.0"
+    "@bloomreach/spa-sdk": "npm:^27.3.1"
     "@bloomreach/vue3-sdk": "npm:^22.0.5"
     "@nuxt/eslint-config": "npm:^1.15.2"
     "@pinia/nuxt": "npm:^0.11.3"
