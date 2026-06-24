@@ -426,7 +426,7 @@ const placeholderLabels = {
     gap: 0.5rem;
 }
 
-.vs-itinerary-inline-list li + li::before {
+.vs-itinerary-inline-list li:has(+ li):after {
     content: "|  ";
 }
 </style>
