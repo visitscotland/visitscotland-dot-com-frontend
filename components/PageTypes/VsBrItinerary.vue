@@ -32,7 +32,7 @@
             />
         </div>
         <VsRow class="mt-025">
-            <div
+            <section
                 class="col-12 col-md-6 col-lg-4"
             >
                 <VsPanel class="d-flex flex-column justify-content-between">
@@ -45,103 +45,130 @@
                             {{ configStore.getLabel('itinerary', 'key-information') }}
                         </VsHeading>
                         <div class="d-flex flex-column gap-100 mt-175 mb-150">
-                            <VsHeading level="3" class="sr-only">
-                                Locations
-                            </VsHeading>
-                            <VsDetail
-                                no-margins
-                                color="tertiary"
-                                icon="fa-regular fa-location-dot"
-                                icon-variant="tertiary"
-                            >
-
-                                <ul class="vs-itinerary-inline-list">
-                                    <li
-                                        v-for="location in locationNames"
-                                        :key="location"
-                                    >
-                                        {{ location.charAt(0).toUpperCase() + location.slice(1) }}
-                                    </li>
-                                </ul>
+                            <section>
                                 <VsHeading
                                     level="3"
                                     class="sr-only"
                                 >
-                                    Duration
+                                    {{ placeholderLabels.locations }}
                                 </VsHeading>
-                            </VsDetail>
-                            <VsDetail
-                                no-margins
-                                color="tertiary"
-                                icon="fa-regular fa-calendar-range"
-                                icon-variant="tertiary"
-                            >
-                                {{ durationText }}
-                            </VsDetail>
-                            <VsHeading
-                                level="3"
-                                class="sr-only"
-                            >
-                                Transport
-                            </VsHeading>
-                            <VsDetail
-                                no-margins
-                                color="tertiary"
-                            >
-                                <ul class="vs-itinerary-inline-list">
-                                    <li
-                                        v-for="type in transportTypes"
-                                        :key="type.key"
-                                    >
-                                        <VsIcon
-                                            size="xs"
-                                            :icon="transportIcon[type.key]"
-                                            variant="tertiary"
-                                        />
-                                        {{ type.displayName }} 
-                                    </li>
-                                </ul>
-                            </VsDetail>
-                            <VsHeading
-                                level="3"
-                                class="sr-only"
-                            >
-                                Distance
-                            </VsHeading>
-                            <VsDetail
-                                no-margins
-                                color="tertiary"
-                                icon="fa-regular fa-route"
-                                icon-variant="tertiary"
-                            >
-                                {{ distanceText }}
-                            </VsDetail>
-                            <VsHeading
-                                level="3"
-                                class="sr-only"
-                            >
-                                Seasons to visit
-                            </VsHeading>
-                            <VsDetail
-                                no-margins
-                                color="tertiary"
-                            >
-                                <ul
-                                    class="vs-itinerary-inline-list"
+                                <VsDetail
+                                    no-margins
+                                    color="tertiary"
+                                    icon="fa-regular fa-location-dot"
+                                    icon-variant="tertiary"
+                                    role="img"
+                                    aria-label="Locations"
                                 >
-                                    <li
-                                        v-for="season in seasonInfo"
-                                        :key="season.key"
+
+                                    <ul class="vs-itinerary-inline-list">
+                                        <li
+                                            v-for="location in locationNames"
+                                            :key="location"
+                                        >
+                                            {{ location.charAt(0).toUpperCase() + location.slice(1) }}
+                                        </li>
+                                    </ul>
+                                    <VsHeading
+                                        level="3"
+                                        class="sr-only"
                                     >
-                                        <VsIcon
-                                            size="xs"
-                                            :icon="seasonIcon[season.key]"
-                                            variant="tertiary"
-                                        />
-                                        {{ season.displayName }} 
-                                    </li>
-                                </ul>
-                            </VsDetail> 
+                                        {{ placeholderLabels.duration }}
+                                    </VsHeading>
+                                </VsDetail>
+                            </section>
+                            <section>
+                                <VsHeading
+                                    level="3"
+                                    class="sr-only"
+                                >
+                                    {{ placeholderLabels.duration }}
+                                </VsHeading>
+                                <VsDetail
+                                    no-margins
+                                    color="tertiary"
+                                    icon="fa-regular fa-calendar-range"
+                                    icon-variant="tertiary"
+                                    role="img"
+                                    aria-label="Duration"
+                                >
+                                    {{ durationText }}
+                                </VsDetail>
+                            </section>
+                            <section>
+                                <VsHeading
+                                    level="3"
+                                    class="sr-only"
+                                >
+                                    {{ placeholderLabels.transport }}
+                                </VsHeading>
+                                <VsDetail
+                                    no-margins
+                                    color="tertiary"
+                                >
+                                    <ul class="vs-itinerary-inline-list">
+                                        <li
+                                            v-for="type in transportTypes"
+                                            :key="type.key"
+                                        >
+                                            <VsIcon
+                                                size="xs"
+                                                :icon="transportIcon[type.key]"
+                                                variant="tertiary"
+                                                role="img"
+                                                aria-label="Travel by"
+                                            />
+                                            {{ type.displayName }} 
+                                        </li>
+                                    </ul>
+                                </VsDetail>
+                            </section>
+                            <section>
+                                <VsHeading
+                                    level="3"
+                                    class="sr-only"
+                                >
+                                    {{ placeholderLabels.distance }}
+                                </VsHeading>
+                                <VsDetail
+                                    no-margins
+                                    color="tertiary"
+                                    icon="fa-regular fa-route"
+                                    icon-variant="tertiary"
+                                    role="img"
+                                    aria-label="Distance"
+                                >
+                                    {{ distanceText }}
+                                </VsDetail>
+                            </section>
+                            <section>
+                                <VsHeading
+                                    level="3"
+                                    class="sr-only"
+                                >
+                                    {{ placeholderLabels.seasons }}
+                                </VsHeading>
+                                <VsDetail
+                                    no-margins
+                                    color="tertiary"
+                                >
+                                    <ul
+                                        class="vs-itinerary-inline-list"
+                                    >
+                                        <li
+                                            v-for="season in seasonInfo"
+                                            :key="season.key"
+                                        >
+                                            <VsIcon
+                                                size="xs"
+                                                :icon="seasonIcon[season.key]"
+                                                variant="tertiary"                  
+                                            />
+                                            {{ season.displayName }} 
+                                        </li>
+                                    </ul>
+                                </VsDetail>
+                            </section>
                         </div>
                     </div>
                     <div
@@ -160,7 +187,7 @@
                         </VsButton>
                     </div>
                 </VsPanel>
-            </div>
+            </section>
             <div
                 class="
                     vs-itinerary-map
@@ -353,6 +380,15 @@ if (page.value) {
         transportTypes = component.value.model.models.pageIntro.transports;
     }
 }
+
+const placeholderLabels = {
+    locations: 'Locations',
+    duration: 'Duration',
+    transport: 'Travel by',
+    distance: 'Distance',
+    seasons: 'Seasons',
+
+};
 </script>
 
 <style>
