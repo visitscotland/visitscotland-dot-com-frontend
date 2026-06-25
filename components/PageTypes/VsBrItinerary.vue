@@ -57,8 +57,6 @@
                                     color="tertiary"
                                     icon="fa-regular fa-location-dot"
                                     icon-variant="tertiary"
-                                    role="img"
-                                    aria-label="Locations"
                                 >
                                     <ul class="vs-itinerary-inline-list">
                                         <li
@@ -82,8 +80,6 @@
                                     color="tertiary"
                                     icon="fa-regular fa-calendar-range"
                                     icon-variant="tertiary"
-                                    role="img"
-                                    aria-label="Duration"
                                 >
                                     {{ durationText }}
                                 </VsDetail>
@@ -127,8 +123,6 @@
                                     color="tertiary"
                                     icon="fa-regular fa-route"
                                     icon-variant="tertiary"
-                                    role="img"
-                                    :aria-label="configStore.getLabel('itinerary','panel.sr-heading.duration')"
                                 >
                                     {{ distanceText }}
                                 </VsDetail>
