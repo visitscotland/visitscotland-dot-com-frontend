@@ -68,12 +68,6 @@
                                             {{ location.charAt(0).toUpperCase() + location.slice(1) }}
                                         </li>
                                     </ul>
-                                    <VsHeading
-                                        level="3"
-                                        class="sr-only"
-                                    >
-                                        {{ configStore.getLabel('itinerary','panel.sr-heading.duration') }}
-                                    </VsHeading>
                                 </VsDetail>
                             </section>
                             <section>
