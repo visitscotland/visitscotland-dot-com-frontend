@@ -50,7 +50,7 @@
                                     level="3"
                                     class="sr-only"
                                 >
-                                    {{ placeholderLabels.locations }}
+                                    {{ configStore.getLabel('itinerary','panel.sr-heading.locations') }}
                                 </VsHeading>
                                 <VsDetail
                                     no-margins
@@ -60,7 +60,6 @@
                                     role="img"
                                     aria-label="Locations"
                                 >
-
                                     <ul class="vs-itinerary-inline-list">
                                         <li
                                             v-for="location in locationNames"
@@ -73,7 +72,7 @@
                                         level="3"
                                         class="sr-only"
                                     >
-                                        {{ placeholderLabels.duration }}
+                                        {{ configStore.getLabel('itinerary','panel.sr-heading.duration') }}
                                     </VsHeading>
                                 </VsDetail>
                             </section>
@@ -82,7 +81,7 @@
                                     level="3"
                                     class="sr-only"
                                 >
-                                    {{ placeholderLabels.duration }}
+                                    {{ configStore.getLabel('itinerary','panel.sr-heading.duration') }}
                                 </VsHeading>
                                 <VsDetail
                                     no-margins
@@ -100,7 +99,7 @@
                                     level="3"
                                     class="sr-only"
                                 >
-                                    {{ placeholderLabels.transport }}
+                                    {{ configStore.getLabel('itinerary','panel.sr-heading.transport') }}
                                 </VsHeading>
                                 <VsDetail
                                     no-margins
@@ -115,8 +114,7 @@
                                                 size="xs"
                                                 :icon="transportIcon[type.key]"
                                                 variant="tertiary"
-                                                role="img"
-                                                aria-label="Travel by"
+                                                aria-hidden="true"
                                             />
                                             {{ type.displayName }} 
                                         </li>
@@ -128,7 +126,7 @@
                                     level="3"
                                     class="sr-only"
                                 >
-                                    {{ placeholderLabels.distance }}
+                                    {{ configStore.getLabel('itinerary','panel.sr-heading.distance') }}
                                 </VsHeading>
                                 <VsDetail
                                     no-margins
@@ -136,7 +134,7 @@
                                     icon="fa-regular fa-route"
                                     icon-variant="tertiary"
                                     role="img"
-                                    aria-label="Distance"
+                                    :aria-label="configStore.getLabel('itinerary','panel.sr-heading.duration')"
                                 >
                                     {{ distanceText }}
                                 </VsDetail>
@@ -146,7 +144,7 @@
                                     level="3"
                                     class="sr-only"
                                 >
-                                    {{ placeholderLabels.seasons }}
+                                    {{ configStore.getLabel('itinerary','panel.sr-heading.seasons') }}
                                 </VsHeading>
                                 <VsDetail
                                     no-margins
@@ -162,7 +160,8 @@
                                             <VsIcon
                                                 size="xs"
                                                 :icon="seasonIcon[season.key]"
-                                                variant="tertiary"                  
+                                                variant="tertiary"
+                                                aria-hidden="true"
                                             />
                                             {{ season.displayName }} 
                                         </li>
@@ -380,15 +379,6 @@ if (page.value) {
         transportTypes = component.value.model.models.pageIntro.transports;
     }
 }
-
-const placeholderLabels = {
-    locations: 'Locations',
-    duration: 'Duration',
-    transport: 'Travel by',
-    distance: 'Distance',
-    seasons: 'Seasons',
-
-};
 </script>
 
 <style>
