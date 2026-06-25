@@ -237,82 +237,6 @@ if (page.value) {
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
-        meta: [
-            {
-                name: 'title',
-                content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
-            },
-            {
-                name: 'description',
-                content: pageDocument.model.data.seoDescription,
-            },
-            {
-                name: 'robots',
-                content: pageDocument.model.data.noIndex ? 'noindex' : '',
-            },
-            {
-                property: 'og:title',
-                content: pageDocument.model.data.seoTitle,
-            },
-            {
-                property: 'og:description',
-                content: pageDocument.model.data.seoDescription,
-            },
-            {
-                property: 'og:type',
-                content: 'article',
-            },
-            {
-                property: 'og:url',
-                content: canonicalLink,
-            },
-            {
-                property: 'og:site_name',
-                content: configStore.getLabel('seo', 'site-name'),
-            },
-            {
-                property: 'og:locale',
-                content: configStore.locale,
-            },
-            {
-                property: 'og:image',
-                content: ogImageSrc,
-            },
-            {
-                name: 'twitter:card',
-                content: 'summary_large_image',
-            },
-            {
-                name: 'twitter:site',
-                content: configStore.getLabel('seo', 'og.twitter.site'),
-            },
-            {
-                name: 'twitter:title',
-                content: pageDocument.model.data.seoTitle,
-            },
-            {
-                name: 'twitter:description',
-                content: pageDocument.model.data.seoDescription,
-            },
-            {
-                name: 'twitter:image',
-                content: ogImageSrc,
-            },
-            {
-                name: 'search:category',
-                content: pageModels.searchCategory,
-            },
-            {
-                name: 'search:contentType',
-                content: pageModels.searchContentType,
-            },
-        ],
-        htmlAttrs: {
-            lang: langString,
-            'data-version': configStore.pageMetaData.version,
-            'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
-        },
         link: [
             {
                 rel: 'icon',
@@ -365,6 +289,87 @@ if (page.value) {
                     defer: false,
                 },
             ],
+        });
+    }
+
+    if (!configStore.isInternalResource) {
+        useHead({
+            title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+            meta: [
+                {
+                    name: 'title',
+                    content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+                },
+                {
+                    name: 'description',
+                    content: pageDocument.model.data.seoDescription,
+                },
+                {
+                    name: 'robots',
+                    content: pageDocument.model.data.noIndex ? 'noindex' : '',
+                },
+                {
+                    property: 'og:title',
+                    content: pageDocument.model.data.seoTitle,
+                },
+                {
+                    property: 'og:description',
+                    content: pageDocument.model.data.seoDescription,
+                },
+                {
+                    property: 'og:type',
+                    content: 'article',
+                },
+                {
+                    property: 'og:url',
+                    content: canonicalLink,
+                },
+                {
+                    property: 'og:site_name',
+                    content: configStore.getLabel('seo', 'site-name'),
+                },
+                {
+                    property: 'og:locale',
+                    content: configStore.locale,
+                },
+                {
+                    property: 'og:image',
+                    content: ogImageSrc,
+                },
+                {
+                    name: 'twitter:card',
+                    content: 'summary_large_image',
+                },
+                {
+                    name: 'twitter:site',
+                    content: configStore.getLabel('seo', 'og.twitter.site'),
+                },
+                {
+                    name: 'twitter:title',
+                    content: pageDocument.model.data.seoTitle,
+                },
+                {
+                    name: 'twitter:description',
+                    content: pageDocument.model.data.seoDescription,
+                },
+                {
+                    name: 'twitter:image',
+                    content: ogImageSrc,
+                },
+                {
+                    name: 'search:category',
+                    content: pageModels.searchCategory,
+                },
+                {
+                    name: 'search:contentType',
+                    content: pageModels.searchContentType,
+                },
+            ],
+            htmlAttrs: {
+                lang: langString,
+                'data-version': configStore.pageMetaData.version,
+                'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
+            },
         });
     }
 }
