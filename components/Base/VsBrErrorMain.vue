@@ -98,34 +98,36 @@ if (page.value) {
 
     const runtimeConfig = useRuntimeConfig();
 
-    useHead({
-        htmlAttrs: {
-            lang: langString,
-            'data-version': configStore.pageMetaData.version,
-            'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
-        },
-        link: [
-            {
-                rel: 'icon',
-                href: '/favicon.ico',
-                sizes: 'any',
+    if (!configStore.isInternalResource) {
+        useHead({
+            htmlAttrs: {
+                lang: langString,
+                'data-version': configStore.pageMetaData.version,
+                'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
             },
-            {
-                rel: 'icon',
-                href: '/icons/favicon.svg',
-                type: 'image/svg+xml',
-            },
-            {
-                rel: 'apple-touch-icon',
-                href: '/icons/apple-touch-icon-180-180.svg',
-                sizes: 'any',
-            },
-            {
-                rel: 'manifest',
-                href: '/manifest.webmanifest',
-            },
-        ],
-    });
+            link: [
+                {
+                    rel: 'icon',
+                    href: '/favicon.ico',
+                    sizes: 'any',
+                },
+                {
+                    rel: 'icon',
+                    href: '/icons/favicon.svg',
+                    type: 'image/svg+xml',
+                },
+                {
+                    rel: 'apple-touch-icon',
+                    href: '/icons/apple-touch-icon-180-180.svg',
+                    sizes: 'any',
+                },
+                {
+                    rel: 'manifest',
+                    href: '/manifest.webmanifest',
+                },
+            ],
+        });
+    }
 }
 
 provide('page', page.value);

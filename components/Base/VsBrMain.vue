@@ -236,136 +236,138 @@ if (page.value) {
 
     const runtimeConfig = useRuntimeConfig();
 
-    useHead({
-        title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
-        meta: [
-            {
-                name: 'title',
-                content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
-            },
-            {
-                name: 'description',
-                content: pageDocument.model.data.seoDescription,
-            },
-            {
-                name: 'robots',
-                content: pageDocument.model.data.noIndex ? 'noindex' : '',
-            },
-            {
-                property: 'og:title',
-                content: pageDocument.model.data.seoTitle,
-            },
-            {
-                property: 'og:description',
-                content: pageDocument.model.data.seoDescription,
-            },
-            {
-                property: 'og:type',
-                content: 'article',
-            },
-            {
-                property: 'og:url',
-                content: canonicalLink,
-            },
-            {
-                property: 'og:site_name',
-                content: configStore.getLabel('seo', 'site-name'),
-            },
-            {
-                property: 'og:locale',
-                content: configStore.locale,
-            },
-            {
-                property: 'og:image',
-                content: ogImageSrc,
-            },
-            {
-                name: 'twitter:card',
-                content: 'summary_large_image',
-            },
-            {
-                name: 'twitter:site',
-                content: configStore.getLabel('seo', 'og.twitter.site'),
-            },
-            {
-                name: 'twitter:title',
-                content: pageDocument.model.data.seoTitle,
-            },
-            {
-                name: 'twitter:description',
-                content: pageDocument.model.data.seoDescription,
-            },
-            {
-                name: 'twitter:image',
-                content: ogImageSrc,
-            },
-            {
-                name: 'search:category',
-                content: pageModels.searchCategory,
-            },
-            {
-                name: 'search:contentType',
-                content: pageModels.searchContentType,
-            },
-        ],
-        htmlAttrs: {
-            lang: langString,
-            'data-version': configStore.pageMetaData.version,
-            'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
-        },
-        link: [
-            {
-                rel: 'icon',
-                href: '/favicon.ico',
-                sizes: 'any',
-            },
-            {
-                rel: 'icon',
-                href: '/favicon.svg',
-                type: 'image/svg+xml',
-            },
-            {
-                rel: 'manifest',
-                href: '/manifest.webmanifest',
-            },
-            {
-                rel: 'canonical',
-                href: canonicalLink,
-            },
-            {
-                rel: 'stylesheet',
-                href: '/assets/styles/civic-cookie-manager.css',
-            },
-        ],
-    });
-
-    useHead({
-        link: hrefLangs,
-    });
-
-    if (configStore.searchDmsBased) {
+    if (!configStore.isInternalResource) {
         useHead({
-            script: [
+            title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+            meta: [
                 {
-                    innerHTML: `
+                    name: 'title',
+                    content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+                },
+                {
+                    name: 'description',
+                    content: pageDocument.model.data.seoDescription,
+                },
+                {
+                    name: 'robots',
+                    content: pageDocument.model.data.noIndex ? 'noindex' : '',
+                },
+                {
+                    property: 'og:title',
+                    content: pageDocument.model.data.seoTitle,
+                },
+                {
+                    property: 'og:description',
+                    content: pageDocument.model.data.seoDescription,
+                },
+                {
+                    property: 'og:type',
+                    content: 'article',
+                },
+                {
+                    property: 'og:url',
+                    content: canonicalLink,
+                },
+                {
+                    property: 'og:site_name',
+                    content: configStore.getLabel('seo', 'site-name'),
+                },
+                {
+                    property: 'og:locale',
+                    content: configStore.locale,
+                },
+                {
+                    property: 'og:image',
+                    content: ogImageSrc,
+                },
+                {
+                    name: 'twitter:card',
+                    content: 'summary_large_image',
+                },
+                {
+                    name: 'twitter:site',
+                    content: configStore.getLabel('seo', 'og.twitter.site'),
+                },
+                {
+                    name: 'twitter:title',
+                    content: pageDocument.model.data.seoTitle,
+                },
+                {
+                    name: 'twitter:description',
+                    content: pageDocument.model.data.seoDescription,
+                },
+                {
+                    name: 'twitter:image',
+                    content: ogImageSrc,
+                },
+                {
+                    name: 'search:category',
+                    content: pageModels.searchCategory,
+                },
+                {
+                    name: 'search:contentType',
+                    content: pageModels.searchContentType,
+                },
+            ],
+            htmlAttrs: {
+                lang: langString,
+                'data-version': configStore.pageMetaData.version,
+                'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
+            },
+            link: [
+                {
+                    rel: 'icon',
+                    href: '/favicon.ico',
+                    sizes: 'any',
+                },
+                {
+                    rel: 'icon',
+                    href: '/favicon.svg',
+                    type: 'image/svg+xml',
+                },
+                {
+                    rel: 'manifest',
+                    href: '/manifest.webmanifest',
+                },
+                {
+                    rel: 'canonical',
+                    href: canonicalLink,
+                },
+                {
+                    rel: 'stylesheet',
+                    href: '/assets/styles/civic-cookie-manager.css',
+                },
+            ],
+        });
+
+        useHead({
+            link: hrefLangs,
+        });
+
+        if (configStore.searchDmsBased) {
+            useHead({
+                script: [
+                    {
+                        innerHTML: `
                         var cludo_engineId = ${configStore.cludoEngineId};
                         var cludo_language = '${configStore.cludoLanguage}';
                         var cludo_searchUrl = '${configStore.globalSearchPath}';
                     `,
-                    tagPosition: 'head',
-                },
-                {
-                    src: 'https://customer.cludo.com/scripts/bundles/search-script.js',
-                    onload: () => {
-                        const helperScript = document.createElement('script');
-                        helperScript.src = 'https://customer.cludo.com/assets/623/12809/cludo-helper.js';
-                        document.head.appendChild(helperScript);
+                        tagPosition: 'head',
                     },
-                    async: false,
-                    defer: false,
-                },
-            ],
-        });
+                    {
+                        src: 'https://customer.cludo.com/scripts/bundles/search-script.js',
+                        onload: () => {
+                            const helperScript = document.createElement('script');
+                            helperScript.src = 'https://customer.cludo.com/assets/623/12809/cludo-helper.js';
+                            document.head.appendChild(helperScript);
+                        },
+                        async: false,
+                        defer: false,
+                    },
+                ],
+            });
+        }
     }
 }
 
