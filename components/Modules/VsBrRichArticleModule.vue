@@ -166,6 +166,6 @@ const nextModuleArticle: boolean = props.nextModuleArticle;
 
 <style lang="scss" scoped>
     .vs-content-swiper :deep(.vs-button) {
-        scroll-margin-top: 18rem;
+        scroll-margin-top: 14rem;
     }
 </style>
