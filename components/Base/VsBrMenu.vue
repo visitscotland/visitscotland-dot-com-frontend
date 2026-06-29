@@ -488,12 +488,6 @@ if (page.value) {
         }
     }
 
-    if (configStore.isInternalResource) {
-        for (let x = 0; x < localisedUrls.length; x++) {
-            localisedUrls[x].url = `${localisedUrls[x].url}/[PATH-PLACEHOLDER]`;
-        }
-    }
-
     banner = component.value.getModels().banner;
     if (banner && banner.ctaLink) {
         banner.ctaLink.link = banner.ctaLink.link.replace('/site/resourceapi', '');
