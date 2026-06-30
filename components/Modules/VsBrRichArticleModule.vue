@@ -75,7 +75,7 @@
     </VsContainer>
 
     <div
-        v-if="module.mediaSection && checkFlags('rich-article-images')"
+        v-if="module.mediaSection"
         :class="nextModuleArticle ? 'mb-n250' : ''"
     >
         <VsBrMedia
