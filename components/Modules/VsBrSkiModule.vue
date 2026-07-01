@@ -18,7 +18,7 @@
                     md="10"
                     offset-md="1"
                 >
-                    <VsSkiScotlandStatus
+                    <VsBrSkiScotlandStatus
                         :ski-status-url="module.feedURL"
                         :locale="configStore.langString || 'en-gb'"
                         :runs-lifts-status-label="configStore.getLabel('ski', 'ski-centre.run-lift-status')"
@@ -170,7 +170,7 @@
                                 </VsLink>
                             </div>
                         </template>
-                    </VsSkiScotlandStatus>
+                    </VsBrSkiScotlandStatus>
                 </VsCol>
             </VsRow>
         </VsContainer>
@@ -185,7 +185,6 @@ import {
     VsContainer,
     VsRow,
     VsCol,
-    VsSkiScotlandStatus,
     VsHeading,
     VsList,
     VsIcon,
@@ -194,6 +193,7 @@ import {
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrAddress from '~/components/Modules/VsBrAddress.vue';
+import VsBrSkiScotlandStatus from '~/components/Modules/VsBrSkiScotlandStatus.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
