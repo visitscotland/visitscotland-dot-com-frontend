@@ -1,6 +1,6 @@
 <template>
     <VsBrImageWithCaption
-        v-if="videoId"
+        v-if="videoId && !videoWithMediaCaption"
         :image="image"
         :image-string="imageString"
         :image-data-set="imageDataSet"
@@ -23,48 +23,77 @@
         </template>
     </VsBrImageWithCaption>
     <template v-else>
-        <div
-            class="vs-br-media"
-            :class="{
-                'vs-br-media--mobile-overlap': mobileOverlap,
-                'vs-br-media--full-bleed': fullBleed,
-            }"
-        >
-            <div class="vs-br-media__img-wrapper">
-                <VsImg
-                    :src="imageSrc"
-                    :alt="altText"
-                    class="vs-br-media__img"
-                    :class="`${imageClasses} ${rounded ? 'rounded-2' : ''}`"
-                />
-            </div>
-            <VsMediaCaption
-                v-if="imageData"
-                :right-align="alignment === 'right'"
-            >
-                <template #caption>
-                    {{ descriptionString }}
-                </template>
-                <template #credit>
-                    <template
-                        v-if="imageData.source"
+        <VsContainer>
+            <VsRow>
+                <VsCol>
+                    <figure
+                        class="vs-br-media"
+                        :class="{
+                            'vs-br-media--mobile-overlap': mobileOverlap,
+                            'vs-br-media--full-bleed': fullBleed,
+                        }"
                     >
-                        <VsSocialCreditLink
-                            :credit="imageData.credit
-                                ? imageData.credit
-                                : configStore.getLabel('essentials.global', 'image.no.credit')"
-                            :social-post-url="imageData.postUrl ? imageData.postUrl : ''"
-                            :source="imageData.source"
-                        />
-                    </template>
-                    <template
-                        v-if="!imageData.source && imageData.credit"
-                    >
-                        &copy; {{ imageData.credit }}
-                    </template>
-                </template>
-            </VsMediaCaption>
-        </div>
+                        <div
+                            class="vs-br-media__img-wrapper"
+                            v-if="!videoId"
+                        >
+                            <VsImg
+                                :src="imageSrc"
+                                :alt="altText"
+                                class="vs-br-media__img"
+                                :class="`${imageClasses} ${rounded ? 'rounded-2' : ''}`"
+                            />
+                        </div>
+                        <div v-else>
+                            <VsVideo
+                                :video-id="videoId"
+                                :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
+                                :no-js-message="configStore.getLabel('video', 'video.no-js')"
+                                :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
+                                :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+                            />
+                        </div>
+
+                        <figcaption>
+                            <VsMediaCaption
+                                v-if="imageData"
+                                :right-align="alignment === 'right'"
+                            >
+                                <template #caption>
+                                    {{ descriptionString }}
+                                </template>
+                                <template #credit>
+                                    <template
+                                        v-if="imageData.source"
+                                    >
+                                        <VsSocialCreditLink
+                                            :credit="imageData.credit
+                                                ? imageData.credit
+                                                : configStore.getLabel('essentials.global', 'image.no.credit')"
+                                            :social-post-url="imageData.postUrl ? imageData.postUrl : ''"
+                                            :source="imageData.source"
+                                        />
+                                    </template>
+                                    <template
+                                        v-if="!imageData.source && imageData.credit"
+                                    >
+                                        &copy; {{ imageData.credit }}
+                                    </template>
+                                </template>
+                            </VsMediaCaption>
+                            <VsMediaCaption
+                                v-else-if="videoId"
+                                :video-id="videoId"
+                            >
+                                <template #caption>
+                                    <slot name="video-title" />
+                                </template>
+                            </VsMediaCaption>
+                        </figcaption>
+                    </figure>
+                </VsCol>
+            </VsRow>
+        </VsContainer>
     </template>
 </template>
 
@@ -79,6 +108,10 @@ import {
     VsImg,
     VsMediaCaption,
     VsSocialCreditLink,
+    VsContainer,
+    VsRow,
+    VsCol,
+    VsVideo,
 } from '@visitscotland/component-library/components';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
@@ -107,6 +140,7 @@ interface IProps {
     showToggle?: boolean,
     rounded?: boolean,
     fullBleed?: boolean,
+    videoWithMediaCaption?: boolean,
 };
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -129,6 +163,7 @@ const props = withDefaults(defineProps<IProps>(), {
     videoBtn: '',
     rounded: false,
     fullBleed: false,
+    videoWithMediaCaption: false,
 });
 
 const {
@@ -150,6 +185,7 @@ const {
     noAltText,
     showToggle,
     fullBleed,
+    videoWithMediaCaption,
 } = toRefs(props);
 
 const page: Page | undefined = inject('page');
