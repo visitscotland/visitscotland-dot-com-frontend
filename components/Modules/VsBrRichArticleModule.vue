@@ -75,7 +75,7 @@
                             <VsQuote
                                 :use-legacy="false"
                                 :quote-name="section.quote.authorName"
-                                class="mb-150"
+                                :class="index !== module.sections.length - 1 ? 'mb-150' : ''"
                             >
                                 <template
                                     #quote-content
