@@ -74,10 +74,15 @@
                         >
                             <VsQuote
                                 :use-legacy="false"
-                                :quote-text="section.quote.quote.value"
                                 :quote-name="section.quote.authorName"
                                 class="mb-150"
                             >
+                                <template
+                                    #quote-content
+                                >
+                                    <span v-html="section.quote.quote.value" />
+                                </template>
+
                                 <template
                                     v-if="section.quote.authorTitle"
                                     #quote-details
