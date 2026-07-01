@@ -103,17 +103,14 @@
                                             {{ module.website.link }}
                                         </VsLink>
                                     </li>
-                                    <li class="mb-050" v-if="module.address">
+                                    <li class="mb-050" v-if="module.addressLine">
                                         <VsIcon
                                             icon="fa-regular fa-location-dot"
                                             size="xs"
                                             class="me-050"
                                         />
                                         <span>
-                                            <VsBrAddress
-                                                :address="module.address"
-                                                :same-line="true"
-                                            />
+                                            {{ module.addressLine }}
                                         </span>
                                     </li>
                                     <li class="mb-050" v-if="module.pisteMap">
@@ -152,19 +149,17 @@
                                     </li>
                                 </VsList>
                                 <VsLink
-                                    v-for="(channel, index) in module.socialChannels"
+                                    v-for="(channel, index) in module.socialChannelURLs"
                                     :key="index"
-                                    :href="channel.processedHref"
+                                    :href="channel"
                                     class="d-inline-block mt-100"
                                 >
                                     <div class="d-inline-block me-100">
-                                        <span class="visually-hidden">{{ channel.label }}</span>
+                                        <span class="visually-hidden">{{ getSocialChannelName(channel) }}</span>
                                         <VsIcon
                                             size="sm"
-                                            :icon="`fa-brands fa-${channel.label
-                                                ? channel.label.toLowerCase()
-                                                : channel.label}`"
-                                            :custom-colour="channel.processedColour"
+                                            :icon="getSocialChannelIcon(channel)"
+                                            :custom-colour="getSocialChannelColour(channel)"
                                         />
                                     </div>
                                 </VsLink>
@@ -192,7 +187,6 @@ import {
 } from '@visitscotland/component-library/components';
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
-import VsBrAddress from '~/components/Modules/VsBrAddress.vue';
 import VsBrSkiScotlandStatus from '~/components/Modules/VsBrSkiScotlandStatus.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
@@ -202,37 +196,52 @@ const configStore = useConfigStore();
 const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
-for (let x = 0; x < module.socialChannels.length; x++) {
-    let href = '';
-
-    if (module.socialChannels[x].label === 'Twitter') {
-        if (module.socialChannels[x].link.includes('twitter.com')) {
-            href = module.socialChannels[x].link;
-        } else {
-            href = `https://twitter.com/${module.socialChannels[x].link}`;
-        }
-    } else {
-        href = module.socialChannels[x].link;
+const getSocialChannelName = (url: string) => {
+    if (url.indexOf('facebook') !== -1) {
+        return 'facebook'
     }
 
-    module.socialChannels[x].processedHref = href;
-
-    let colour = '';
-
-    switch (module.socialChannels[x].label) {
-    case 'Twitter':
-        colour = '#55ACEE';
-        break;
-    case 'Facebook':
-        colour = '#3A5A99';
-        break;
-    case 'Instagram':
-    default:
-        colour = '#E1306C';
-        break;
+    if (url.indexOf('instagram') !== -1) {
+        return 'instagram'
     }
 
-    module.socialChannels[x].processedColour = colour;
-}
+    if (url.indexOf('twitter') !== -1 || url.indexOf('x.com') !== -1) {
+        return 'x'
+    }
+
+    return '';
+};
+
+const getSocialChannelIcon = (url : string) => {
+    if (url.indexOf('facebook') !== -1) {
+        return 'fa-brands fa-facebook'
+    }
+
+    if (url.indexOf('instagram') !== -1) {
+        return 'fa-brands fa-instagram'
+    }
+
+    if (url.indexOf('twitter') !== -1 || url.indexOf('x.com') !== -1) {
+        return 'fa-brands fa-x-twitter'
+    }
+
+    return '';
+};
+
+const getSocialChannelColour = (url : string) => {
+    if (url.indexOf('facebook') !== -1) {
+        return '#3A5A99'
+    }
+
+    if (url.indexOf('instagram') !== -1) {
+        return '#E1306C'
+    }
+
+    if (url.indexOf('twitter') !== -1 || url.indexOf('x.com') !== -1) {
+        return '#55ACEE'
+    }
+
+    return '#000000'
+};
 
 </script>
