@@ -237,8 +237,12 @@ const getSocialChannelColour = (url : string) => {
         return '#E1306C'
     }
 
-    if (url.indexOf('twitter') !== -1 || url.indexOf('x.com') !== -1) {
+    if (url.indexOf('twitter') !== -1) {
         return '#55ACEE'
+    }
+
+    if (url.indexOf('x.com') !== -1) {
+        return '#000000'
     }
 
     return '#000000'
