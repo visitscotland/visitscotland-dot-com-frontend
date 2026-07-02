@@ -144,13 +144,17 @@ let videoLabel = null;
 let firstDayMedia = null;
 let firstDayVideo = null;
 
-if (day.media[0]) {
-    if (day.media[0].$ref) {
-        firstDayMedia = page.getContent(day.media[0].$ref);
+let firstDayMedia = null;
+let firstDayVideo = null;
+const firstMediaItem = day.media?.[0];
+
+if (firstMediaItem) {
+    if (firstMediaItem.$ref) {
+        firstDayMedia = page.getContent(firstMediaItem.$ref);
     }
 
-    if (day.media[0].videoLink) {
-        firstDayVideo = page.getContent(day.media[0].videoLink);
+    if (firstMediaItem.videoLink) {
+        firstDayVideo = page.getContent(firstMediaItem.videoLink);
     }
 }
 
