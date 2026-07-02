@@ -78,57 +78,9 @@
         v-if="module.mediaSection"
         :class="nextModuleArticle ? 'mb-n250' : ''"
     >
-        <VsBrMedia
-            v-if="module.mediaSection.type === 'image'"
-            :image="module.mediaSection.image.cmsImage"
-            :image-description="module.mediaSection.image.description"
-            :full-bleed="true"
-            class="mt-n250"
+        <VsBrMediaSection
+            :media-section="module.mediaSection"
         />
-
-        <VsBrMedia
-            v-else-if="module.mediaSection.type === 'video'"
-            :video-id="module.mediaSection.video.youtubeId"
-            :video-with-media-caption="true"
-            class="mt-n250"
-        >
-            <template #video-title>
-                {{ module.mediaSection.video.label }}
-            </template>
-        </VsBrMedia>
-
-        <VsContentSwiper
-            v-else-if="module.mediaSection.type === 'carousel'"
-            :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
-            :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
-            :contained="false"
-            :slides-per-view-lg="2.2"
-            class="mt-n250"
-        >
-            <VsContentSwiperSlide
-                v-for="(slide, index) in module.mediaSection.items"
-                :key="'image-group-' + index"
-            >
-                <VsBrMedia
-                    v-if="slide.type === 'VIDEO'"
-                    :video-id="slide.youtubeId"
-                    :video-with-media-caption="true"
-                    class="w-100"
-                >
-                    <template #video-title>
-                        {{ slide.label }}
-                    </template>
-                </VsBrMedia>
-
-                <VsBrMedia
-                    v-else
-                    :image="slide.cmsImage"
-                    :image-description="slide.description"
-                    class="w-100"
-                />
-
-            </VsContentSwiperSlide>
-        </VsContentSwiper>
     </div>
 </template>
 
@@ -141,13 +93,11 @@ import {
     VsCol,
     VsHeading,
     VsBody,
-    VsContentSwiper,
-    VsContentSwiperSlide,
 } from '@visitscotland/component-library/components';
 
 import VsBrVideoModal from './VsBrVideoModal.vue';
+import VsBrMediaSection from '~/components/VsBrMediaSection.vue';
 import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
-
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
