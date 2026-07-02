@@ -68,6 +68,29 @@
                         >
                             <VsBrRichText :input-content="section.copy.value" />
                         </template>
+
+                        <template
+                            v-if="section.quote"
+                        >
+                            <VsQuote
+                                :use-legacy="false"
+                                :quote-name="section.quote.authorName"
+                                :class="index !== module.sections.length - 1 ? 'mb-150' : ''"
+                            >
+                                <template
+                                    #quote-content
+                                >
+                                    <span v-html="section.quote.quote.value" />
+                                </template>
+
+                                <template
+                                    v-if="section.quote.authorTitle"
+                                    #quote-details
+                                >
+                                    <span>{{ section.quote.authorTitle }}</span>
+                                </template>
+                            </VsQuote>
+                        </template>
                     </template>
                 </VsBody>
             </VsCol>
@@ -93,10 +116,11 @@ import {
     VsCol,
     VsHeading,
     VsBody,
+    VsQuote,
 } from '@visitscotland/component-library/components';
 
 import VsBrVideoModal from './VsBrVideoModal.vue';
-import VsBrMediaSection from '~/components/VsBrMediaSection.vue';
+import VsBrMediaSection from '~/components/Modules/VsBrMediaSection.vue';
 import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
