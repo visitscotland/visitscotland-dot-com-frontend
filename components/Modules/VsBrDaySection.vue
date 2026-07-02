@@ -68,6 +68,7 @@
                         <VsBrRichText :input-content="day.introduction.value" />
                     </VsBody>
                 </div>
+
                 <div
                     class="d-flex flex-wrap gap-075"
                 >
@@ -90,6 +91,15 @@
             </VsCol>
         </div>
     </VsContainer>
+
+    <div
+        v-if="day.mediaSection"
+        class="mb-n250"
+    >
+        <VsBrMediaSection
+            :media-section="day.mediaSection"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -108,6 +118,7 @@ import {
     VsVideo,
 } from '@visitscotland/component-library/components';
 import VsBrRichText from './VsBrRichText.vue';
+import VsBrMediaSection from './VsBrMediaSection.vue';
 
 const configStore = useConfigStore();
 
@@ -130,15 +141,30 @@ let videoValue = false;
 let youtubeId = null;
 let videoLabel = null;
 
-if (page.getContent(day.media[0].$ref)) {
-    imageValue = page.getContent(day.media[0].$ref);
+let firstDayMedia = null;
+let firstDayVideo = null;
+const firstMediaItem = day.media?.[0];
+
+if (firstMediaItem) {
+    if (firstMediaItem.$ref) {
+        firstDayMedia = page.getContent(firstMediaItem.$ref);
+    }
+
+    if (firstMediaItem.videoLink) {
+        firstDayVideo = page.getContent(firstMediaItem.videoLink);
+    }
+}
+
+if (firstDayMedia) {
+    imageValue = firstDayMedia;
     imageSrc = imageValue.getOriginal().getUrl();
     imageCaption = imageValue.model.data.description;
     imageAlt = imageValue.model.data.altText;
     imageCredit = imageValue.model.data.credit;
 }
-if (page.getContent(day.media[0].videoLink)) {
-    videoValue = page.getContent(day.media[0].videoLink.$ref);
+
+if (firstDayVideo) {
+    videoValue = firstDayVideo;
     youtubeId = videoValue.model.data.url.split('?v=')[1];
     videoLabel = videoValue.model.data.label;
 }
