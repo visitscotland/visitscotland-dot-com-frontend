@@ -143,9 +143,6 @@ let videoLabel = null;
 
 let firstDayMedia = null;
 let firstDayVideo = null;
-
-let firstDayMedia = null;
-let firstDayVideo = null;
 const firstMediaItem = day.media?.[0];
 
 if (firstMediaItem) {
