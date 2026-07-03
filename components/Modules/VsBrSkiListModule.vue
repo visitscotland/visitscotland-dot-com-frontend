@@ -20,7 +20,7 @@
                     v-for="(centre, index) in module.skiCentres"
                     :key="index"
                 >
-                    <VsSkiScotlandCard
+                    <VsBrSkiScotlandCard
                         :centre-info-url="centre.feedURL"
                         :img-src="centreImages[index].url"
                         :img-alt="centreImages[index].alt"
@@ -59,7 +59,7 @@
                                 {{ configStore.getLabel("ski", "ski-data.no-js") }}
                             </div>
                         </template>
-                    </VsSkiScotlandCard>
+                    </VsBrSkiScotlandCard>
                 </VsCol>
             </VsRow>
         </VsContainer>
@@ -78,12 +78,12 @@ import {
     VsContainer,
     VsRow,
     VsCol,
-    VsSkiScotlandCard,
 } from '@visitscotland/component-library/components';
 
 import formatLink from '~/composables/formatLink.ts';
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrSkiScotlandCard from '~/components/Modules/VsBrSkiScotlandCard.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
