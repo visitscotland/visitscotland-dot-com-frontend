@@ -54,6 +54,7 @@
                         <VsBrRichText :input-content="day.introduction.value" />
                     </VsBody>
                 </div>
+
                 <div
                     class="d-flex flex-wrap gap-075"
                 >
@@ -76,6 +77,15 @@
             </VsCol>
         </div>
     </VsContainer>
+
+    <div
+        v-if="day.mediaSection"
+        class="mb-n250"
+    >
+        <VsBrMediaSection
+            :media-section="day.mediaSection"
+        />
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -92,6 +102,7 @@ import {
 
 import VsBrRichText from './VsBrRichText.vue';
 import VsBrMedia from './VsBrMedia.vue';
+import VsBrMediaSection from './VsBrMediaSection.vue';
 
 const configStore = useConfigStore();
 
