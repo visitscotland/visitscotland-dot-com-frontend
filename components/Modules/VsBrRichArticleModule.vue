@@ -80,7 +80,9 @@
                                 <template
                                     #quote-content
                                 >
-                                    <span v-html="section.quote.quote.value" />
+                                    <VsBody>
+                                        <VsBrRichText :input-content="section.quote.quote.value" />
+                                    </VsBody>
                                 </template>
 
                                 <template
