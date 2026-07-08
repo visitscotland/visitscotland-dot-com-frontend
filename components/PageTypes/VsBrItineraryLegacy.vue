@@ -54,7 +54,7 @@
                             :key="transportIndex"
                         >
                             <VsTooltip
-                                :title="configStore.getLabel('transports', '${transport}')"
+                                :title="configStore.getLabel('transports', transport)"
                                 href="#"
                                 :icon="getDMSIconName(transport)"
                                 size="sm"
@@ -62,7 +62,7 @@
                                 variant="transparent"
                             >
                                 <span class="visually-hidden">
-                                    {{ configStore.getLabel("transports", "${transport}") }}
+                                    {{ configStore.getLabel("transports", transport) }}
                                 </span>
                             </VsTooltip>
                         </VsDescriptionListItem>
