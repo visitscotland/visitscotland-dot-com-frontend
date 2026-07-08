@@ -1,11 +1,10 @@
 <template>
     <div class="vs-ugc">
-        <VsModuleWrapper
-            v-if="module.storystreamId"
-        >
-            <template #vs-module-wrapper-heading>
-                {{ module.title }}
-            </template>
+        <template v-if="module.storystreamId">
+            <VsBrSectionHeader
+                :heading="module.title"
+            />
+
             <VsEmbedWrapper
                 :no-cookies-required="true"
                 :no-cookie-text="configStore.getLabel('ugc', 'ugc.no-cookies-message')"
@@ -29,12 +28,14 @@
                     {{ configStore.getLabel('essentials.global', 'cookie.link-message') }}
                 </template>
             </VsEmbedWrapper>
-        </VsModuleWrapper>
+        </template>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { VsModuleWrapper, VsEmbedWrapper } from '@visitscotland/component-library/components';
+import { VsEmbedWrapper } from '@visitscotland/component-library/components';
+
+import VsBrSectionHeader from './VsBrSectionHeader.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 

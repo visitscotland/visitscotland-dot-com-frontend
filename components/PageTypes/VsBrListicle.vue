@@ -137,11 +137,15 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrHorizontalLinksModule
+        <section
+            class="mt-500"
             v-if="otyml"
-            :module="otyml"
-            theme="light"
-        />
+        >
+            <VsBrHorizontalLinksModule
+                :module="otyml"
+                theme="light"
+            />
+        </section>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate

@@ -1,8 +1,12 @@
 <template>
     <VsSectionHeader
         :heading="heading"
+        class="mb-200 mb-xl-300"
     >
-        <template #section-header-lede>
+        <template
+            #section-header-lede
+            v-if="lede"
+        >
             <div v-html="lede" />
         </template>
     </VsSectionHeader>
