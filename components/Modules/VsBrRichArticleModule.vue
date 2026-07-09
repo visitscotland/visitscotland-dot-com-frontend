@@ -60,6 +60,7 @@
                                 :image-description="section.image.description"
                                 :rounded="true"
                                 class="mb-100"
+                                :class="mediaHasTopMargin(index) ? 'mt-150' : ''"
                             />
                         </template>
 
@@ -135,6 +136,18 @@ const props = defineProps<{
 
 const module: any = props.module;
 const nextModuleArticle: boolean = props.nextModuleArticle;
+
+const mediaHasTopMargin = (index : number) => {
+    if (index !== 0) {
+        return true;
+    }
+
+    if (module.introduction && module.introduction.value) {
+        return true;
+    }
+
+    return false;
+}
 
 </script>
 
