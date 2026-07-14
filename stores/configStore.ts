@@ -15,11 +15,6 @@ interface IConfigState {
     pageMetaData: any,
     heroVideo: any,
     isLocalVideoheader: boolean,
-    allowFavourite: boolean,
-    isFavouritesPage: boolean,
-    featureFavouritesEnabled: boolean,
-    featureFavouritesUrl: string,
-    featureFavouritesEndpoint: string,
     globalSearchPath: string,
     cludoCustomerId: string,
     cludoExperienceId: string,
@@ -27,7 +22,6 @@ interface IConfigState {
     cludoLanguage: string,
     searchDmsBased: boolean,
     eventsApiUrl: string,
-    showSearchWidget: boolean,
     searchFilters: object,
     cludoApiOperator: string,
     googleMapApiKey: string,
@@ -36,6 +30,7 @@ interface IConfigState {
     pageDocument: any,
     enableHeroSection: boolean,
     pathIfError: string,
+    isInternalResource: boolean,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -59,19 +54,13 @@ const useConfigStore = defineStore('configStore', {
         },
         heroVideo: null,
         isLocalVideoheader: false,
-        allowFavourite: false,
-        featureFavouritesEnabled: false,
-        featureFavouritesUrl: '',
-        featureFavouritesEndpoint: '',
         globalSearchPath: '',
-        isFavouritesPage: false,
         cludoCustomerId: '',
         cludoExperienceId: '',
         cludoEngineId: '',
         cludoLanguage: '',
         searchDmsBased: false,
         eventsApiUrl: '',
-        showSearchWidget: false,
         searchFilters: {
         },
         cludoApiOperator: 'or',
@@ -81,6 +70,7 @@ const useConfigStore = defineStore('configStore', {
         pageDocument: null,
         enableHeroSection: false,
         pathIfError: '',
+        isInternalResource: false,
     }),
     actions: {
         getLabel(section: string, key: string) {
@@ -100,6 +90,16 @@ const useConfigStore = defineStore('configStore', {
             }
 
             return this.labels[section];
+        },
+
+        getFavouritesCount(): number {
+            try {
+                const raw = localStorage.getItem('vs-saved-pages');
+                const parsed = raw ? JSON.parse(raw) : null;
+                return Array.isArray(parsed) ? parsed.length : 0;
+            } catch {
+                return 0;
+            }
         },
     },
 });

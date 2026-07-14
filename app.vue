@@ -43,10 +43,18 @@
             <div id="__nuxt" class="external-header-integration">
                 <br-page :configuration="configuration" :mapping="mapping">
                     <template #default>
-                        <Suspense v-if="internalResourceName === 'header'">
-                            <component :is="CssHeader" />
-                        </Suspense>
-                        <br-component component="menu" v-if="internalResourceName === 'header'" />
+                        <CssHeader
+                            v-if="internalResourceName === 'header'"
+                        />
+                        <br-component
+                            v-if="internalResourceName === 'header'"
+                            component="menu"
+                        />
+                        <div style="display: none">
+                            <br-component
+                                component="main"
+                            />
+                        </div>
                         <br-component component="footer" v-if="internalResourceName === 'footer'" />
                     </template>
                 </br-page>
@@ -77,7 +85,13 @@ import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
 
-const CssHeader = defineAsyncComponent(() => import('~/components/InternalResources/CssHeader.vue'));
+import CssHeader from '~/components/InternalResources/CssHeader.vue';
+
+import useConfigStore from '~/stores/configStore.ts';
+
+
+
+const configStore = useConfigStore();
 
 /**
  * This section sets up all of the information we need to make available for the Bloomreach SDK
@@ -173,6 +187,13 @@ onMounted(async() => {
     // site is still visible. This manually implements the anchor scroll as soon as the page is
     // actually rendered.
     if (fullRoute.hash) scrollToAnchor(fullRoute.hash);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const clearFlags = urlParams.get('clear-flags');
+
+    if (clearFlags) {
+        sessionStorage.setItem('activeFlags', '{}');
+    }
 });
 
 let deLocalisedRoute = route;
@@ -269,6 +290,8 @@ const determineInternalState = () => {
 const state = determineInternalState();
 isInternalResource = state.isInternal;
 internalResourceName = state.name;
+
+configStore.isInternalResource = isInternalResource;
 
 if (isInternalResource) {
     deLocalisedRoute = '/';

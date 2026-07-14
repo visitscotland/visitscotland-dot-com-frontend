@@ -42,9 +42,49 @@ const siteSearchCloseTemplate = [
     'results_count',
 ];
 
+const favouriteAddTemplate = [
+    'event',
+    'content_title',
+    'total_favourites',
+    'interaction_timestamp_ms',
+];
+
+const favouriteRemoveTemplate = [
+    'event',
+    'content_title',
+    'total_favourites',
+    'interaction_timestamp_ms',
+];
+
+const favouritesPageViewTemplate = [
+    'event',
+    'favourite_owner',
+    'total_favourites',
+    'shared_list_id',
+];
+
+const favouritesClickTemplate = [
+    'event',
+    'list_position',
+    'total_favourites',
+    'interaction_timestamp_ms',
+];
+
+const favouritesShareTemplate = [
+    'event',
+    'favourite_owner',
+    'total_favourites',
+    'shared_list_id',
+];
+
 export {
     siteSearchOpenTemplate,
     siteSearchUsageTemplate,
     siteSearchClickTemplate,
     siteSearchCloseTemplate,
+    favouriteAddTemplate,
+    favouriteRemoveTemplate,
+    favouritesPageViewTemplate,
+    favouritesClickTemplate,
+    favouritesShareTemplate,
 };

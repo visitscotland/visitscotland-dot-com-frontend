@@ -6,7 +6,7 @@
                 lg="8"
                 offset-lg="2"
             >
-                <VsBrImageWithCaption
+                <VsBrMedia
                     :is-video="false"
                     variant="fullwidth"
                     :image="image"
@@ -24,7 +24,7 @@ import {
     VsContainer, VsRow, VsCol,
 } from '@visitscotland/component-library/components';
 
-import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 

@@ -32,10 +32,16 @@
     <VsContainer v-else>
         <div class="vs-search">
             <div class="vs-search__container">
-                <VsBrSearchInput />
+                <div 
+                    class="vs-search__widget"
+                    v-if="searchInputModule[0]"
+                >
+                    <VsBrSearchWidget
+                        :module="searchInputModule[0]"
+                    />
 
-                <VsBrDivider />
-
+                    <VsBrDivider />
+                </div>
                 <template
                     v-for="(module, index) in modules"
                     :key="module.id"
@@ -67,23 +73,41 @@
                     />
                 </div>
 
-                <div class="vs-search__location-filter">
-                    <VsBrSearchFilter
-                        v-if="checkFlags('use-location-filters')
-                            && locations.length 
-                            && !searchStore.isLoading
-                            && searchStore.categoryKey === 'events'"
-                        :filter-categories="locations"
-                        class="my-200"
-                        ref="locationFilter"
-                        :category-btn-text="configStore.getLabel('search', 'filters.category')"
-                        heading="Filter by location"
-                        variant="secondary"
-                        @filter-updated="updateLocationKey"
-                        :active-filter="searchStore.getSearchFilterKeys(searchStore.selectedLocations)"
-                        wrap
-                    />
+                <div
+                    class="vs-search__selected_filters"
+                    v-if="!searchStore.isLoading
+                        && searchStore.selectedLocations.length > 0"
+                >
+                    <div class="vs-search__filter-header">
+                        <VsDetail>
+                            <b>{{ configStore.getLabel('search', 'selected-filters-label') }}:</b>
+                        </VsDetail>
+                        <VsLink
+                            href="#"
+                            @click.prevent="clearSelectedLocations"
+                        >
+                            {{ configStore.getLabel('search', 'remove-filters') }}
+                        </VsLink>
+                    </div>
+                    <VsTag
+                        v-for="location in searchStore.selectedLocations"
+                        :key="location.Key"
+                        class="vs-search__filter-tag"
+                        @click="searchStore.removeSelectedLocationByLocation(location)"
+                        :aria-label="`${configStore.getLabel('search', 'events.location-filter-tag-aria-label')} ${location.Label}`"
+                    >
+                        <template #default>
+                            <b>{{ configStore.getLabel('search', 'events.location-filter-tag') }}: </b>
+                            <span class="me-050">{{ location.Label }}</span>
+                            <VsIcon
+                                icon="fa-regular fa-xmark"
+                                size="xxs"
+                            />
+                        </template>
+                    </VsTag>
                 </div>
+
+                <VsBrDivider class="mb-200" />
 
                 <VsLoadingSpinner v-if="searchStore.isLoading" />
 
@@ -104,13 +128,17 @@ import {
     inject,
     onMounted,
     onBeforeMount,
+    provide,
 } from 'vue';
 import {
     VsContainer,
     VsDetail,
     VsEmbedWrapper,
     VsHeading,
+    VsIcon,
+    VsLink,
     VsLoadingSpinner,
+    VsTag,
     VsWarning,
 } from '@visitscotland/component-library/components';
 
@@ -121,8 +149,7 @@ import dataLayerComposable from '~/composables/dataLayer.ts';
 
 import VsBrDivider from './VsBrDivider.vue';
 import VsBrModuleBuilder from './VsBrModuleBuilder.vue';
-import VsBrSearchFilter from './VsBrSearchFilter.vue';
-import VsBrSearchInput from './VsBrSearchInput.vue';
+import VsBrSearchWidget from './VsBrSearchWidget.vue';
 import VsBrSearchResults from './VsBrSearchResults.vue';
 import VsBrSearchSort from './VsBrSearchSort.vue';
 import type { SearchFilterCategory } from '~/types/types';
@@ -131,6 +158,8 @@ const page: Page | undefined = inject('page');
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
 const dataLayerHelper = dataLayerComposable();
+let pageItems;
+const searchInputModule: any = [];
 
 const route = useRoute();
 
@@ -143,6 +172,7 @@ const { modules } = defineProps<Props>();
 const moduleNames = [];
 
 const locations: SearchFilterCategory[] = [];
+provide('location-filters', locations);
 
 onBeforeMount(() => {
     if (configStore.searchFilters.postcodeareas){
@@ -161,6 +191,14 @@ for (let x = 0; x < modules.length; x++) {
     const hippoBean = page?.getContent(modules[x].hippoBean.$ref);
 
     moduleNames.push(hippoBean?.model.data.name);
+}
+
+if (page) {
+    pageItems = configStore.pageItems;
+
+    pageItems.some((item) => {
+        if (item.type === 'SearchWidgetModule') searchInputModule.push(item);
+    });
 }
 
 function pageCloseAnalytics() {
@@ -260,26 +298,11 @@ onMounted(() => {
     });
 });
 
-async function updateLocationKey(location: SearchFilterCategory) {
-    if (searchStore.postcodeareas) {
-        searchStore.postcodeareas = undefined;
-    }
-
-    if (!searchStore.getSearchFilterKeys(searchStore.selectedLocations).includes(location.Key)) {
-        searchStore.selectedLocations.push(location);
-    } else {
-        const index = searchStore.getSearchFilterKeys(searchStore.selectedLocations).indexOf(location.Key);
-
-        if (index >= 0) {
-            searchStore.selectedLocations.splice(index, 1);
-        }
-    }
-
+function clearSelectedLocations() {
+    searchStore.selectedLocations = [];
     searchStore.currentPage = 1;
-
-    await searchStore.setUrlParameters();
+    searchStore.setUrlParameters();
 }
-
 </script>
 
 <style lang="scss">
@@ -297,6 +320,16 @@ async function updateLocationKey(location: SearchFilterCategory) {
 
     &__error--no-js {
         display: none;
+    }
+
+    &__filter-tag {
+        cursor: pointer;
+    }
+
+    &__filter-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
     }
 }
 

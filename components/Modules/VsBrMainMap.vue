@@ -19,7 +19,6 @@
         :labels="labels"
         :language-code="`${configStore.locale}`"
         :featured-places="filteredFeatures"
-        :js-disabled="false"
         :cookie-btn-text="`${configStore.getLabel('essentials.global', 'cookie.link-message')}`"
         :alert-text="`${configStore.getLabel('map', 'map.google-results-primary-message')}`"
     />
@@ -49,6 +48,9 @@ const labels: object = computed(() => ({
     subFilterHeader: configStore.getLabel('map', 'map.sub-filter'),
     searchResults: configStore.getLabel('map', 'map.search-results'),
     openSidebarButton: configStore.getLabel('map', 'map.open-panel'),
+    resetLocation: configStore.getLabel('map', 'resetLocation'),
+    locationSelect: configStore.getLabel('map', 'locationSelect'),
+    searchAreaButton: configStore.getLabel('map', 'searchAreaButton'),
 }));
 
 const filteredFeatures = module.geoJson.features.filter(

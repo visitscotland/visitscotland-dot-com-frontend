@@ -1,5 +1,5 @@
 <template>
-    <div
+    <main
         class="vs-main-container"
         :class="{
             'has-edit-button': page.isPreview(),
@@ -48,7 +48,7 @@
             :page="page"
             :component="component"
         />
-    </div>
+    </main>
 </template>
 
 <script lang="ts" setup>
@@ -61,6 +61,7 @@ import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 import forceHttps from '~/composables/forceHttps.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
@@ -86,6 +87,7 @@ let pageDocument : any = {
 let hasStops = null;
 
 const configStore = useConfigStore();
+const favourites = useFavourites();
 
 if (page.value) {
     pageComponent = page.value.getComponent();
@@ -136,11 +138,21 @@ if (page.value) {
         configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
         configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
         configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
-        configStore.allowFavourite = componentModels.pageConfiguration['allow-favourite'];
-        configStore.featureFavouritesEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
-        configStore.featureFavouritesUrl = componentModels.pageConfiguration['feature.favourites.url'];
-        configStore.featureFavouritesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
+
+        favourites.isDisplayPage = componentModels.pageConfiguration['is-favourites-page'];
+        favourites.isSharePage = componentModels.pageConfiguration['is-favourites-share-page'];
+        favourites.pageEnabled = componentModels.pageConfiguration['allow-favourite'];
+        favourites.featureEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
+        favourites.displaySavedUrl = componentModels.pageConfiguration['feature.favourites.url'];
+        favourites.brGetPagesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
+        favourites.serviceUrl = componentModels.pageConfiguration['feature.favourites.share-service-base-url'];
+        favourites.displaySharedUrl = componentModels.pageConfiguration['feature.favourites.share-url'];
+
         configStore.mainMapPath = componentModels.pageConfiguration['main-map-path'];
+
+        if (componentModels.heroVideo) {
+            configStore.heroVideo = componentModels.heroVideo;
+        }
 
         if (componentModels.pageConfiguration['hero-ambient-video']) {
             configStore.isLocalVideoheader = true;
@@ -148,10 +160,6 @@ if (page.value) {
 
         if (componentModels.pageConfiguration['dms-based']) {
             configStore.searchDmsBased = true;
-        }
-
-        if (componentModels.pageConfiguration['is-favourites-page']) {
-            configStore.isFavouritesPage = true;
         }
 
         if (componentModels.pageConfiguration.searchWidget) {
@@ -229,82 +237,6 @@ if (page.value) {
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
-        meta: [
-            {
-                name: 'title',
-                content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
-            },
-            {
-                name: 'description',
-                content: pageDocument.model.data.seoDescription,
-            },
-            {
-                name: 'robots',
-                content: pageDocument.model.data.noIndex ? 'noindex' : '',
-            },
-            {
-                property: 'og:title',
-                content: pageDocument.model.data.seoTitle,
-            },
-            {
-                property: 'og:description',
-                content: pageDocument.model.data.seoDescription,
-            },
-            {
-                property: 'og:type',
-                content: 'article',
-            },
-            {
-                property: 'og:url',
-                content: canonicalLink,
-            },
-            {
-                property: 'og:site_name',
-                content: configStore.getLabel('seo', 'site-name'),
-            },
-            {
-                property: 'og:locale',
-                content: configStore.locale,
-            },
-            {
-                property: 'og:image',
-                content: ogImageSrc,
-            },
-            {
-                name: 'twitter:card',
-                content: 'summary_large_image',
-            },
-            {
-                name: 'twitter:site',
-                content: configStore.getLabel('seo', 'og.twitter.site'),
-            },
-            {
-                name: 'twitter:title',
-                content: pageDocument.model.data.seoTitle,
-            },
-            {
-                name: 'twitter:description',
-                content: pageDocument.model.data.seoDescription,
-            },
-            {
-                name: 'twitter:image',
-                content: ogImageSrc,
-            },
-            {
-                name: 'search:category',
-                content: pageModels.searchCategory,
-            },
-            {
-                name: 'search:contentType',
-                content: pageModels.searchContentType,
-            },
-        ],
-        htmlAttrs: {
-            lang: langString,
-            'data-version': configStore.pageMetaData.version,
-            'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
-        },
         link: [
             {
                 rel: 'icon',
@@ -359,6 +291,87 @@ if (page.value) {
             ],
         });
     }
+
+    if (!configStore.isInternalResource) {
+        useHead({
+            title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+            meta: [
+                {
+                    name: 'title',
+                    content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+                },
+                {
+                    name: 'description',
+                    content: pageDocument.model.data.seoDescription,
+                },
+                {
+                    name: 'robots',
+                    content: pageDocument.model.data.noIndex ? 'noindex' : '',
+                },
+                {
+                    property: 'og:title',
+                    content: pageDocument.model.data.seoTitle,
+                },
+                {
+                    property: 'og:description',
+                    content: pageDocument.model.data.seoDescription,
+                },
+                {
+                    property: 'og:type',
+                    content: 'article',
+                },
+                {
+                    property: 'og:url',
+                    content: canonicalLink,
+                },
+                {
+                    property: 'og:site_name',
+                    content: configStore.getLabel('seo', 'site-name'),
+                },
+                {
+                    property: 'og:locale',
+                    content: configStore.locale,
+                },
+                {
+                    property: 'og:image',
+                    content: ogImageSrc,
+                },
+                {
+                    name: 'twitter:card',
+                    content: 'summary_large_image',
+                },
+                {
+                    name: 'twitter:site',
+                    content: configStore.getLabel('seo', 'og.twitter.site'),
+                },
+                {
+                    name: 'twitter:title',
+                    content: pageDocument.model.data.seoTitle,
+                },
+                {
+                    name: 'twitter:description',
+                    content: pageDocument.model.data.seoDescription,
+                },
+                {
+                    name: 'twitter:image',
+                    content: ogImageSrc,
+                },
+                {
+                    name: 'search:category',
+                    content: pageModels.searchCategory,
+                },
+                {
+                    name: 'search:contentType',
+                    content: pageModels.searchContentType,
+                },
+            ],
+            htmlAttrs: {
+                lang: langString,
+                'data-version': configStore.pageMetaData.version,
+                'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
+            },
+        });
+    }
 }
 
 provide('page', page.value);
@@ -383,6 +396,11 @@ provide('page', page.value);
         .vs-hero-section__video-overlay {
             background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 50.48%, rgba(0, 0, 0, 0.30) 89.9%),
                         linear-gradient(180deg, rgba(0, 0, 0, 0.00) 39.5%, rgba(0, 0, 0, 0.85) 100%);
+        }
+
+        .vs-hero-section__video .vs-video-html5__toggle-video {
+            top: auto;
+            bottom: 1.25rem;
         }
     }
 </style>

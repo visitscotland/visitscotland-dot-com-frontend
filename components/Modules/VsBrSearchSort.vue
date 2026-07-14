@@ -1,56 +1,59 @@
 <template>
-    <VsRow class="vs-search-sort">
-        <VsCol cols="12" md="8">
-            <fieldset
-                @change="(event) => debounceInput(event)"
-            >
-                <VsRow>
-                    <VsCol
-                        cols="6"
-                    >
-                        <label
-                            class="vs-search-sort__label"
-                            for="vs-search-sort__from-date"
-                        >
-                            {{ configStore.getLabel('search', 'date.from') }}
-                        </label>
-                        <VsInput
-                            :auto-complete="false"
-                            field-name="vs-search-sort__from-date"
-                            type="date"
-                            :value="searchStore.fromDate || new Date().toJSON().slice(0, 10)"
-                            :validation-rules="{
-                                min: new Date().toJSON().slice(0, 10),
-                            }"
-                        />
-                    </VsCol>
-                    <VsCol
-                        cols="6"
-                    >
-                        <label
-                            class="vs-search-sort__label"
-                            for="vs-search-sort__to-date"
-                        >
-                            {{ configStore.getLabel('search', 'date.to') }}
-                        </label>
-                        <VsInput
-                            :auto-complete="false"
-                            field-name="vs-search-sort__to-date"
-                            type="date"
-                            :value="searchStore.toDate || ''"
-                            :validation-rules="{
-                                min: searchStore.fromDate,
-                            }"
-                        />
-                    </VsCol>
-                </VsRow>
-            </fieldset>
-        </VsCol>
-        <VsCol
-            class="vs-search-sort__dropdown-wrapper"
-            cols="12"
-            md="4"
+    <div class="vs-search-sort">
+        <div
+            class="vs-search-sort__location-filter"
         >
+            <label
+                class="vs-search-sort__label mb-025"
+                for="vs-search-sort__location-filter"
+            >
+                {{ configStore.getLabel('search', 'events.location-filter-title') }}
+            </label>
+            <VsBrDropdownWithSearch
+                @search-location-updated="updateLocation"
+            />
+        </div>
+        <fieldset
+            @change="(event) => debounceInput(event)"
+        >
+            <div class="vs-search-sort__date-filters">
+                <div class="vs-search-sort__date-picker">
+                    <label
+                        class="vs-search-sort__label"
+                        for="vs-search-sort__from-date"
+                    >
+                        {{ configStore.getLabel('search', 'date.from') }}
+                    </label>
+                    <VsInput
+                        :auto-complete="false"
+                        field-name="vs-search-sort__from-date"
+                        type="date"
+                        :value="searchStore.fromDate || new Date().toJSON().slice(0, 10)"
+                        :validation-rules="{
+                            min: new Date().toJSON().slice(0, 10),
+                        }"
+                    />
+                </div>
+                <div class="vs-search-sort__date-picker">
+                    <label
+                        class="vs-search-sort__label"
+                        for="vs-search-sort__to-date"
+                    >
+                        {{ configStore.getLabel('search', 'date.to') }}
+                    </label>
+                    <VsInput
+                        :auto-complete="false"
+                        field-name="vs-search-sort__to-date"
+                        type="date"
+                        :value="searchStore.toDate || ''"
+                        :validation-rules="{
+                            min: searchStore.fromDate,
+                        }"
+                    />
+                </div>
+            </div>
+        </fieldset>
+        <div class="vs-search-sort__sort-by">
             <VsDropdown
                 id="vs-search-sort__dropdown"
                 name="vs-search-sort__dropdown"
@@ -66,28 +69,30 @@
                     {{ sortOption.label }}
                 </VsDropdownItem>
             </VsDropdown>
-        </VsCol>
-    </VsRow>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 
 import {
-    VsCol,
     VsDropdown,
     VsDropdownItem,
     VsInput,
-    VsRow,
 } from '@visitscotland/component-library/components';
 
 import debounce from '~/utls/debounce.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 import useSearchStore from '~/stores/searchStore.ts';
+import type { SearchFilterCategory } from '~/types/types';
 
 const configStore = useConfigStore();
 const searchStore = useSearchStore();
+
+const locations: SearchFilterCategory[] | undefined = inject('location-filters');
+
 
 type SortOption = {
     key: string;
@@ -148,17 +153,64 @@ const debounceInput = debounce((event: Event) => {
     };
 }, 750);
 
+
+function updateLocation(filter: SearchFilterCategory){
+    if(searchStore.selectedLocations.includes(filter)){
+        searchStore.removeSelectedLocationByLocation(filter);
+    } else {
+        locations?.forEach((location) => {
+            if (location.Key === filter.Key) {
+                searchStore.selectedLocations.push(filter);
+            }
+        });
+        searchStore.currentPage = 1;
+        searchStore.setUrlParameters();
+    }
+}
 </script>
 
 <style lang="scss">
+
 .vs-search-sort {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 1em 1em;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+        margin-top: 1em;
+        justify-content: flex-start;
+
+        fieldset {
+            width: 100%;
+        }
+    }
+
     &__label {
         font-weight: 300;
     }
 
-    &__dropdown-wrapper {
+    &__date-filters {
         display: flex;
-        align-items: flex-end;
+        flex-direction: row;
+        column-gap: 1em;
+
+        @media (max-width: 768px) {
+            flex-basis: 100%;
+        }
+    }
+
+    &__date-picker {
+        width: 100%;
+    }
+
+    &__sort-by, &__location-filter {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        flex-direction: column;
 
         button {
             /*Gives sort dropdown extra height to visually balance
@@ -168,10 +220,11 @@ const debounceInput = debounce((event: Event) => {
 
         @media (max-width: 768px) {
             display: block;
-            margin-top: 1rem;
+            flex-basis: 100%;
 
-            button {
+            #vs-search-sort__dropdown, #vs-search-sort__location-filter {
                 width: 100%;
+                text-align: center;
             }
         }
     }

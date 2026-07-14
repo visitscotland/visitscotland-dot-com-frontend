@@ -99,11 +99,6 @@ if (page.value) {
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        htmlAttrs: {
-            lang: langString,
-            'data-version': configStore.pageMetaData.version,
-            'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
-        },
         link: [
             {
                 rel: 'icon',
@@ -126,6 +121,16 @@ if (page.value) {
             },
         ],
     });
+
+    if (!configStore.isInternalResource) {
+        useHead({
+            htmlAttrs: {
+                lang: langString,
+                'data-version': configStore.pageMetaData.version,
+                'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
+            },
+        });
+    }
 }
 
 provide('page', page.value);
