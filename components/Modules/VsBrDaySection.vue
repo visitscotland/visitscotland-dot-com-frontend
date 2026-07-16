@@ -7,99 +7,145 @@
                 <span class="vs-section-header__divider mb-0" />
             </VsCol>
         </VsRow>
-        <div class="row gap-300 gap-lg-0">
-            <VsCol
-                cols="12"
-                lg="4"
-                class="mt-150"
-            >
-                <VsHeading
-                    level="2"
-                    heading-style="heading-l"
-                    no-margins
+        <div class="d-flex flex-column gap-150">
+            <VsRow class="gap-300 gap-lg-0">
+                <VsCol
+                    cols="12"
+                    lg="4"
+                    class="mt-150"
                 >
-                    {{ dayLabel }} {{ dayNumber }} - {{ day.title }}
-                </VsHeading>
-            </VsCol>
-            <VsCol
-                cols="12"
-                lg="8"
-                class="d-flex flex-column gap-150"
-            >
-                <div v-if="videoValue">
-                    <VsVideo
-                        :video-title="videoLabel"
-                        :video-id="youtubeId"
-                        :single-minute-descriptor="configStore.getLabel('video', 'video.minute-text')"
-                        :plural-minute-descriptor="configStore.getLabel('video', 'video.minutes-text')"
-                        :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
-                        :no-js-message="configStore.getLabel('video', 'video.no-js')"
-                        :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
-                        :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
-                    />
-                    <VsMediaCaption :video-id="youtubeId">
-                        <template #caption>
-                            {{ videoLabel ?? configStore.getLabel('video', 'video.play-btn') }}
-                        </template>
-                    </VsMediaCaption>
-                </div>
-                <figure
-                    v-if="imageValue"
+                    <VsHeading
+                        level="2"
+                        heading-style="heading-l"
+                        no-margins
+                    >
+                        {{ dayLabel }} {{ dayNumber }} - {{ day.title }}
+                    </VsHeading>
+                </VsCol>
+                <VsCol
+                    cols="12"
+                    lg="8"
+                    class="d-flex flex-column gap-150"
                 >
-                    <VsImg
-                        :src="imageSrc"
-                        use-lazy-loading
-                        class="rounded-2 w-100"
-                        :alt="imageAlt"
-                    />
-                    <figcaption v-if="imageCredit || imageCaption">
-                        <VsMediaCaption>
+                    <div v-if="videoValue">
+                        <VsVideo
+                            :video-title="videoLabel"
+                            :video-id="youtubeId"
+                            :single-minute-descriptor="configStore.getLabel('video', 'video.minute-text')"
+                            :plural-minute-descriptor="configStore.getLabel('video', 'video.minutes-text')"
+                            :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
+                            :no-js-message="configStore.getLabel('video', 'video.no-js')"
+                            :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+                            :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
+                        />
+                        <VsMediaCaption :video-id="youtubeId">
                             <template #caption>
-                                {{ imageCaption }}
-                            </template>
-                            <template v-if="imageCredit" #credit>
-                                {{ imageCredit }}
+                                {{ videoLabel ?? configStore.getLabel('video', 'video.play-btn') }}
                             </template>
                         </VsMediaCaption>
-                    </figcaption>
-                </figure>
-                <div>
-                    <VsBody>
-                        <VsBrRichText :input-content="day.introduction.value" />
-                    </VsBody>
-                </div>
+                    </div>
+                    <figure
+                        v-if="imageValue"
+                    >
+                        <VsImg
+                            :src="imageSrc"
+                            use-lazy-loading
+                            class="rounded-2 w-100"
+                            :alt="imageAlt"
+                        />
+                        <figcaption v-if="imageCredit || imageCaption">
+                            <VsMediaCaption>
+                                <template #caption>
+                                    {{ imageCaption }}
+                                </template>
+                                <template v-if="imageCredit" #credit>
+                                    {{ imageCredit }}
+                                </template>
+                            </VsMediaCaption>
+                        </figcaption>
+                    </figure>
+                    <div>
+                        <VsBody>
+                            <VsBrRichText :input-content="day.introduction.value" />
+                        </VsBody>
+                    </div>
 
-                <div
-                    class="d-flex flex-wrap gap-075"
+                    <div
+                        class="d-flex flex-wrap gap-075"
+                    >
+                        <VsButton
+                            v-if="day.ctaLink.link && day.ctaLink.label"
+                            :href="day.ctaLink.link"
+                            variant="secondary"
+                        >
+                            {{ day.ctaLink.label }}
+                        </VsButton>
+                        <VsButton
+                            v-if="day.mapLink.link"
+                            :href="day.mapLink.link"
+                            variant="subtle"
+                            icon="fa-regular fa-map"
+                        >
+                            {{ day.mapLink.label }}
+                        </VsButton>
+                    </div>
+                </VsCol>
+            </VsRow>
+            <div
+                v-if="day.mediaSection"
+            >
+                <VsBrMedia
+                    v-if="day.mediaSection.type === 'image'"
+                    :image="day.mediaSection.image.cmsImage"
+                    :image-description="day.mediaSection.image.description"
+                    :full-bleed="true"
+                />
+
+                <VsBrMedia
+                    v-else-if="day.mediaSection.type === 'video'"
+                    :video-id="day.mediaSection.video.youtubeId"
+                    :video-with-media-caption="true"
                 >
-                    <VsButton
-                        v-if="day.ctaLink.link && day.ctaLink.label"
-                        :href="day.ctaLink.link"
-                        variant="secondary"
+                    <template #video-title>
+                        {{ day.mediaSection.video.label }}
+                    </template>
+                </VsBrMedia>
+
+                <VsContentSwiper
+                    v-else-if="day.mediaSection.type === 'carousel'"
+                    :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
+                    :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
+                    contained
+                    :slides-per-view-lg="2.2"
+                >
+                    <VsContentSwiperSlide
+                        v-for="(slide, index) in day.mediaSection.items"
+                        :key="'image-group-' + index"
                     >
-                        {{ day.ctaLink.label }}
-                    </VsButton>
-                    <VsButton
-                        v-if="day.mapLink.link"
-                        :href="day.mapLink.link"
-                        variant="subtle"
-                        icon="fa-regular fa-map"
-                    >
-                        {{ day.mapLink.label }}
-                    </VsButton>
-                </div>
-            </VsCol>
+                        <VsBrMedia
+                            v-if="slide.type === 'VIDEO'"
+                            :video-id="slide.youtubeId"
+                            :video-with-media-caption="true"
+                            class="w-100"
+                        >
+                            <template #video-title>
+                                {{ slide.label }}
+                            </template>
+                        </VsBrMedia>
+
+                        <VsBrMedia
+                            v-else
+                            :image="slide.cmsImage"
+                            :image-description="slide.description"
+                            class="w-100"
+                        />
+
+                    </VsContentSwiperSlide>
+                </VsContentSwiper>
+            </div>
         </div>
     </VsContainer>
 
-    <div
-        v-if="day.mediaSection"
-        class="mb-n250"
-    >
-        <VsBrMediaSection
-            :media-section="day.mediaSection"
-        />
-    </div>
 </template>
 
 <script setup lang="ts">
@@ -116,9 +162,11 @@ import {
     VsBody,
     VsMediaCaption,
     VsVideo,
+    VsContentSwiper,
+    VsContentSwiperSlide,
 } from '@visitscotland/component-library/components';
 import VsBrRichText from './VsBrRichText.vue';
-import VsBrMediaSection from './VsBrMediaSection.vue';
+import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 
 const configStore = useConfigStore();
 
