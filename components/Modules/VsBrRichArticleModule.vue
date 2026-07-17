@@ -98,18 +98,14 @@
         </VsRow>
     </VsContainer>
 
-    <VsContainer
+    <div
         v-if="module.mediaSection"
         :class="nextModuleArticle ? 'mb-n250' : ''"
     >
-        <VsRow>
-            <VsCol>
-                <VsBrMediaSection
-                    :media-section="module.mediaSection"
-                />
-            </VsCol>
-        </VsRow>
-    </VsContainer>
+        <VsBrMediaSection
+            :media-section="module.mediaSection"
+        />
+    </div>
 </template>
 
 <script lang="ts" setup>

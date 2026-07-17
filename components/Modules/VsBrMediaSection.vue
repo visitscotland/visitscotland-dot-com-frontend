@@ -1,22 +1,36 @@
 <template>
-    <VsBrMedia
+    <VsContainer
         v-if="mediaSection.type === 'image'"
-        :image="mediaSection.image.cmsImage"
-        :image-description="mediaSection.image.description"
-        :full-bleed="true"
-        class="mt-n250"
-    />
-
-    <VsBrMedia
-        v-else-if="mediaSection.type === 'video'"
-        :video-id="mediaSection.video.youtubeId"
-        :video-with-media-caption="true"
-        class="mt-n250"
     >
-        <template #video-title>
-            {{ mediaSection.video.label }}
-        </template>
-    </VsBrMedia>
+        <VsRow>
+            <VsCol>
+                <VsBrMedia
+                    :image="mediaSection.image.cmsImage"
+                    :image-description="mediaSection.image.description"
+                    :full-bleed="true"
+                    class="mt-n250"
+                />
+            </VsCol>
+        </VsRow>
+    </VsContainer>
+
+    <VsContainer
+        v-if="mediaSection.type === 'video'"
+    >
+        <VsRow>
+            <VsCol>
+                <VsBrMedia
+                    :video-id="mediaSection.video.youtubeId"
+                    :video-with-media-caption="true"
+                    class="mt-n250"
+                >
+                    <template #video-title>
+                        {{ mediaSection.video.label }}
+                    </template>
+                </VsBrMedia>
+            </VsCol>
+        </VsRow>
+    </VsContainer>
 
     <VsContentSwiper
         v-else-if="mediaSection.type === 'carousel'"
@@ -56,6 +70,9 @@
 import {
     VsContentSwiper,
     VsContentSwiperSlide,
+    VsContainer,
+    VsRow,
+    VsCol,
 } from '@visitscotland/component-library/components';
 
 import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
