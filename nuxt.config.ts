@@ -4,15 +4,21 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 function bufferFile(relPath: string) {
-    return fs.readFileSync(path.join(__dirname, relPath), {
-        encoding: 'utf8',
-    });
+    try {
+        return fs.readFileSync(path.join(__dirname, relPath), {
+            encoding: 'utf8',
+        });
+    } catch {
+        return '';
+    }
 }
 
 const clVersion = bufferFile('.clversion');
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+    ssr: process.env.NUXT_SSR !== 'false',
+
     runtimeConfig: {
         BR_RESOURCE_API_ENDPOINT: process.env.BR_RESOURCE_API_ENDPOINT,
         BR_X_FORWARDED_HOST: process.env.BR_X_FORWARDED_HOST,

@@ -6,7 +6,6 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "preview": "nuxt preview",
     "postinstall": "npm view @visitscotland/component-library version > .clversion && nuxt prepare",
     "commit": "cz",
     "release:patch": "standard-version --release-as patch",

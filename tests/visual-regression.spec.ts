@@ -35,7 +35,7 @@ for (const app of apps) {
                     }),
                 );
 
-                await browserPage.goto(page.path, { waitUntil: 'load', timeout: 30000 });
+                await browserPage.goto(page.path, { waitUntil: 'networkidle' });
 
                 await waitForHydration(browserPage);
 
