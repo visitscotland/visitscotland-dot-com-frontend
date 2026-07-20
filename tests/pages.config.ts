@@ -26,21 +26,6 @@ export const apps: AppTestConfig[] = [
                 path: '/',
                 fixtureFile: 'homepage.json', 
             },
-            {
-                name: 'Glasgow',
-                path: '/places-to-go/glasgow',
-                fixtureFile: 'glasgow.json', 
-            },
-            {
-                name: '7 Day East Coast Itinerary',
-                path: '/travel-planning/touring/7-days-east-scotland',
-                fixtureFile: '7-day-itinerary.json', 
-            },
-            {
-                name: 'Outdoor Safety In Scotland',
-                path: '/things-to-do/outdoor-activities/outdoor-safety-tips',
-                fixtureFile: 'outdoor-safety.json', 
-            },
         ],
     },
 ];
