@@ -39,7 +39,7 @@ export default defineConfig({
         url: `http://localhost:${app.port}`,
         reuseExistingServer: !CI,
         timeout: 120000,
-        env: CI ? { NUXT_SSR: 'false' } : undefined,
+        env: CI ? { ...process.env, NUXT_SSR: 'false' } : undefined,
     })),
 
     projects: filteredApps.map((app) => ({
