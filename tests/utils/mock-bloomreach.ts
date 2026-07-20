@@ -39,26 +39,8 @@ export async function mockBloomreachApi(
  * The app dispatches a 'vs-app-hydrated' window event on mount.
  */
 export async function waitForHydration(page: Page): Promise<void> {
-    await page.evaluate(() => new Promise<void>((resolve) => {
-        const check = () => {
-            const hydrate = document.querySelector('.hydrate');
-            if (hydrate && hydrate.offsetParent !== null) {
-                resolve();
-                return;
-            }
-        };
-
-        check();
-
-        window.addEventListener('vs-app-hydrated', () => resolve(), { once: true });
-
-        const observer = new MutationObserver(check);
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        setTimeout(() => {
-            observer.disconnect();
-            check();
-            resolve();
-        }, 15000);
-    }));
+    await page.waitForFunction(() => {
+        const hydrate = document.querySelector('.hydrate');
+        return hydrate && hydrate.offsetParent !== null;
+    }, { timeout: 15000 });
 }

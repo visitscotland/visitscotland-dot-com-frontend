@@ -34,11 +34,13 @@ export default defineConfig({
     },
 
     webServer: filteredApps.map((app) => ({
-        command: `node ./node_modules/nuxt/bin/nuxt.mjs dev --port ${app.port}`,
+        command: CI
+            ? `npx nuxt build && PORT=${app.port} npx nuxt preview`
+            : `node ./node_modules/nuxt/bin/nuxt.mjs dev --port ${app.port}`,
         cwd: app.appDir,
         url: `http://localhost:${app.port}`,
         reuseExistingServer: !CI,
-        timeout: 120000,
+        timeout: 180000,
         env: CI ? { ...process.env, NUXT_SSR: 'false' } : undefined,
     })),
 
