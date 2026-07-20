@@ -12,7 +12,10 @@
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
     "lint": "eslint . --ext .js,.vue,.ts",
-    "lint:fix": "yarn lint --fix"
+    "lint:fix": "yarn lint --fix",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:update": "playwright test --update-snapshots"
   },
   "lint-staged": {
     "*.{js,vue,ts}": "eslint"
@@ -29,6 +32,7 @@
     "@bloomreach/spa-sdk": "^27.3.1",
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^0.11.3",
+    "@playwright/test": "^1.61.1",
     "@visitscotland/component-library": "5.69.1",
     "axios": "^1.17.0",
     "commitizen": "^4.3.1",

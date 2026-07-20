@@ -1,0 +1,140 @@
+name: Playwright Tests
+
+on:
+  pull_request:
+    branches: ['*']
+  workflow_dispatch:
+
+concurrency:
+  group: playwright-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PLAYWRIGHT_BROWSERS_PATH: ~/.cache/ms-playwright
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  test:
+    name: Playwright Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Get Yarn cache directory
+        id: yarn-cache
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+
+      - name: Cache Yarn
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-${{ runner.os }}-
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Clean up port
+        run: sudo fuser -k 3070/tcp || true
+
+      - name: Run Playwright tests
+        id: run-tests
+        run: npx playwright test
+        env:
+          PW_PROJECT: visitscotland-dot-com
+
+      - name: Upload HTML report artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Save test outcome
+        if: ${{ !cancelled() }}
+        run: echo "${{ steps.run-tests.outcome }}" > outcome.txt
+
+      - name: Upload test outcome
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: test-outcome
+          path: outcome.txt
+          retention-days: 1
+
+  deploy-reports:
+    name: Deploy Playwright Report
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Download report
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: playwright-report
+          path: temp-report
+
+      - name: Download test outcome
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: test-outcome
+          path: test-outcome
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@329bcc8f12caed2cefe5a5b80781499a6f3b361b # v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./temp-report
+          keep_files: true
+          destination_dir: reports/${{ github.event.pull_request.number || github.run_id }}
+
+      - name: Generate PR Comment
+        if: github.event_name == 'pull_request'
+        id: build-comment
+        run: |
+          RUN_ID="${{ github.event.pull_request.number || github.run_id }}"
+          BASE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/$RUN_ID"
+          OUTCOME=$(cat test-outcome/outcome.txt 2>/dev/null || echo "skipped")
+          STATUS_EMOJI=$([ "$OUTCOME" = "success" ] && echo "✅ Passed" || echo "❌ Failed")
+          echo "COMMENT_BODY<<EOF" >> $GITHUB_OUTPUT
+          echo "### 🎭 Playwright E2E Test Results" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "| Application | Status | Interactive Report |" >> $GITHUB_OUTPUT
+          echo "|---|---|---|" >> $GITHUB_OUTPUT
+          echo "| \`visitscotland-dot-com\` | $STATUS_EMOJI | [View HTML Report]($BASE_URL/index.html) |" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Post Report Link to PR
+        if: github.event_name == 'pull_request'
+        uses: mshick/add-pr-comment@c96a9caed2a8cc0ed55e1f105725e383d63569d0 # v2
+        with:
+          message: ${{ steps.build-comment.outputs.COMMENT_BODY }}
