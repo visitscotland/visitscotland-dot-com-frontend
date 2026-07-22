@@ -325,6 +325,10 @@ const mapping = {
 </script>
 
 <style lang="scss">
+    * {
+        color: red;
+    }
+
     .has-edit-button {
         position: relative;
 
