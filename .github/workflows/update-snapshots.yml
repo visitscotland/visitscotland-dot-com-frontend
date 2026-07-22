@@ -19,6 +19,7 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout
@@ -65,10 +66,22 @@ jobs:
         env:
           PW_PROJECT: visitscotland-dot-com
 
-      - name: Commit and push
+      - name: Open PR with snapshot updates
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add tests/__snapshots__/
-          git diff --staged --quiet || git commit -m "chore: regenerate Playwright baselines [skip ci]"
-          git push
+          if git diff --staged --quiet; then
+            echo "No snapshot changes to commit"
+            exit 0
+          fi
+          BRANCH="chore/update-snapshots-$(date +%s)"
+          git checkout -b "$BRANCH"
+          git commit -m "chore: regenerate Playwright baselines"
+          git push -u origin "$BRANCH"
+          gh pr create \
+            --title "chore: regenerate Playwright baselines" \
+            --body "Automated snapshot update triggered by commit \`${{ github.sha }}\`" \
+            --base main
