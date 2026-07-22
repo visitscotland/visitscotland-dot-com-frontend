@@ -98,7 +98,7 @@
     >
         <div
             v-if="documentData && documentData.categoryLinks"
-            class="mt-175 mt-md-500 mb-175 mb-md-500"
+            class="mt-500"
         >
             <VsBrCategorySection
                 :categories="documentData.categoryLinks"
@@ -137,7 +137,6 @@
     >
         <VsBrProductSearch
             v-if="productSearch && productSearch.position === 'Bottom'"
-            class="mt-300 mt-lg-600"
         />
     </NuxtLazyHydrate>
 
@@ -153,11 +152,15 @@
         :when-visible="{ rootMargin: '50px' }"
         v-if="!configStore.isMainMapPageFlag"
     >
-        <VsBrHorizontalLinksModule
+        <section
+            class="mt-500"
             v-if="otyml"
-            :module="otyml"
-            theme="light"
-        />
+        >
+            <VsBrHorizontalLinksModule
+                :module="otyml"
+                theme="light"
+            />
+        </section>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
@@ -188,7 +191,6 @@ import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
 import VsBrCategorySection from '~/components/Modules/VsBrCategorySection.vue';
 import VsBrSearch from '~/components/Modules/VsBrSearch.vue';
-import VsBrSearchWidget from '~/components/Modules/VsBrSearchWidget.vue';
 import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
 
 import {
