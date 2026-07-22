@@ -68,6 +68,7 @@ echo "== Setting default application variables"
 if (!env.BR_CMS_ORIGIN_LOCATION ) { env.BR_CMS_ORIGIN_LOCATION = "https://feature.visitscotland.com" }
 if (!env.BR_RESOURCE_API_ENDPOINT ) { env.BR_RESOURCE_API_ENDPOINT = "https://feature.visitscotland.com/resourceapi?vs-brxm-host=172.28.87.25&vs-brxm-port=8097&vs-no-redirect=TRUE" }
 if (!env.BR_X_FORWARDED_HOST ) { env.BR_X_FORWARDED_HOST = "feature.visitscotland.com" }
+if (!env.VS_AWS_APPCONFIG_URL) { env.VS_AWS_APPCONFIG_URL = "http://172.28.63.17:2772/applications/visitscotland.com/environments/feature/configurations/ttalfx1" }
 echo "==/Setting default application variables"
 
 echo "== Setting default container variables"

@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <template v-if="checkFlags('use-navbar')">
+    <template v-if="checkFlag('use-navbar')">
         <VsBrSkipTo />
         <VsBanner
             v-if="banner"
@@ -434,6 +434,10 @@ import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
 import VsBrDivider from '~/components/Modules/VsBrDivider.vue';
 import VsBrMegaNav from '~/components/Modules/VsBrMegaNav.vue';
 import VsBrAccordionNav from '~/components/Modules/VsBrAccordionNav.vue';
+import { getCurrentInstance } from 'vue'
+
+const { appContext } = getCurrentInstance()
+const globalProperties = appContext.config.globalProperties
 
 const favourites = useFavourites();
 const props = defineProps<{ component: Component, page: Page }>();
@@ -458,7 +462,7 @@ const isFocused = ref(false);
 const scrollY = ref(1);
 
 const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
-    && checkFlags('use-navbar')
+    && globalProperties.checkFlag('use-navbar')
     && scrollY.value === 0
     && !isHovered.value
     && !isFocused.value);
