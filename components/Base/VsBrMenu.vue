@@ -434,12 +434,6 @@ import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
 import VsBrDivider from '~/components/Modules/VsBrDivider.vue';
 import VsBrMegaNav from '~/components/Modules/VsBrMegaNav.vue';
 import VsBrAccordionNav from '~/components/Modules/VsBrAccordionNav.vue';
-
-import { getCurrentInstance } from 'vue'
-
-const { appContext } = getCurrentInstance()
-const globalProperties = appContext.config.globalProperties
-
 import { getCurrentInstance } from 'vue'
 
 const { appContext } = getCurrentInstance()
