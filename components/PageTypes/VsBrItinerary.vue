@@ -27,8 +27,9 @@
             </VsBrHeroHeading>
         </VsRow>
         <div class="mt-300">
-            <VsBrImageWithMediaCaption
-                :image="documentData.image"
+            <VsBrMedia
+                :image="configStore.heroImage.cmsImage"
+                :image-description="configStore.heroImage.description"
             />
         </div>
         <VsRow class="mt-025">
@@ -277,7 +278,6 @@ import VsBrDaySection from '~/components/Modules/VsBrDaySection.vue';
 import VsBrHeroHeading from '../Modules/VsBrHeroHeading.vue';
 import VsBrFavouriteButton from '../Modules/VsBrFavouriteButton.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
-import VsBrImageWithMediaCaption from '~/components/Modules/VsBrImageWithMediaCaption.vue';
 
 import {
     VsBody,
