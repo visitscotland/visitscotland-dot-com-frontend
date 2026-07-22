@@ -2,7 +2,7 @@
     <div>
         <!-- test feature flags for production use - to be removed once verified -->
         <template v-if="checkFlag('productiontest')">
-            <span v-if="checkFlag('productiontest')" data-testid="greeting-flag" />
+            <span data-testid="prod-test" />
         </template>
         
         <div v-if="!isInternalResource">
