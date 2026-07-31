@@ -1,15 +1,8 @@
 <template>
-    <VsSectionHeader
+    <VsBrSectionHeader
         :heading="title"
-        class="mb-250 mt-250"
-    >
-        <template
-            #section-header-lede
-            v-if="introduction.value"
-        >
-            <div v-html="introduction.value" />
-        </template>
-    </VsSectionHeader>
+        :lede="introduction?.value"
+    />
 
     <VsContainer>
         <VsCol class="col-md-8">
@@ -46,13 +39,13 @@ import {
     VsAccordion,
     VsAccordionItem,
     VsContainer,
-    VsSectionHeader,
     VsCol,
     VsBody,
     VsIcon,
 } from '@visitscotland/component-library/components';
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrSectionHeader from './VsBrSectionHeader.vue';
 
 const props = defineProps<{
     idPrefix: string,

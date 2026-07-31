@@ -1,10 +1,16 @@
 <template>
-    <div
+    <section
         class="vs-module-wrapper__outer"
         v-for="(item, index) in modules"
         :key="index"
         :id="`section-${index}`"
-        :class="`vs-module-wrapper__outer--${item.themeValue} ${page.isPreview() ? 'has-edit-button' : ''}`"
+        :class="
+            `
+                vs-module-wrapper__outer--${item.themeValue}
+                ${page.isPreview() ? 'has-edit-button' : ''}
+                ${!item.isMegaLink ? 'mt-500' : ''}
+            `
+        "
     >
         <BrManageContentButton
             v-if="item.hippoBean && page"
@@ -237,12 +243,11 @@
                 :when-visible="{ rootMargin: '50px' }"
             >
                 <VsBrSearchWidget
-                    class="mt-175 mt-md-500 mb-175 mb-md-500"
                     :module="item"
                 />
             </NuxtLazyHydrate>
         </div>
-    </div>
+    </section>
 </template>
 
 <script lang="ts" setup>
@@ -306,6 +311,14 @@ if (modules) {
             }
 
             newThemeIndex = currentMegaLinkSection % themeCount;
+        }
+
+        if (
+            modules[x].type === 'ListLinksModule'
+            || modules[x].type === 'MultiImageLinksModule'
+            || modules[x].type === 'SingleImageLinksModule'
+        ) {
+            modules[x].isMegaLink = true;
         }
 
         if (modules[x].type === 'SingleImageLinksModule') {

@@ -1,6 +1,6 @@
 <template>
     <VsContainer>
-        <VsRow class="mt-500 mb-500">
+        <VsRow>
             <VsCol
                 cols="12"
                 lg="4"

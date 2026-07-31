@@ -1,14 +1,10 @@
 <template>
-    <VsModuleWrapper theme="light">
-        <template #vs-module-wrapper-heading>
-            {{ module.title }}
-        </template>
+    <VsBrSectionHeader
+        :heading="module.title"
+        :lede="module.introduction?.value"
+    />
 
-        <template #vs-module-wrapper-intro>
-            <VsBrRichText :input-content="module.introduction.value" />
-        </template>
-
-        <VsContainer>
+    <VsContainer>
             <VsRow
                 class="mx-n100 mx-lg-n200"
             >
@@ -63,26 +59,23 @@
                 </VsCol>
             </VsRow>
         </VsContainer>
-    </VsModuleWrapper>
 </template>
 
 <script lang="ts" setup>
- 
 
 import { inject } from 'vue';
 
 import type { Page } from '@bloomreach/spa-sdk';
 
+import VsBrSectionHeader from './VsBrSectionHeader.vue';
+
 import {
-    VsModuleWrapper,
     VsContainer,
     VsRow,
     VsCol,
 } from '@visitscotland/component-library/components';
 
 import formatLink from '~/composables/formatLink.ts';
-
-import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrSkiScotlandCard from '~/components/Modules/VsBrSkiScotlandCard.vue';
 
 import useConfigStore from '~/stores/configStore.ts';

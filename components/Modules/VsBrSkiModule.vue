@@ -1,17 +1,10 @@
 <template>
-    <VsModuleWrapper theme="light">
-        <template #vs-module-wrapper-heading>
-            {{ module.title }}
-        </template>
+    <VsBrSectionHeader
+        :heading="module.title"
+        :lede="module.introduction?.value"
+    />
 
-        <template
-            #vs-module-wrapper-intro
-            v-if="module.introduction"
-        >
-            <VsBrRichText :input-content="module.introduction.value" />
-        </template>
-
-        <VsContainer>
+    <VsContainer>
             <VsRow>
                 <VsCol
                     cols="12"
@@ -169,14 +162,13 @@
                 </VsCol>
             </VsRow>
         </VsContainer>
-    </VsModuleWrapper>
 </template>
 
 <script lang="ts" setup>
- 
+
+import VsBrSectionHeader from './VsBrSectionHeader.vue';
 
 import {
-    VsModuleWrapper,
     VsContainer,
     VsRow,
     VsCol,
@@ -185,8 +177,6 @@ import {
     VsIcon,
     VsLink,
 } from '@visitscotland/component-library/components';
-
-import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrSkiScotlandStatus from '~/components/Modules/VsBrSkiScotlandStatus.vue';
 
 import useConfigStore from '~/stores/configStore.ts';

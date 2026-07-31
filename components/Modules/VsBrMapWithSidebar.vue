@@ -1,16 +1,10 @@
 <template>
-    <VsModuleWrapper theme="light">
-        <template #vs-module-wrapper-heading>
-            {{ module.title }}
-        </template>
+    <VsBrSectionHeader
+        :heading="module.title"
+        :lede="module.introduction?.value"
+    />
 
-        <template
-            #vs-module-wrapper-intro
-        >
-            <VsBrRichText :input-content="module.introduction ? module.introduction.value : ''" />
-        </template>
-
-        <VsMapWithSidebar
+    <VsMapWithSidebar
             :main-heading-exists="module.title ? true : false"
             :category-heading="module.tabTitle"
             :filters="module.filters"
@@ -69,16 +63,14 @@
                 {{ configStore.getLabel('map', 'map.zoom-too-far') }}
             </template>
         </VsMapWithSidebar>
-    </VsModuleWrapper>
 </template>
 
 <script lang="ts" setup>
  
 
 import { VsMapWithSidebar } from '@visitscotland/component-library/maps';
-import { VsModuleWrapper } from '@visitscotland/component-library/components';
 
-import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrSectionHeader from './VsBrSectionHeader.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
