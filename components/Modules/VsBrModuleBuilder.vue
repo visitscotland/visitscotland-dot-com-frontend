@@ -317,6 +317,7 @@ if (modules) {
             modules[x].type === 'ListLinksModule'
             || modules[x].type === 'MultiImageLinksModule'
             || modules[x].type === 'SingleImageLinksModule'
+            || modules[x].type === 'MapsModule'
         ) {
             modules[x].isMegaLink = true;
         }
