@@ -4380,7 +4380,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.4.0":
+"axios@npm:^1.18.0, axios@npm:^1.4.0":
   version: 1.18.1
   resolution: "axios@npm:1.18.1"
   dependencies:
@@ -10099,6 +10099,7 @@ __metadata:
     "@playwright/test": "npm:^1.61.1"
     "@types/node": "npm:^25.9.1"
     "@visitscotland/component-library": "npm:5.71.4"
+    axios: "npm:^1.18.0"
     commitizen: "npm:^4.3.1"
     cz-conventional-changelog: "npm:^3.3.0"
     eslint: "npm:^10.4.0"
