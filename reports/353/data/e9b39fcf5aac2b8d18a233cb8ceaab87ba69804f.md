@@ -1,0 +1,923 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: visual-regression.spec.ts >> visitscotland-dot-com >> visual regression: Homepage
+- Location: tests/visual-regression.spec.ts:9:13
+
+# Error details
+
+```
+Error: expect(page).toHaveScreenshot(expected) failed
+
+  Expected an image 1280px by 7694px, received 1280px by 7938px. 2099480 pixels (ratio 0.21 of all image pixels) are different.
+
+  Snapshot: homepage.png
+
+Call log:
+  - Expect "toHaveScreenshot(homepage.png)" with timeout 5000ms
+    - verifying given screenshot expectation
+  - taking page screenshot
+    - disabled all CSS animations
+  - waiting for fonts to load...
+  - fonts loaded
+  - Expected an image 1280px by 7694px, received 1280px by 7938px. 2096894 pixels (ratio 0.21 of all image pixels) are different.
+  - waiting 100ms before taking screenshot
+  - taking page screenshot
+    - disabled all CSS animations
+  - waiting for fonts to load...
+  - fonts loaded
+  - captured a stable screenshot
+  - Expected an image 1280px by 7694px, received 1280px by 7938px. 2099480 pixels (ratio 0.21 of all image pixels) are different.
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - navigation "Skip to" [ref=e8]:
+        - paragraph [ref=e9]: "Skip to:"
+        - link "Main menu" [ref=e10] [cursor=pointer]:
+          - /url: "#main-nav"
+        - link "Search" [ref=e11] [cursor=pointer]:
+          - /url: "#site-search-btn"
+        - link "Content" [ref=e12] [cursor=pointer]:
+          - /url: "#main-heading"
+        - link "Footer" [ref=e13] [cursor=pointer]:
+          - /url: "#site-footer"
+      - banner [ref=e14]:
+        - navigation [ref=e15]:
+          - generic [ref=e18]:
+            - link " My favourites" [ref=e19] [cursor=pointer]:
+              - /url: /favourites
+              - generic: 
+              - generic [ref=e20]: My favourites
+            - generic [ref=e21]:
+              - button " LanguageEN " [ref=e22] [cursor=pointer]:
+                - generic: 
+                - text: LanguageEN 
+              - text: 
+            - text: 
+        - generic [ref=e23]:
+          - navigation "main nav" [ref=e24]:
+            - generic [ref=e26]:
+              - link "Visit Scotland Home" [ref=e29] [cursor=pointer]:
+                - /url: /
+                - generic [ref=e30]: Visit Scotland Home
+              - menubar [ref=e32]:
+                - menuitem "Places to go" [ref=e33]:
+                  - button "Places to go" [ref=e34] [cursor=pointer]
+                  - text: 
+                - menuitem "Things to do" [ref=e35]:
+                  - button "Things to do" [ref=e36] [cursor=pointer]
+                  - text: 
+                - menuitem "Test Data" [ref=e37] [cursor=pointer]
+                - menuitem "Accommodation" [ref=e38]:
+                  - button "Accommodation" [ref=e39] [cursor=pointer]
+                  - text: 
+                - menuitem "Travel & planning" [ref=e40]:
+                  - button "Travel & planning" [ref=e41] [cursor=pointer]
+                  - text: 
+                - menuitem "Map of Scotland" [ref=e42] [cursor=pointer]
+              - generic [ref=e43]:
+                - link " Search" [ref=e44] [cursor=pointer]:
+                  - /url: /site-search-results
+                  - generic: 
+                  - generic [ref=e45]: Search
+                - text: 
+          - text:  
+    - banner [ref=e46]:
+      - generic [ref=e48]:
+        - generic [ref=e50]:
+          - generic [ref=e51]:
+            - generic: 
+          - generic [ref=e53]:
+            - paragraph [ref=e55]: "BETA: The search and map are new features with further enhancements planned. VisitScotland is not responsible for the content of external links and accepts no liability for any reliance on these."
+            - link "Your feedback will help improve the site" [ref=e57] [cursor=pointer]:
+              - /url: https://forms.office.com/Pages/ResponsePage.aspx?id=i6cHlOa1sE2MK35GwX69WtIEyFSgaDlCoMG4KNaUei9URFhFNFhDWFVUQTlRMFBUQ0Y0OTIzQzg2Vi4u
+              - text: Your feedback will help improve the site
+        - button " Close" [ref=e59] [cursor=pointer]:
+          - generic: 
+          - generic [ref=e60]: Close
+    - main [ref=e61]:
+      - generic [ref=e63]:
+        - button "Pause Video" [ref=e68] [cursor=pointer]:
+          - generic: 
+          - generic [ref=e69]: Pause Video
+        - generic [ref=e71]:
+          - heading "Start Your Story in Scotland" [level=1] [ref=e72]
+          - paragraph [ref=e74]: Where history meets breathtaking beauty, and every visit feels like an escape.
+      - generic [ref=e75]:
+        - generic [ref=e81]:
+          - heading "Inspiration for your trip" [level=2] [ref=e83]
+          - paragraph [ref=e87]: Step into a land steeped in history and legend, explore our dramatic landscapes and uncover our ancient Celtic roots. Vast lochs, glens and Munros - easily accessible from our vibrant cities and towns - make Scotland the perfect place to lose yourself.
+        - generic [ref=e89]:
+          - generic [ref=e93]:
+            - button "Previous slide" [disabled]:
+              - generic: 
+              - generic: previous
+            - button "Next slide" [ref=e94] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e95]: next
+          - generic [ref=e97]:
+            - group "Slide 1 of 4" [ref=e98]:
+              - heading "Places to go" [level=2] [ref=e103]:
+                - link "Places to go" [ref=e104] [cursor=pointer]:
+                  - /url: /places-to-go
+            - group "Slide 2 of 4" [ref=e106]:
+              - heading "Things to do" [level=2] [ref=e111]:
+                - link "Things to do" [ref=e112] [cursor=pointer]:
+                  - /url: /things-to-do
+            - group "Slide 3 of 4" [ref=e114]:
+              - heading "Accommodation" [level=2] [ref=e119]:
+                - link "Accommodation" [ref=e120] [cursor=pointer]:
+                  - /url: /accommodation
+            - group "Slide 4 of 4" [ref=e122]:
+              - heading "Travel & planning" [level=2] [ref=e127]:
+                - link "Travel & planning" [ref=e128] [cursor=pointer]:
+                  - /url: /travel-planning
+      - generic [ref=e130]:
+        - generic [ref=e136]:
+          - heading "Plan an epic trip to Scotland" [level=2] [ref=e138]
+          - paragraph [ref=e142]: Did we catch your eye during the 2026 World Cup? Or did you hear our lively Tartan Army first? It may have taken us 28 years to secure a win, but you don't need to wait that long to book a fantastic holiday to Scotland, with our breathtaking landscapes, unmissable events and friendly Scots.
+        - generic [ref=e144]:
+          - generic:
+            - generic:  
+          - generic [ref=e146]:
+            - group "Slide 1 of 4" [ref=e147]:
+              - generic [ref=e150]:
+                - heading "Highland games in Scotland" [level=3] [ref=e151]:
+                  - link "Highland games in Scotland" [ref=e152] [cursor=pointer]:
+                    - /url: /things-to-do/events/highland-games
+                - paragraph [ref=e154]: From the tug o' war to the caber toss, Scotland's Highland games are not to be missed.
+            - group "Slide 2 of 4" [ref=e155]:
+              - generic [ref=e158]:
+                - heading "The Northern Lights in Scotland" [level=3] [ref=e159]:
+                  - link "The Northern Lights in Scotland" [ref=e160] [cursor=pointer]:
+                    - /url: /things-to-do/landscapes-nature/northern-lights
+                - paragraph [ref=e162]: Nature's most dramatic winter light display. Discover more about this otherworldly natural phenomenon.
+            - group "Slide 3 of 4" [ref=e163]:
+              - generic [ref=e166]:
+                - heading "12 Must-visit historic towns in Scotland" [level=3] [ref=e167]:
+                  - link "12 Must-visit historic towns in Scotland" [ref=e168] [cursor=pointer]:
+                    - /url: /places-to-go/scottish-towns/historic
+                - paragraph [ref=e170]: Get ready to take a journey through some of the finest historic towns in Scotland.
+            - group "Slide 4 of 4" [ref=e171]:
+              - generic [ref=e174]:
+                - heading "Scottish whisky" [level=3] [ref=e175]:
+                  - link "Scottish whisky" [ref=e176] [cursor=pointer]:
+                    - /url: /things-to-do/food-drink/whisky
+                - paragraph [ref=e178]: Whisky is Scotland's best known export and has been proudly produced throughout the country for hundreds of years.
+      - generic [ref=e186]:
+        - heading "Final countdown to Glasgow 2026 Commonwealth Games" [level=2] [ref=e187]
+        - paragraph [ref=e189]: Follow the King’s Baton Relay across Scotland as we countdown to 11 days of world-class action with 3,000 athletes from 74 nations competing across 10 sports!
+        - link "Glasgow 2026 Commonwealth Games" [ref=e190] [cursor=pointer]:
+          - /url: /things-to-do/events/glasgow-commonwealth-games
+          - generic [ref=e191]: Glasgow 2026 Commonwealth Games
+      - generic [ref=e194]:
+        - generic [ref=e200]:
+          - heading "Discover unique experiences in Scotland" [level=2] [ref=e202]
+          - paragraph [ref=e206]: Discover hidden gems, plan your perfect trip, or find exactly what you need—from scenic hikes and cosy cottages to events and cultural experiences.
+        - generic [ref=e207]:
+          - generic [ref=e208]:
+            - generic [ref=e209]:
+              - generic [ref=e210]:
+                - generic [ref=e211]: What are you looking for?
+                - generic: 
+              - searchbox "What are you looking for?" [ref=e213]
+            - button "Search" [ref=e214] [cursor=pointer]:
+              - generic [ref=e215]: Search
+          - generic [ref=e218]:
+            - button "Accommodation category" [ref=e219] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e220]: Accommodation
+            - button "Adventure category" [ref=e221] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e222]: Adventure
+            - button "City Break category" [ref=e223] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e224]: City Break
+            - button "Culture & History category" [ref=e225] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e226]: Culture & History
+            - button "Events & Festivals category" [ref=e227] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e228]: Events & Festivals
+            - button "Family category" [ref=e229] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e230]: Family
+            - button "Food & Drink category" [ref=e231] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e232]: Food & Drink
+            - button "Nature & Outdoors category" [ref=e233] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e234]: Nature & Outdoors
+            - button "Tours category" [ref=e235] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e236]: Tours
+            - button "Travel category" [ref=e237] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e238]: Travel
+            - button "Wellness category" [ref=e239] [cursor=pointer]:
+              - generic: 
+              - generic [ref=e240]: Wellness
+      - generic [ref=e241]:
+        - heading "Discover Scotland's vibrant events and festivals" [level=2] [ref=e249]
+        - generic [ref=e252]:
+          - generic:
+            - generic:  
+          - generic [ref=e254]:
+            - group "Slide 1 of 3" [ref=e255]:
+              - generic [ref=e258]:
+                - heading "FIFA World Cup 2026" [level=3] [ref=e259]:
+                  - link "FIFA World Cup 2026" [ref=e260] [cursor=pointer]:
+                    - /url: /things-to-do/events/fifa-world-cup
+                - paragraph [ref=e262]: Cheer on Scotland at the FIFA World Cup 2026 and find information about fan zones in Scotland, stadium tours and more.
+            - group "Slide 2 of 3" [ref=e263]:
+              - generic [ref=e266]:
+                - heading "Edinburgh Festivals" [level=3] [ref=e267]:
+                  - link "Edinburgh Festivals" [ref=e268] [cursor=pointer]:
+                    - /url: /things-to-do/events/edinburgh-festivals
+                - paragraph [ref=e270]: Discover Edinburgh's summer festivals, including the world-famous Edinburgh International Festival and Edinburgh Festival Fringe.
+            - group "Slide 3 of 3" [ref=e271]:
+              - generic [ref=e274]:
+                - heading "Events and festivals in Scotland" [level=3] [ref=e275]:
+                  - link "Events and festivals in Scotland" [ref=e276] [cursor=pointer]:
+                    - /url: /things-to-do/events
+                - paragraph [ref=e278]: There's something happening in Scotland right now that the whole family will love.
+      - generic [ref=e279]:
+        - generic [ref=e285]:
+          - heading "Summertime in Scotland" [level=2] [ref=e287]
+          - paragraph [ref=e291]: Embrace long summer days in Scotland with plenty of experiences to enjoy from gentle coastal walks by the sea to festivals filled with local tunes, incredible art and hilarious comedy.
+        - generic [ref=e293]:
+          - generic:
+            - generic:  
+          - generic [ref=e295]:
+            - group "Slide 1 of 4" [ref=e296]:
+              - generic [ref=e299]:
+                - heading "Summer holidays & breaks in Scotland" [level=3] [ref=e300]:
+                  - link "Summer holidays & breaks in Scotland" [ref=e301] [cursor=pointer]:
+                    - /url: /travel-planning/when-to-visit/summer
+                - paragraph [ref=e303]: Find ideas and inspiration, from family days out to top camping spots, walks and outdoor activities.
+            - group "Slide 2 of 4" [ref=e304]:
+              - generic [ref=e307]:
+                - heading "Scotland's islands" [level=3] [ref=e308]:
+                  - link "Scotland's islands" [ref=e309] [cursor=pointer]:
+                    - /url: /places-to-go/islands
+                - paragraph [ref=e311]: Find out about the hundreds of islands in Scotland including Arran, Lewis, Skye, Outer Hebrides and Shetland. Plan the perfect island getaway today.
+            - group "Slide 3 of 4" [ref=e312]:
+              - generic [ref=e315]:
+                - heading "Scottish music festivals" [level=3] [ref=e316]:
+                  - link "Scottish music festivals" [ref=e317] [cursor=pointer]:
+                    - /url: /things-to-do/events/music-festivals
+                - paragraph [ref=e319]: Find out what’s happening in Scotland this year
+            - group "Slide 4 of 4" [ref=e320]:
+              - generic [ref=e323]:
+                - heading "The best tours of Scotland - luxury & scenic tours" [level=3] [ref=e324]:
+                  - link "The best tours of Scotland - luxury & scenic tours" [ref=e325] [cursor=pointer]:
+                    - /url: /travel-planning/touring
+                - paragraph [ref=e327]: Tour Scotland at your own pace with these fantastic ideas.
+      - generic [ref=e335]:
+        - heading "Your Scottish adventure starts here" [level=2] [ref=e336]
+        - paragraph [ref=e338]: Use our interactive map to explore wild landscapes, vibrant cities, rich culture, and hidden historic gems to craft your personal Scottish experience.
+        - link "Map of Scotland" [ref=e339] [cursor=pointer]:
+          - /url: /map
+          - generic [ref=e340]: Map of Scotland
+      - generic [ref=e341]:
+        - generic [ref=e347]:
+          - heading "Scotland as seen on TV!" [level=2] [ref=e349]
+          - paragraph [ref=e353]: From Tara Lipinski and Johnny Weir's luxury Scotland itinerary to local suggestions on the highlights of Glasgow and Dumfries & Galloway, check out this top advice on trips across Scotland.
+        - generic [ref=e355]:
+          - generic:
+            - generic:  
+          - generic [ref=e357]:
+            - group "Slide 1 of 3" [ref=e358]:
+              - generic [ref=e361]:
+                - heading "Tara & Johnny's luxury Scotland itinerary" [level=3] [ref=e362]:
+                  - link "Tara & Johnny's luxury Scotland itinerary" [ref=e363] [cursor=pointer]:
+                    - /url: /things-to-do/itineraries/extra-mile-club-scotland
+                - paragraph [ref=e365]: Have you been inspired by Tara & Johnny's Scotland itinerary as seen on NBC's Extra Mile Club? Read on and plan your own Scottish adventure.
+            - group "Slide 2 of 3" [ref=e366]:
+              - generic [ref=e369]:
+                - heading "Channel 4's Where to next? Scotland itinerary" [level=3] [ref=e370]:
+                  - link "Channel 4's Where to next? Scotland itinerary" [ref=e371] [cursor=pointer]:
+                    - /url: /things-to-do/itineraries/where-to-next
+                - paragraph [ref=e373]: Follow in the footsteps of comedians Fatiha El-Ghorri and John Tothill on their unforgettable journey through Scotland.
+            - group "Slide 3 of 3" [ref=e374]:
+              - generic [ref=e377]:
+                - heading "Scotland trip itineraries" [level=3] [ref=e378]:
+                  - link "Scotland trip itineraries" [ref=e379] [cursor=pointer]:
+                    - /url: /things-to-do/itineraries
+                - paragraph [ref=e381]: Plan your days in Scotland with the help of our suggested itineraries.
+      - generic [ref=e383]:
+        - heading "Your pictures of Scotland" [level=2] [ref=e391]
+        - generic [ref=e395]:
+          - paragraph [ref=e398]: Share your images by tagging @VisitScotland
+          - generic [ref=e399]:
+            - generic [ref=e401]:
+              - generic:
+                - generic:
+                  - button "Close product tray":
+                    - img
+              - generic [ref=e402]:
+                - button "Move Carousel to previous item" [ref=e403] [cursor=pointer]
+                - generic [ref=e405]:
+                  - button "Read more https://www.instagram.com/p/CmldqpkI0Ex/ Asset post by jackboothby" [ref=e409] [cursor=pointer]:
+                    - button "Read more https://www.instagram.com/p/CmldqpkI0Ex/" [ref=e410]
+                    - generic [ref=e411]:
+                      - generic:
+                        - generic:
+                          - img "Asset post by jackboothby"
+                      - generic [ref=e412]: asset
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a8/https3a-wwwinstagr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a8/https3a-wwwinstagr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a8/https3a-wwwinstagr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Pinterest":
+                              - /url: https://pinterest.com/pin/create/button/?url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a8/https3a-wwwinstagr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&media=https://du66ttpehq3tn.cloudfront.net/h_355,w_284,c_fill,g_auto:car/https://d1sdeqoxcfgxl0.cloudfront.net/images/original/aeb79b1930b2ee447de2c067d95b149febb2584b23d332c1f7294a51.jpg&description=
+                              - generic: p
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a8/https3a-wwwinstagr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - button "Read more Five reasons to make Osdale Cottages on the Isle o... Instagram post by dogfriendlydestinationsuk" [ref=e416] [cursor=pointer]:
+                    - button "Read more Five reasons to make Osdale Cottages on the Isle o..." [ref=e417]
+                    - generic [ref=e418]:
+                      - generic:
+                        - generic:
+                          - img "Instagram post by dogfriendlydestinationsuk"
+                      - generic [ref=e420]:
+                        - generic [ref=e421]: instagram
+                        - text: i
+                    - text: i
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a7/five-reasons-to-make/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a7/five-reasons-to-make/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a7/five-reasons-to-make/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Pinterest":
+                              - /url: https://pinterest.com/pin/create/button/?url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a7/five-reasons-to-make/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&media=https://du66ttpehq3tn.cloudfront.net/h_355,w_284,c_fill,g_auto:car/https://d1sdeqoxcfgxl0.cloudfront.net/images/original/780ca2ebe8f86d1b4a477c16cb6ad6f7d2b9cc317549960a931e59e4.jpg&description=
+                              - generic: p
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a7/five-reasons-to-make/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - button "Read more https://www.instagram.com/p/CEFayrZH7bC/ Asset post by leefowlie" [ref=e425] [cursor=pointer]:
+                    - button "Read more https://www.instagram.com/p/CEFayrZH7bC/" [ref=e426]
+                    - generic [ref=e427]:
+                      - generic:
+                        - generic:
+                          - img "Asset post by leefowlie"
+                      - generic [ref=e428]: asset
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a6/https3a-wwwinstagr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a6/https3a-wwwinstagr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a6/https3a-wwwinstagr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Pinterest":
+                              - /url: https://pinterest.com/pin/create/button/?url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a6/https3a-wwwinstagr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&media=https://du66ttpehq3tn.cloudfront.net/h_355,w_284,c_fill,g_auto:car/https://d1sdeqoxcfgxl0.cloudfront.net/images/original/400d4f56660340ef1066ba0c588f43541690821732ab1d3cf641b136.jpg&description=
+                              - generic: p
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a6/https3a-wwwinstagr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - button "Read more Sunset skies and a rainbow over The Standing Stone... Instagram post by amelia_a_amelia" [ref=e432] [cursor=pointer]:
+                    - button "Read more Sunset skies and a rainbow over The Standing Stone..." [ref=e433]
+                    - generic [ref=e434]:
+                      - generic:
+                        - generic:
+                          - img "Instagram post by amelia_a_amelia"
+                      - generic [ref=e436]:
+                        - generic [ref=e437]: instagram-hashtag
+                        - text: i
+                    - text: i
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a5/sunset-skies-and-a-r/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a5/sunset-skies-and-a-r/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a5/sunset-skies-and-a-r/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Pinterest":
+                              - /url: https://pinterest.com/pin/create/button/?url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a5/sunset-skies-and-a-r/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&media=https://du66ttpehq3tn.cloudfront.net/h_355,w_284,c_fill,g_auto:car/https://d1sdeqoxcfgxl0.cloudfront.net/images/original/9f36688dc52ea2989f3343ea2f886deb9742d87069b21cebff30cdc5.jpg&description=
+                              - generic: p
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/69207718f9ad9e28e922e5a5/sunset-skies-and-a-r/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - button "Read more 📌 Achmelvich Bay A lovely midterm visit to Achmel... Instagram post by unknown user" [ref=e441] [cursor=pointer]:
+                    - button "Read more 📌 Achmelvich Bay A lovely midterm visit to Achmel..." [ref=e442]
+                    - generic [ref=e443]:
+                      - generic:
+                        - generic:
+                          - img "Instagram post by unknown user"
+                      - generic [ref=e445]:
+                        - generic [ref=e446]: instagram-hashtag
+                        - text: i
+                    - text: i
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/68233a4412a5b876c54349dd/f09f938c-achmelv/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/68233a4412a5b876c54349dd/f09f938c-achmelv/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/68233a4412a5b876c54349dd/f09f938c-achmelv/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Pinterest":
+                              - /url: https://pinterest.com/pin/create/button/?url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/68233a4412a5b876c54349dd/f09f938c-achmelv/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&media=https://du66ttpehq3tn.cloudfront.net/h_355,w_284,c_fill,g_auto:car/https://d1sdeqoxcfgxl0.cloudfront.net/images/original/89b4b487d0587ceddb43bc350a3c3144a6fa5dc91c878b60376ccf97.jpeg&description=
+                              - generic: p
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/68233a4412a5b876c54349dd/f09f938c-achmelv/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - button "Read more Do YOU have a favourite castle in Scotland? 🏰💕 Wha... Instagram post by visitscotland" [ref=e450] [cursor=pointer]:
+                    - button "Read more Do YOU have a favourite castle in Scotland? 🏰💕 Wha..." [ref=e451]
+                    - generic [ref=e452]:
+                      - generic:
+                        - generic:
+                          - img "Instagram post by visitscotland"
+                      - generic [ref=e454]:
+                        - generic [ref=e455]: instagram-user
+                        - text: i
+                    - text: i
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/67d2d35d6d23b122e7c153d6/do-you-have-a-favour/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/67d2d35d6d23b122e7c153d6/do-you-have-a-favour/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/67d2d35d6d23b122e7c153d6/do-you-have-a-favour/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Pinterest":
+                              - /url: https://pinterest.com/pin/create/button/?url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/67d2d35d6d23b122e7c153d6/do-you-have-a-favour/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&media=https://du66ttpehq3tn.cloudfront.net/h_355,w_284,c_fill,g_auto:car/https://d1sdeqoxcfgxl0.cloudfront.net/images/original/2d6e7d3795d468c3d80588d0821ae614c99166403d8c0b968b569e14.jpg&description=
+                              - generic: p
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/67d2d35d6d23b122e7c153d6/do-you-have-a-favour/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - 'button "Read more Bluebells in bloom in Ballachulish 🤩 . . . #bluebe... Instagram post by highlandkiwi" [ref=e459] [cursor=pointer]':
+                    - 'button "Read more Bluebells in bloom in Ballachulish 🤩 . . . #bluebe..." [ref=e460]'
+                    - generic [ref=e461]:
+                      - generic:
+                        - generic:
+                          - img "Instagram post by highlandkiwi"
+                      - generic [ref=e463]:
+                        - generic [ref=e464]: instagram-hashtag
+                        - text: i
+                    - text: i
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/67d2d320a6316b2165fa9cce/bluebells-in-bloom-i/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/67d2d320a6316b2165fa9cce/bluebells-in-bloom-i/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/67d2d320a6316b2165fa9cce/bluebells-in-bloom-i/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Pinterest":
+                              - /url: https://pinterest.com/pin/create/button/?url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/67d2d320a6316b2165fa9cce/bluebells-in-bloom-i/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&media=https://du66ttpehq3tn.cloudfront.net/h_355,w_284,c_fill,g_auto:car/https://d1sdeqoxcfgxl0.cloudfront.net/images/original/939ebf13906e8a5670eccaa983fcde827f96121592e2415dc0b0d3b6.jpg&description=
+                              - generic: p
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/67d2d320a6316b2165fa9cce/bluebells-in-bloom-i/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - 'button "Read more Dark Side of the Bass . . . . nikoneurope D850 #la... Instagram post by goodbye.1979" [ref=e468] [cursor=pointer]':
+                    - 'button "Read more Dark Side of the Bass . . . . nikoneurope D850 #la..." [ref=e469]'
+                    - generic [ref=e470]:
+                      - generic:
+                        - generic:
+                          - img "Instagram post by goodbye.1979"
+                      - generic [ref=e472]:
+                        - generic [ref=e473]: instagram
+                        - text: i
+                    - text: i
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/678921e8a6316b385ece2d66/dark-side-of-the-bas/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/678921e8a6316b385ece2d66/dark-side-of-the-bas/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/678921e8a6316b385ece2d66/dark-side-of-the-bas/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Pinterest":
+                              - /url: https://pinterest.com/pin/create/button/?url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/678921e8a6316b385ece2d66/dark-side-of-the-bas/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&media=https://du66ttpehq3tn.cloudfront.net/h_355,w_284,c_fill,g_auto:car/https://d1sdeqoxcfgxl0.cloudfront.net/images/original/a4767e9cf7cf634f6dcad39134038d8c1e4b824f3c76f7a1df62fec6.jpg&description=
+                              - generic: p
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/678921e8a6316b385ece2d66/dark-side-of-the-bas/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - button "Read more The remote Glen Affric Trio, Munro 263 - 265.. wha... Instagram post by scottishmunrojourney" [ref=e477] [cursor=pointer]:
+                    - button "Read more The remote Glen Affric Trio, Munro 263 - 265.. wha..." [ref=e478]
+                    - generic [ref=e479]:
+                      - generic:
+                        - generic:
+                          - img "Instagram post by scottishmunrojourney"
+                      - generic [ref=e481]:
+                        - generic [ref=e482]: instagram-hashtag
+                        - text: i
+                    - text: i
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedad/the-remote-glen-affr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedad/the-remote-glen-affr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedad/the-remote-glen-affr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Pinterest":
+                              - /url: https://pinterest.com/pin/create/button/?url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedad/the-remote-glen-affr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&media=https://du66ttpehq3tn.cloudfront.net/h_355,w_284,c_fill,g_auto:car/https://d1sdeqoxcfgxl0.cloudfront.net/images/original/96d540ea78c1e551a4ae5bb7075e62b42f3e31f259b89320d344b257.jpg&description=
+                              - generic: p
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedad/the-remote-glen-affr/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - button "Read more … and now we’re totally hooked! If this event doe... Video by haggistours click to expand item and play video" [ref=e486] [cursor=pointer]:
+                    - button "Read more … and now we’re totally hooked! If this event doe..." [ref=e487]
+                    - generic [ref=e488]:
+                      - generic "Video by haggistours" [ref=e489]
+                      - button "click to expand item and play video" [ref=e490]: "&"
+                      - generic [ref=e492]:
+                        - generic [ref=e493]: instagram-tagged
+                        - text: i
+                    - text: i
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedac/e280a6-and-now-we/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedac/e280a6-and-now-we/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedac/e280a6-and-now-we/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedac/e280a6-and-now-we/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - 'button "Read more Good morning 🌅 #babycoo #coosday #highlandcow #hi... Video by highlandcows_bythesea click to expand item and play video" [ref=e497] [cursor=pointer]':
+                    - 'button "Read more Good morning 🌅 #babycoo #coosday #highlandcow #hi..." [ref=e498]'
+                    - generic [ref=e499]:
+                      - generic "Video by highlandcows_bythesea" [ref=e500]
+                      - button "click to expand item and play video" [ref=e501]: "&"
+                      - generic [ref=e503]:
+                        - generic [ref=e504]: instagram-hashtag
+                        - text: i
+                    - text: i
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedab/good-morning-f09f/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedab/good-morning-f09f/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedab/good-morning-f09f/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/674f480c9390b50a1cfaedab/good-morning-f09f/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+                  - button "Read more Castle Stalker framed by the tranquil waters of Lo... Instagram post by libkendall.shots" [ref=e508] [cursor=pointer]:
+                    - button "Read more Castle Stalker framed by the tranquil waters of Lo..." [ref=e509]
+                    - generic [ref=e510]:
+                      - generic:
+                        - generic:
+                          - img "Instagram post by libkendall.shots"
+                      - generic [ref=e512]:
+                        - generic [ref=e513]: instagram-tagged
+                        - text: i
+                    - text: i
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "Twitter":
+                              - /url: https://twitter.com/home?status=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/6668386573455f0c92a3be51/castle-stalker-frame/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: t
+                          - listitem:
+                            - link "Facebook":
+                              - /url: https://www.facebook.com/sharer/sharer.php?u=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/6668386573455f0c92a3be51/castle-stalker-frame/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: o
+                          - listitem:
+                            - link "LinkedIn":
+                              - /url: https://www.linkedin.com/shareArticle?mini=true&url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/6668386573455f0c92a3be51/castle-stalker-frame/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&title=&summary=&source=
+                              - generic: I
+                          - listitem:
+                            - link "Pinterest":
+                              - /url: https://pinterest.com/pin/create/button/?url=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/6668386573455f0c92a3be51/castle-stalker-frame/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx&media=https://du66ttpehq3tn.cloudfront.net/h_355,w_284,c_fill,g_auto:car/https://d1sdeqoxcfgxl0.cloudfront.net/images/original/aede4311baa84b816602d81b3bff2e5d306bca647d9cdf1df028f843.jpeg&description=
+                              - generic: p
+                          - listitem:
+                            - link "Email":
+                              - /url: mailto:?&body=http://live.storystream.it/visitscotland/6554c56eccc80ae58e66e850/items/6668386573455f0c92a3be51/castle-stalker-frame/?rel=on-page-gallery~MGJiMjMzOTJhZDUzZTEzMzIx
+                              - generic: e
+                      - generic "Close"
+            - text: 
+      - generic:     
+      - generic [ref=e520]:
+        - generic [ref=e521]:
+          - heading "Join our Newsletter Clan" [level=2] [ref=e522]
+          - paragraph [ref=e524]: Get Scotland inspiration direct to your inbox. Don't miss the inside track from our Scotland experts on exciting trip ideas, unique attractions and hidden gems loved by locals.
+        - link "Get the Scotland newsletter" [ref=e526] [cursor=pointer]:
+          - /url: /newsletter
+          - generic [ref=e527]: Get the Scotland newsletter
+    - contentinfo [ref=e528]:
+      - generic [ref=e532]:
+        - generic [ref=e534]:
+          - generic [ref=e535]:
+            - text: 
+            - heading "Visitor information" [level=2] [ref=e536]
+          - menu [ref=e538]:
+            - menuitem "Test Data" [ref=e539]:
+              - link "Test Data" [ref=e540] [cursor=pointer]:
+                - /url: /test
+            - menuitem "Accommodation" [ref=e541]:
+              - link "Accommodation" [ref=e542] [cursor=pointer]:
+                - /url: /sandbox
+        - generic [ref=e544]:
+          - generic [ref=e545]:
+            - text: 
+            - heading "Get in touch" [level=2] [ref=e546]
+          - menu [ref=e548]:
+            - menuitem "Contact us" [ref=e549]:
+              - link "Contact us" [ref=e550] [cursor=pointer]:
+                - /url: /contact-us
+            - menuitem "Feedback & Complaints " [ref=e551]:
+              - link "Feedback & Complaints " [ref=e552] [cursor=pointer]:
+                - /url: https://www.visitscotland.org/about-us/our-policies/complaints-feedback
+                - text: Feedback & Complaints
+                - generic: 
+            - menuitem "Submit an event" [ref=e553]:
+              - link "Submit an event" [ref=e554] [cursor=pointer]:
+                - /url: /things-to-do/events/submit-event
+        - generic [ref=e556]:
+          - generic [ref=e557]:
+            - text: 
+            - heading "Our other sites" [level=2] [ref=e558]
+          - menu [ref=e560]:
+            - menuitem "Business Events " [ref=e561]:
+              - link "Business Events " [ref=e562] [cursor=pointer]:
+                - /url: https://businessevents.visitscotland.com/
+                - text: Business Events
+                - generic: 
+            - menuitem "Business Support Hub " [ref=e563]:
+              - link "Business Support Hub " [ref=e564] [cursor=pointer]:
+                - /url: https://support.visitscotland.org/
+                - text: Business Support Hub
+                - generic: 
+            - menuitem "Travel Trade " [ref=e565]:
+              - link "Travel Trade " [ref=e566] [cursor=pointer]:
+                - /url: https://traveltrade.visitscotland.org/
+                - text: Travel Trade
+                - generic: 
+            - menuitem "Asset library " [ref=e567]:
+              - link "Asset library " [ref=e568] [cursor=pointer]:
+                - /url: https://visitscotland.canto.global/v/visitscotlandassetlibrary
+                - text: Asset library
+                - generic: 
+            - menuitem "Corporate " [ref=e569]:
+              - link "Corporate " [ref=e570] [cursor=pointer]:
+                - /url: https://www.visitscotland.org/
+                - text: Corporate
+                - generic: 
+            - menuitem "Brand Scotland " [ref=e571]:
+              - link "Brand Scotland " [ref=e572] [cursor=pointer]:
+                - /url: https://www.scotland.org/
+                - text: Brand Scotland
+                - generic: 
+        - generic [ref=e574]:
+          - heading "Find us on" [level=2] [ref=e575]
+          - list [ref=e576]:
+            - listitem [ref=e577]:
+              - link "fab fa-youtube" [ref=e578] [cursor=pointer]:
+                - /url: https://www.youtube.com/channel/UC1FdvQG5MFwzv0PY6dMsaFg
+                - generic: 
+                - text: 
+            - listitem [ref=e579]:
+              - link "fab fa-x-twitter" [ref=e580] [cursor=pointer]:
+                - /url: https://twitter.com/VisitScotland
+                - generic: 
+                - text: 
+            - listitem [ref=e581]:
+              - link "fab fa-facebook" [ref=e582] [cursor=pointer]:
+                - /url: https://www.facebook.com/visitscotland/
+                - generic: 
+                - text: 
+            - listitem [ref=e583]:
+              - link "fab fa-instagram" [ref=e584] [cursor=pointer]:
+                - /url: https://www.instagram.com/visitscotland/
+                - generic: 
+                - text: 
+      - generic:
+        - generic:
+          - generic:        
+      - menu [ref=e589]:
+        - menuitem "About us " [ref=e590]:
+          - link "About us " [ref=e591] [cursor=pointer]:
+            - /url: https://www.visitscotland.org/what-we-do
+            - text: About us
+            - generic: 
+        - menuitem "Accessibility" [ref=e592]:
+          - link "Accessibility" [ref=e593] [cursor=pointer]:
+            - /url: /policies/accessibility
+        - menuitem "Acceptable use" [ref=e594]:
+          - link "Acceptable use" [ref=e595] [cursor=pointer]:
+            - /url: /policies/acceptable-use
+        - menuitem "Cookies" [ref=e596]:
+          - link "Cookies" [ref=e597] [cursor=pointer]:
+            - /url: /policies/privacy/cookies
+        - menuitem "Environmental policy" [ref=e598]:
+          - link "Environmental policy" [ref=e599] [cursor=pointer]:
+            - /url: /policies/environmental
+        - menuitem "Privacy " [ref=e600]:
+          - link "Privacy " [ref=e601] [cursor=pointer]:
+            - /url: https://www.visitscotland.org/what-we-do/privacy-centre
+            - text: Privacy
+            - generic: 
+        - menuitem "Social media" [ref=e602]:
+          - link "Social media" [ref=e603] [cursor=pointer]:
+            - /url: /policies/terms-conditions/social-media
+        - menuitem "Terms of use" [ref=e604]:
+          - link "Terms of use" [ref=e605] [cursor=pointer]:
+            - /url: /policies/terms-conditions
+      - generic [ref=e609]:
+        - link "Brand Scotland":
+          - /url: https://www.scotland.org/
+          - generic [ref=e610] [cursor=pointer]: Brand Scotland
+        - paragraph [ref=e611]: © 2026 VisitScotland. All rights reserved.
+  - generic:
+    - img
+  - generic [ref=e612]:
+    - button "Toggle Nuxt DevTools" [ref=e613] [cursor=pointer]:
+      - img [ref=e614]
+    - generic "App load time" [ref=e617]:
+      - generic [ref=e618]: "2.2"
+      - generic [ref=e619]: s
+    - button "Toggle Component Inspector" [ref=e621] [cursor=pointer]:
+      - img [ref=e622]
+```
+
+# Test source
+
+```ts
+  1  | import { test, expect } from '@playwright/test';
+  2  | import { resolve } from 'path';
+  3  | import { apps } from './pages.config';
+  4  | import { mockBloomreachApi, waitForHydration } from './utils/mock-bloomreach';
+  5  | 
+  6  | for (const app of apps) {
+  7  |     test.describe(app.name, () => {
+  8  |         for (const page of app.pages) {
+  9  |             test(`visual regression: ${page.name}`, async ({ page: browserPage }, testInfo) => {
+  10 |                 test.skip(testInfo.project.name !== app.name, 'Skipping: not the current project');
+  11 | 
+  12 |                 const fixturePath = resolve(
+  13 |                     process.cwd(),
+  14 |                     app.fixtureDir,
+  15 |                     page.fixtureFile,
+  16 |                 );
+  17 | 
+  18 |                 await mockBloomreachApi(browserPage, {
+  19 |                     endpoint: app.bloomreachEndpoint,
+  20 |                     fixturePath,
+  21 |                 });
+  22 | 
+  23 |                 await browserPage.route('**/api/getEndpoint', (route) =>
+  24 |                     route.fulfill({
+  25 |                         status: 200,
+  26 |                         contentType: 'text/plain',
+  27 |                         body: `https://${app.bloomreachEndpoint}/resourceapi`,
+  28 |                     }),
+  29 |                 );
+  30 |                 await browserPage.route('**/api/getXForwardedHost', (route) =>
+  31 |                     route.fulfill({
+  32 |                         status: 200,
+  33 |                         contentType: 'text/plain',
+  34 |                         body: '',
+  35 |                     }),
+  36 |                 );
+  37 | 
+  38 |                 await browserPage.goto(page.path, { waitUntil: 'networkidle' });
+  39 | 
+  40 |                 await waitForHydration(browserPage);
+  41 | 
+> 42 |                 await expect(browserPage).toHaveScreenshot(
+     |                                           ^ Error: expect(page).toHaveScreenshot(expected) failed
+  43 |                     `${page.name.toLowerCase().replace(/\s+/g, '-')}.png`,
+  44 |                     { fullPage: true },
+  45 |                 );
+  46 |             });
+  47 |         }
+  48 |     });
+  49 | }
+  50 | 
+```
