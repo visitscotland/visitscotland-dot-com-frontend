@@ -3549,9 +3549,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@visitscotland/component-library@npm:5.71.4":
-  version: 5.71.4
-  resolution: "@visitscotland/component-library@npm:5.71.4"
+"@visitscotland/component-library@file:.yalc/@visitscotland/component-library::locator=nuxt-bloomreach-headless-white-label%40workspace%3A.":
+  version: 5.76.0
+  resolution: "@visitscotland/component-library@file:.yalc/@visitscotland/component-library#.yalc/@visitscotland/component-library::hash=c5fda8&locator=nuxt-bloomreach-headless-white-label%40workspace%3A."
   dependencies:
     "@floating-ui/dom": "npm:^1.7.6"
     "@googlemaps/js-api-loader": "npm:^2.0.1"
@@ -3579,7 +3579,7 @@ __metadata:
   dependenciesMeta:
     husky:
       built: true
-  checksum: 10c0/2e0009f6eaa98b9134ed02131ddd842b01928979f1f6d39ab653ea7b26f4b5bba6b8488a6b55fec5ac859c72a89310ab91046c84d36d8b3f5f54ce0df42f993d
+  checksum: 10c0/ec3ae8d09765099f31a56d4706aa82405fd34ee8286d473f24824a2a5bcc64c31c24ec0cccce84f8c2c13753d297a5ffda08ff0ed91003d4828443dbba686803
   languageName: node
   linkType: hard
 
@@ -10098,7 +10098,7 @@ __metadata:
     "@pinia/nuxt": "npm:^1.0.1"
     "@playwright/test": "npm:^1.61.1"
     "@types/node": "npm:^25.9.1"
-    "@visitscotland/component-library": "npm:5.71.4"
+    "@visitscotland/component-library": "file:.yalc/@visitscotland/component-library"
     axios: "npm:^1.18.0"
     commitizen: "npm:^4.3.1"
     cz-conventional-changelog: "npm:^3.3.0"
