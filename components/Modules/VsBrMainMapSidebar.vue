@@ -1,0 +1,513 @@
+<!-- eslint-disable vue/component-name-in-template-casing -->
+<template>
+    <div
+        class="vs-map-sidebar"
+        ref="sidebar"
+        :style="sidebarStyle"
+        @pointerdown="startDrag"
+        @pointermove="onDrag"
+        @pointerup="endDrag"
+        @pointercancel="endDrag"
+    >
+        <div
+            v-show="props.mapLoaded"
+            class="vs-map-sidebar__panel1"
+        >
+            <div class="vs-map-sidebar__handle">
+                <VsButton
+                    variant="subtle"
+                    @click="isOpen = !isOpen"
+                >
+                    <div class="vs-map-sidebar__handle-bar" />
+                    <span class="sr-only">
+                        {{ props.sidebarLabels.openSidebarButtonLabel }}
+                    </span>
+                </VsButton>
+            </div>
+
+            <div class="vs-map-sidebar__content">
+                <div class="vs-map-sidebar__section1">
+                    <VsHeading
+                        class="flex-grow-1"
+                        data-test="vs-map-sidebar__heading"
+                        heading-style="heading-xxs"
+                        id="vs-map-sidebar__heading"
+                        level="1"
+                        no-margins
+                    >
+                        {{ props.sidebarLabels.headerLabel }}
+                    </VsHeading>
+
+                    <div class="vs-map-sidebar__input d-flex mt-050 mb-050">
+                        <VsInput
+                            :aria-label="props.sidebarLabels.searchBarAriaLabel"
+                            autocomplete="off"
+                            class="vs-map-sidebar__input flex-grow-1"
+                            data-test="vs-map-search-input"
+                            field-name="vs-map-search-input"
+                            :placeholder="props.sidebarLabels.inputPlaceholderLabel"
+                            ref="search-input"
+                            :value="mainMapStore.searchTerm"
+                            @input="mainMapStore.searchTerm = $event.target.value"
+                            @keyup.enter="$emit('search-input-changed')"
+                        />
+                        <VsButton
+                            class="vs-map-sidebar__search-button"
+                            data-test="vs-map-sidebar__search-button"
+                            icon="vs-icon-control-search"
+                            icon-only
+                            :rounded="false"
+                            size="lg"
+                            @click="$emit('search-input-changed')"
+                            @keyup.enter="$emit('search-input-changed')"
+                        >
+                            {{ props.sidebarLabels.searchButtonLabel }}
+                        </VsButton>
+                    </div>
+
+                    <a
+                        v-if="props.query || props.selectedCategory"
+                        class="d-block"
+                        href="#"
+                        data-test="vs-map-sidebar__reset-map"
+                        @click.prevent="$emit('reset-map')"
+                        @keyup.enter.prevent="$emit('reset-map')"
+                    >
+                        {{ props.sidebarLabels.clearMapLabel }}
+                    </a>
+                </div>
+
+                <div class="vs-map-sidebar__section2">
+                    <div v-if="mainMapStore.showDestinations">
+                        <VsBrMainMapFilter
+                            :detail-text="props.sidebarLabels.locationSelectLabel"
+                            has-icons
+                            :items="filteredDestinationCategories"
+                            :selected-category="mainMapStore.selectedDestinationType"
+                            @changed="(event: MapFilterChanged) =>
+                                handleDestinationTypeClick(event.id)"
+                        />
+                    </div>
+
+                    <div v-if="mainMapStore.showCategories">
+                        <VsBrMainMapFilter
+                            has-icons
+                            :items="filteredCategories"
+                            :selected-category="mapCategoryStore.selectedCategory"
+                            @changed="(event: MapFilterChanged) =>
+                                handleCategorySelect(event.id)"
+                        />
+
+                        <VsBrMainMapFilter
+                            v-if="mapCategoryStore.selectedCategory && subcategories"
+                            :detail-text="props.sidebarLabels.subFilterHeaderLabel"
+                            :items="subcategories"
+                            :selected-category="mapCategoryStore.selectedSubcategories"
+                            @changed="(event: MapFilterChanged) =>
+                                mapCategoryStore.toggleSubcategory(event.id)"
+                        />
+                    </div>
+                </div>
+
+                <div class="vs-map-sidebar__section3">
+                    <div class="vs-map-sidebar__search-results">
+                        <VsHeading
+                            v-if="$props.query || $props.selectedCategory"
+                            data-test="vs-map-sidebar__search-result-query"
+                            heading-style="heading-xxxs"
+                            level="2"
+                        >
+                            {{ props.sidebarLabels.searchResultsLabel }}
+                            "{{ props.query || props.selectedCategory }}"
+                        </VsHeading>
+
+                        <a
+                            v-if="props.query || props.selectedCategory"
+                            href="#"
+                            data-test="vs-map-sidebar__hard-reset-map"
+                            @click.prevent="$emit('reset-location')"
+                            @keyup.enter.prevent="$emit('reset-location')"
+                        >
+                            {{ props.sidebarLabels.resetLocationLabel }}
+                        </a>
+                        
+                        <div class="vs-map-sidebar__google-maps-container">
+                            <!-- @Slot to contain Google Maps Places
+                                UI Kit Search Results/Details components -->
+                            <slot name="vs-map-sidebar-search-results" />
+                        </div>
+                    </div>
+
+                    <VsRow
+                        v-if="mainMapStore.showDestinations"
+                        class="vs-map__destinations"
+                    >
+                        <VsBrMainMapFeaturedLocation
+                            v-for="destination in props.destinations"
+                            :key="destination.properties.id"
+                            :place="destination"
+                        />
+                    </VsRow>
+                </div>
+            </div>
+        </div>
+
+        <div v-show="isResultsOpen" class="vs-map-sidebar__panel2">
+            <div class="vs-map-sidebar__handle">
+                <VsButton
+                    variant="subtle"
+                    @click="isOpen = !isOpen"
+                >
+                    <div class="vs-map-sidebar__handle-bar" />
+                    <span class="sr-only">
+                        {{ props.sidebarLabels.openSidebarButtonLabel }}
+                    </span>
+                </VsButton>
+            </div>
+
+            <div class="vs-map-detail-container">
+                <VsButton
+                    class="vs-map-detail-container__dismiss"
+                    data-test="vs-map-detail-container__dismiss"
+                    icon="vs-icon-control-dismiss"
+                    icon-only
+                    variant="subtle"
+                    @click="isResultsOpen = false"
+                >
+                    {{ props.sidebarLabels.closeSidebarButtonLabel }}
+                </VsButton>
+
+                <gmp-place-details
+                    id="placeDetails"
+                    ref="place-details"
+                    style="display: none"
+                >
+                    <gmp-place-details-place-request
+                        id="placeRequest"
+                        ref="place-request"
+                    />
+                    <gmp-place-content-config>
+                        <gmp-place-address />
+                        <gmp-place-rating />
+                        <gmp-place-type />
+                        <gmp-place-price />
+                        <gmp-place-accessible-entrance-icon />
+                        <gmp-place-opening-hours />
+                        <gmp-place-website />
+                        <gmp-place-phone-number />
+                        <gmp-place-summary />
+                        <gmp-place-type-specific-highlights />
+                        <gmp-place-reviews />
+                        <gmp-place-feature-list />
+                        <gmp-place-media lightbox-preferred />
+                        <gmp-place-attribution
+                            light-scheme-color="gray"
+                            dark-scheme-color="gray"
+                        />
+                    </gmp-place-content-config>
+                </gmp-place-details>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+import {
+    computed,
+    onMounted,
+    useTemplateRef,
+    watch,
+} from 'vue';
+import {
+    VsButton,
+    VsHeading,
+    VsInput,
+    VsRow,
+} from '@visitscotland/component-library/components';
+
+import useMainMapStore from '~/stores/mainMap.ts';
+import useMapCategoryStore from '~/stores/mapCategory.ts';
+import useSwipeDrawer from '~/composables/mainMap/useSwipeDrawer.ts';
+import VsBrMainMapFeaturedLocation from './VsBrMainMapFeaturedLocation.vue';
+import VsBrMainMapFilter from './VsBrMainMapFilter.vue';
+
+type MapFilterChanged = {
+    id: string;
+    key: number | string;
+};
+
+type CategoryConfig = Record<string, Category>;
+
+type Category = {
+    id: string;
+    icon: string;
+    includedType?: string[];
+    excludedType?: string[];
+    keywords?: string[];
+    subCategory: Subcategory[];
+};
+
+type Subcategory = {
+    id: string;
+    includedType: string[];
+    excludedType?: string[];
+};
+
+type Categories = {
+    label: string;
+    id: string;
+    cmsData?: boolean;
+    subCategory: {
+        label: string;
+        id: string;
+    }[];
+};
+
+type DestinationCategory = {
+    label: string;
+    id: string;
+}
+
+type Props = {
+    /** Label and id for the category buttons */
+    categories: Categories[];
+    /** List of destinations */
+     
+    destinations: any;
+    /** List of destination categories */
+    destinationCategories: DestinationCategory[];
+    /** Whether the map is loaded or not. */
+    mapLoaded?: boolean;
+    /** Test query from Map Search */
+    query?: string;
+    /** Selected top level category */
+    selectedCategory?: string;
+    /** Selected sub categories */
+     
+    selectedSubcategories?: any;
+    /** Labels for the sidebar */
+    sidebarLabels: Record<string, string>;
+    place?: google.maps.places.Place;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+    mapLoaded: false,
+    query: undefined,
+    selectedCategory: undefined,
+    selectedSubcategories: undefined,
+    place: undefined,
+});
+
+// Two-way binding for sidebar open/close state.
+const isOpen = defineModel<boolean>('isOpen', {
+    default: false,
+});
+
+// Two-way binding for results panel open/close state.
+const isResultsOpen = defineModel<boolean>('isResultsOpen', {
+    default: false,
+});
+
+const emit = defineEmits<{
+    'category-selected': [{
+        id: string;
+        key: number | string;
+    }],
+    'destination-type-selected': [],
+    'reset-location': [],
+    'reset-map': [],
+    'search-input-changed': [],
+    'subcategory-selected': [{
+        id: string;
+        key: number | string;
+    }],
+}>();
+
+const sidebar = useTemplateRef('sidebar');
+const searchInput = useTemplateRef('search-input');
+const placeDetails = useTemplateRef('place-details');
+const placeRequest = useTemplateRef('place-request');
+
+watch(() => props.place, (place) => {
+    console.log('place updated', place);
+    if (!place || !placeRequest.value || !placeDetails.value) return;
+
+    placeRequest.value.place = place;
+    placeDetails.value.style.display = 'block';
+});
+
+defineExpose({
+    searchInput,
+});
+
+const mainMapStore = useMainMapStore();
+const mapCategoryStore = useMapCategoryStore();
+const {
+    endDrag,
+    onDrag,
+    startDrag,
+    sidebarStyle,
+} = useSwipeDrawer(isOpen, sidebar);
+
+const filteredCategories = props.categories.filter((category: Categories) => !category.cmsData);
+
+const subcategories = computed(() => {
+    if (!mapCategoryStore.selectedCategory) return null;
+
+    const categoryData = props.categories.find(
+        (cat: Categories) => cat.id === mapCategoryStore.selectedCategory,
+    );
+
+    if (!categoryData) return null;
+
+    return categoryData.subCategory;
+});
+
+// Temporary hide "Town" from the destinations categories.
+const filteredDestinationCategories = props.destinationCategories.filter((category: DestinationCategory) => category.id !== 'towns');
+
+function handleDestinationTypeClick(id: string) {
+    mainMapStore.selectedDestinationType = id;
+    emit('destination-type-selected');
+}
+
+function handleCategorySelect(id: string) {
+    mapCategoryStore.selectedSubcategories = [];
+    mapCategoryStore.selectedCategory = id;
+}
+
+onMounted(() => {
+    if (props.destinationCategories[0]) {
+        mainMapStore.selectedDestinationType = props.destinationCategories[0].id;
+    }
+});
+</script>
+
+<style lang="scss">
+html.map-page,
+body.map-page {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior-y: none;
+}
+
+.vs-map-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    
+    @media (max-width: 768px) {
+        height: 91vh;
+        max-height: 900px;
+        min-height: 400px;
+        overscroll-behavior: contain;
+        top: auto;
+        right: 0;
+        bottom: 0;
+        touch-action: none;
+        width: 100vw;
+    }
+
+    @media (min-width: 767.98px) {
+        display: flex;
+        gap: 1rem;
+        max-height: 85vh;
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+    }
+
+    &__panel1,
+    &__panel2 {
+        background: #FFFFFF;
+        border-radius: 1rem 1rem 0 0;
+        box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.30), 0px 1px 3px 1px rgba(0,0,0,0.15);
+        overflow: hidden;
+        padding: 0.75rem 1.25rem 1.75rem;
+
+        @media (min-width: 767.98px) {
+            border-radius: 1rem;
+            overflow: auto;
+            padding: 1.25rem;
+            width: 23.3rem;
+        }
+
+        @media (max-width: 768px) {
+            height: 100%;
+        }
+    }
+
+    &__panel2 {
+        @media (max-width: 768px) {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 50;
+        }
+    }
+
+    &__handle {
+        display: flex;
+        justify-content: center;
+        padding: 0 0.75rem 0.75rem 0.75rem;
+        touch-action: none;
+
+        @media (min-width: 767.98px) {
+            display: none;
+        }
+    }
+
+    &__handle-bar {
+        background: #A8308C;
+        border-radius: 1rem;
+        height: 4px;
+        touch-action: none;
+        width: 48px;
+    }
+
+    &__input input {
+        margin: 0;
+        border-radius: 0.5rem 0 0 0.5rem;
+        border-right: none;
+        height: 52px;
+    }
+
+    &__search-button {
+        flex-grow: 0.125;
+        border-radius: 0 0.5rem 0.5rem 0;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        
+        .vs-map-sidebar__section1,
+        .vs-map-sidebar__section2 {
+            flex-shrink: 0;
+        }
+
+        .vs-map-sidebar__section3 {
+            flex: 1;
+            margin-bottom: 0.5rem;
+            overflow: hidden auto;
+        }
+    }
+}
+
+.vs-map-detail-container {
+    position: relative;
+
+    &__dismiss {
+        position: absolute !important;
+        right: 1rem;
+        z-index: 1001;
+    }
+
+    gmp-place-details {
+        border: none;
+    }
+}
+</style>

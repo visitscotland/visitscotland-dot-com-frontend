@@ -12,6 +12,7 @@
             `
         "
     >
+    <pre>{{ item }}</pre>
         <BrManageContentButton
             v-if="item.hippoBean && page"
             :content="hippoContent[index]"
