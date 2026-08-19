@@ -1,121 +1,148 @@
+<!-- eslint-disable vue/no-v-text-v-html-on-component -->
 <template>
 
     <VsContainer>
         <VsRow class="vs-google-map-with-sidebar">
-            <div class="vs-google-map-with-sidebar__sidebar">
-                <div class="vs-google-map-with-sidebar__sidebar-header">
-                    <VsButton
-                        size="sm"
-                        variant="subtle"
-                        icon-only
-                        icon="fa-regular fa-arrow-left"
-                        v-if="selectedCategory && selectedFeature"
-                        @click="selectedFeature = undefined"
-                    >
-                        Return to list
-                    </VsButton>
-                    <VsHeading
-                        level="3"
-                        heading-style="heading-s"
-                        class="vs-google-map-with-sidebar__sidebar-heading"
-                        no-margins
-                    >
-                        Browse by Category
-                    </VsHeading>
-                    <VsButton
-                        size="sm"
-                        variant="subtle"
-                        icon-only
-                        icon="fa-regular fa-xmark"
-                        v-if="selectedCategory || selectedFeature"
-                        @click="resetMap"
-                    >
-                        Return to categories
-                    </VsButton>
-                </div>
-                <div class="vs-google-map-with-sidebar__sidebar-body">
-                    <div
-                        class="vs-google-map-with-sidebar__sidebar-category-select"
-                        v-if="!selectedCategory"
-                    >
-                        <button
-                            v-for="filter in filters"
-                            :key="filter.id"
-                            class="vs-google-map-with-sidebar__category-btn"
-                            @click="filterById(filter.id)"
-                        >
-                            <VsIcon
-                                :icon="getIconDetails(filter.id).name"
-                                class="vs-google-map-with-sidebar__category-icon me-050"
-                            />
-                            <span
-                                class="vs-google-map-with-sidebar__category-label ms-100 no-margin"
-                            >
-                                {{ filter.label }}
-                            </span>
-                        </button>
-                    </div>
-                    <div
-                        class="vs-google-map-with-sidebar__sidebar-feature-list"
-                        v-if="selectedCategory && !selectedFeature"
-                    >
-                        <button
-                            v-for="feature in visibleFeatures"
-                            :key="feature.properties.id"
-                            class="vs-google-map-with-sidebar__feature-list-btn vs-google-map-with-sidebar__category-btn"
-                            @click="selectedFeature = feature"
-                        >
-                            <VsImg
-                                v-if="feature.properties.image"
-                                :src="`https://www.visitscotland.com/${feature.properties.image}`"
-                                class="vs-google-map-with-sidebar__sidebar-feature-list-img aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
-                                style="width: 7.5rem"
-                            />
-                            <span
-                                class="vs-google-map-with-sidebar__category-label ms-100 no-margin"
-                            >
-                                {{ feature.properties.title }}
-                            </span>
-                        </button>
-                    </div>
-                    <div
-                        class="vs-google-map-with-sidebar__sidebar-feature-detail"
-                        v-if="selectedCategory && selectedFeature"
-                    >
-                        <VsImg
-                            v-if="selectedFeature.properties.image"
-                            :src="`https://www.visitscotland.com/${selectedFeature.properties.image}`"
-                            class="vs-google-map-with-sidebar__sidebar-feature-detail-img aspect-ratio-3-2 w-100 rounded-1 object-fit-cover img-zoom-on-hover"
-                            style="width: 7.5rem"
-                        />
-                        <VsHeading
-                            level="4"
-                            heading-style="heading-s"
-                            class="vs-google-map-with-sidebar__sidebar-feature-detail-header no-margin"
-                        >
-                            {{ selectedFeature.properties.title }}
-                        </VsHeading>
-                        <VsBadge
-                            v-if="selectedFeature.properties.subtitle"
-                            variant="information"
-                            class="rounded-1 mt-075"
-                        >
-                            {{ selectedFeature.properties.subtitle }}
-                        </VsBadge>
-                        <VsBody
-                            v-if="selectedFeature.properties.description"
-                            v-html="selectedFeature.properties.description"
-                            class="mt-100"
-                        />
+            <div
+                v-if="isSidebarVisible"
+                class="vs-google-map-with-sidebar__sidebar"
+            >
+                <VsButton
+                    class="vs-google-map-with-sidebar__sidebar-toggle-button d-xs-block d-md-none"
+                    size="sm"
+                    variant="secondary"
+                    icon="fa-regular fa-bars"
+                    @click="isSidebarVisible = false"
+                >
+                    Return to map
+                </VsButton>
+                <div class="vs-google-map-with-sidebar__sidebar-wrapper">
+                    <div class="vs-google-map-with-sidebar__sidebar-header">
                         <VsButton
-                            v-if="selectedFeature.properties.link"
-                            :href="selectedFeature.properties.link.link"
-                            class="vs-google-map-with-sidebar__sidebar-feature-detail-discover-btn mt-100 w-100"
+                            size="sm"
+                            variant="subtle"
+                            icon-only
+                            icon="fa-regular fa-arrow-left"
+                            v-if="selectedCategory || selectedFeature"
+                            @click="selectedFeature !== undefined ? selectedFeature = undefined : resetMap()"
                         >
-                            {{ selectedFeature.properties.link.label }}
+                            Return to list
+                        </VsButton>
+                        <VsHeading
+                            level="3"
+                            heading-style="heading-s"
+                            class="vs-google-map-with-sidebar__sidebar-heading"
+                            no-margins
+                        >
+                            {{ titleLabel }}
+                        </VsHeading>
+                        <VsButton
+                            size="sm"
+                            variant="subtle"
+                            icon-only
+                            icon="fa-regular fa-xmark"
+                            v-if="selectedCategory && selectedFeature"
+                            @click="resetMap"
+                        >
+                            Return to categories
                         </VsButton>
                     </div>
+                    <div class="vs-google-map-with-sidebar__sidebar-body">
+                        <div
+                            class="vs-google-map-with-sidebar__sidebar-category-select"
+                            v-if="!selectedCategory"
+                        >
+                            <button
+                                v-for="filter in filters"
+                                :key="filter.id"
+                                class="vs-google-map-with-sidebar__category-btn"
+                                @click="filterById(filter.id)"
+                            >
+                                <VsIcon
+                                    :icon="getIconDetails(filter.id).name"
+                                    class="vs-google-map-with-sidebar__category-icon me-050"
+                                />
+                                <span
+                                    class="vs-google-map-with-sidebar__category-label ms-100 no-margin"
+                                >
+                                    {{ filter.label }}
+                                </span>
+                            </button>
+                        </div>
+                        <div
+                            class="vs-google-map-with-sidebar__sidebar-feature-list"
+                            v-if="selectedCategory && !selectedFeature"
+                        >
+                            <button
+                                v-for="feature in visibleFeatures"
+                                :key="feature.properties.id"
+                                class="vs-google-map-with-sidebar__feature-list-btn vs-google-map-with-sidebar__category-btn"
+                                @click="selectedFeature = feature"
+                            >
+                                <VsImg
+                                    v-if="feature.properties.image"
+                                    :src="`https://www.visitscotland.com/${feature.properties.image}`"
+                                    class="vs-google-map-with-sidebar__sidebar-feature-list-img aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
+                                    use-lazy-loading
+                                />
+                                <span
+                                    class="vs-google-map-with-sidebar__category-label ms-100 no-margin"
+                                >
+                                    {{ feature.properties.title }}
+                                </span>
+                            </button>
+                        </div>
+                        <div
+                            class="vs-google-map-with-sidebar__sidebar-feature-detail"
+                            v-if="selectedCategory && selectedFeature"
+                        >
+                            <VsImg
+                                v-if="selectedFeature.properties.image"
+                                :src="`https://www.visitscotland.com/${selectedFeature.properties.image}`"
+                                class="vs-google-map-with-sidebar__sidebar-feature-detail-img aspect-ratio-3-2 w-100 rounded-1 object-fit-cover img-zoom-on-hover"
+                            />
+                            <VsHeading
+                                level="4"
+                                heading-style="heading-s"
+                                class="vs-google-map-with-sidebar__sidebar-feature-detail-header no-margin"
+                            >
+                                {{ selectedFeature.properties.title }}
+                            </VsHeading>
+                            <VsBadge
+                                v-if="selectedFeature.properties.subtitle"
+                                variant="information"
+                                class="rounded-1 mt-075"
+                            >
+                                {{ selectedFeature.properties.subtitle }}
+                            </VsBadge>
+                            <VsBody
+                                v-if="selectedFeature.properties.description"
+                                v-html="selectedFeature.properties.description"
+                                class="mt-100"
+                            />
+                            <VsButton
+                                v-if="selectedFeature.properties.link"
+                                :href="selectedFeature.properties.link.link"
+                                class="vs-google-map-with-sidebar__sidebar-feature-detail-discover-btn mt-100 w-100"
+                            >
+                                {{ selectedFeature.properties.link.label }}
+                            </VsButton>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div
+                class="vs-google-map-with-sidebar__sidebar-open-button  d-xs-block d-md-none"
+                v-if="!isSidebarVisible"
+            >
+                <VsButton
+                    size="sm"
+                    variant="secondary"
+                    @click="isSidebarVisible = true"
+                    icon="fa-regular fa-bars"
+                >
+                    Map Menu
+                </VsButton>
             </div>
             <VsGoogleMap
                 class="vs-google-map-with-sidebar__map"
@@ -143,6 +170,7 @@
                         :feature-data="feature"
                         marker-tooltips-enabled
                         :id="`marker-${feature.properties.id}`"
+                        @click="handleMapMarkerClick(feature.properties.category.id, feature)"
                     >
                         <template #vs-google-map-marker-content>
                             <VsIcon
@@ -178,7 +206,7 @@ import { ref } from 'vue';
 import getIconDetails from '~/utls/mapIconMapping';
 
 import useConfigStore from '~/stores/configStore.ts';
-import type { BrxmFeature } from '~/types/types';
+import type { BrxmFeature, MapSidebarFilter } from '~/types/types';
 
 const configStore = useConfigStore();
 
@@ -191,6 +219,8 @@ const uiLabels = {
     zoomOut: 'Zoom out',
 };
 
+const isSidebarVisible = ref<boolean>(true);
+
 const features = module.geoJson.features;
 const filters = module.filters;
 
@@ -198,6 +228,15 @@ const visibleFeatures = ref(features);
 const filteredFeatures = ref<any[]>([]);
 const selectedCategory = ref<string|undefined>(undefined);
 const selectedFeature = ref<BrxmFeature|undefined>(undefined);
+
+const titleLabel = computed(() => {
+    if (selectedCategory.value) {
+        const filterLabel = filters.find((filter: MapSidebarFilter) =>  filter.id === selectedCategory.value);
+        return filterLabel ? filterLabel.label : 'Category name';
+    } else {
+        return 'Browse by Category';
+    } 
+});
 
 function resetMap() {
     selectedFeature.value = undefined;
@@ -213,16 +252,21 @@ function filterById(categoryId: string) {
     });
 
     if (filteredFeatures.value) {
-        console.table(filteredFeatures.value);
         visibleFeatures.value = filteredFeatures.value;
     };
+}
+
+function handleMapMarkerClick(category: string, feature: BrxmFeature) {
+    selectedCategory.value = category;
+    selectedFeature.value = feature;
 }
 </script>
 
 <style lang="scss">
     .vs-google-map-with-sidebar {
 
-    display: flex;
+        position: relative;
+        display: flex;
 
         &__map {
             height: 40em;
@@ -272,18 +316,34 @@ function filterById(categoryId: string) {
         }
 
         &__sidebar {
-            position: relative;
-            top: 0;
-            left: 0;
-            background: #fff;
-            border-radius: 0.0625rem;
-            padding: 1.75rem 1.25rem 1.25rem;
-            width: 100%;
-            max-height: 35em;
-            overflow: auto;
-
+            position: absolute;
+            top: 1em;
+            left: 1em;
+            z-index: 100;
+            width: calc(100% - 2em);
+            max-width: 22.5rem;
+            max-height: 33em;
+            
             @media screen and (min-width: 768px) {
                 width: 22.5rem;
+            }
+            
+            &-wrapper {
+                background: #fff;
+                border-radius: 0.625rem;
+                padding: 1.75rem 1.25rem 1.25rem;
+            }
+            
+            &-toggle-button {
+                margin-bottom: 0.5em;
+            }
+
+            &-open-button {
+                display: flex;
+                position: absolute;
+                top: 1em;
+                left: 1em;
+                z-index: 100;
             }
 
             &-header {
@@ -298,6 +358,12 @@ function filterById(categoryId: string) {
                 text-align: center;
             }
 
+            &-body {
+                max-height: 28em;
+                overflow-y: auto;
+                overflow-x: none;
+            }
+
             &-category-select, &-feature-list {
                 display: flex;
                 flex-direction: column;
@@ -306,12 +372,8 @@ function filterById(categoryId: string) {
 
             &-feature-list {
                 &-img {
-                    width: 7.5rem;
+                    width: 6.5rem;
                 }
-            }
-
-            &-feature-detail {
-                padding: 1em 1em;
             }
         }
     }

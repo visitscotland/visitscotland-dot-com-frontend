@@ -60,3 +60,8 @@ export type BrxmFeature = {
         coordinates: number[];
     };
 };
+
+export type MapSidebarFilter = {
+    id: string,
+    label: string,
+} 
