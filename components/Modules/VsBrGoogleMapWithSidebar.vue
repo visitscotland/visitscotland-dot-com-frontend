@@ -14,7 +14,7 @@
                     icon="fa-regular fa-bars"
                     @click="isSidebarVisible = false"
                 >
-                    Return to map
+                    {{ configStore.getLabel('map', 'map.open-panel') }}
                 </VsButton>
                 <div class="vs-google-map-with-sidebar__sidebar-wrapper">
                     <div class="vs-google-map-with-sidebar__sidebar-header">
@@ -24,9 +24,9 @@
                             icon-only
                             icon="fa-regular fa-arrow-left"
                             v-if="selectedCategory || selectedFeature"
-                            @click="selectedFeature !== undefined ? selectedFeature = undefined : resetMap()"
+                            @click="selectedFeature ? selectedFeature = undefined : resetMap()"
                         >
-                            Return to list
+                            {{ selectedFeature ? configStore.getLabel('map', 'resetLocation') : configStore.getLabel('map', 'map.reset-filters') }}
                         </VsButton>
                         <VsHeading
                             level="3"
@@ -44,10 +44,13 @@
                             v-if="selectedCategory && selectedFeature"
                             @click="resetMap"
                         >
-                            Return to categories
+                            {{ configStore.getLabel('map', 'map.reset-filters') }}
                         </VsButton>
                     </div>
-                    <div class="vs-google-map-with-sidebar__sidebar-body">
+                    <div
+                        class="vs-google-map-with-sidebar__sidebar-body"
+                        ref="sidebarBody"
+                    >
                         <div
                             class="vs-google-map-with-sidebar__sidebar-category-select"
                             v-if="!selectedCategory"
@@ -77,7 +80,7 @@
                                 v-for="feature in visibleFeatures"
                                 :key="feature.properties.id"
                                 class="vs-google-map-with-sidebar__feature-list-btn vs-google-map-with-sidebar__category-btn"
-                                @click="selectedFeature = feature"
+                                @click="handleFeatureClick(feature)"
                             >
                                 <VsImg
                                     v-if="feature.properties.image"
@@ -141,7 +144,7 @@
                     @click="isSidebarVisible = true"
                     icon="fa-regular fa-bars"
                 >
-                    Map Menu
+                    {{ configStore.getLabel('map', 'map.open-panel') }}
                 </VsButton>
             </div>
             <VsGoogleMap
@@ -158,6 +161,9 @@
                     south: 54.6,
                     west: -8.7,
                     east: 2,
+                }"
+                :google-maps-options="{
+                    clickableIcons: false,
                 }"
                 :language-code="`${configStore.locale}`"
                 :ui-labels="uiLabels"
@@ -210,13 +216,13 @@ import type { BrxmFeature, MapSidebarFilter } from '~/types/types';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: object }>();
+const props = defineProps<{ module: any }>();
 const module: any = props.module;
 
 const uiLabels = {
-    fullScreen: 'Fullscreen toggle',
-    zoomIn: 'Zoom in',
-    zoomOut: 'Zoom out',
+    fullScreen: configStore.getLabel('map', 'map.fullscreen'),
+    zoomIn: configStore.getLabel('map', 'map.zoomin'),
+    zoomOut: configStore.getLabel('map', 'map.zoomout'),
 };
 
 const isSidebarVisible = ref<boolean>(true);
@@ -225,16 +231,18 @@ const features = module.geoJson.features;
 const filters = module.filters;
 
 const visibleFeatures = ref(features);
-const filteredFeatures = ref<any[]>([]);
-const selectedCategory = ref<string|undefined>(undefined);
-const selectedFeature = ref<BrxmFeature|undefined>(undefined);
+const filteredFeatures = ref<BrxmFeature[]>([]);
+const selectedCategory = ref<string | undefined>(undefined);
+const selectedFeature = ref<BrxmFeature | undefined>(undefined);
+
+const sidebarBody = ref<HTMLElement | null>(null);
 
 const titleLabel = computed(() => {
     if (selectedCategory.value) {
         const filterLabel = filters.find((filter: MapSidebarFilter) =>  filter.id === selectedCategory.value);
-        return filterLabel ? filterLabel.label : 'Category name';
+        return filterLabel ? filterLabel.label : configStore.getLabel('map', 'map.explore');
     } else {
-        return 'Browse by Category';
+        return props.module.tabTitle ? props.module.tabTitle : configStore.getLabel('map', 'map.explore');
     } 
 });
 
@@ -256,15 +264,21 @@ function filterById(categoryId: string) {
     };
 }
 
-function handleMapMarkerClick(category: string, feature: BrxmFeature) {
-    selectedCategory.value = category;
+function handleFeatureClick(feature: BrxmFeature) {
     selectedFeature.value = feature;
+    if(sidebarBody.value) sidebarBody.value.scrollTop = 0;
+}
+
+function handleMapMarkerClick(category: string, feature: BrxmFeature) {
+    isSidebarVisible.value = true;
+    selectedCategory.value = category;
+    filterById(category);
+    handleFeatureClick(feature);
 }
 </script>
 
 <style lang="scss">
     .vs-google-map-with-sidebar {
-
         position: relative;
         display: flex;
 
