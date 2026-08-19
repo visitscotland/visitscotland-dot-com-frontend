@@ -54,14 +54,16 @@
                 sidebar-breakpoint="xl"
             >
                 <template #logo-link>
-                    <VsSvgLink
-                        :link-alt-text="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
+                    <VsLink
                         :href="`/${configStore.langString}`"
-                        svg-fill="#5B2487"
-                        svg-path="visitscotland-logo"
-                        svg-width="167px"
-                        svg-height="28px"
-                    />
+                        no-visited-styles
+                    >
+                        <VsImg
+                            src="/visitscotland-logo.svg"
+                            :alt="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
+                            :style="{ width: '167px', height: '28px' }"
+                        />
+                    </VsLink>
                 </template>
 
                 <template #navigation-bar-menu>
@@ -418,7 +420,7 @@ import {
     VsBanner,
     VsLink,
     VsNavigationBar,
-    VsSvgLink,
+    VsImg,
     VsNavigationBarMenu,
     VsNavigationBarMenuDropdown,
     VsNavigationBarMenuItem,
@@ -518,8 +520,8 @@ provide('page', page.value);
         background-color: rgba(0,0,0,0);
         box-shadow: none;
 
-        .vs-svg-link > svg {
-            fill: white !important;
+        .vs-link > img {
+            filter: brightness(0) invert(1);
         }
 
         .vs-navigation-bar-menu-dropdown > .btn {
