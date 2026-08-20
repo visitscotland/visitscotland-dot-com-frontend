@@ -1,24 +1,34 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
+import type { MapLabels, SubcategoryLabel } from '~/types/main-map-types.ts';
 import useMainMapStore from './mainMap.ts';
 
 const useMapCategoryStore = defineStore('mapCategory', () => {
+    const mainMapStore = useMainMapStore();
+
+    const categoryData = ref<any>();
+    const categoryLabelData = ref<MapLabels[]>([]);
+    const featuredDestinations = ref<any>();
+    const featuredDestinationTypes = ref<SubcategoryLabel[] | null>([]);
     const selectedCategory = ref<string>();
+    const selectedDestination = ref<string>();
+    const selectedDestinationType = ref<string>();
     const selectedSubcategories = ref<string[]>([]);
     const selfCateringClicked = ref(false);
-
-    const mainMapStore = useMainMapStore();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const subcategoryMap = ref<any>();
 
     // Get the label of the selected category.
     const selectedCategoryLabel = computed(() => {
-        const category = mainMapStore.categoryLabelData
+        const category = categoryLabelData.value
             .find((category) => category.id === selectedCategory.value);
-        return category.label;
+        
+        return (!category) ? '' : category.label;
     });
 
     const selectedSubcategoryLabels = computed(() => {
-        const category = mainMapStore.categoryLabelData.find(
+        const category = categoryLabelData.value.find(
             ({ id }) => id === selectedCategory.value,
         );
 
@@ -34,7 +44,7 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
 
     function getSubcategoryLabel(subcategoryId: string) {
         // Get the label data for the selected category.
-        const category = mainMapStore.categoryLabelData.find(
+        const category = categoryLabelData.value.find(
             ({ id }) => id === selectedCategory.value,
         );
 
@@ -56,7 +66,11 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
     }
     
     const selectedCategoryTypes = computed(() => {
-        const category = mainMapStore.categoryData[selectedCategory.value!];
+        if (!categoryData.value) return;
+
+        const category = categoryData.value[selectedCategory.value!];
+        if (!category) return;
+
         const included = getTypes(category, 'includedType');
         const excluded = getTypes(category, 'excludedType');
 
@@ -109,16 +123,47 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         selectedSubcategories.value = [];
     }
 
+    const filteredDestinations = computed(() => {
+        if (!featuredDestinations.value) return;
+        
+        return featuredDestinations.value!.filter((place) => (
+            place.properties.category.id === selectedDestinationType.value
+        ));
+    });
+
+    onMounted(() => {
+        // Get the featured destinations types.
+        featuredDestinationTypes.value = categoryLabelData.value
+            .find((category) => category.id === 'destinations')
+            ?.subCategory ?? [];
+
+        // Temporary hide "Towns" from the destinations categories.
+        featuredDestinationTypes.value = featuredDestinationTypes.value
+            .filter((category) => category.id !== 'towns');
+
+        // Set the initial selected destination.
+        if (!featuredDestinationTypes.value[0]) return;
+        selectedDestinationType.value = featuredDestinationTypes.value[0].id;
+    });
+
     return {
+        categoryData,
+        categoryLabelData,
         clearSubcategories,
+        featuredDestinations,
+        featuredDestinationTypes,
+        filteredDestinations,
         getSubcategoryLabel,
         selectedCategory,
         selectedCategoryLabel,
         selectedCategoryTypes,
+        selectedDestination,
+        selectedDestinationType,
         selectedSubcategories,
         selectedSubcategoryLabels,
         selectedSubcategoryTypes,
         selfCateringClicked,
+        subcategoryMap,
         toggleSubcategory,
     };
 });

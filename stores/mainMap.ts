@@ -26,11 +26,6 @@ const useMainMapStore = defineStore('mainMap', () => {
     const subcategoryMap = ref<any>();
     const selfCateringClicked = ref(false);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const categoryLabelData = ref<any>();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const categoryData = ref<any>();
-
     const filteredPlaces = computed(() => (
         featuredPlaces.value.filter((place) => (
             place.properties.category.id === selectedDestinationType.value
@@ -57,8 +52,6 @@ const useMainMapStore = defineStore('mainMap', () => {
         selectedTopLevelCategory,
         selectedSubcategories,
         keywords,
-        categoryLabelData,
-        categoryData,
         selectedCategory,
         subcategoryMap,
         selfCateringClicked,

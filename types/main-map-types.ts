@@ -49,3 +49,15 @@ export type MapContext = {
     textSearch: Ref<GmpPlaceSearchRequestElement | null>;
     textSearchQuery: Ref<GmpPlaceSearchRequestElement | null>;
 }
+
+export type SubcategoryLabel = {
+    id: string;
+    label: string;
+};
+
+export type MapLabels = {
+    id: string;
+    label: string;
+    cmsData?: boolean;
+    subCategory: SubcategoryLabel[];
+}

@@ -3253,6 +3253,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/google.maps@npm:^3.64.0":
+  version: 3.65.5
+  resolution: "@types/google.maps@npm:3.65.5"
+  checksum: 10c0/6b65b7466af17c1917711ee0ac360ca2360c0cd39d552032c2d0fddc0292fcb3bccf8af4f8e8c0ffca5f56802e914468e15dc8e346b84ca3cc71e2474c074ab3
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:^7.0.15":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
@@ -10178,9 +10185,11 @@ __metadata:
   dependencies:
     "@bloomreach/spa-sdk": "npm:^27.3.1"
     "@bloomreach/vue3-sdk": "npm:^22.0.5"
+    "@googlemaps/js-api-loader": "npm:^2.0.1"
     "@nuxt/eslint-config": "npm:^1.15.2"
     "@pinia/nuxt": "npm:^1.0.1"
     "@playwright/test": "npm:^1.61.1"
+    "@types/google.maps": "npm:^3.64.0"
     "@types/node": "npm:^25.9.1"
     "@visitscotland/component-library": "npm:5.71.4"
     axios: "npm:^1.18.0"

@@ -66,7 +66,7 @@
                     </div>
 
                     <a
-                        v-if="props.query || props.selectedCategory"
+                        v-if="props.query || mapCategoryStore.selectedCategory"
                         class="d-block"
                         href="#"
                         data-test="vs-map-sidebar__reset-map"
@@ -82,8 +82,8 @@
                         <VsBrMainMapFilter
                             :detail-text="props.sidebarLabels.locationSelectLabel"
                             has-icons
-                            :items="filteredDestinationCategories"
-                            :selected-category="mainMapStore.selectedDestinationType"
+                            :items="mapCategoryStore.featuredDestinationTypes"
+                            :selected-category="mapCategoryStore.selectedDestinationType"
                             @changed="(event: MapFilterChanged) =>
                                 handleDestinationTypeClick(event.id)"
                         />
@@ -112,17 +112,17 @@
                 <div class="vs-map-sidebar__section3">
                     <div class="vs-map-sidebar__search-results">
                         <VsHeading
-                            v-if="$props.query || $props.selectedCategory"
+                            v-if="props.query || mapCategoryStore.selectedCategory"
                             data-test="vs-map-sidebar__search-result-query"
                             heading-style="heading-xxxs"
                             level="2"
                         >
                             {{ props.sidebarLabels.searchResultsLabel }}
-                            "{{ props.query || props.selectedCategory }}"
+                            "{{ props.query || mapCategoryStore.selectedCategory }}"
                         </VsHeading>
 
                         <a
-                            v-if="props.query || props.selectedCategory"
+                            v-if="props.query || mapCategoryStore.selectedCategory"
                             href="#"
                             data-test="vs-map-sidebar__hard-reset-map"
                             @click.prevent="$emit('reset-location')"
@@ -143,7 +143,7 @@
                         class="vs-map__destinations"
                     >
                         <VsBrMainMapFeaturedLocation
-                            v-for="destination in props.destinations"
+                            v-for="destination in mapCategoryStore.filteredDestinations"
                             :key="destination.properties.id"
                             :place="destination"
                         />
@@ -214,7 +214,6 @@
 <script setup lang="ts">
 import {
     computed,
-    onMounted,
     useTemplateRef,
     watch,
 } from 'vue';
@@ -236,23 +235,6 @@ type MapFilterChanged = {
     key: number | string;
 };
 
-type CategoryConfig = Record<string, Category>;
-
-type Category = {
-    id: string;
-    icon: string;
-    includedType?: string[];
-    excludedType?: string[];
-    keywords?: string[];
-    subCategory: Subcategory[];
-};
-
-type Subcategory = {
-    id: string;
-    includedType: string[];
-    excludedType?: string[];
-};
-
 type Categories = {
     label: string;
     id: string;
@@ -263,38 +245,20 @@ type Categories = {
     }[];
 };
 
-type DestinationCategory = {
-    label: string;
-    id: string;
-}
-
 type Props = {
-    /** Label and id for the category buttons */
-    categories: Categories[];
-    /** List of destinations */
-     
-    destinations: any;
-    /** List of destination categories */
-    destinationCategories: DestinationCategory[];
     /** Whether the map is loaded or not. */
     mapLoaded?: boolean;
-    /** Test query from Map Search */
+    /** Test query from Map Search. */
     query?: string;
-    /** Selected top level category */
-    selectedCategory?: string;
-    /** Selected sub categories */
-     
-    selectedSubcategories?: any;
-    /** Labels for the sidebar */
+    /** Labels for the sidebar. */
     sidebarLabels: Record<string, string>;
+    /** Selected google maps result. */
     place?: google.maps.places.Place;
 };
 
 const props = withDefaults(defineProps<Props>(), {
     mapLoaded: false,
     query: undefined,
-    selectedCategory: undefined,
-    selectedSubcategories: undefined,
     place: undefined,
 });
 
@@ -309,18 +273,10 @@ const isResultsOpen = defineModel<boolean>('isResultsOpen', {
 });
 
 const emit = defineEmits<{
-    'category-selected': [{
-        id: string;
-        key: number | string;
-    }],
     'destination-type-selected': [],
     'reset-location': [],
     'reset-map': [],
     'search-input-changed': [],
-    'subcategory-selected': [{
-        id: string;
-        key: number | string;
-    }],
 }>();
 
 const sidebar = useTemplateRef('sidebar');
@@ -329,7 +285,6 @@ const placeDetails = useTemplateRef('place-details');
 const placeRequest = useTemplateRef('place-request');
 
 watch(() => props.place, (place) => {
-    console.log('place updated', place);
     if (!place || !placeRequest.value || !placeDetails.value) return;
 
     placeRequest.value.place = place;
@@ -349,12 +304,13 @@ const {
     sidebarStyle,
 } = useSwipeDrawer(isOpen, sidebar);
 
-const filteredCategories = props.categories.filter((category: Categories) => !category.cmsData);
+const filteredCategories = mapCategoryStore.categoryLabelData
+    .filter((category: Categories) => !category.cmsData);
 
 const subcategories = computed(() => {
     if (!mapCategoryStore.selectedCategory) return null;
 
-    const categoryData = props.categories.find(
+    const categoryData = mapCategoryStore.categoryLabelData.find(
         (cat: Categories) => cat.id === mapCategoryStore.selectedCategory,
     );
 
@@ -363,11 +319,8 @@ const subcategories = computed(() => {
     return categoryData.subCategory;
 });
 
-// Temporary hide "Town" from the destinations categories.
-const filteredDestinationCategories = props.destinationCategories.filter((category: DestinationCategory) => category.id !== 'towns');
-
 function handleDestinationTypeClick(id: string) {
-    mainMapStore.selectedDestinationType = id;
+    mapCategoryStore.selectedDestinationType = id;
     emit('destination-type-selected');
 }
 
@@ -375,12 +328,6 @@ function handleCategorySelect(id: string) {
     mapCategoryStore.selectedSubcategories = [];
     mapCategoryStore.selectedCategory = id;
 }
-
-onMounted(() => {
-    if (props.destinationCategories[0]) {
-        mainMapStore.selectedDestinationType = props.destinationCategories[0].id;
-    }
-});
 </script>
 
 <style lang="scss">
@@ -398,7 +345,7 @@ body.map-page {
     z-index: 1;
     
     @media (max-width: 768px) {
-        height: 91vh;
+        height: 91dvh;
         max-height: 900px;
         min-height: 400px;
         overscroll-behavior: contain;
@@ -412,7 +359,7 @@ body.map-page {
     @media (min-width: 767.98px) {
         display: flex;
         gap: 1rem;
-        max-height: 85vh;
+        max-height: 85dvh;
         position: absolute;
         top: 1rem;
         left: 1rem;
@@ -498,7 +445,13 @@ body.map-page {
 }
 
 .vs-map-detail-container {
+    height: 100%;
+    overflow: auto;
     position: relative;
+
+    @media (max-width: 768px) {
+        padding-bottom: 4rem;
+    }
 
     &__dismiss {
         position: absolute !important;

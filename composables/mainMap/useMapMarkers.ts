@@ -125,20 +125,24 @@ export default function useMapMarkers(context: MapContext) {
 
         clearMarkers();
 
-        mainMapStore.filteredPlaces.forEach((place) => {
-            const marker = createMarker({
-                map,
-                position: {
-                    lat: place.properties.locationCentre.latitude,
-                    lng: place.properties.locationCentre.longitude,
-                },
-                title: place.properties.title,
-                onClick: () => handleFeaturedLocationClick(place),
-            });
+        mapCategoryStore.filteredDestinations.forEach((place) => {
+            console.log('place', place);
+            if (place.properties.locationCentre) {
+                const marker = createMarker({
+                    map,
+                    position: {
+                        lat: place.properties.locationCentre.latitude,
+                        lng: place.properties.locationCentre.longitude,
+                    },
+                    title: place.properties.title,
+                    onClick: () => handleFeaturedLocationClick(place),
+                });
 
-            markers[place.properties.id] = marker;
+                markers[place.properties.id] = marker;
+            }
         });
 
+        console.log('add dest', markers);
         context.markers.value = markers;
     }
 
@@ -153,8 +157,8 @@ export default function useMapMarkers(context: MapContext) {
             context.searchType.value === 'nearby'
                 ? context.nearbySearch.value
                 : context.searchType.value === 'text'
-                  ? context.textSearch.value
-                  : null;
+                    ? context.textSearch.value
+                    : null;
 
         if (!searchRequest) return;
 
@@ -193,6 +197,7 @@ export default function useMapMarkers(context: MapContext) {
                 map.setZoom(14);
             } else {
                 map.fitBounds(bounds);
+                map.setCenter(bounds.getCenter());
             }
         });
     }

@@ -2,7 +2,9 @@ import { importLibrary, setOptions } from '@googlemaps/js-api-loader';
 import { ref } from 'vue';
 
 import type { GmpSelectEvent, MapContext } from '~/types/main-map-types.ts';
-import useMainMapStore from '../../stores/mainMap.ts';
+import useConfigStore from '~/stores/configStore.ts';
+import useMainMapStore from '~/stores/mainMap.ts';
+import useMapCategoryStore from '~/stores/mapCategory.ts';
 import useMapMarkers from './useMapMarkers.ts';
 import useViewportController from './useViewportController.ts';
 import {
@@ -15,24 +17,23 @@ import {
 } from '~/main-map-constants.ts';
 
 export default function useGoogleMap(context: MapContext) {
+    const configStore = useConfigStore();
     const mainMapStore = useMainMapStore();
+    const mapCategoryStore = useMapCategoryStore();
     const mapMarkers = useMapMarkers(context);
     const viewportController = useViewportController(context);
     const previousZoomedIn = ref(false);
 
     /**
      * Load the required Google map libraries.
-     *
-     * @param {string} apiKey - Google maps API key
-     * @param language - API query language which is the site language.
      */
-    async function loadGoogleMaps(apiKey: string, language: string) {
+    async function loadGoogleMaps() {
         setOptions({
-            key: apiKey,
+            key: configStore.googleMapApiKey,
             v: 'quarterly',
             libraries: ['maps', 'places', 'marker', 'core', 'geometry'],
             region: 'GB',
-            language,
+            language: configStore.locale,
         });
 
         await Promise.all([
@@ -120,7 +121,8 @@ export default function useGoogleMap(context: MapContext) {
         // Show the "Search this area" button if the user has moved the map.
         if (viewport && viewportController.hasViewportChanged(viewport)) {
             mainMapStore.showSearchAreaButton = true;
-            mainMapStore.selectedDestinationType = '';
+            mapCategoryStore.selectedDestinationType = mapCategoryStore
+                .featuredDestinationTypes![0]!.id;
             mainMapStore.selectedDestination = '';
         }
 

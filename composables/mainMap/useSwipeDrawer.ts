@@ -33,7 +33,7 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
         if (!isMobile.value) return undefined;
 
         return {
-            height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+            height: `calc(100dvh - ${HEADER_HEIGHT}px)`,
             top: `${HEADER_HEIGHT}px`,
             transform: `translateY(${currentY.value}px)`,
             transition: isDragging.value
@@ -124,13 +124,7 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
             : closedPosition.value;
     });
 
-    onMounted(() => {
-        // Prevent the body from scrolling on mobile.
-        if (isMobile.value) {
-            document.documentElement.classList.add('map-page');
-            document.body.classList.add('map-page');
-        }
-    
+    onMounted(() => {    
         // Set the position of the drawer when the component is mounted.
         sidebarHeight.value = sidebar.value
             ? sidebar.value.getBoundingClientRect().height
@@ -140,6 +134,12 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
 
         currentY.value = closedPosition.value;
         isMobile.value = window.innerWidth < 768;
+
+        // Prevent the body from scrolling on mobile.
+        if (isMobile.value) {
+            document.documentElement.classList.add('map-page');
+            document.body.classList.add('map-page');
+        }
         
         // Set the sidebar position when the screen size changes.
         window.addEventListener('resize', onResize);
