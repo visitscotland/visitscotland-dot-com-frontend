@@ -20,7 +20,7 @@
                 >
                     <div class="vs-map-sidebar__handle-bar" />
                     <span class="sr-only">
-                        {{ props.sidebarLabels.openSidebarButtonLabel }}
+                        {{ configStore.getLabel('map', 'map.open-panel') }}
                     </span>
                 </VsButton>
             </div>
@@ -35,17 +35,17 @@
                         level="1"
                         no-margins
                     >
-                        {{ props.sidebarLabels.headerLabel }}
+                        {{ props.heading }}
                     </VsHeading>
 
                     <div class="vs-map-sidebar__input d-flex mt-050 mb-050">
                         <VsInput
-                            :aria-label="props.sidebarLabels.searchBarAriaLabel"
+                            :aria-label="configStore.getLabel('map', 'map.search-map')"
                             autocomplete="off"
                             class="vs-map-sidebar__input flex-grow-1"
                             data-test="vs-map-search-input"
                             field-name="vs-map-search-input"
-                            :placeholder="props.sidebarLabels.inputPlaceholderLabel"
+                            :placeholder="configStore.getLabel('map', 'map.placeholder')"
                             ref="search-input"
                             :value="mainMapStore.searchTerm"
                             @input="mainMapStore.searchTerm = $event.target.value"
@@ -60,7 +60,7 @@
                             size="lg"
                             @click="emit('search-input-changed')"
                         >
-                            {{ props.sidebarLabels.searchButtonLabel }}
+                            {{ configStore.getLabel('map', 'map.search') }}
                         </VsButton>
                     </div>
 
@@ -72,14 +72,14 @@
                         @click.prevent="emit('reset-map')"
                         @keyup.enter.prevent="emit('reset-map')"
                     >
-                        {{ props.sidebarLabels.clearMapLabel }}
+                        {{ configStore.getLabel('map', 'map.clear') }}
                     </a>
                 </div>
 
                 <div class="vs-map-sidebar__section2">
                     <div v-if="mainMapStore.showDestinations">
                         <VsBrMainMapFilter
-                            :detail-text="props.sidebarLabels.locationSelectLabel"
+                            :detail-text="configStore.getLabel('map', 'locationSelect')"
                             has-icons
                             :items="mapCategoryStore.featuredDestinationTypes"
                             :selected-category="mapCategoryStore.selectedDestinationType"
@@ -99,7 +99,7 @@
 
                         <VsBrMainMapFilter
                             v-if="mapCategoryStore.selectedCategory && subcategories.length"
-                            :detail-text="props.sidebarLabels.subFilterHeaderLabel"
+                            :detail-text="configStore.getLabel('map', 'map.sub-filter')"
                             :items="subcategories"
                             :selected-category="mapCategoryStore.selectedSubcategories"
                             @changed="(event: MapFilterChanged) =>
@@ -116,7 +116,7 @@
                             heading-style="heading-xxxs"
                             level="2"
                         >
-                            {{ props.sidebarLabels.searchResultsLabel }}
+                            {{ configStore.getLabel('map', 'map.search-results') }}
                             "{{ mainMapStore.query || mapCategoryStore.selectedCategory }}"
                         </VsHeading>
 
@@ -127,7 +127,7 @@
                             @click.prevent="emit('reset-location')"
                             @keyup.enter.prevent="emit('reset-location')"
                         >
-                            {{ props.sidebarLabels.resetLocationLabel }}
+                            {{ configStore.getLabel('map', 'resetLocation') }}
                         </a>
                         
                         <div class="vs-map-sidebar__google-maps-container">
@@ -159,7 +159,7 @@
                 >
                     <div class="vs-map-sidebar__handle-bar" />
                     <span class="sr-only">
-                        {{ props.sidebarLabels.openSidebarButtonLabel }}
+                        {{ configStore.getLabel('map', 'map.open-panel') }}
                     </span>
                 </VsButton>
             </div>
@@ -173,7 +173,7 @@
                     variant="subtle"
                     @click="isResultsOpen = false"
                 >
-                    {{ props.sidebarLabels.closeSidebarButtonLabel }}
+                    {{ configStore.getLabel('map', 'map.close-panel') }}
                 </VsButton>
 
                 <gmp-place-details
@@ -223,6 +223,7 @@ import {
     VsRow,
 } from '@visitscotland/component-library/components';
 
+import useConfigStore from '~/stores/configStore.ts';
 import useMainMapStore from '~/stores/mainMap.ts';
 import useMapCategoryStore from '~/stores/mapCategory.ts';
 import useSwipeDrawer from '~/composables/mainMap/useSwipeDrawer.ts';
@@ -247,10 +248,10 @@ type Category = {
 };
 
 type Props = {
+    /** Sidebar heading */
+    heading: string;
     /** Whether the map is loaded or not. */
     mapLoaded?: boolean;
-    /** Labels for the sidebar. */
-    sidebarLabels: Record<string, string>;
     /** Selected google maps result. */
     place?: google.maps.places.Place;
 };
@@ -288,6 +289,7 @@ watch(() => props.place, (place) => {
     placeDetails.value.style.display = 'block';
 });
 
+const configStore = useConfigStore();
 const mainMapStore = useMainMapStore();
 const mapCategoryStore = useMapCategoryStore();
 const {

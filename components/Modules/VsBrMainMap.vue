@@ -9,9 +9,9 @@
             <VsBrMainMapSidebar
                 v-model:is-open="mainMapStore.isSidebarOpen"
                 v-model:is-results-open="mainMapStore.isSidebarResultsOpen"
+                :heading="module.tabTitle ? module.tabTitle : module.title"
                 :map-loaded="mapContext.mapLoaded.value"
                 ref="map-sidebar"
-                :sidebar-labels="sidebarLabels"
                 :place="mapContext.selectedPlace.value!"
                 @destination-type-selected="addDestinationMarkers"
                 @reset-map="resetMap(true, false)"
@@ -194,20 +194,6 @@ const mainMapStore = useMainMapStore();
 const mapCategoryStore = useMapCategoryStore();
 
 mapCategoryStore.categoryLabelData = module.filters;
-
-const sidebarLabels = {
-    headerLabel: module.tabTitle ? module.tabTitle : module.title,
-    closeSidebarButtonLabel: configStore.getLabel('map', 'map.close-panel'),
-    searchBarAriaLabel: configStore.getLabel('map', 'map.search-map'),
-    inputPlaceholderLabel: configStore.getLabel('map', 'map.placeholder'),
-    searchButtonLabel: configStore.getLabel('map', 'map.search'),
-    clearMapLabel: configStore.getLabel('map', 'map.clear'),
-    resetLocationLabel: configStore.getLabel('map', 'resetLocation'),
-    subFilterHeaderLabel: configStore.getLabel('map', 'map.sub-filter'),
-    searchResultsLabel: configStore.getLabel('map', 'map.search-results'),
-    openSidebarButtonLabel: configStore.getLabel('map', 'map.open-panel'),
-    locationSelectLabel: configStore.getLabel('map', 'locationSelect'),
-};
 
 const mapContext = createMapContext();
 const { initMap, loadGoogleMaps } = useGoogleMap(mapContext);
