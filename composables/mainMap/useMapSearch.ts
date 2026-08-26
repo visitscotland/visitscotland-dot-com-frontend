@@ -118,6 +118,7 @@ export default function useMapSearch(context: MapContext) {
 
         // Don't search if no query
         if (!mainMapStore.searchTerm) return;
+        mainMapStore.query = mainMapStore.searchTerm;
 
         /**
          * Search using locationRestriction when "Self catering" sub category has
@@ -175,6 +176,7 @@ export default function useMapSearch(context: MapContext) {
                 addMarkers(searchId);
                 context.lastSearchViewport.value = getViewport();
                 mapCategoryStore.selfCateringClicked = false;
+                
 
                 // TODO: Analytics
                 // dataLayerHelper.createDataLayerObject('googleMapSearchEvent', {
@@ -216,7 +218,11 @@ export default function useMapSearch(context: MapContext) {
         }
 
         mainMapStore.searchTerm = label;
-
+        mainMapStore.searchTerm = (mapCategoryStore.selectedDestination)
+            ? `${mainMapStore.searchTerm} ${mapCategoryStore.selectedDestination}`
+            : mainMapStore.searchTerm ;
+        mainMapStore.query = mainMapStore.searchTerm ?? '';
+ 
         mainMapStore.showCategories = true;
         mainMapStore.isSidebarOpen = true;
 

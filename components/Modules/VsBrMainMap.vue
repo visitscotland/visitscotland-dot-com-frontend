@@ -10,7 +10,6 @@
                 v-model:is-open="mainMapStore.isSidebarOpen"
                 v-model:is-results-open="mainMapStore.isSidebarResultsOpen"
                 :map-loaded="mapContext.mapLoaded.value"
-                :query="mainMapStore.searchTerm"
                 ref="map-sidebar"
                 :sidebar-labels="sidebarLabels"
                 :place="mapContext.selectedPlace.value!"

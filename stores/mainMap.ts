@@ -25,6 +25,7 @@ const useMainMapStore = defineStore('mainMap', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const subcategoryMap = ref<any>();
     const selfCateringClicked = ref(false);
+    const query = ref('');
 
     const filteredPlaces = computed(() => (
         featuredPlaces.value.filter((place) => (
@@ -55,6 +56,7 @@ const useMainMapStore = defineStore('mainMap', () => {
         selectedCategory,
         subcategoryMap,
         selfCateringClicked,
+        query,
     };
 });
 

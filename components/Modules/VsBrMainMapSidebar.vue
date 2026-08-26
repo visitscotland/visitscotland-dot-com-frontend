@@ -65,7 +65,7 @@
                     </div>
 
                     <a
-                        v-if="props.query || mapCategoryStore.selectedCategory"
+                        v-if="mainMapStore.query || mapCategoryStore.selectedCategory"
                         class="d-block"
                         href="#"
                         data-test="vs-map-sidebar__reset-map"
@@ -111,17 +111,17 @@
                 <div class="vs-map-sidebar__section3">
                     <div class="vs-map-sidebar__search-results">
                         <VsHeading
-                            v-if="props.query || mapCategoryStore.selectedCategory"
+                            v-if="mainMapStore.query || mapCategoryStore.selectedCategory"
                             data-test="vs-map-sidebar__search-result-query"
                             heading-style="heading-xxxs"
                             level="2"
                         >
                             {{ props.sidebarLabels.searchResultsLabel }}
-                            "{{ props.query || mapCategoryStore.selectedCategory }}"
+                            "{{ mainMapStore.query || mapCategoryStore.selectedCategory }}"
                         </VsHeading>
 
                         <a
-                            v-if="props.query || mapCategoryStore.selectedCategory"
+                            v-if="mainMapStore.query || mapCategoryStore.selectedCategory"
                             href="#"
                             data-test="vs-map-sidebar__hard-reset-map"
                             @click.prevent="emit('reset-location')"
@@ -249,8 +249,6 @@ type Category = {
 type Props = {
     /** Whether the map is loaded or not. */
     mapLoaded?: boolean;
-    /** Test query from Map Search. */
-    query?: string;
     /** Labels for the sidebar. */
     sidebarLabels: Record<string, string>;
     /** Selected google maps result. */
@@ -259,7 +257,6 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
     mapLoaded: false,
-    query: undefined,
     place: undefined,
 });
 
