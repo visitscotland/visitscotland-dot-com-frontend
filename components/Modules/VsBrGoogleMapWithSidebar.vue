@@ -24,7 +24,7 @@
                             icon-only
                             icon="fa-regular fa-arrow-left"
                             v-if="selectedCategory || selectedFeature"
-                            @click="selectedFeature ? selectedFeature = undefined : resetMap()"
+                            @click="selectedFeature ? unselectFeature() : resetMap()"
                         >
                             {{ selectedFeature ? configStore.getLabel('map', 'resetLocation') : configStore.getLabel('map', 'map.reset-filters') }}
                         </VsButton>
@@ -81,6 +81,8 @@
                                 :key="feature.properties.id"
                                 class="vs-google-map-with-sidebar__feature-list-btn vs-google-map-with-sidebar__category-btn"
                                 @click="handleFeatureClick(feature)"
+                                @mouseover="handleFeatureButtonMouseover(feature.properties.id)"
+                                @mouseout="handleFeatureButtonMouseout(feature.properties.id)"
                             >
                                 <VsImg
                                     v-if="feature.properties.image"
@@ -97,6 +99,7 @@
                         </div>
                         <div
                             class="vs-google-map-with-sidebar__sidebar-feature-detail"
+                            role="dialog"
                             v-if="selectedCategory && selectedFeature"
                         >
                             <VsImg
@@ -173,10 +176,16 @@
                         class="vs-google-map-with-sidebar__marker"
                         v-for="feature in visibleFeatures"
                         :key="feature.properties.id"
+                        :ref="(el) => { if (el) markerRefs[feature.properties.id] = el}"
                         :feature-data="feature"
                         marker-tooltips-enabled
                         :id="`marker-${feature.properties.id}`"
                         @click="handleMapMarkerClick(feature.properties.category.id, feature)"
+                        @mouseout="handleMouseOut(feature.properties.id)"
+                        @mouseleave.prevent
+                        aria-haspopup="dialog"
+                        :aria-expanded="selectedFeature === feature"
+                        handle-marker-behaviour-externally
                     >
                         <template #vs-google-map-marker-content>
                             <VsIcon
@@ -235,6 +244,9 @@ const filteredFeatures = ref<BrxmFeature[]>([]);
 const selectedCategory = ref<string | undefined>(undefined);
 const selectedFeature = ref<BrxmFeature | undefined>(undefined);
 
+const markerRefs = ref<any>({
+});
+
 const sidebarBody = ref<HTMLElement | null>(null);
 
 const titleLabel = computed(() => {
@@ -247,7 +259,7 @@ const titleLabel = computed(() => {
 });
 
 function resetMap() {
-    selectedFeature.value = undefined;
+    unselectFeature();
     selectedCategory.value = undefined;
     visibleFeatures.value = features;
 }
@@ -264,16 +276,50 @@ function filterById(categoryId: string) {
     };
 }
 
-function handleFeatureClick(feature: BrxmFeature) {
+function selectFeature(feature: BrxmFeature) {
     selectedFeature.value = feature;
+    
+    markerRefs.value[feature.properties.id.toString()].showTooltip(); 
+}
+
+function unselectFeature() {
+    if(selectedFeature.value) {
+        markerRefs.value[selectedFeature.value.properties.id.toString()].hideTooltip();
+    };
+    selectedFeature.value = undefined;
+}
+
+function handleFeatureClick(feature: BrxmFeature) {
+    selectFeature(feature);
     if(sidebarBody.value) sidebarBody.value.scrollTop = 0;
 }
 
 function handleMapMarkerClick(category: string, feature: BrxmFeature) {
     isSidebarVisible.value = true;
     selectedCategory.value = category;
-    filterById(category);
+    markerRefs.value[feature.properties.id].markerSelected = feature;
+    handleFeatureButtonMouseover(feature.properties.id.toString());
     handleFeatureClick(feature);
+    filterById(category);
+}
+
+function handleFeatureButtonMouseover(id: string) {
+    markerRefs.value[id].showTooltip();
+    markerRefs.value[id].markerHovered = id;
+}
+
+function handleFeatureButtonMouseout(id: string) {
+    markerRefs.value[id].hideTooltip();
+    markerRefs.value[id].markerHovered = null;
+}
+
+function handleMouseOut(id: string) {
+    if(selectedFeature.value && selectedFeature.value.properties.id === id) {
+        markerRefs.value[id].showTooltip();
+    } else {
+        markerRefs.value[id].markerHovered = null;
+        markerRefs.value[id].resetPin();
+    }
 }
 </script>
 
@@ -391,4 +437,15 @@ function handleMapMarkerClick(category: string, feature: BrxmFeature) {
             }
         }
     }
+
+    // .is-active {
+    //         transform-origin: bottom;
+    //         scale: 1.25;
+    //         offset: 1.25em;
+    
+    //         .vs-tooltip-popover {
+    //             scale: 0.75;
+    //         }
+
+    // }
 </style>

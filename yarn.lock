@@ -3551,7 +3551,7 @@ __metadata:
 
 "@visitscotland/component-library@file:.yalc/@visitscotland/component-library::locator=nuxt-bloomreach-headless-white-label%40workspace%3A.":
   version: 5.76.0
-  resolution: "@visitscotland/component-library@file:.yalc/@visitscotland/component-library#.yalc/@visitscotland/component-library::hash=87cf6e&locator=nuxt-bloomreach-headless-white-label%40workspace%3A."
+  resolution: "@visitscotland/component-library@file:.yalc/@visitscotland/component-library#.yalc/@visitscotland/component-library::hash=b95df9&locator=nuxt-bloomreach-headless-white-label%40workspace%3A."
   dependencies:
     "@floating-ui/dom": "npm:^1.7.6"
     "@googlemaps/js-api-loader": "npm:^2.0.1"
@@ -3579,7 +3579,7 @@ __metadata:
   dependenciesMeta:
     husky:
       built: true
-  checksum: 10c0/eda32ed4e3e3653f0257791cf379af6181f04334e5ff0f94cb5fed08581e9c89ec21484153e74721f0ca70d5b609408e06180e573ff3f5b532a262a01b65cf20
+  checksum: 10c0/f9144460385bdca3077a34662b730334a7ff6121fac2b6698ef90267d6d297663458bfb25e2bbf6da077b0e69f23cd2c533405274305d72d1f8b060744d519e3
   languageName: node
   linkType: hard
 
