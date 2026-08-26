@@ -154,7 +154,6 @@
 /* eslint-disable vue/no-side-effects-in-computed-properties */
 import {
     computed,
-    onBeforeMount,
     onMounted,
     provide,
     ref,
@@ -229,6 +228,7 @@ const errType = ref<'noCookie' | undefined>();
 const cookieCheck = useVerifyCookies();
 cookieCheck.requiredCookies.value = cookieValues.google_maps;
 
+// TODO:
 // const showError = computed(() =>
 //     !cookieCheck.cookiesLoaded.value
 //     || !cookieCheck.cookiesAllowed.value,
@@ -243,7 +243,12 @@ async function loadMapCategories() {
         mainMapStore.keywords = data.accommodation.keywords;
 
         mapCategoryStore.subcategoryMap = Object.values(data)
-            .flatMap((category) => category.subCategory ?? [])
+            .flatMap((category) =>
+                (category.subCategory ?? []).map((subcategory) =>({
+                    ...subcategory,
+                    categoryId: category.id,
+                })),
+            )
             .reduce((map, subcategory) => {
                 map[subcategory.id] = subcategory;
                 return map;

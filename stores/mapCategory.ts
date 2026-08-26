@@ -87,12 +87,14 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         const excluded = new Set();
         
         selectedSubcategories.value.forEach((id) => {
-            const subcategory = mainMapStore.subcategoryMap[id];
+            const subcategory = subcategoryMap.value[id];
             if (!subcategory) return;
 
-            subcategory.includedType?.forEach((type) => included.add(type));
-            subcategory.excludedType?.forEach((type) => excluded.add(type));
+            subcategory.includedType?.forEach((type: string) => included.add(type));
+            subcategory.excludedType?.forEach((type: string) => excluded.add(type));
         });
+
+        included.forEach((type) => excluded.delete(type));
 
         return {
             included,

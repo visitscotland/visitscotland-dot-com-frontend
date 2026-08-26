@@ -48,12 +48,12 @@ export default function useMapMarkers(context: MapContext) {
         });
     }
 
-    function handleFeaturedLocationClick(place: any) {
+    function handleFeaturedLocationClick(place: any, category: string) {
         const map = context.gMap.value;
         if (!map) return;
 
         mainMapStore.showDestinations = false;
-        mainMapStore.selectedDestination = place.properties.title;
+        mapCategoryStore.selectedDestination = place.properties.title;
 
         runProgrammaticMove(() => {
             map.fitBounds(
@@ -77,7 +77,8 @@ export default function useMapMarkers(context: MapContext) {
             );
         });
 
-        mapCategoryStore.selectedCategory = 'things-to-do';
+        const categoryExists = category in mapCategoryStore.categoryData;
+        mapCategoryStore.selectedCategory = (categoryExists) ? category : 'things-to-do';
         mainMapStore.isSidebarOpen = true;
     }
 
@@ -135,7 +136,7 @@ export default function useMapMarkers(context: MapContext) {
                         lng: place.properties.locationCentre.longitude,
                     },
                     title: place.properties.title,
-                    onClick: () => handleFeaturedLocationClick(place),
+                    onClick: () => handleFeaturedLocationClick(place, ''),
                 });
 
                 markers[place.properties.id] = marker;

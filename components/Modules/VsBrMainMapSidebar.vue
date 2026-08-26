@@ -49,7 +49,7 @@
                             ref="search-input"
                             :value="mainMapStore.searchTerm"
                             @input="mainMapStore.searchTerm = $event.target.value"
-                            @keyup.enter="$emit('search-input-changed')"
+                            @keyup.enter="emit('search-input-changed')"
                         />
                         <VsButton
                             class="vs-map-sidebar__search-button"
@@ -58,8 +58,7 @@
                             icon-only
                             :rounded="false"
                             size="lg"
-                            @click="$emit('search-input-changed')"
-                            @keyup.enter="$emit('search-input-changed')"
+                            @click="emit('search-input-changed')"
                         >
                             {{ props.sidebarLabels.searchButtonLabel }}
                         </VsButton>
@@ -70,8 +69,8 @@
                         class="d-block"
                         href="#"
                         data-test="vs-map-sidebar__reset-map"
-                        @click.prevent="$emit('reset-map')"
-                        @keyup.enter.prevent="$emit('reset-map')"
+                        @click.prevent="emit('reset-map')"
+                        @keyup.enter.prevent="emit('reset-map')"
                     >
                         {{ props.sidebarLabels.clearMapLabel }}
                     </a>
@@ -99,7 +98,7 @@
                         />
 
                         <VsBrMainMapFilter
-                            v-if="mapCategoryStore.selectedCategory && subcategories"
+                            v-if="mapCategoryStore.selectedCategory && subcategories.length"
                             :detail-text="props.sidebarLabels.subFilterHeaderLabel"
                             :items="subcategories"
                             :selected-category="mapCategoryStore.selectedSubcategories"
@@ -125,8 +124,8 @@
                             v-if="props.query || mapCategoryStore.selectedCategory"
                             href="#"
                             data-test="vs-map-sidebar__hard-reset-map"
-                            @click.prevent="$emit('reset-location')"
-                            @keyup.enter.prevent="$emit('reset-location')"
+                            @click.prevent="emit('reset-location')"
+                            @keyup.enter.prevent="emit('reset-location')"
                         >
                             {{ props.sidebarLabels.resetLocationLabel }}
                         </a>
@@ -235,14 +234,16 @@ type MapFilterChanged = {
     key: number | string;
 };
 
-type Categories = {
+type Subcategory = {
+    label: string;
+    id: string;
+};
+
+type Category = {
     label: string;
     id: string;
     cmsData?: boolean;
-    subCategory: {
-        label: string;
-        id: string;
-    }[];
+    subCategory: Subcategory[];
 };
 
 type Props = {
@@ -280,7 +281,6 @@ const emit = defineEmits<{
 }>();
 
 const sidebar = useTemplateRef('sidebar');
-const searchInput = useTemplateRef('search-input');
 const placeDetails = useTemplateRef('place-details');
 const placeRequest = useTemplateRef('place-request');
 
@@ -289,10 +289,6 @@ watch(() => props.place, (place) => {
 
     placeRequest.value.place = place;
     placeDetails.value.style.display = 'block';
-});
-
-defineExpose({
-    searchInput,
 });
 
 const mainMapStore = useMainMapStore();
@@ -304,19 +300,18 @@ const {
     sidebarStyle,
 } = useSwipeDrawer(isOpen, sidebar);
 
-const filteredCategories = mapCategoryStore.categoryLabelData
-    .filter((category: Categories) => !category.cmsData);
+const filteredCategories = computed(() =>
+    mapCategoryStore.categoryLabelData.filter(
+        (category: Category) => !category.cmsData,
+    ),
+);
 
 const subcategories = computed(() => {
-    if (!mapCategoryStore.selectedCategory) return null;
-
-    const categoryData = mapCategoryStore.categoryLabelData.find(
-        (cat: Categories) => cat.id === mapCategoryStore.selectedCategory,
+    const category = mapCategoryStore.categoryLabelData.find(
+        (category: Category) => category.id === mapCategoryStore.selectedCategory,
     );
 
-    if (!categoryData) return null;
-
-    return categoryData.subCategory;
+    return category?.subCategory ?? [];
 });
 
 function handleDestinationTypeClick(id: string) {

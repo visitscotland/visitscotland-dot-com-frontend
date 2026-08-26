@@ -6,6 +6,7 @@ import useConfigStore from '~/stores/configStore.ts';
 import useMainMapStore from '~/stores/mainMap.ts';
 import useMapCategoryStore from '~/stores/mapCategory.ts';
 import useMapMarkers from './useMapMarkers.ts';
+import useMapSearch from './useMapSearch.ts';
 import useViewportController from './useViewportController.ts';
 import {
     CATEGORY_VISIBLE_ZOOM,
@@ -21,6 +22,7 @@ export default function useGoogleMap(context: MapContext) {
     const mainMapStore = useMainMapStore();
     const mapCategoryStore = useMapCategoryStore();
     const mapMarkers = useMapMarkers(context);
+    const mapSearch = useMapSearch(context);
     const viewportController = useViewportController(context);
     const previousZoomedIn = ref(false);
 
@@ -48,6 +50,7 @@ export default function useGoogleMap(context: MapContext) {
     /**
      * Shade non-Scottish countries so that Scotland stands out more.
      *
+     * @param {google.maps.Map} map - The map instance.
      * @param {boolean} zoomedIn - Is the map zoomed in or not.
      */
     function shadeMapAreas(map: google.maps.Map, zoomedIn: boolean) {
@@ -73,6 +76,8 @@ export default function useGoogleMap(context: MapContext) {
     }
 
     function handleZoomChanged(map: google.maps.Map) {
+        if (!context.mapLoaded.value) return;
+    
         const zoom = map.getZoom();
 
         if (!zoom) return;
@@ -96,6 +101,17 @@ export default function useGoogleMap(context: MapContext) {
         ) {
             mainMapStore.showSearchAreaButton = true;
         }
+
+        if (context.moveSource.value == 'user') {
+            mapSearch.setUrlParameters({
+                category: mapCategoryStore.selectedCategory || false,
+                subcategories: mapCategoryStore.selectedSubcategories.length
+                    ? mapCategoryStore.selectedSubcategories
+                    : false,
+                coords: true,
+                zoom: true,
+            });
+        }
     }
 
     function handleDragStart() {
@@ -106,15 +122,26 @@ export default function useGoogleMap(context: MapContext) {
         if (context.mapLoaded.value) return;
         context.mapLoaded.value = true;
 
-        mapMarkers.addDestinationMarkers();
+        // Handle any URL parameters.
+        const mapUpdated = mapSearch.handleUrlParams();
+
+        // If the URL parameters haven't started a search then display the
+        // destination markers and clear the URL parameters.
+        if (!mapUpdated) {
+            mapMarkers.addDestinationMarkers();
+            
+            mapSearch.setUrlParameters({
+            });
+        }
     }
 
     function handleIdle() {
         const source = context.moveSource.value;
+        const map = context.gMap.value;
 
         context.moveSource.value = null;
 
-        if (source !== 'user') return;
+        if (source !== 'user' || !map) return;
 
         const viewport = viewportController.getViewport();
 
@@ -123,7 +150,16 @@ export default function useGoogleMap(context: MapContext) {
             mainMapStore.showSearchAreaButton = true;
             mapCategoryStore.selectedDestinationType = mapCategoryStore
                 .featuredDestinationTypes![0]!.id;
-            mainMapStore.selectedDestination = '';
+            mapCategoryStore.selectedDestination = '';
+
+            mapSearch.setUrlParameters({
+                category: mapCategoryStore.selectedCategory || false,
+                subcategories: mapCategoryStore.selectedSubcategories.length
+                    ? mapCategoryStore.selectedSubcategories
+                    : false,
+                coords: true,
+                zoom: true,
+            });
         }
 
         // TODO: analytics

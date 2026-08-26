@@ -18,7 +18,12 @@ export default function useMapSearch(context: MapContext) {
     const mapCategoryStore = useMapCategoryStore();
     const { selectedCategory, selectedSubcategories } =
         storeToRefs(mapCategoryStore);
-    const { addDestinationMarkers, addMarkers, clearMarkers } =
+    const {
+        addDestinationMarkers,
+        addMarkers,
+        clearMarkers,
+        handleFeaturedLocationClick,
+    } =
         useMapMarkers(context);
     const { getViewport, runProgrammaticMove } = useViewportController(context);
 
@@ -81,9 +86,17 @@ export default function useMapSearch(context: MapContext) {
             // TODO: analytics
             // mapInteractionEvent('reset_map');
         }
+
+        if (hardReset || resetLocation) {
+            setUrlParameters({
+            });
+        }
     }
 
     function searchByText(useRestriction = false) {
+        const map = context.gMap.value;
+        if (!map) return;
+
         resetMap(false, false);
 
         // Don't reset the categories if doing a "Self catering" search as
@@ -143,6 +156,17 @@ export default function useMapSearch(context: MapContext) {
 
         context.textSearch.value!.style.display = 'block';
 
+        if (mapCategoryStore.selfCateringClicked) {
+            setUrlParameters({
+                coords: map.getCenter()?.toUrlValue(2),
+                zoom: map.getZoom()?.toFixed(2),
+            });
+        } else {
+            setUrlParameters({
+                searchTerm: true,
+            });
+        }
+
         context.textSearch.value!.addEventListener(
             'gmp-load',
             () => {
@@ -172,6 +196,9 @@ export default function useMapSearch(context: MapContext) {
     }
 
     function searchByCategory() {
+        const map = context.gMap.value;
+        if (!map) return;
+
         const types =
             selectedSubcategories.value.length > 0
                 ? mapCategoryStore.selectedSubcategoryTypes
@@ -215,12 +242,12 @@ export default function useMapSearch(context: MapContext) {
         let cappedDistance = 25000;
 
         if (
-            (mainMapStore.selectedDestinationType === 'regions' &&
-                mainMapStore.selectedDestination !== 'Fife') ||
-            (mainMapStore.selectedDestinationType === 'islands' &&
-                mainMapStore.selectedDestination === 'Shetland') ||
-            (mainMapStore.selectedDestinationType === 'islands' &&
-                mainMapStore.selectedDestination === 'Orkney')
+            (mapCategoryStore.selectedDestinationType === 'regions' &&
+                mapCategoryStore.selectedDestination !== 'Fife') ||
+            (mapCategoryStore.selectedDestinationType === 'islands' &&
+                mapCategoryStore.selectedDestination === 'Shetland') ||
+            (mapCategoryStore.selectedDestinationType === 'islands' &&
+                mapCategoryStore.selectedDestination === 'Orkney')
         ) {
             cappedDistance = 50000;
         }
@@ -267,6 +294,25 @@ export default function useMapSearch(context: MapContext) {
                 once: true,
             },
         );
+
+        if (mapCategoryStore.selectedDestination) {
+            setUrlParameters({
+                location: true,
+                category: mapCategoryStore.selectedCategory || false,
+                subcategories: mapCategoryStore.selectedSubcategories.length
+                    ? mapCategoryStore.selectedSubcategories
+                    : false,
+            });
+        } else {
+            setUrlParameters({
+                category: mapCategoryStore.selectedCategory || false,
+                subcategories: mapCategoryStore.selectedSubcategories.length
+                    ? mapCategoryStore.selectedSubcategories
+                    : false,
+                coords: true,
+                zoom: true,
+            });
+        }
     }
 
     /**
@@ -276,7 +322,7 @@ export default function useMapSearch(context: MapContext) {
     function searchArea() {
         mainMapStore.showDestinations = false;
         mainMapStore.sidebarOpen = true;
-        mainMapStore.selectedDestination = '';
+        mapCategoryStore.selectedDestination = '';
         mainMapStore.showSearchAreaButton = false;
 
         if (selectedSubcategories.value.includes('self-catering')) {
@@ -294,58 +340,135 @@ export default function useMapSearch(context: MapContext) {
         } else {
             selectedCategory.value = 'things-to-do';
         }
-
-        // // Check for selected subcategory and start nearby search.
-        // if (mainMapStore.selectedSubcategories.length > 0) {
-        //     if (mainMapStore.selectedSubcategories.has('self-catering')) {
-        //         mainMapStore.selectedSubcategories.delete('self-catering');
-        //         searchBySubCategory('self-catering');
-        //     } else {
-        //         searchByCategory({
-        //             includedTypes: [...selectedSubcategoryTypes.value.included],
-        //             excludedTypes: [...selectedSubcategoryTypes.value.excluded],
-        //         });
-
-        //         // Get labels for the selected subcategories.
-        //         const subcatLabels = [];
-        //         mainMapStore.selectedSubcategories.forEach((subcat) => {
-        //             subcatLabels.push(
-        //                 searchSubcategoriesForLabel(subcat),
-        //             );
-        //         });
-        //         mainMapStore.searchTerm = subcatLabels.join(', ');
-        //         // searchInput.value = mainMapStore.selectedSubcategories.join(', ');
-        //         mainMapStore.showCategories = true;
-        //     }
-        //     return;
-        // }
-
-        // // Check for selected category and start nearby search.
-        // if (mainMapStore.selectedTopLevelCategory) {
-        //     selectCategory(mainMapStore.selectedTopLevelCategory);
-        //     return;
-        // }
-
-        // // Check for searchInput value and start text search.
-        // if (mainMapStore.searchTerm) {
-        //     searchByText(true);
-        //     return;
-        // }
-
-        // // Start "Things to do" search if no categories selected or search terms entered.
-        // selectCategory('things-to-do');
     }
 
     function handleCategoryUpdate() {
         if (selectedSubcategories.value.includes('self-catering')) {
             mainMapStore.searchTerm =
                 mapCategoryStore.getSubcategoryLabel('self-catering');
+            mapCategoryStore.selectedDestination = '';
             searchByText();
         } else if (
             selectedCategory.value ||
             selectedSubcategories.value.length > 0
         ) {
             searchByCategory();
+        }
+        // mainMapStore.query = 
+    }
+
+    async function setUrlParameters(options) {
+        const map = context.gMap.value;
+        if (!map) return;
+
+        const route = useRoute();
+        const router = useRouter();
+
+        // Build the URL query.
+        const query = mapCategoryStore.selfCateringClicked
+            // Use a hardcoded query if self catering is selected.
+            ? {
+                category: 'accommodation',
+                subcategories: 'self-catering',
+                coords: options.coords ? map.getCenter()?.toUrlValue(2) : undefined,
+                zoom: options.zoom ? map.getZoom()?.toFixed(2) : undefined,
+            }
+            : {
+                'search-term': options.searchTerm ? mainMapStore.searchTerm?.toLowerCase() : undefined,
+                location: options.location ? mapCategoryStore.selectedDestination?.toLowerCase() : undefined,   
+                category: options.category ? mapCategoryStore.selectedCategory : undefined,
+                subcategories: options.subcategories ? mapCategoryStore.selectedSubcategories.join(',') : undefined,
+                coords: options.coords ? map.getCenter()?.toUrlValue(2) : undefined,
+                zoom: options.zoom ? map.getZoom()?.toFixed(2) : undefined,
+            };
+
+        await router.replace({
+            path: route.path,
+            query,
+        });
+    }
+
+    function setSubcategories(category: string, subcategories: string) {
+        if (!subcategories) return;
+
+        const providedSubcategories = subcategories
+            .split(',')
+            .filter((subcategoryId: string) => {
+                const subcategory = mapCategoryStore.subcategoryMap[subcategoryId];
+                return subcategory && subcategory.categoryId === category;
+            });
+
+        if (providedSubcategories.includes('self-catering')) {
+            mapCategoryStore.selfCateringClicked = true;
+            mapCategoryStore.selectedSubcategories = ['self-catering'];
+        } else {
+            mapCategoryStore.selectedSubcategories = providedSubcategories;
+        }
+    };
+
+    function handleUrlParams() {
+        const map = context.gMap.value;
+        if (!map) return false;
+
+        const route = useRoute();        
+
+        // This is needed to correctly set the type of the URL parameter.
+        const getValue = (id: string) =>
+            typeof route.query[id] === 'string'
+                ? route.query[id]
+                : '';
+
+        // Get the URL parameter values.
+        const category: string = getValue('category');
+        const coords: string = getValue('coords');
+        const location: string = getValue('location');
+        const searchTerm: string = getValue('search-term');
+        const subcategories: string = getValue('subcategories');
+        const zoom: string = getValue('zoom');
+
+        if (location) {
+            const placeData = mapCategoryStore.featuredDestinations.find((place) => (
+                place.properties.title.toLowerCase() === location.toLowerCase()
+            ));
+
+            if (placeData) {
+                handleFeaturedLocationClick(placeData, category);
+                setSubcategories(category, subcategories);
+                return true;
+            }
+        }
+
+        if (coords && zoom) {
+            mainMapStore.showDestinations = false;
+
+            const providedZoom = Number(zoom);
+            const providedCoords = coords.split(',');
+
+            runProgrammaticMove(() => {
+                // Zoom into location
+                map.setZoom(Number(providedZoom));
+                map.setCenter(
+                    new google.maps.LatLng(
+                        Number(providedCoords[0]),
+                        Number(providedCoords[1]),
+                    ),
+                );
+            });
+
+            if (category && subcategories) {
+                setSubcategories(category, subcategories);
+            }
+
+            const categoryExists = category in mapCategoryStore.categoryData;
+
+            mapCategoryStore.selectedCategory = (categoryExists) ? category : 'things-to-do';
+            return true;
+        }
+
+        if (searchTerm) {
+            mainMapStore.searchTerm = searchTerm;
+            searchByText();
+            return true;
         }
     }
 
@@ -360,11 +483,13 @@ export default function useMapSearch(context: MapContext) {
     });
 
     return {
+        handleUrlParams,
         resetCategories,
         resetMap,
         resetTextQuery,
         searchArea,
         searchByCategory,
         searchByText,
+        setUrlParameters,
     };
 }
