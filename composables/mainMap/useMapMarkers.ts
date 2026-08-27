@@ -1,13 +1,14 @@
 import type { MapContext, MapMarker } from '~/types/main-map-types.ts';
 import useMainMapStore from '../../stores/mainMap.ts';
 import useMapCategoryStore from '~/stores/mapCategory.ts';
+import useMapAnalytics from './useMapAnalytics.ts';
 import useViewportController from './useViewportController.ts';
 import { MAX_ZOOM } from '~/main-map-constants.ts';
 
 export default function useMapMarkers(context: MapContext) {
     const mainMapStore = useMainMapStore();
-
     const mapCategoryStore = useMapCategoryStore();
+    const mapAnalytics = useMapAnalytics(context);
     const { runProgrammaticMove } = useViewportController(context);
 
     const markers: MapMarker = {
@@ -43,8 +44,7 @@ export default function useMapMarkers(context: MapContext) {
                 runProgrammaticMove(() => map.setZoom(MAX_ZOOM));
             }
 
-            // TODO: analytics
-            // mapInteractionEvent('card_open', place);
+            mapAnalytics.mapInteractionEvent('card_open', place);
         });
     }
 
@@ -147,7 +147,7 @@ export default function useMapMarkers(context: MapContext) {
         context.markers.value = markers;
     }
 
-    function addMarkers(searchId: number) {
+    async function addMarkers(searchId: number) {
         const map = context.gMap.value;
 
         if (!map) return;
@@ -189,6 +189,25 @@ export default function useMapMarkers(context: MapContext) {
             markers[place.id] = marker;
             bounds.extend(place.location);
         }
+
+        context.markers.value = markers;
+
+        // Get the place display name and use it to set the marker title.
+        await Promise.all(
+            places.map(async(place) => {
+                if (!place.location) return;
+
+                await place.fetchFields({
+                    fields: ['displayName'],
+                });
+
+                const marker = markers[place.id];
+
+                if (marker && place.displayName) {
+                    marker.title = place.displayName;
+                }
+            }),
+        );
 
         context.markers.value = markers;
 

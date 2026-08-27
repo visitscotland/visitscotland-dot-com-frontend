@@ -11,7 +11,6 @@
                 v-model:is-results-open="mainMapStore.isSidebarResultsOpen"
                 :heading="module.tabTitle ? module.tabTitle : module.title"
                 :map-loaded="mapContext.mapLoaded.value"
-                ref="map-sidebar"
                 :place="mapContext.selectedPlace.value!"
                 @destination-type-selected="addDestinationMarkers"
                 @reset-map="resetMap(true, false)"
@@ -170,9 +169,9 @@ import {
 import useConfigStore from '~/stores/configStore.ts';
 import useMainMapStore from '~/stores/mainMap.ts';
 import useMapCategoryStore from '~/stores/mapCategory.ts';
+import useVerifyCookies from '~/composables/useVerifyCookies.ts';
 import cookieValues from '~/utls/required-cookies-data.ts';
 import VsBrMainMapSidebar from './VsBrMainMapSidebar.vue';
-import useVerifyCookies from '~/composables/useVerifyCookies.ts';
 // import dataLayerComposable from './composables/dataLayerComposable';
 
 import createMapContext from '~/composables/mainMap/createMapContext.ts';
@@ -213,12 +212,10 @@ const errType = ref<'noCookie' | undefined>();
 const cookieCheck = useVerifyCookies();
 cookieCheck.requiredCookies.value = cookieValues.google_maps;
 
-// TODO:
-// const showError = computed(() =>
-//     !cookieCheck.cookiesLoaded.value
-//     || !cookieCheck.cookiesAllowed.value,
-// );
-const showError = computed(() => false);
+const showError = computed(() =>
+    !cookieCheck.cookiesLoaded.value
+    || !cookieCheck.cookiesAllowed.value,
+);
 
 async function loadMapCategories() {
     try {
@@ -262,7 +259,7 @@ function setupFeatureDestinations() {
 async function initialiseMap() {
     if (showError.value || !mapContainer.value) return;
     await loadGoogleMaps();
-    await initMap(mapContainer.value);
+    initMap(mapContainer.value);
 }
 
 onMounted(async() => {

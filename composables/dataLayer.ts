@@ -12,6 +12,10 @@ import {
     favouritesPageViewTemplate,
     favouritesClickTemplate,
     favouritesShareTemplate,
+    googleMapSearchTemplate,
+    googleMapFilterInteractionTemplate,
+    googleMapTimeToFirstInteractionTemplate,
+    googleMapInteractionTemplate,
 } from '~/utls/date-layer-template.ts';
 
 /**
@@ -224,6 +228,66 @@ export default function dataLayerComposable() {
             };
             fullTemplate = compileFullTemplate(templateValues);
             dataLayerData = templateFiller(favouritesShareTemplate, fullTemplate);
+            break;
+
+        case 'googleMapSearchEvent':
+            eventName = 'map_search';
+            templateValues = {
+                event: eventName,
+                search_query: event.search_query,
+                search_map_location: event.search_map_location,
+                search_results_count: event.search_results_count,
+                search_usage_index: event.search_usage_index,
+            };
+
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(googleMapSearchTemplate, fullTemplate);
+            break;
+
+        case 'googleMapFilterEvent':
+            eventName = 'map_filter_interaction';
+            templateValues = {
+                event: eventName,
+                filter_type: event.filter_type,
+                search_map_location: event.search_map_location,
+                filter_selection: event.filter_selection,
+                results_count: event.results_count,
+                filter_usage_index: event.filter_usage_index,
+            };
+
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(googleMapFilterInteractionTemplate, fullTemplate);
+            break;
+
+        case 'googleMapTimeToFirstInteractionEvent':
+            eventName = 'map_time_to_first_interaction';
+            templateValues = {
+                event: eventName,
+                time_to_first_interaction_ms: event.time_to_first_interaction_ms,
+                first_interaction_type: event.first_interaction_type,
+            };
+
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(googleMapTimeToFirstInteractionTemplate, fullTemplate);
+            break;
+
+        case 'googleMapInteractionEvent':
+            eventName = 'map_interaction_click';
+            templateValues = {
+                event: eventName,
+                interaction_type: event.interaction_type,
+                search_query: event.search_query,
+                map_location: event.map_location,
+                visible_attractions_count: event.visible_attractions_count,
+                card_attraction_name: event.card_attraction_name,
+                card_attraction_category: event.card_attraction_category,
+                card_attraction_url: event.card_attraction_url,
+                card_attraction_rating: event.card_attraction_rating,
+                interaction_timestamp_ms: event.interaction_timestamp_ms,
+            };
+
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(googleMapInteractionTemplate, fullTemplate);
             break;
 
         default:

@@ -5,6 +5,7 @@ import type { GmpSelectEvent, MapContext } from '~/types/main-map-types.ts';
 import useConfigStore from '~/stores/configStore.ts';
 import useMainMapStore from '~/stores/mainMap.ts';
 import useMapCategoryStore from '~/stores/mapCategory.ts';
+import useMapAnalytics from './useMapAnalytics.ts';
 import useMapMarkers from './useMapMarkers.ts';
 import useMapSearch from './useMapSearch.ts';
 import useViewportController from './useViewportController.ts';
@@ -21,6 +22,7 @@ export default function useGoogleMap(context: MapContext) {
     const configStore = useConfigStore();
     const mainMapStore = useMainMapStore();
     const mapCategoryStore = useMapCategoryStore();
+    const mapAnalytics = useMapAnalytics(context);
     const mapMarkers = useMapMarkers(context);
     const mapSearch = useMapSearch(context);
     const viewportController = useViewportController(context);
@@ -136,6 +138,9 @@ export default function useGoogleMap(context: MapContext) {
     }
 
     function handleIdle() {
+        const visibleMarkerCount = mapAnalytics.getVisibleMarkerCount();
+        mainMapStore.visibleMarkerCount = visibleMarkerCount ?? 0;
+
         const source = context.moveSource.value;
         const map = context.gMap.value;
 

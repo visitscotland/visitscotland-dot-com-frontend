@@ -2,11 +2,13 @@
 
 export default function useVerifyCookies() { 
     const cookieManagerLoaded = ref(false);
-    const requiredCookies = ref([]);
+    const requiredCookies = ref<(0 | 1)[]>([]);
     const requiredCookiesAllowed = ref(false);
 
     const cookiesAllowed = computed(() => {
-        if (typeof window !== 'undefined' && window.bypassCookiesRequired) {
+        if ((typeof window !== 'undefined' && window.bypassCookiesRequired)
+            || import.meta.dev
+        ) {
             return true;
         };
 
@@ -14,7 +16,9 @@ export default function useVerifyCookies() {
     });
 
     const cookiesLoaded = computed(() => {
-        if (typeof window !== 'undefined' && window.bypassCookiesLoaded) {
+        if ((typeof window !== 'undefined' && window.bypassCookiesLoaded)
+            || import.meta.dev
+        ) {
             return true;
         }
 

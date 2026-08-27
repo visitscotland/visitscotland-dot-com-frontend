@@ -26,6 +26,7 @@ const useMainMapStore = defineStore('mainMap', () => {
     const subcategoryMap = ref<any>();
     const selfCateringClicked = ref(false);
     const query = ref('');
+    const visibleMarkerCount = ref(0);
 
     const filteredPlaces = computed(() => (
         featuredPlaces.value.filter((place) => (
@@ -57,6 +58,7 @@ const useMainMapStore = defineStore('mainMap', () => {
         subcategoryMap,
         selfCateringClicked,
         query,
+        visibleMarkerCount,
     };
 });
 

@@ -3,6 +3,8 @@ import { storeToRefs } from 'pinia';
 
 import type { MapContext } from '~/types/main-map-types.ts';
 import useMainMapStore from '@/stores/mainMap.ts';
+import dataLayerComposable from '../dataLayer.ts';
+import useMapAnalytics from './useMapAnalytics.ts';
 import useMapCategoryStore from '~/stores/mapCategory.ts';
 import useMapMarkers from './useMapMarkers.ts';
 import useViewportController from './useViewportController.ts';
@@ -18,6 +20,8 @@ export default function useMapSearch(context: MapContext) {
     const mapCategoryStore = useMapCategoryStore();
     const { selectedCategory, selectedSubcategories } =
         storeToRefs(mapCategoryStore);
+    const dataLayerHelper = dataLayerComposable();
+    const mapAnalytics = useMapAnalytics(context);
     const {
         addDestinationMarkers,
         addMarkers,
@@ -65,26 +69,20 @@ export default function useMapSearch(context: MapContext) {
             resetTextQuery();
             resetCategories();
 
-            // TODO: analytics
-            // mapInteractionEvent('clear_all');
+            mapAnalytics.mapInteractionEvent('clear_all');
 
             addDestinationMarkers();
             mainMapStore.showDestinations = true;
         }
 
         if (resetLocation) {
-            runProgrammaticMove(() =>
-                context.gMap.value!.setCenter(DEFAULT_CENTER),
-            );
-            runProgrammaticMove(() =>
-                context.gMap.value!.setZoom(DEFAULT_ZOOM),
-            );
-            runProgrammaticMove(() =>
-                context.gMap.value!.fitBounds(SCOTLAND_BOUNDS),
-            );
+            runProgrammaticMove(() => {
+                context.gMap.value!.setCenter(DEFAULT_CENTER);
+                context.gMap.value!.setZoom(DEFAULT_ZOOM);
+                context.gMap.value!.fitBounds(SCOTLAND_BOUNDS);
+            });
 
-            // TODO: analytics
-            // mapInteractionEvent('reset_map');
+            mapAnalytics.mapInteractionEvent('reset_map');
         }
 
         if (hardReset || resetLocation) {
@@ -177,16 +175,14 @@ export default function useMapSearch(context: MapContext) {
                 context.lastSearchViewport.value = getViewport();
                 mapCategoryStore.selfCateringClicked = false;
                 
+                dataLayerHelper.createDataLayerObject('googleMapSearchEvent', {
+                    search_query: mainMapStore.searchTerm,
+                    search_map_location: map.getCenter()?.toString(),
+                    search_results_count: context.textSearch.value?.places?.length,
+                    search_usage_index: mainMapStore.searchesCount,
+                });
 
-                // TODO: Analytics
-                // dataLayerHelper.createDataLayerObject('googleMapSearchEvent', {
-                //     search_query: mainMapStore.searchTerm,
-                //     search_map_location: mapContext.gMap.value.getCenter().toString(),
-                //     search_results_count: mapContext.textSearch.value.places.length,
-                //     search_usage_index: mainMapStore.searchesCount,
-                // });
-
-                // checkFirstInteraction('map_search');
+                mapAnalytics.checkFirstInteraction('map_search');
             },
             {
                 once: true,
@@ -278,23 +274,23 @@ export default function useMapSearch(context: MapContext) {
                 context.lastSearchViewport.value = getViewport();
 
                 // TODO: analytics
-                // let filterType = 'main';
-                // let filterSelection = mainMapStore.selectedTopLevelCategory;
+                const filterType = ref<'main' | 'sub'>('main');
+                const filterSelection = ref(mapCategoryStore.selectedCategory);
 
-                // if (mainMapStore.selectedSubcategories.size) {
-                //     filterType = 'sub';
-                //     filterSelection = Array.from(mainMapStore.selectedSubcategories).join(', ');
-                // }
+                if (mapCategoryStore.selectedSubcategories.length) {
+                    filterType.value = 'sub';
+                    filterSelection.value = mapCategoryStore.selectedSubcategories.join(', ');
+                }
 
-                // dataLayerHelper.createDataLayerObject('googleMapFilterEvent', {
-                //     filter_type: filterType,
-                //     search_map_location: context.gMap.value.getCenter().toString(),
-                //     filter_selection: filterSelection,
-                //     results_count: context.nearbySearch.value.places.length,
-                //     filter_usage_index: mainMapStore.filterUsesCount,
-                // });
+                dataLayerHelper.createDataLayerObject('googleMapFilterEvent', {
+                    filter_type: filterType.value,
+                    search_map_location: map.getCenter()?.toString(),
+                    filter_selection: filterSelection.value,
+                    results_count: context.nearbySearch.value?.places?.length,
+                    filter_usage_index: mainMapStore.filterUsesCount,
+                });
 
-                // checkFirstInteraction('map_filter');
+                mapAnalytics.checkFirstInteraction('map_filter');
             },
             {
                 once: true,
@@ -360,7 +356,6 @@ export default function useMapSearch(context: MapContext) {
         ) {
             searchByCategory();
         }
-        // mainMapStore.query = 
     }
 
     async function setUrlParameters(options) {
