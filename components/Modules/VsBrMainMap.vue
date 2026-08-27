@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/html-self-closing -->
 <!-- eslint-disable vue/component-name-in-template-casing -->
 <template>
     <div class="vs-map">
@@ -9,13 +8,13 @@
             <VsBrMainMapSidebar
                 v-model:is-open="mainMapStore.isSidebarOpen"
                 v-model:is-results-open="mainMapStore.isSidebarResultsOpen"
-                :heading="module.tabTitle ? module.tabTitle : module.title"
+                :heading="module.tabTitle ?? module.title"
                 :map-loaded="mapContext.mapLoaded.value"
-                :place="mapContext.selectedPlace.value!"
-                @destination-type-selected="addDestinationMarkers"
-                @reset-map="resetMap(true, false)"
-                @reset-location="resetMap(true, true)"
-                @search-input-changed="searchByText"
+                :place="mapContext.selectedPlace.value"
+                @destination-type-selected="mapMarkers.addDestinationMarkers"
+                @reset-map="mapSearch.resetMap(true, false)"
+                @reset-location="mapSearch.resetMap(true, true)"
+                @search-input-changed="mapSearch.searchByText"
             >
                 <template #vs-map-sidebar-search-results>
                     <div class="mt-075 mb-150">
@@ -28,7 +27,7 @@
                                 {{ configStore.getLabel('map', 'map.no-results-message') }}
                                 <a
                                     href="#"
-                                    @click.prevent="resetMap(true, true)"
+                                    @click.prevent="mapSearch.resetMap(true, true)"
                                 >
                                     {{ configStore.getLabel('map', 'map.no-results-message') }}
                                 </a>
@@ -117,7 +116,7 @@
                     <VsButton
                         icon="vs-icon-control-search"
                         variant="secondary"
-                        @click="searchArea"
+                        @click="mapSearch.searchArea"
                     >
                         {{ configStore.getLabel('map', 'searchAreaButton') }}
                     </VsButton>
@@ -126,9 +125,8 @@
         </div>
 
         <VsWarning
-            v-if="showError && errType === 'noCookie'"
+            v-if="showError"
             class="vs-map__error vs-map__error--no-cookies"
-            :class="showError ? 'd-block' : 'd-none'"
             data-test="vs-map__warning--no-cookies"
             type="cookie"
         >
@@ -149,16 +147,12 @@
 </template>
 
 <script setup lang="ts">
-/* eslint-disable vue/no-side-effects-in-computed-properties */
 import {
     computed,
     onMounted,
     provide,
-    ref,
     useTemplateRef,
 } from 'vue';
-import axios from 'axios';
-
 import {
     VsAlert,
     VsButton,
@@ -169,22 +163,16 @@ import {
 import useConfigStore from '~/stores/configStore.ts';
 import useMainMapStore from '~/stores/mainMap.ts';
 import useMapCategoryStore from '~/stores/mapCategory.ts';
-import useVerifyCookies from '~/composables/useVerifyCookies.ts';
-import cookieValues from '~/utls/required-cookies-data.ts';
-import VsBrMainMapSidebar from './VsBrMainMapSidebar.vue';
-// import dataLayerComposable from './composables/dataLayerComposable';
-
 import createMapContext from '~/composables/mainMap/createMapContext.ts';
 import useGoogleMap from '~/composables/mainMap/useGoogleMap.ts';
 import useMapSearch from '~/composables/mainMap/useMapSearch.ts';
 import useMapMarkers from '~/composables/mainMap/useMapMarkers.ts';
+import useVerifyCookies from '~/composables/useVerifyCookies.ts';
+import cookieValues from '~/utls/required-cookies-data.ts';
+import VsBrMainMapSidebar from './VsBrMainMapSidebar.vue';
 
 const props = defineProps<{ module: object }>();
 const module: any = props.module;
-
-// const dataLayerHelper = dataLayerComposable();
-
-// Map Object, HTMLElements & Global Variables
 
 const mapContainer = useTemplateRef('map-container');
 
@@ -195,20 +183,12 @@ const mapCategoryStore = useMapCategoryStore();
 mapCategoryStore.categoryLabelData = module.filters;
 
 const mapContext = createMapContext();
-const { initMap, loadGoogleMaps } = useGoogleMap(mapContext);
-const {
-    resetMap,
-    searchArea,
-    searchByText,
-} = useMapSearch(mapContext);
-const {
-    addDestinationMarkers,
-    handleFeaturedLocationClick,
-} = useMapMarkers(mapContext);
+const googleMap = useGoogleMap(mapContext);
+const mapSearch = useMapSearch(mapContext);
+const mapMarkers = useMapMarkers(mapContext);
 
-provide('onFeaturedLocationClick', handleFeaturedLocationClick);
+provide('onFeaturedLocationClick', mapMarkers.handleFeaturedLocationClick);
 
-const errType = ref<'noCookie' | undefined>();
 const cookieCheck = useVerifyCookies();
 cookieCheck.requiredCookies.value = cookieValues.google_maps;
 
@@ -216,30 +196,6 @@ const showError = computed(() =>
     !cookieCheck.cookiesLoaded.value
     || !cookieCheck.cookiesAllowed.value,
 );
-
-async function loadMapCategories() {
-    try {
-        const { data } = await axios.get('https://static.visitscotland.com/maps-resources/main-map/map-categories-v2.json');
-
-        mapCategoryStore.categoryData = data;
-        mainMapStore.keywords = data.accommodation.keywords;
-
-        mapCategoryStore.subcategoryMap = Object.values(data)
-            .flatMap((category) =>
-                (category.subCategory ?? []).map((subcategory) =>({
-                    ...subcategory,
-                    categoryId: category.id,
-                })),
-            )
-            .reduce((map, subcategory) => {
-                map[subcategory.id] = subcategory;
-                return map;
-            }, {
-            });
-    } catch(error) {
-        console.error('Error getting category data', error);
-    }
-}
 
 function setupFeatureDestinations() {
     const featuredPlaces = props.module.geoJson.features
@@ -258,15 +214,26 @@ function setupFeatureDestinations() {
 
 async function initialiseMap() {
     if (showError.value || !mapContainer.value) return;
-    await loadGoogleMaps();
-    initMap(mapContainer.value);
+    await googleMap.loadGoogleMaps();
+    googleMap.initMap(mapContainer.value);
 }
 
+watch(
+    () => [cookieCheck.cookiesAllowed.value, cookieCheck.cookiesLoaded.value],
+    async([loaded, allowed]) => {
+        if (loaded && allowed) {
+            await initialiseMap();
+        }
+    },
+    {
+        immediate: true,
+    },
+);
+
 onMounted(async() => {
-    await Promise.all([
-        loadMapCategories(),
-        setupFeatureDestinations(),
-    ]);
+    setupFeatureDestinations();
+
+    await mapCategoryStore.loadMapCategories();
 
     mainMapStore.firstInteraction = false;
     mainMapStore.searchesCount = 0;
@@ -274,78 +241,6 @@ onMounted(async() => {
 
     await initialiseMap();
 });
-
-
-// async function mapInteractionEvent(interactionType, place) {
-//     let cardName = '';
-//     let cardRating = '';
-//     let cardUrl = '';
-//     let cardPrimaryType = '';
-
-//     if (place) {
-//         await place.fetchFields({
-//             fields: [
-//                 'displayName',
-//                 'primaryType',
-//                 'rating',
-//                 'websiteURI',
-//             ],
-//         });
-
-//         cardName = place.displayName;
-//         cardRating = place.rating;
-//         cardUrl = place.websiteURI;
-//         cardPrimaryType = place.primaryType;
-//     }
-
-//     dataLayerHelper.createDataLayerObject('googleMapInteractionEvent', {
-//         interaction_type: interactionType,
-//         search_query: mainMapStore.searchTerm,
-//         map_location: mapContext.gMap.value.getCenter().toString(),
-//         visible_attractions_count: visibleMarkerCount,
-//         card_attraction_name: cardName,
-//         card_attraction_category: cardPrimaryType,
-//         card_attraction_rating: cardRating,
-//         card_attraction_url: cardUrl,
-//         interaction_timestamp_ms: Date.now(),
-//     });
-
-//     checkFirstInteraction(interactionType);
-// };
-
-// function checkFirstInteraction(interactionType) {
-//     if (!mainMapStore.firstInteraction) {
-//         const timeNow = Date.now();
-//         const timeToFirstInteraction = timeNow - mainMapStore.timeMounted;
-
-//         dataLayerHelper.createDataLayerObject('googleMapTimeToFirstInteractionEvent', {
-//             time_to_first_interaction_ms: timeToFirstInteraction,
-//             first_interaction_type: interactionType,
-//         });
-
-//         mainMapStore.firstInteraction = true;
-//     }
-// }
-
-// function getVisibleMarkerCount() {
-//     const bounds = mapContext.gMap.value.getBounds();
-
-//     if (!bounds) return 0;
-
-//     let visibleCount = 0;
-
-//     for (let x = 0; x < Object.keys(mapContext.markers.value).length; x++) {
-//         const marker = mapContext.markers.value[Object.keys(mapContext.markers.value)[x]];
-
-//         const position = marker.position;
-
-//         if (bounds.contains(position)) {
-//             visibleCount += 1;
-//         }
-//     }
-
-//     return visibleCount;
-// }
 </script>
 
 <style lang="scss">

@@ -83,8 +83,8 @@
                             has-icons
                             :items="mapCategoryStore.featuredDestinationTypes"
                             :selected-category="mapCategoryStore.selectedDestinationType"
-                            @changed="(event: MapFilterChanged) =>
-                                handleDestinationTypeClick(event.id)"
+                            @changed="(id) =>
+                                handleDestinationTypeClick(id)"
                         />
                     </div>
 
@@ -93,17 +93,17 @@
                             has-icons
                             :items="filteredCategories"
                             :selected-category="mapCategoryStore.selectedCategory"
-                            @changed="(event: MapFilterChanged) =>
-                                handleCategorySelect(event.id)"
+                            @changed="(id) =>
+                                mapCategoryStore.selectCategory(id)"
                         />
 
                         <VsBrMainMapFilter
-                            v-if="mapCategoryStore.selectedCategory && subcategories.length"
+                            v-if="mapCategoryStore.selectedCategory && availableSubcategories.length"
                             :detail-text="configStore.getLabel('map', 'map.sub-filter')"
-                            :items="subcategories"
+                            :items="availableSubcategories"
                             :selected-category="mapCategoryStore.selectedSubcategories"
-                            @changed="(event: MapFilterChanged) =>
-                                mapCategoryStore.toggleSubcategory(event.id)"
+                            @changed="(id) =>
+                                mapCategoryStore.toggleSubcategory(id)"
                         />
                     </div>
                 </div>
@@ -177,9 +177,8 @@
                 </VsButton>
 
                 <gmp-place-details
+                    v-show="showPlaceDetails"
                     id="placeDetails"
-                    ref="place-details"
-                    style="display: none"
                 >
                     <gmp-place-details-place-request
                         id="placeRequest"
@@ -230,11 +229,6 @@ import useSwipeDrawer from '~/composables/mainMap/useSwipeDrawer.ts';
 import VsBrMainMapFeaturedLocation from './VsBrMainMapFeaturedLocation.vue';
 import VsBrMainMapFilter from './VsBrMainMapFilter.vue';
 
-type MapFilterChanged = {
-    id: string;
-    key: number | string;
-};
-
 type Subcategory = {
     label: string;
     id: string;
@@ -253,7 +247,7 @@ type Props = {
     /** Whether the map is loaded or not. */
     mapLoaded?: boolean;
     /** Selected google maps result. */
-    place?: google.maps.places.Place;
+    place?: google.maps.places.Place | null;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -279,14 +273,12 @@ const emit = defineEmits<{
 }>();
 
 const sidebar = useTemplateRef('sidebar');
-const placeDetails = useTemplateRef('place-details');
 const placeRequest = useTemplateRef('place-request');
 
 watch(() => props.place, (place) => {
-    if (!place || !placeRequest.value || !placeDetails.value) return;
+    if (!place || !placeRequest.value) return;
 
     placeRequest.value.place = place;
-    placeDetails.value.style.display = 'block';
 });
 
 const configStore = useConfigStore();
@@ -305,7 +297,7 @@ const filteredCategories = computed(() =>
     ),
 );
 
-const subcategories = computed(() => {
+const availableSubcategories = computed(() => {
     const category = mapCategoryStore.categoryLabelData.find(
         (category: Category) => category.id === mapCategoryStore.selectedCategory,
     );
@@ -313,14 +305,11 @@ const subcategories = computed(() => {
     return category?.subCategory ?? [];
 });
 
+const showPlaceDetails = computed(() => !!props.place);
+
 function handleDestinationTypeClick(id: string) {
     mapCategoryStore.selectedDestinationType = id;
     emit('destination-type-selected');
-}
-
-function handleCategorySelect(id: string) {
-    mapCategoryStore.selectedSubcategories = [];
-    mapCategoryStore.selectedCategory = id;
 }
 </script>
 

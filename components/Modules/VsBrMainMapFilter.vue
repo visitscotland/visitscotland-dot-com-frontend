@@ -10,12 +10,12 @@
 
         <div class="vs-map-filter__buttons">
             <VsButton
-                v-for="(item, index) in props.items"
+                v-for="(item) in props.items"
                 :key="item.id"
                 :icon="props.hasIcons ? iconMap[item.id] : undefined" 
                 size="sm"
                 :variant="setButtonVariant(item.id)"
-                @click="$emit('changed', {id: item.id, key: index })"
+                @click="$emit('changed', item.id)"
             >
                 {{ item.label }}
             </VsButton>
@@ -49,10 +49,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 defineEmits<{
-    changed: [{
-        id: string;
-        key: number | string;
-    }],
+    changed: [id: string],
 }>();
 
 /**

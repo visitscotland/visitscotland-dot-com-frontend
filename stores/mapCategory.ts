@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+import axios from 'axios';
 
 import type { MapLabels, SubcategoryLabel } from '~/types/main-map-types.ts';
 import useMainMapStore from './mainMap.ts';
@@ -18,6 +19,30 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
     const selfCateringClicked = ref(false);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const subcategoryMap = ref<any>();
+
+    async function loadMapCategories() {
+        try {
+            const { data } = await axios.get('https://static.visitscotland.com/maps-resources/main-map/map-categories-v2.json');
+
+            categoryData.value = data;
+            mainMapStore.keywords = data.accommodation.keywords;
+
+            subcategoryMap.value = Object.values(data)
+                .flatMap((category) =>
+                    (category.subCategory ?? []).map((subcategory) =>({
+                        ...subcategory,
+                        categoryId: category.id,
+                    })),
+                )
+                .reduce((map, subcategory) => {
+                    map[subcategory.id] = subcategory;
+                    return map;
+                }, {
+                });
+        } catch(error) {
+            console.error('Error getting category data', error);
+        }
+    }
 
     // Get the label of the selected category.
     const selectedCategoryLabel = computed(() => {
@@ -102,6 +127,11 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         };
     });
 
+    function selectCategory(id: string) {
+        selectedCategory.value = id;
+        clearSubcategories();
+    }
+
     function toggleSubcategory(id: string) {
         if (id === 'self-catering') {
             selectedSubcategories.value = ['self-catering'];
@@ -156,6 +186,8 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         featuredDestinationTypes,
         filteredDestinations,
         getSubcategoryLabel,
+        loadMapCategories,
+        selectCategory,
         selectedCategory,
         selectedCategoryLabel,
         selectedCategoryTypes,
