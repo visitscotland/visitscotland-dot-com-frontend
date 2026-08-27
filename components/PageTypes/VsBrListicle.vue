@@ -1,11 +1,35 @@
 <template>
-    <VsBrPageIntro
+    <VsContainer class="mt-075 mt-lg-200">
+        <VsRow>
+            <VsCol
+                cols="10"
+                lg="8"
+            >
+                <VsBrBreadcrumb />
+            </VsCol>
+        </VsRow>
+    </VsContainer>
+
+    <VsBrHeroSection
         :content="documentData"
-        :light-background="true"
-        :is-listicle="true"
+        :inset="true"
+        class="mb-400"
+        :favourites-button="true"
     />
 
-    <!-- TODO Author -->
+    <VsContainer>
+        <VsRow>
+            <VsCol
+                cols="12"
+            >
+                <p
+                    class="mt-200"
+                >
+                    {{ configStore.getLabel("listicle", "listicle.disclaimer") }}
+                </p>
+            </VsCol>
+        </VsRow>
+    </VsContainer>
 
     <VsContainer
         class="mt-150"
@@ -166,7 +190,7 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import formatLink from '~/composables/formatLink.ts';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
+import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
