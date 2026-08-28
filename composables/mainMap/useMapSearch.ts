@@ -323,7 +323,7 @@ export default function useMapSearch(context: MapContext) {
      */
     function searchArea() {
         mainMapStore.showDestinations = false;
-        mainMapStore.sidebarOpen = true;
+        mainMapStore.isSidebarOpen = true;
         mapCategoryStore.selectedDestination = '';
         mainMapStore.showSearchAreaButton = false;
 

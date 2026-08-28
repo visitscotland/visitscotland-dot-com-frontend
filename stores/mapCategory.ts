@@ -5,6 +5,10 @@ import axios from 'axios';
 import type { MapLabels, SubcategoryLabel } from '~/types/main-map-types.ts';
 import useMainMapStore from './mainMap.ts';
 
+/**
+ * This store manages everything to do with the categories, subcategories
+ * and featured destinations that are used on the main map.
+ */
 const useMapCategoryStore = defineStore('mapCategory', () => {
     const mainMapStore = useMainMapStore();
 
@@ -49,7 +53,9 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         }
     }
 
-    // Get the label of the selected category.
+    /**
+     * Get the label of the selected category.
+     */
     const selectedCategoryLabel = computed(() => {
         const category = categoryLabelData.value
             .find((category) => category.id === selectedCategory.value);
@@ -57,7 +63,9 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         return (!category) ? '' : category.label;
     });
 
-    // Get the label(s) for the selected subcategories.
+    /**
+     * Get the label(s) for the selected subcategories.
+     */
     const selectedSubcategoryLabels = computed(() => {
         const category = categoryLabelData.value.find(
             ({ id }) => id === selectedCategory.value,
@@ -73,21 +81,33 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         return labels.join(', ');
     });
 
+    /**
+     * Get the label data for the subcategory.
+     * 
+     * @param subcategoryId - ID of the subcategory.}
+     */
     function getSubcategoryLabel(subcategoryId: string) {
-        // Get the label data for the selected category.
+        // Get the category data from the label data.
         const category = categoryLabelData.value.find(
             ({ id }) => id === selectedCategory.value,
         );
 
         if (!category) return;
 
+        // Get find the subcategory label within the category data.
         return Object.values(category.subCategory)
             .find(({ id }: { id: string }) => id === subcategoryId)
             .label;
     }
 
-    // Get the included/excluded types for the selected category.
-    function getTypes(category, type: 'includedType' | 'excludedType') {
+    /**
+     * Get the included/excluded types for the selected category.
+     * 
+     * @param category - data for the `selectedCategory`
+     * @param type - whether to get the included or excluded types.
+     * @returns - Set of types
+     */
+    function getTypes(category, type: 'includedType' | 'excludedType'): Set<string> {
         return new Set([
             ...(category[type] ?? []),
             ...(category.subCategory?.flatMap(
@@ -96,6 +116,9 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         ]);
     }
     
+    /**
+     * Get the types for the selected category.
+     */
     const selectedCategoryTypes = computed(() => {
         if (!categoryData.value) return;
 
@@ -113,6 +136,9 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         };
     });
 
+    /**
+     * Get the types for the selected subcategories.
+     */
     const selectedSubcategoryTypes = computed(() => {
         const included = new Set();
         const excluded = new Set();
@@ -133,22 +159,41 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         };
     });
 
+    /**
+     * Set the `selectedCategory`.
+     * 
+     * @param id - ID of the category.
+     */
     function selectCategory(id: string) {
         selectedCategory.value = id;
         clearSubcategories();
     }
 
+    /**
+     * 
+     * Toggle the selected subcategories.
+     * 
+     * @param id - ID of the subcategory.
+     */
     function toggleSubcategory(id: string) {
+
+        // if Self Catering selected then selectedSubcategories should only
+        // be 'self-carting' as this subcategory cannot be used alongside
+        // other subcategories.
         if (id === 'self-catering') {
             selectedSubcategories.value = ['self-catering'];
             selfCateringClicked.value = true;
             return;
         }
 
+        // Remove "self-catering" from the selectedSubcategories.
         selectedSubcategories.value =
             selectedSubcategories.value.filter((i: string) => i !== 'self-catering');
         selfCateringClicked.value = false;
         
+        // Check if the subcategory is within selectedSubcategories
+        // Remove it if its already included.
+        // Add it if its not included.
         if (selectedSubcategories.value.includes(id)) {
             selectedSubcategories.value =
                 selectedSubcategories.value.filter((i: string) => i !== id);
@@ -157,10 +202,17 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         }
     }
 
+    /**
+     * Reset the selectedSubcategories.
+     */
     function clearSubcategories() {
         selectedSubcategories.value = [];
     }
 
+    /**
+     * Filter the featured destinations so that them match the
+     * `selectedDestinationType`.
+     */
     const filteredDestinations = computed(() => {
         if (!featuredDestinations.value) return;
         
@@ -170,12 +222,12 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
     });
 
     onMounted(() => {
-        // Get the featured destinations types.
+        // Get the featured destinations types from the `categoryLabelData`.
         featuredDestinationTypes.value = categoryLabelData.value
             .find((category) => category.id === 'destinations')
             ?.subCategory ?? [];
 
-        // Temporary hide "Towns" from the destinations categories.
+        // Temporarily hide "Towns" from the destinations categories.
         featuredDestinationTypes.value = featuredDestinationTypes.value
             .filter((category) => category.id !== 'towns');
 
