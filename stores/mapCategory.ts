@@ -20,6 +20,9 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const subcategoryMap = ref<any>();
 
+    /**
+     * Load the map category data from the static server.
+     */
     async function loadMapCategories() {
         try {
             const { data } = await axios.get('https://static.visitscotland.com/maps-resources/main-map/map-categories-v2.json');
@@ -27,6 +30,8 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
             categoryData.value = data;
             mainMapStore.keywords = data.accommodation.keywords;
 
+            // Create a subcategory map so to make it easier to get the 
+            // data for each subcategory.
             subcategoryMap.value = Object.values(data)
                 .flatMap((category) =>
                     (category.subCategory ?? []).map((subcategory) =>({
@@ -52,6 +57,7 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         return (!category) ? '' : category.label;
     });
 
+    // Get the label(s) for the selected subcategories.
     const selectedSubcategoryLabels = computed(() => {
         const category = categoryLabelData.value.find(
             ({ id }) => id === selectedCategory.value,

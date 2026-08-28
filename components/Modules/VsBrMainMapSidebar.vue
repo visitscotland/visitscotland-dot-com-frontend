@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="vs-map-sidebar__section2">
-                    <div v-if="mainMapStore.showDestinations">
+                    <div v-if="mainMapStore.showDestinations && mapCategoryStore.featuredDestinationTypes">
                         <VsBrMainMapFilter
                             :detail-text="configStore.getLabel('map', 'locationSelect')"
                             has-icons
@@ -275,6 +275,7 @@ const emit = defineEmits<{
 const sidebar = useTemplateRef('sidebar');
 const placeRequest = useTemplateRef('place-request');
 
+// Set the placeRequest value when a place has been selected.
 watch(() => props.place, (place) => {
     if (!place || !placeRequest.value) return;
 
@@ -291,12 +292,18 @@ const {
     sidebarStyle,
 } = useSwipeDrawer(isOpen, sidebar);
 
+/**
+ * Filter the categories to ignore the cmsData.
+ */
 const filteredCategories = computed(() =>
     mapCategoryStore.categoryLabelData.filter(
         (category: Category) => !category.cmsData,
     ),
 );
 
+/**
+ * set the subcategories based on the selected category.
+ */
 const availableSubcategories = computed(() => {
     const category = mapCategoryStore.categoryLabelData.find(
         (category: Category) => category.id === mapCategoryStore.selectedCategory,
@@ -305,6 +312,7 @@ const availableSubcategories = computed(() => {
     return category?.subCategory ?? [];
 });
 
+// Show places-details when a place has been selected.
 const showPlaceDetails = computed(() => !!props.place);
 
 function handleDestinationTypeClick(id: string) {

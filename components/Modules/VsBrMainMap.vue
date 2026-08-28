@@ -189,6 +189,7 @@ const mapMarkers = useMapMarkers(mapContext);
 
 provide('onFeaturedLocationClick', mapMarkers.handleFeaturedLocationClick);
 
+// Check that the required cookies have been accepted.
 const cookieCheck = useVerifyCookies();
 cookieCheck.requiredCookies.value = cookieValues.google_maps;
 
@@ -197,6 +198,9 @@ const showError = computed(() =>
     || !cookieCheck.cookiesAllowed.value,
 );
 
+/**
+ * Set up the featured destinations and add them to the store.
+ */
 function setupFeatureDestinations() {
     const featuredPlaces = props.module.geoJson.features
         .filter((feature) => feature.geometry?.type);
@@ -212,12 +216,17 @@ function setupFeatureDestinations() {
     mapCategoryStore.featuredDestinations = featuredPlaces;
 }
 
+/*
+    Load the map libraries and initialise the map.
+*/
 async function initialiseMap() {
     if (showError.value || !mapContainer.value) return;
     await googleMap.loadGoogleMaps();
     googleMap.initMap(mapContainer.value);
 }
 
+// Watch the cookies and initialise the map when they've been accepted.
+// This is used in case the cookies are accepted after the map mounts.
 watch(
     () => [cookieCheck.cookiesAllowed.value, cookieCheck.cookiesLoaded.value],
     async([loaded, allowed]) => {
@@ -233,6 +242,7 @@ watch(
 onMounted(async() => {
     setupFeatureDestinations();
 
+    // Load the map categories from the static server.
     await mapCategoryStore.loadMapCategories();
 
     mainMapStore.firstInteraction = false;
