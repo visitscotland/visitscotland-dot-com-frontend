@@ -52,7 +52,7 @@
             v-else
             :content="documentData"
             :hero-image="heroImage"
-            :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
+            :light-background="(!firstModuleIsLink) ? true : false"
         />
     </template>
 
@@ -71,7 +71,7 @@
         <VsBrHeroSection
             v-if="isSearchResultsPage"
             :content="documentData"
-            :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
+            :light-background="(!firstModuleIsLink) ? true : false"
         />
         <VsBrPageIntro
             v-else
@@ -106,15 +106,6 @@
         </div>
     </NuxtLazyHydrate>
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrProductSearch
-            v-if="productSearch && productSearch.position === 'Top'"
-            class="mb-300 mb-lg-600 pt-300"
-        />
-    </NuxtLazyHydrate>
-
     <template
         v-if="isSearchResultsPage"
     >
@@ -130,15 +121,6 @@
             :modules="pageItems"
         />
     </template>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-        v-if="!configStore.isMainMapPageFlag"
-    >
-        <VsBrProductSearch
-            v-if="productSearch && productSearch.position === 'Bottom'"
-        />
-    </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -185,7 +167,6 @@ import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 import VsBrIntroImage from '~/components/Modules/VsBrIntroImage.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
-import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
@@ -204,8 +185,6 @@ const { page } = toRefs(props);
 let documentData : any = {
 };
 let pageItems : any[] = [];
-let productSearch : any = {
-};
 let heroImage = {
     coordinates: null,
 };
@@ -224,7 +203,6 @@ if (page.value) {
 
     documentData = pageDocument.getData();
     pageItems = configStore.pageItems;
-    productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
 
     if (configStore.heroImage && configStore.heroImage.coordinates) {

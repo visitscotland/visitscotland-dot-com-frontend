@@ -106,7 +106,6 @@ if (page.value) {
     const componentModels = component.value.getModels();
 
     configStore.activeSite = componentModels['site-id'];
-    configStore.productSearch = componentModels.psrWidget;
     if (componentModels.otyml) {
         configStore.otyml = componentModels.otyml;
     }
