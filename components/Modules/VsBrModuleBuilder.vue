@@ -127,16 +127,6 @@
 
         <NuxtLazyHydrate
             :when-visible="{ rootMargin: '50px' }"
-            v-else-if="item.type === 'ICentreModule'"
-        >
-            <VsBrTourismInformationModule
-                :module="item"
-                theme="grey"
-            />
-        </NuxtLazyHydrate>
-
-        <NuxtLazyHydrate
-            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'MapsModule'"
         >
             <component
@@ -253,7 +243,6 @@ import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksM
 import VsBrCardGroupModule from '~/components/Modules/VsBrCardGroupModule.vue';
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
-import VsBrTourismInformationModule from '~/components/Modules/VsBrTourismInformationModule.vue';
 import VsBrRichArticleModule from '~/components/Modules/VsBrRichArticleModule.vue';
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
