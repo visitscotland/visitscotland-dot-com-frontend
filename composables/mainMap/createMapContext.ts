@@ -2,6 +2,11 @@ import { shallowRef, ref } from 'vue';
 
 import type { MapContext } from '~/types/main-map-types.ts';
 
+/**
+ * 
+ * This is the map context which stores values are used for the map rather than
+ * user interaction.
+ */
 export default function createMapContext(): MapContext {
     return {
         currentSearchId: ref(0),

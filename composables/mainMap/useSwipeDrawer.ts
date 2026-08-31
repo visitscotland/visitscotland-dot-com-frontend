@@ -46,7 +46,7 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
      * Calculate the position of the drawer base on the amount swiped.
      * This allows the drawer to move as the user drags it.
      * 
-     * @param {PointerEvent} event: - pointer move event.
+     * @param {PointerEvent} event - pointer move event.
      */
     function onDrag(event: PointerEvent) {
         if (!isDragging.value) return;
@@ -60,7 +60,7 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
     /**
      * Determine if the drawer should be open or closed base on the swipe direction.
      * 
-     * @param {PointerEvent} event: - pointer up event.
+     * @param {PointerEvent} event - pointer up event.
      */
     function endDrag(event: PointerEvent) {
         isDragging.value = false;
@@ -92,7 +92,7 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
     /**
      * Add event listeners when the user clicks/touches the drawer.
      * 
-     * @param {PointerEvent} event: - pointer move event.
+     * @param {PointerEvent} event - pointer move event.
      */
     function startDrag(event: PointerEvent) {
         // Only allow users to drag the sidebar when on small screen size.

@@ -2,10 +2,11 @@ import type { MapContext, Viewport } from '~/types/main-map-types.ts';
 import { VIEWPORT_ZOOM_THRESHOLD } from '~/main-map-constants.ts';
 
 export default function useViewportController(context: MapContext) {
-    // Get the current viewport
+    /**
+     * Get the current map viewport.
+     */
     function getViewport(): Viewport | null {
         const map = context.gMap.value;
-
         if (!map) return null;
 
         return {
@@ -26,21 +27,21 @@ export default function useViewportController(context: MapContext) {
         return 300;
     }
 
-    // Check if the viewport has moved passed the distance or zoom thresholds.
+    /**
+     * Check if the viewport has moved passed the distance or zoom thresholds.
+     * 
+     * @param newViewPort - The viewport after the map as been moved or zoomed.
+     */
     function hasViewportChanged(newViewPort: Viewport) {
         const previous = context.lastSearchViewport.value;
 
-        if (!previous?.center || !newViewPort.center) {
-            return false;
-        }
-
-        if (previous.zoom == null || newViewPort.zoom == null) {
-            return false;
-        }
-
+        // Return `false` if there isn't a previous or new viewport.
+        if (!previous?.center || !newViewPort.center) return false;
+        if (previous.zoom == null || newViewPort.zoom == null) return false;
         if (previous.zoom === undefined || 
             newViewPort.zoom === undefined) return false;
 
+        // Set the old and new centres.
         const oldCenter = {
             lat: previous.center.lat(),
             lng: previous.center.lng(),
@@ -50,10 +51,13 @@ export default function useViewportController(context: MapContext) {
             lng: newViewPort.center.lng(),
         };
 
+        // Calculate the difference between the old and new centres.
         const distanceDiff = google.maps.geometry.spherical.computeDistanceBetween(
             oldCenter,
             newCenter,
         );
+
+        // Check if the distance or zoom thresholds have been breached.
         const distanceThreshold = distanceThresholdByZoom(newViewPort.zoom);
         const zoomDiff = Math.abs(previous.zoom - newViewPort.zoom);
 
@@ -62,9 +66,11 @@ export default function useViewportController(context: MapContext) {
 
     /**
      * Wrapper for programmatic map move to prevent the "Search the area" button from showing.
-     * Functions such as gMap.setCenter(), gMap.setBounds(), and gMap.setZoom()
+     * Functions such as map.setCenter(), map.setBounds(), and map.setZoom().
      */
     function runProgrammaticMove(fn: () => void) {
+        // Set the `moveSource` to 'programmatic' to prevent some of the event
+        // handler functions from operating.
         context.moveSource.value = 'programmatic';
         fn();
     }

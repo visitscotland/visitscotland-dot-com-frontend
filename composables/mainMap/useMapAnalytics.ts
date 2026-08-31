@@ -2,10 +2,21 @@ import type { MapContext } from '~/types/main-map-types.ts';
 import useMainMapStore from '~/stores/mainMap.ts';
 import dataLayerComposable from '../dataLayer.ts';
 
+/**
+ * Analytic function specific to the main map.
+ * 
+ * @param context - context of the map.
+ */
 export default function useMapAnalytics(context: MapContext) {
     const mainMapStore = useMainMapStore();
     const dataLayerHelper = dataLayerComposable();
 
+    /**
+     * Check to see if the interaction is the user's first interaction with
+     * the map instance.
+     * 
+     * @param interactionType - type of interaction
+     */
     function checkFirstInteraction(interactionType: string) {
         if (!mainMapStore.firstInteraction) {
             const timeNow = Date.now();
@@ -20,6 +31,12 @@ export default function useMapAnalytics(context: MapContext) {
         }
     }
     
+    /**
+     * Creates a dataLayer object for a map interaction event.
+     * 
+     * @param interactionType - type of interaction
+     * @param place - [optional] - google search result.
+     */
     async function mapInteractionEvent(interactionType: string, place?) {
         const map = context.gMap.value;
         if (!map) return;
@@ -60,6 +77,9 @@ export default function useMapAnalytics(context: MapContext) {
         checkFirstInteraction(interactionType);
     };
 
+    /**
+     * Gets the current number of visible markers.
+     */
     function getVisibleMarkerCount() {
         const map = context.gMap.value;
         if (!map) return;

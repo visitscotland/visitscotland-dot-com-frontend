@@ -18,14 +18,21 @@ import {
     ZOOMED_IN_SHADED_PLACES,
 } from '~/main-map-constants.ts';
 
+/**
+ * Set up of the map.
+ * 
+ * @param context - context of the map.
+ */
 export default function useGoogleMap(context: MapContext) {
     const configStore = useConfigStore();
     const mainMapStore = useMainMapStore();
     const mapCategoryStore = useMapCategoryStore();
+
     const mapAnalytics = useMapAnalytics(context);
     const mapMarkers = useMapMarkers(context);
     const mapSearch = useMapSearch(context);
     const viewportController = useViewportController(context);
+
     const previousZoomedIn = ref(false);
 
     /**
@@ -68,7 +75,6 @@ export default function useGoogleMap(context: MapContext) {
         ];
 
         layers.forEach((layer) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             layer.style = (options: any) => {
                 if (shadedPlaces.includes(options.feature.placeId)) {
                     return SHADED_AREA_STYLE;
@@ -77,20 +83,25 @@ export default function useGoogleMap(context: MapContext) {
         });
     }
 
+    /**
+     * Handle the zoom level change.
+     * 
+     * @param map - the map instance.
+     */
     function handleZoomChanged(map: google.maps.Map) {
         if (!context.mapLoaded.value) return;
     
         const zoom = map.getZoom();
-
         if (!zoom) return;
 
+        // Set the shaded map areas depending on the current zoom level
         const zoomedIn = zoom >= CATEGORY_VISIBLE_ZOOM;
-
         if (zoomedIn !== previousZoomedIn.value) {
             shadeMapAreas(map, zoomedIn);
             previousZoomedIn.value = zoomedIn;
         }
 
+        // Switch the `moveSource` to 'user' if it's not 'programmatic'.
         context.moveSource.value =
             context.moveSource.value !== 'programmatic'
                 ? 'user'
@@ -104,6 +115,7 @@ export default function useGoogleMap(context: MapContext) {
             mainMapStore.showSearchAreaButton = true;
         }
 
+        // If the user has zoomed the map then update the URL parameters.
         if (context.moveSource.value == 'user') {
             mapSearch.setUrlParameters({
                 category: mapCategoryStore.selectedCategory || false,
@@ -116,11 +128,16 @@ export default function useGoogleMap(context: MapContext) {
         }
     }
 
-    function handleDragStart() {
-        context.moveSource.value = 'user';
-    }
+    /**
+     * Set the `moveSource` to 'user' when the user drags the map.
+     */
+    const handleDragStart = () => context.moveSource.value = 'user';
 
+    /**
+     * Handle the map tiles being fully loaded.
+     */
     function handleTilesLoaded() {
+        // Prevent the function from running more than once.
         if (context.mapLoaded.value) return;
         context.mapLoaded.value = true;
 
@@ -137,6 +154,9 @@ export default function useGoogleMap(context: MapContext) {
         }
     }
 
+    /**
+     * Handle the map being in an idle state.
+     */
     function handleIdle() {
         const visibleMarkerCount = mapAnalytics.getVisibleMarkerCount();
         mainMapStore.visibleMarkerCount = visibleMarkerCount ?? 0;
@@ -144,6 +164,7 @@ export default function useGoogleMap(context: MapContext) {
         const source = context.moveSource.value;
         const map = context.gMap.value;
 
+        // Reset `moveSource`.
         context.moveSource.value = null;
 
         if (source !== 'user' || !map) return;
@@ -151,12 +172,14 @@ export default function useGoogleMap(context: MapContext) {
         const viewport = viewportController.getViewport();
 
         // Show the "Search this area" button if the user has moved the map.
+        // Also reset the `selectedDestination` and `selectedDestinationType`.
         if (viewport && viewportController.hasViewportChanged(viewport)) {
             mainMapStore.showSearchAreaButton = true;
             mapCategoryStore.selectedDestinationType = mapCategoryStore
                 .featuredDestinationTypes![0]!.id;
             mapCategoryStore.selectedDestination = '';
 
+            // Update the URL parameters.
             mapSearch.setUrlParameters({
                 category: mapCategoryStore.selectedCategory || false,
                 subcategories: mapCategoryStore.selectedSubcategories.length
@@ -167,10 +190,16 @@ export default function useGoogleMap(context: MapContext) {
             });
         }
 
-        // TODO: analytics
-        // visibleMarkerCount = getVisibleMarkerCount();
+        // Update the visible marker count for analytics.
+        mainMapStore.visibleMarkerCount = mapAnalytics.getVisibleMarkerCount() ?? 0;
     }
 
+    /**
+     * Handle when a user clicks a search result.
+     * This needs to be a separate function in order to correctly set the type.
+     * 
+     * @param event - gmp select event.
+     */
     function handleGmpSelect(event: Event) {
         const { place } = event as GmpSelectEvent;
 
@@ -210,9 +239,10 @@ export default function useGoogleMap(context: MapContext) {
         context.gMap.value = map;
 
         shadeMapAreas(map, false);
-
+        
+        // Add the event listeners to the map.
         map.addListener('zoom_changed', () => {
-            handleZoomChanged(context.gMap.value!);
+            handleZoomChanged(map);
         });
 
         map.addListener('dragstart', handleDragStart);
@@ -221,11 +251,12 @@ export default function useGoogleMap(context: MapContext) {
 
         // Handles click events in the Places UI Kit search panel for
         // both nearby and text searches.
-        context.nearbySearch.value!.addEventListener(
+        context.nearbySearch.value?.addEventListener(
             'gmp-select',
             handleGmpSelect,
         );
-        context.textSearch.value!.addEventListener(
+    
+        context.textSearch.value?.addEventListener(
             'gmp-select',
             handleGmpSelect,
         );

@@ -21,7 +21,6 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
     const selectedDestinationType = ref<string>();
     const selectedSubcategories = ref<string[]>([]);
     const selfCateringClicked = ref(false);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const subcategoryMap = ref<any>();
 
     /**
@@ -140,8 +139,8 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
      * Get the types for the selected subcategories.
      */
     const selectedSubcategoryTypes = computed(() => {
-        const included = new Set();
-        const excluded = new Set();
+        const included: Set<string> = new Set();
+        const excluded: Set<string> = new Set();
         
         selectedSubcategories.value.forEach((id) => {
             const subcategory = subcategoryMap.value[id];
