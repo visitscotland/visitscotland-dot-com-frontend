@@ -2,7 +2,15 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import axios from 'axios';
 
-import type { MapLabels, SubcategoryLabel } from '~/types/main-map-types.ts';
+import type {
+    Category,
+    Categories,
+    FeaturedDestination,
+    MapLabels,
+    Subcategory,
+    SubcategoryLabel,
+    TypeKey,
+} from '~/types/main-map-types.ts';
 import useMainMapStore from './mainMap.ts';
 
 /**
@@ -28,7 +36,7 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
      */
     async function loadMapCategories() {
         try {
-            const { data } = await axios.get('https://static.visitscotland.com/maps-resources/main-map/map-categories-v2.json');
+            const { data } = await axios.get<Categories>('https://static.visitscotland.com/maps-resources/main-map/map-categories-v2.json');
 
             categoryData.value = data;
             mainMapStore.keywords = data.accommodation.keywords;
@@ -42,7 +50,7 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
                         categoryId: category.id,
                     })),
                 )
-                .reduce((map, subcategory) => {
+                .reduce<Record<string, Subcategory>>((map, subcategory) => {
                     map[subcategory.id] = subcategory;
                     return map;
                 }, {
@@ -75,7 +83,7 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         const labels = selectedSubcategories.value
             .map((subcategory) => Object.values(category.subCategory)
                 .find(({ id }) => id === subcategory)
-                .label);
+                ?.label);
 
         return labels.join(', ');
     });
@@ -96,7 +104,7 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
         // Get find the subcategory label within the category data.
         return Object.values(category.subCategory)
             .find(({ id }: { id: string }) => id === subcategoryId)
-            .label;
+            ?.label;
     }
 
     /**
@@ -106,12 +114,12 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
      * @param type - whether to get the included or excluded types.
      * @returns - Set of types
      */
-    function getTypes(category, type: 'includedType' | 'excludedType'): Set<string> {
+    function getTypes(category: Category, type: TypeKey): Set<string> {
         return new Set([
             ...(category[type] ?? []),
             ...(category.subCategory?.flatMap(
                 (subcategory) => subcategory[type] ?? [],
-            )),
+            ) ?? []),
         ]);
     }
     
@@ -119,9 +127,9 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
      * Get the types for the selected category.
      */
     const selectedCategoryTypes = computed(() => {
-        if (!categoryData.value) return;
+        if (!categoryData.value || !selectedCategory.value) return;
 
-        const category = categoryData.value[selectedCategory.value!];
+        const category = categoryData.value[selectedCategory.value];
         if (!category) return;
 
         const included = getTypes(category, 'includedType');
@@ -215,7 +223,7 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
     const filteredDestinations = computed(() => {
         if (!featuredDestinations.value) return;
         
-        return featuredDestinations.value!.filter((place) => (
+        return featuredDestinations.value.filter((place: FeaturedDestination) => (
             place.properties.category.id === selectedDestinationType.value
         ));
     });

@@ -8,7 +8,7 @@
             <VsBrMainMapSidebar
                 v-model:is-open="mainMapStore.isSidebarOpen"
                 v-model:is-results-open="mainMapStore.isSidebarResultsOpen"
-                :heading="module.tabTitle ?? module.title"
+                :heading="props.module.tabTitle ?? props.module.title"
                 :map-loaded="mapContext.mapLoaded.value"
                 :place="mapContext.selectedPlace.value"
                 @destination-type-selected="mapMarkers.addDestinationMarkers"
@@ -160,6 +160,8 @@ import {
     VsWarning,
 } from '@visitscotland/component-library/components';
 
+import type { FeaturedDestination } from '~/types/main-map-types.ts';
+
 import useConfigStore from '~/stores/configStore.ts';
 import useMainMapStore from '~/stores/mainMap.ts';
 import useMapCategoryStore from '~/stores/mapCategory.ts';
@@ -171,8 +173,7 @@ import useVerifyCookies from '~/composables/useVerifyCookies.ts';
 import cookieValues from '~/utls/required-cookies-data.ts';
 import VsBrMainMapSidebar from './VsBrMainMapSidebar.vue';
 
-const props = defineProps<{ module: object }>();
-const module: any = props.module;
+const props = defineProps<{ module: any }>();
 
 const mapContainer = useTemplateRef('map-container');
 
@@ -180,7 +181,7 @@ const configStore = useConfigStore();
 const mainMapStore = useMainMapStore();
 const mapCategoryStore = useMapCategoryStore();
 
-mapCategoryStore.categoryLabelData = module.filters;
+mapCategoryStore.categoryLabelData = props.module.filters;
 
 const mapContext = createMapContext();
 const googleMap = useGoogleMap(mapContext);
@@ -203,9 +204,9 @@ const showError = computed(() =>
  */
 function setupFeatureDestinations() {
     const featuredPlaces = props.module.geoJson.features
-        .filter((feature) => feature.geometry?.type);
+        .filter((feature: FeaturedDestination) => feature.geometry?.type);
 
-    featuredPlaces.forEach((feature) => {
+    featuredPlaces.forEach((feature: FeaturedDestination) => {
         const link = feature.properties?.link;
 
         if (link) {

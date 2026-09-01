@@ -2,6 +2,51 @@ import type { ShallowRef, Ref } from 'vue';
 
 export type MapMarker = Record<string, google.maps.marker.AdvancedMarkerElement>;
 
+export type FeatureProperties = {
+    id: string;
+    title: string;
+    description?: string;
+    category: {
+        id: string;
+        label: string;
+    };
+    image?: string;
+    link?: {
+        label: string;
+        link: string;
+        type: 'INTERNAL' | 'EXTERNAL';
+    };
+    placeId?: string;
+    viewport?: {
+        low: {
+            latitude: number;
+            longitude: number;
+        };
+    };
+    locationCenter?: {
+        latitude: number;
+        longitude: number;
+    };
+};
+
+export type PointGeometry = {
+    type: 'point';
+    coordinates: [longitude: number, latitude: number];
+};
+
+export type MultiPolygonGeometry = {
+    type: 'MultiPolygon';
+    coordinates: number[][][][];
+};
+
+export type FeatureGeometry = PointGeometry | MultiPolygonGeometry;
+
+export type FeaturedDestination = {
+    type: 'feature',
+    properties: FeatureProperties;
+    geometry?: FeatureGeometry;
+}
+
 export type Viewport = {
     bounds: google.maps.LatLngBounds | null | undefined;
     center: google.maps.LatLng | undefined;
@@ -61,3 +106,28 @@ export type MapLabels = {
     cmsData?: boolean;
     subCategory: SubcategoryLabel[];
 }
+
+export type CategoryId = 'accommodation' | 'food-drink' | 'things-to-do' | 'travel-information';
+
+export type TypeKey = 'includedType' | 'excludedType';
+
+export type Subcategory = {
+    id: string;
+    includedType: string[];
+    excludedType?: string[];
+};
+
+export type SubcategoryMap = Subcategory & {
+    categoryId: string;
+};
+
+export type Category = {
+    id: CategoryId;
+    icon: string;
+    includedType?: string[];
+    excludedType?: string[];
+    subCategory: Subcategory[];
+    keywords?: string[];
+};
+
+export type Categories = Record<CategoryId, Category>;

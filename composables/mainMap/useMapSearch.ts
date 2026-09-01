@@ -36,6 +36,9 @@ export default function useMapSearch(context: MapContext) {
      * @param resetLocation - whether to reset back to the initial map position.
      */
     function resetMap(hardReset: boolean, resetLocation: boolean) {
+        const map = context.gMap.value;
+        if (!map) return;
+    
         // Hide the categories.
         mainMapStore.showCategories = false;
 
@@ -45,20 +48,30 @@ export default function useMapSearch(context: MapContext) {
         // Clear the `searchType`.
         context.searchType.value = undefined;
 
-        // Reset the nearby search element parameters.
-        context.nearbySearchQuery.value!.includedTypes = null;
-        context.nearbySearchQuery.value!.excludedTypes = null;
-        context.nearbySearchQuery.value!.locationRestriction = null;
-        context.nearbySearch.value!.style.display = 'none';
+        const nearbySearchQuery = context.nearbySearchQuery.value;
+        const nearbySearch = context.nearbySearch.value;
+        const textSearchQuery = context.textSearchQuery.value;
+        const textSearch = context.textSearch.value;
 
-        // Reset the text search element parameters.
-        context.textSearchQuery.value!.includedType = null;
-        context.textSearchQuery.value!.locationRestriction = null;
-        context.textSearchQuery.value!.locationBias = null;
-        context.textSearchQuery.value!.textQuery = null;
-        context.textSearch.value!.style.display = 'none';
+        if (nearbySearchQuery && nearbySearch) {
+            // Reset the nearby search element parameters.
+            nearbySearchQuery.includedTypes = null;
+            nearbySearchQuery.excludedTypes = null;
+            nearbySearchQuery.locationRestriction = null;
+            nearbySearch.style.display = 'none';
+        }
+
+        if (textSearchQuery && textSearch) {
+            // Reset the text search element parameters.
+            textSearchQuery.includedType = null;
+            textSearchQuery.locationRestriction = null;
+            textSearchQuery.locationBias = null;
+            textSearchQuery.textQuery = null;
+            textSearch.style.display = 'none';
+        }
 
         mainMapStore.noResults = undefined;
+        mainMapStore.showSearchAreaButton = false;
 
         // A `hard reset` will remove all text and categories.
         if (hardReset) {
@@ -76,9 +89,9 @@ export default function useMapSearch(context: MapContext) {
         // Move the map back to the initial centre and zoom.
         if (resetLocation) {
             viewportController.runProgrammaticMove(() => {
-                context.gMap.value!.setCenter(DEFAULT_CENTER);
-                context.gMap.value!.setZoom(DEFAULT_ZOOM);
-                context.gMap.value!.fitBounds(SCOTLAND_BOUNDS);
+                map.setCenter(DEFAULT_CENTER);
+                map.setZoom(DEFAULT_ZOOM);
+                map.fitBounds(SCOTLAND_BOUNDS);
             });
 
             mapAnalytics.mapInteractionEvent('reset_map');
@@ -98,7 +111,9 @@ export default function useMapSearch(context: MapContext) {
      */
     function searchByText(useRestriction = false) {
         const map = context.gMap.value;
-        if (!map) return;
+        const textSearchQuery = context.textSearchQuery.value;
+        const textSearch = context.textSearch.value;
+        if (!map || !textSearch || !textSearchQuery) return;
 
         // Reset the map so that previous results are removed.
         resetMap(false, false);
@@ -125,18 +140,18 @@ export default function useMapSearch(context: MapContext) {
         // Search using locationRestriction when "Self catering" sub category has
         // been selected. Search using locationBias for all other text searches.
         if (mapCategoryStore.selfCateringClicked || useRestriction) {
-            context.textSearchQuery.value!.locationBias = null;
-            context.textSearchQuery.value!.locationRestriction =
-                context.gMap.value!.getBounds();
+            textSearchQuery.locationBias = null;
+            textSearchQuery.locationRestriction =
+                map.getBounds();
         } else {
-            context.textSearchQuery.value!.locationRestriction = null;
-            context.textSearchQuery.value!.locationBias =
-                context.gMap.value!.getCenter();
+            textSearchQuery.locationRestriction = null;
+            textSearchQuery.locationBias =
+                map.getCenter();
         }
 
         // Add the `includedType` of "lodging" when the query includes a keyword.
         // This is a workaround to improve results for "Self catering" searches.
-        context.textSearchQuery.value!.includedType =
+        textSearchQuery.includedType =
             mainMapStore.keywords!.some((term) =>
                 mainMapStore.searchTerm!.toLowerCase().includes(term),
             )
@@ -150,14 +165,14 @@ export default function useMapSearch(context: MapContext) {
             // If the user has clicked the "Self Catering" subcategory always
             // set the query as below. This is a workaround to ensure consistent
             // results when using different languages.
-            context.textSearchQuery.value!.textQuery =
+            textSearchQuery.textQuery =
                 'self catering in Scotland';
         } else {
-            context.textSearchQuery.value!.textQuery = `${mainMapStore.searchTerm} in Scotland`;
+            textSearchQuery.textQuery = `${mainMapStore.searchTerm} in Scotland`;
         }
 
-        context.textSearchQuery.value!.maxResultCount = NUMBER_OF_RESULTS;
-        context.textSearch.value!.style.display = 'block';
+        textSearchQuery.maxResultCount = NUMBER_OF_RESULTS;
+        textSearch.style.display = 'block';
         
         // Update the URL params.
         if (mapCategoryStore.selfCateringClicked) {
@@ -174,7 +189,7 @@ export default function useMapSearch(context: MapContext) {
         }
 
         // Create an analytics event once the search is complete.
-        context.textSearch.value!.addEventListener(
+        textSearch.addEventListener(
             'gmp-load',
             () => {
                 if (searchId !== context.currentSearchId.value) return;
@@ -186,7 +201,7 @@ export default function useMapSearch(context: MapContext) {
                 dataLayerHelper.createDataLayerObject('googleMapSearchEvent', {
                     search_query: mainMapStore.searchTerm,
                     search_map_location: map.getCenter()?.toString(),
-                    search_results_count: context.textSearch.value?.places?.length,
+                    search_results_count: textSearch.places?.length,
                     search_usage_index: mainMapStore.searchesCount,
                 });
 
@@ -253,7 +268,7 @@ export default function useMapSearch(context: MapContext) {
         context.searchType.value = 'nearby';
 
         // Calculate the search radius.
-        const bounds = context.gMap.value!.getBounds();
+        const bounds = map.getBounds();
         const ne = bounds!.getNorthEast();
         const sw = bounds!.getSouthWest();
 
