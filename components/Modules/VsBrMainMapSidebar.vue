@@ -228,18 +228,7 @@ import useMapCategoryStore from '~/stores/mapCategory.ts';
 import useSwipeDrawer from '~/composables/mainMap/useSwipeDrawer.ts';
 import VsBrMainMapFeaturedLocation from './VsBrMainMapFeaturedLocation.vue';
 import VsBrMainMapFilter from './VsBrMainMapFilter.vue';
-
-type Subcategory = {
-    label: string;
-    id: string;
-};
-
-type Category = {
-    label: string;
-    id: string;
-    cmsData?: boolean;
-    subCategory: Subcategory[];
-};
+import type { MapLabels } from '~/types/main-map-types.ts';
 
 type Props = {
     /** Sidebar heading */
@@ -297,7 +286,7 @@ const {
  */
 const filteredCategories = computed(() =>
     mapCategoryStore.categoryLabelData.filter(
-        (category: Category) => !category.cmsData,
+        (category: MapLabels) => !category.cmsData,
     ),
 );
 
@@ -306,7 +295,7 @@ const filteredCategories = computed(() =>
  */
 const availableSubcategories = computed(() => {
     const category = mapCategoryStore.categoryLabelData.find(
-        (category: Category) => category.id === mapCategoryStore.selectedCategory,
+        (category: MapLabels) => category.id === mapCategoryStore.selectedCategory,
     );
 
     return category?.subCategory ?? [];
@@ -347,7 +336,7 @@ body.map-page {
         width: 100vw;
     }
 
-    @media (min-width: 767.98px) {
+    @media (min-width: 768px) {
         display: flex;
         gap: 1rem;
         max-height: 85dvh;
@@ -364,7 +353,7 @@ body.map-page {
         overflow: hidden;
         padding: 0.75rem 1.25rem 1.75rem;
 
-        @media (min-width: 767.98px) {
+        @media (min-width: 768px) {
             border-radius: 1rem;
             overflow: auto;
             padding: 1.25rem;
@@ -392,7 +381,7 @@ body.map-page {
         padding: 0 0.75rem 0.75rem 0.75rem;
         touch-action: none;
 
-        @media (min-width: 767.98px) {
+        @media (min-width: 768px) {
             display: none;
         }
     }

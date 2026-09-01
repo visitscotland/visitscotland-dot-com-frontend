@@ -169,10 +169,17 @@ const useMapCategoryStore = defineStore('mapCategory', () => {
     /**
      * Set the `selectedCategory`.
      * 
-     * @param id - ID of the category.
+     * @param categoryId - ID of the category.
      */
-    function selectCategory(id: string) {
-        selectedCategory.value = id;
+    function selectCategory(categoryId: string | undefined) {
+        // Check if the category matches one of ours. If now fallback to
+        // 'things-to-do'.
+        const categoryExists = categoryId !== undefined && categoryId in categoryData.value;
+        selectedCategory.value = (categoryExists || categoryId === '')
+            ? categoryId
+            : 'things-to-do';
+
+        // Clear the selected subcategories.
         clearSubcategories();
     }
 

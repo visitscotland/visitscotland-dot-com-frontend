@@ -288,7 +288,7 @@ onMounted(async() => {
         position: relative;
         width: 100%;
 
-        @media (min-width: 767.98px) {
+        @media (min-width: 768px) {
             height: 90vh;
         }
 
@@ -356,13 +356,13 @@ onMounted(async() => {
             cursor: grab;
         }
 
-        @media (min-width: 767.98px) {
+        @media (min-width: 768px) {
             width: fit-content;
             overflow-x: auto;
             margin: 0.75rem 0 0 1rem;
         }
 
-        @media (max-width: 991.98px) {
+        @media (max-width: 992px) {
             flex: 0 1 max-content;
             width: auto;
         }

@@ -71,7 +71,7 @@ export default function useMapMarkers(context: MapContext) {
      * @param place - selected Google search result.
      * @param category - the search category.
      */
-    function handleFeaturedLocationClick(place: any, category: string) {
+    function handleFeaturedLocationClick(place: any, category?: string) {
         const map = context.gMap.value;
         if (!map) return;
 
@@ -102,10 +102,8 @@ export default function useMapMarkers(context: MapContext) {
             );
         });
 
-        // Run a category search with the passed in category, if it exists, or
-        // use 'things-to-do' as a fallback.
-        const categoryExists = category in mapCategoryStore.categoryData;
-        mapCategoryStore.selectedCategory = (categoryExists) ? category : 'things-to-do';
+        // Run a category search with the passed in category,
+        mapCategoryStore.selectCategory(category);
 
         // Make sure the sidebar is open. Used for the drawer on mobile.
         mainMapStore.isSidebarOpen = true;
@@ -184,7 +182,7 @@ export default function useMapMarkers(context: MapContext) {
                         lng: place.properties.locationCentre.longitude,
                     },
                     title: place.properties.title,
-                    onClick: () => handleFeaturedLocationClick(place, ''),
+                    onClick: () => handleFeaturedLocationClick(place),
                 });
 
                 markers[place.properties.id] = marker;

@@ -256,10 +256,11 @@ export default function useMapSearch(context: MapContext) {
 
         // Set the search term to match the label and add the
         // `selectedDestination`, if there is one.
-        mainMapStore.searchTerm = label;
-        mainMapStore.searchTerm = (mapCategoryStore.selectedDestination)
-            ? `${mainMapStore.searchTerm} ${mapCategoryStore.selectedDestination}`
-            : mainMapStore.searchTerm ;
+        const newSearchTerm = (mapCategoryStore.selectedDestination)
+            ? `${label} ${mapCategoryStore.selectedDestination}`
+            : label;
+
+        mainMapStore.searchTerm = newSearchTerm;
         mainMapStore.query = mainMapStore.searchTerm ?? '';
  
         // Make sure the categories are visible and the mobile drawer is open.
@@ -401,7 +402,7 @@ export default function useMapSearch(context: MapContext) {
         // If there wasn't a previous search, start a 'things-to-do' category
         // search.
         } else {
-            mapCategoryStore.selectedCategory = 'things-to-do';
+            mapCategoryStore.selectCategory('things-to-do');
         }
     }
 
@@ -560,11 +561,8 @@ export default function useMapSearch(context: MapContext) {
                 setSubcategories(category, subcategories);
             }
 
-            // Check if the `category` matches one of our categories.
-            // If so, start a category search with that category.
-            // If not, start a category search with 'things-to-do'.
-            const categoryExists = category in mapCategoryStore.categoryData;
-            mapCategoryStore.selectedCategory = (categoryExists) ? category : 'things-to-do';
+            // Start a category search with that category.
+            mapCategoryStore.selectCategory(category);
             return true;
         }
 

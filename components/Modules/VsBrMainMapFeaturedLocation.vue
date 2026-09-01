@@ -73,7 +73,7 @@ function featuredPlaceClick(place) {
         height: 15rem;
         margin-bottom: 1rem;
 
-        @media (min-width: 767.98px) {
+        @media (min-width: 768px) {
             height: 11rem;
         }
 
@@ -88,7 +88,7 @@ function featuredPlaceClick(place) {
             & img {
                 height: 15rem;
 
-                @media (min-width: 767.98px) {
+                @media (min-width: 768px) {
                     height: 11rem;
                 }
             }
