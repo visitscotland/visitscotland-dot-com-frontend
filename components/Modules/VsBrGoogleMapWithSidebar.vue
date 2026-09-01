@@ -284,7 +284,10 @@ function selectFeature(feature: BrxmFeature) {
 
 function unselectFeature() {
     if(selectedFeature.value) {
-        markerRefs.value[selectedFeature.value.properties.id.toString()].hideTooltip();
+        const selectedFeatureId: string = selectedFeature.value.properties.id.toString();
+
+        markerRefs.value[selectedFeatureId].hideTooltip();
+        markerRefs.value[selectedFeatureId].handleRemoveMarkerActive(selectedFeatureId);
     };
     selectedFeature.value = undefined;
 }
@@ -295,9 +298,12 @@ function handleFeatureClick(feature: BrxmFeature) {
 }
 
 function handleMapMarkerClick(category: string, feature: BrxmFeature) {
+    unselectFeature();
     isSidebarVisible.value = true;
     selectedCategory.value = category;
-    markerRefs.value[feature.properties.id].markerSelected = feature;
+    if(markerRefs.value[feature.properties.id]) {
+        markerRefs.value[feature.properties.id].handleSetMarkerActive(feature.properties.id);
+    }
     handleFeatureButtonMouseover(feature.properties.id.toString());
     handleFeatureClick(feature);
     filterById(category);
@@ -305,11 +311,16 @@ function handleMapMarkerClick(category: string, feature: BrxmFeature) {
 
 function handleFeatureButtonMouseover(id: string) {
     markerRefs.value[id].showTooltip();
-    markerRefs.value[id].markerHovered = id;
+    if(markerRefs.value[id]) {
+        markerRefs.value[id].handleSetMarkerActive(id);
+    }
 }
 
 function handleFeatureButtonMouseout(id: string) {
     markerRefs.value[id].hideTooltip();
+    if(markerRefs.value[id]) {
+        markerRefs.value[id].handleRemoveMarkerActive(id);
+    }
     markerRefs.value[id].markerHovered = null;
 }
 
@@ -318,6 +329,9 @@ function handleMouseOut(id: string) {
         markerRefs.value[id].showTooltip();
     } else {
         markerRefs.value[id].markerHovered = null;
+        if(markerRefs.value[id]) {
+            markerRefs.value[id].handleRemoveMarkerActive(id);
+        }
         markerRefs.value[id].resetPin();
     }
 }
