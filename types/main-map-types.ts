@@ -23,7 +23,7 @@ export type FeatureProperties = {
             longitude: number;
         };
     };
-    locationCenter?: {
+    locationCentre?: {
         latitude: number;
         longitude: number;
     };
@@ -58,7 +58,18 @@ export type ViewportCenter = {
     lng: number;
 };
 
-export type GmpPlaceSearchRequestElement = HTMLElement & {
+export type GmpPlaceNearbySearchRequestElement = HTMLElement & {
+    excludedTypes?: string[] | null;
+    includedType?: string | null;
+    includedTypes?: string[] | null;
+    locationRestriction?: google.maps.Circle
+        | google.maps.CircleLiteral
+        | null;
+    maxResultCount: number;
+    places?: google.maps.places.Place[];
+}
+
+export type GmpPlaceTextSearchRequestElement = HTMLElement & {
     excludedTypes?: string[] | null;
     includedType?: string | null;
     includedTypes?: string[] | null;
@@ -68,7 +79,9 @@ export type GmpPlaceSearchRequestElement = HTMLElement & {
         | google.maps.LatLngBounds
         | google.maps.LatLngBoundsLiteral
         | null;
-    locationRestriction?: google.maps.LatLngBounds | google.maps.LatLngBoundsLiteral | null;
+    locationRestriction?: google.maps.LatLngBounds
+        | google.maps.LatLngBoundsLiteral
+        | null;
     maxResultCount: number;
     places?: google.maps.places.Place[];
     textQuery?: string | null;
@@ -87,12 +100,12 @@ export type MapContext = {
     mapLoaded: Ref<boolean>;
     markers: Ref<MapMarker>;
     moveSource: Ref<MoveSource>;
-    nearbySearch: Ref<GmpPlaceSearchRequestElement | null>;
-    nearbySearchQuery: Ref<GmpPlaceSearchRequestElement | null>;
+    nearbySearch: Ref<GmpPlaceNearbySearchRequestElement | null>;
+    nearbySearchQuery: Ref<GmpPlaceNearbySearchRequestElement | null>;
     searchType: Ref<'nearby' | 'text' | undefined>;
     selectedPlace: Ref<google.maps.places.Place | null>;
-    textSearch: Ref<GmpPlaceSearchRequestElement | null>;
-    textSearchQuery: Ref<GmpPlaceSearchRequestElement | null>;
+    textSearch: Ref<GmpPlaceTextSearchRequestElement | null>;
+    textSearchQuery: Ref<GmpPlaceTextSearchRequestElement | null>;
 }
 
 export type SubcategoryLabel = {
@@ -131,3 +144,12 @@ export type Category = {
 };
 
 export type Categories = Record<CategoryId, Category>;
+
+export type UrlParameter = {
+    searchTerm?: boolean;
+    location?: boolean;
+    category?: boolean;
+    subcategories?: boolean;
+    coords?: boolean;
+    zoom?: boolean;
+}

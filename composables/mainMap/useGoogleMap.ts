@@ -118,9 +118,9 @@ export default function useGoogleMap(context: MapContext) {
         // If the user has zoomed the map then update the URL parameters.
         if (context.moveSource.value == 'user') {
             mapSearch.setUrlParameters({
-                category: mapCategoryStore.selectedCategory || false,
+                category: mapCategoryStore.selectedCategory ? true : false,
                 subcategories: mapCategoryStore.selectedSubcategories.length
-                    ? mapCategoryStore.selectedSubcategories
+                    ? true
                     : false,
                 coords: true,
                 zoom: true,
@@ -181,9 +181,9 @@ export default function useGoogleMap(context: MapContext) {
 
             // Update the URL parameters.
             mapSearch.setUrlParameters({
-                category: mapCategoryStore.selectedCategory || false,
+                category: mapCategoryStore.selectedCategory ? true : false,
                 subcategories: mapCategoryStore.selectedSubcategories.length
-                    ? mapCategoryStore.selectedSubcategories
+                    ? true
                     : false,
                 coords: true,
                 zoom: true,

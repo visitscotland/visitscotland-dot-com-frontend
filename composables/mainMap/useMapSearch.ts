@@ -1,6 +1,10 @@
 import { computed, watch } from 'vue';
 
-import type { MapContext } from '~/types/main-map-types.ts';
+import type {
+    FeaturedDestination,
+    MapContext,
+    UrlParameter,
+} from '~/types/main-map-types.ts';
 import useMainMapStore from '@/stores/mainMap.ts';
 import useMapCategoryStore from '~/stores/mapCategory.ts';
 import dataLayerComposable from '../dataLayer.ts';
@@ -179,8 +183,8 @@ export default function useMapSearch(context: MapContext) {
             // Set the coords and zoom if the user has clicked the
             // "Self catering" subcategory. 
             setUrlParameters({
-                coords: map.getCenter()?.toUrlValue(2),
-                zoom: map.getZoom()?.toFixed(2),
+                coords: true,
+                zoom: true,
             });
         } else {
             setUrlParameters({
@@ -303,7 +307,7 @@ export default function useMapSearch(context: MapContext) {
     
         nearbySearchQuery.maxResultCount = NUMBER_OF_RESULTS;
         nearbySearchQuery.locationRestriction = {
-            center: map.getCenter(),
+            center: map.getCenter()!,
             radius: cappedRadius,
         };
 
@@ -350,18 +354,18 @@ export default function useMapSearch(context: MapContext) {
             // parameter is set.
             setUrlParameters({
                 location: true,
-                category: mapCategoryStore.selectedCategory || false,
+                category: mapCategoryStore.selectedCategory ? true : false,
                 subcategories: mapCategoryStore.selectedSubcategories.length
-                    ? mapCategoryStore.selectedSubcategories
+                    ? true
                     : false,
             });
         } else {
             // If there's not a `selectedDestination` then make sure the
             // `coords` and `zoom` parameters are set.
             setUrlParameters({
-                category: mapCategoryStore.selectedCategory || false,
+                category: mapCategoryStore.selectedCategory ? true : false,
                 subcategories: mapCategoryStore.selectedSubcategories.length
-                    ? mapCategoryStore.selectedSubcategories
+                    ? true
                     : false,
                 coords: true,
                 zoom: true,
@@ -433,7 +437,7 @@ export default function useMapSearch(context: MapContext) {
      * @param options.coords - whether to set the `coords` parameter.
      * @param options.zoom - whether to set the `zoom` parameter.
      */
-    async function setUrlParameters(options) {
+    async function setUrlParameters(options: UrlParameter) {
         const map = context.gMap.value;
         if (!map) return;
 
@@ -516,7 +520,7 @@ export default function useMapSearch(context: MapContext) {
         // Handle the location parameter.
         if (location) {
             // Check that the location matches one of our featured destinations.
-            const placeData = mapCategoryStore.featuredDestinations.find((place) => (
+            const placeData = mapCategoryStore.featuredDestinations.find((place: FeaturedDestination) => (
                 place.properties.title.toLowerCase() === location.toLowerCase()
             ));
 

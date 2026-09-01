@@ -37,12 +37,12 @@ export default function useMapAnalytics(context: MapContext) {
      * @param interactionType - type of interaction
      * @param place - [optional] - google search result.
      */
-    async function mapInteractionEvent(interactionType: string, place?) {
+    async function mapInteractionEvent(interactionType: string, place?: google.maps.places.Place) {
         const map = context.gMap.value;
         if (!map) return;
 
         let cardName = '';
-        let cardRating = '';
+        let cardRating = 0;
         let cardUrl = '';
         let cardPrimaryType = '';
 
@@ -56,10 +56,10 @@ export default function useMapAnalytics(context: MapContext) {
                 ],
             });
 
-            cardName = place.displayName;
-            cardRating = place.rating;
-            cardUrl = place.websiteURI;
-            cardPrimaryType = place.primaryType;
+            cardName = place.displayName ?? '';
+            cardRating = place.rating ?? 0;
+            cardUrl = place.websiteURI ?? '';
+            cardPrimaryType = place.primaryType ?? '';
         }
 
         dataLayerHelper.createDataLayerObject('googleMapInteractionEvent', {
@@ -92,12 +92,10 @@ export default function useMapAnalytics(context: MapContext) {
 
         const markers = context.markers.value;
 
-        for (let x = 0; x < Object.keys(markers).length; x++) {
-            const marker = markers[Object.keys(markers)[x]];
-
+        for (const marker of Object.values(markers)) {
             const position = marker.position;
 
-            if (bounds.contains(position)) {
+            if (position && bounds.contains(position)) {
                 visibleCount += 1;
             }
         }

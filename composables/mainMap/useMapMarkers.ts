@@ -1,4 +1,8 @@
-import type { MapContext, MapMarker } from '~/types/main-map-types.ts';
+import type {
+    FeaturedDestination,
+    MapContext,
+    MapMarker,
+} from '~/types/main-map-types.ts';
 import useMainMapStore from '../../stores/mainMap.ts';
 import useMapCategoryStore from '~/stores/mapCategory.ts';
 import useMapAnalytics from './useMapAnalytics.ts';
@@ -171,7 +175,7 @@ export default function useMapMarkers(context: MapContext) {
         clearMarkers();
 
         // Create a marker for each destination and add it to the map.
-        mapCategoryStore.filteredDestinations.forEach((place) => {
+        mapCategoryStore.filteredDestinations.forEach((place: FeaturedDestination) => {
             if (place.properties.locationCentre) {
                 const marker = createMarker({
                     map,

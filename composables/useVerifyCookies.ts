@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 export default function useVerifyCookies() { 
     const cookieManagerLoaded = ref(false);
     const requiredCookies = ref<(0 | 1)[]>([]);
