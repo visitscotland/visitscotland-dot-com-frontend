@@ -254,7 +254,7 @@ const titleLabel = computed(() => {
         const filterLabel = filters.find((filter: MapSidebarFilter) =>  filter.id === selectedCategory.value);
         return filterLabel ? filterLabel.label : configStore.getLabel('map', 'map.explore');
     } else {
-        return props.module.tabTitle ? props.module.tabTitle : configStore.getLabel('map', 'map.explore');
+        return module.tabTitle ? module.tabTitle : configStore.getLabel('map', 'map.explore');
     } 
 });
 
@@ -283,7 +283,7 @@ function selectFeature(feature: BrxmFeature) {
 }
 
 function unselectFeature() {
-    if(selectedFeature.value) {
+    if (selectedFeature.value) {
         const selectedFeatureId: string = selectedFeature.value.properties.id.toString();
 
         markerRefs.value[selectedFeatureId].hideTooltip();
@@ -294,14 +294,14 @@ function unselectFeature() {
 
 function handleFeatureClick(feature: BrxmFeature) {
     selectFeature(feature);
-    if(sidebarBody.value) sidebarBody.value.scrollTop = 0;
+    if (sidebarBody.value) sidebarBody.value.scrollTop = 0;
 }
 
 function handleMapMarkerClick(category: string, feature: BrxmFeature) {
     unselectFeature();
     isSidebarVisible.value = true;
     selectedCategory.value = category;
-    if(markerRefs.value[feature.properties.id]) {
+    if (markerRefs.value[feature.properties.id]) {
         markerRefs.value[feature.properties.id].handleSetMarkerActive(feature.properties.id);
     }
     handleFeatureButtonMouseover(feature.properties.id.toString());
@@ -311,21 +311,21 @@ function handleMapMarkerClick(category: string, feature: BrxmFeature) {
 
 function handleFeatureButtonMouseover(id: string) {
     markerRefs.value[id].showTooltip();
-    if(markerRefs.value[id]) {
+    if (markerRefs.value[id]) {
         markerRefs.value[id].handleSetMarkerActive(id);
     }
 }
 
 function handleFeatureButtonMouseout(id: string) {
     markerRefs.value[id].hideTooltip();
-    if(markerRefs.value[id]) {
+    if (markerRefs.value[id]) {
         markerRefs.value[id].handleRemoveMarkerActive(id);
     }
     markerRefs.value[id].markerHovered = null;
 }
 
 function handleMouseOut(id: string) {
-    if(selectedFeature.value && selectedFeature.value.properties.id === id) {
+    if (selectedFeature.value && selectedFeature.value.properties.id === id) {
         markerRefs.value[id].showTooltip();
     } else {
         markerRefs.value[id].markerHovered = null;
@@ -343,25 +343,25 @@ function handleMouseOut(id: string) {
         display: flex;
 
         &__map {
-            height: 40em;
+            height: 40rem;
             width: 100%;
             display: block;
         }
 
         &__marker {
             &-icon {
-                margin-top: 1em;
+                margin-top: 0.75rem;
             }
         }
 
         &__category {
             &-icon {
-                width: 1.25em;
+                width: 1.25rem;
                 text-align: center;
             }
 
             &-btn {
-                padding: 1em;
+                padding: 1rem;
                 width: 100%;
                 text-align: left;
                 background: #F1F1F1;
@@ -391,12 +391,12 @@ function handleMouseOut(id: string) {
 
         &__sidebar {
             position: absolute;
-            top: 1em;
-            left: 1em;
+            top: 1rem;
+            left: 1rem;
             z-index: 100;
             width: calc(100% - 2em);
             max-width: 22.5rem;
-            max-height: 33em;
+            max-height: 33rem;
             
             @media screen and (min-width: 768px) {
                 width: 22.5rem;
@@ -409,14 +409,14 @@ function handleMouseOut(id: string) {
             }
             
             &-toggle-button {
-                margin-bottom: 0.5em;
+                margin-bottom: 0.5rem;
             }
 
             &-open-button {
                 display: flex;
                 position: absolute;
-                top: 1em;
-                left: 1em;
+                top: 1rem;
+                left: 1rem;
                 z-index: 100;
             }
 
@@ -433,7 +433,7 @@ function handleMouseOut(id: string) {
             }
 
             &-body {
-                max-height: 28em;
+                max-height: 28rem;
                 overflow-y: auto;
                 overflow-x: none;
             }
@@ -441,7 +441,7 @@ function handleMouseOut(id: string) {
             &-category-select, &-feature-list {
                 display: flex;
                 flex-direction: column;
-                row-gap: 1em;
+                row-gap: 1rem;
             }
 
             &-feature-list {
@@ -451,15 +451,4 @@ function handleMouseOut(id: string) {
             }
         }
     }
-
-    // .is-active {
-    //         transform-origin: bottom;
-    //         scale: 1.25;
-    //         offset: 1.25em;
-    
-    //         .vs-tooltip-popover {
-    //             scale: 0.75;
-    //         }
-
-    // }
 </style>
