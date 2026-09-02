@@ -144,6 +144,12 @@
                 :is="VsBrMainMap"
                 :module="item"
             />
+            <Suspense v-else-if="checkFlag('use-google-map')">
+                <component
+                    :is="VsBrGoogleMapWithSidebar"
+                    :module="item"
+                />
+            </Suspense>
             <Suspense v-else>
                 <component
                     :is="VsBrMapWithSidebar"
@@ -277,6 +283,8 @@ import VsBrFavouritesDisplay from '~/components/Modules/VsBrFavouritesDisplay.vu
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
+import VsBrGoogleMapWithSidebar from './VsBrGoogleMapWithSidebar.vue';
+import checkFlag from '~/composables/checkFlags';
 
 const VsBrMapWithSidebar = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSidebar.vue'));
 const VsBrMainMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMainMap.vue'));
