@@ -2,7 +2,7 @@
 <template>
     <div class="vs-map">
         <div
-            v-if="!showError"
+            v-show="!showError"
             class="vs-map__container"
         >
             <VsBrMainMapSidebar
@@ -223,6 +223,7 @@ function setupFeatureDestinations() {
     Load the map libraries and initialise the map.
 */
 async function initialiseMap() {
+    console.log('initMap', showError.value, mapContainer.value);
     if (showError.value || !mapContainer.value) return;
     await googleMap.loadGoogleMaps();
     googleMap.initMap(mapContainer.value);
