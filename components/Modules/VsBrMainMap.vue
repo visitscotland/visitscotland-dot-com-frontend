@@ -194,12 +194,10 @@ provide('onFeaturedLocationClick', mapMarkers.handleFeaturedLocationClick);
 const cookieCheck = useVerifyCookies();
 cookieCheck.requiredCookies.value = cookieValues.google_maps;
 
-console.log('cookies', cookieCheck.cookiesLoaded.value, cookieCheck.cookiesAllowed.value);
-const showError = computed(() => {
-    console.log('showError compute', cookieCheck.cookiesLoaded.value, cookieCheck.cookiesAllowed.value);
-
-    return !cookieCheck.cookiesLoaded.value || !cookieCheck.cookiesAllowed.value;
-});
+const showError = computed(() =>
+    !cookieCheck.cookiesLoaded.value
+    || !cookieCheck.cookiesAllowed.value,
+);
 
 /**
  * Set up the featured destinations and add them to the store.
@@ -223,7 +221,6 @@ function setupFeatureDestinations() {
     Load the map libraries and initialise the map.
 */
 async function initialiseMap() {
-    console.log('initMap', showError.value, mapContainer.value);
     if (showError.value || !mapContainer.value) return;
     await googleMap.loadGoogleMaps();
     googleMap.initMap(mapContainer.value);
@@ -234,7 +231,6 @@ async function initialiseMap() {
 watch(
     () => [cookieCheck.cookiesAllowed.value, cookieCheck.cookiesLoaded.value],
     async([allowed, loaded]) => {
-        console.log('cookies watcher', allowed, loaded);
         if (allowed && loaded) {
             await initialiseMap();
         }
