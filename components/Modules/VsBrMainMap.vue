@@ -195,10 +195,11 @@ const cookieCheck = useVerifyCookies();
 cookieCheck.requiredCookies.value = cookieValues.google_maps;
 
 console.log('cookies', cookieCheck.cookiesLoaded.value, cookieCheck.cookiesAllowed.value);
-const showError = computed(() =>
-    !cookieCheck.cookiesLoaded.value
-    || !cookieCheck.cookiesAllowed.value,
-);
+const showError = computed(() => {
+    console.log('showError compute', cookieCheck.cookiesLoaded.value, cookieCheck.cookiesAllowed.value);
+
+    return !cookieCheck.cookiesLoaded.value || !cookieCheck.cookiesAllowed.value;
+});
 
 /**
  * Set up the featured destinations and add them to the store.
@@ -231,8 +232,9 @@ async function initialiseMap() {
 // This is used in case the cookies are accepted after the map mounts.
 watch(
     () => [cookieCheck.cookiesAllowed.value, cookieCheck.cookiesLoaded.value],
-    async([loaded, allowed]) => {
-        if (loaded && allowed) {
+    async([allowed, loaded]) => {
+        console.log('cookies watcher', allowed, loaded);
+        if (allowed && loaded) {
             await initialiseMap();
         }
     },
