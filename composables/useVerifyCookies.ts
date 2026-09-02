@@ -20,9 +20,7 @@ export default function useVerifyCookies() {
             return true;
         }
 
-        return {
-            cookieManagerLoaded,
-        };
+        return cookieManagerLoaded.value;
     });
 
     const managerLoaded = () => cookieManagerLoaded.value = true;
@@ -31,6 +29,8 @@ export default function useVerifyCookies() {
         let allowed = false;
 
         if (typeof CookieControl !== 'undefined' && requiredCookies.value) {
+            console.log(CookieControl.getCategoryConsent(requiredCookies.value[0]));
+            console.log(CookieControl.getCategoryConsent(requiredCookies.value[1]));
             allowed = requiredCookies.value.every(
                 (category) => CookieControl.getCategoryConsent(category) === true,
             );

@@ -194,6 +194,7 @@ provide('onFeaturedLocationClick', mapMarkers.handleFeaturedLocationClick);
 const cookieCheck = useVerifyCookies();
 cookieCheck.requiredCookies.value = cookieValues.google_maps;
 
+console.log('cookies', cookieCheck.cookiesLoaded.value, cookieCheck.cookiesAllowed.value);
 const showError = computed(() =>
     !cookieCheck.cookiesLoaded.value
     || !cookieCheck.cookiesAllowed.value,
