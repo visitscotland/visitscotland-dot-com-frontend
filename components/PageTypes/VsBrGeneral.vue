@@ -44,6 +44,25 @@
             />
         </template>
     </template>
+    <template v-else-if="documentData.theme === 'Simple'">
+        <VsContainer
+            class="mt-075 mt-lg-200"
+        >
+            <VsRow>
+                <VsCol
+                    cols="10"
+                    lg="8"
+                >
+                    <VsBrBreadcrumb />
+                </VsCol>
+            </VsRow>
+        </VsContainer>
+
+        <VsBrHeroSection
+            :content="documentData"
+            :favourites-button="true"
+        />
+    </template>
 
     <template v-else-if="!configStore.isMainMapPageFlag">
         <VsContainer
