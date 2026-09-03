@@ -459,6 +459,7 @@ const isHovered = ref(false);
 const isFocused = ref(false);
 const scrollY = ref(1);
 const navElement = ref<HTMLElement | null>(null);
+let navResizeObserver: ResizeObserver | undefined;
 
 const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
     && checkFlags('use-navbar')
@@ -470,13 +471,32 @@ function handleScroll() {
     scrollY.value = window.scrollY;
 }
 
+function updateNavbarHeight() {
+    // Navbar height is used in css to set scroll-margin-top for anchor links
+    // Otherwise the navbar can hide to top of content
+    if (navElement.value) {
+        document.documentElement.style.setProperty(
+            '--vs-navbar-height',
+            `${navElement.value.getBoundingClientRect().height}px`,
+        );
+    }
+}
+
 onMounted(() => {
     scrollY.value = window.scrollY;
     window.addEventListener('scroll', handleScroll);
+    updateNavbarHeight();
+
+    if (navElement.value && typeof ResizeObserver !== 'undefined') {
+        navResizeObserver = new ResizeObserver(updateNavbarHeight);
+        navResizeObserver.observe(navElement.value);
+    }
 });
 
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
+    navResizeObserver?.disconnect();
+    document.documentElement.style.removeProperty('--vs-navbar-height');
 });
 
 if (page.value) {
