@@ -39,6 +39,7 @@
 
         <!-- Navbar To Do - Switch to feature flag -->
         <div
+            ref="navElement"
             class="vs-sticky-nav--no-global"
             :class="{ 'transparent-nav-bar': shouldShowTransparent }"
             @mouseenter="isHovered = true"
@@ -306,6 +307,7 @@
     </template>
     <template v-else>
         <div
+            ref="navElement"
             class="vs-sticky-nav vs-sticky-nav--has-content"
             :class="{ 'has-edit-button': page.isPreview() }"
         >
@@ -456,6 +458,7 @@ const configStore = useConfigStore();
 const isHovered = ref(false);
 const isFocused = ref(false);
 const scrollY = ref(1);
+const navElement = ref<HTMLElement | null>(null);
 
 const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
     && checkFlags('use-navbar')
