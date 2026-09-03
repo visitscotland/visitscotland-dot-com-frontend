@@ -16,12 +16,27 @@
         </VsContainer>
     </template>
     <template v-else-if="documentData.theme === 'Top-Level'">
-        <VsBrHeroSection
-            v-if="configStore.heroVideo && configStore.isLocalVideoheader"
-            :content="documentData"
-            :video="configStore.heroVideo"
-            :image="heroImage"
-        />
+        <template v-if="configStore.heroVideo && configStore.isLocalVideoheader">
+            <VsContainer
+                v-if="!configStore.isHome"
+                class="mt-075 mt-lg-200"
+            >
+                <VsRow>
+                    <VsCol
+                        cols="10"
+                        lg="8"
+                    >
+                        <VsBrBreadcrumb />
+                    </VsCol>
+                </VsRow>
+            </VsContainer>
+
+            <VsBrHeroSection
+                :content="documentData"
+                :video="configStore.heroVideo"
+                :image="heroImage"
+            />
+        </template>
         <template v-else>
             <VsContainer
                 class="mt-075 mt-lg-200"
