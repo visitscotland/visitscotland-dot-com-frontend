@@ -25,7 +25,7 @@
     "@types/node": "^25.9.1",
     "eslint": "^10.4.0",
     "husky": "^9.1.7",
-    "nuxt": "^4.0.0",
+    "nuxt": "^4.5.2",
     "nuxt-lazy-hydrate": "^1.0.0"
   },
   "dependencies": {
@@ -44,7 +44,11 @@
     "pinia": "^3.0.4",
     "sass": "^1.100.0",
     "standard-version": "^9.5.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vue": "3.5.42"
+  },
+  "resolutions": {
+    "vue": "3.5.42"
   },
   "overrides": {
     "minimist": "latest",
