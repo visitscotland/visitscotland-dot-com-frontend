@@ -1,15 +1,5 @@
 <template>
-    <template v-if="documentData.blog">
-        <VsBrPageIntro
-            :content="documentData"
-            :light-background="true"
-            :blog="documentData.blog"
-        />
-        <VsBrIntroImage
-            :image="heroImage"
-        />
-    </template>
-    <template v-else-if="favourites.isDisplayPage">
+    <template v-if="favourites.isDisplayPage">
         <VsContainer class="mt-075 py-150 py-lg-300 ">
             <VsRow>
                 <VsBrHeroHeading
@@ -26,14 +16,11 @@
         </VsContainer>
     </template>
     <template v-else-if="documentData.theme === 'Top-Level'">
-        <VsBrHeroSection
-            v-if="configStore.heroVideo && configStore.isLocalVideoheader"
-            :content="documentData"
-            :video="configStore.heroVideo"
-            :image="heroImage"
-        />
-        <template v-else-if="configStore.enableHeroSection">
-            <VsContainer class="mt-075 mt-lg-200">
+        <template v-if="configStore.heroVideo && configStore.isLocalVideoheader">
+            <VsContainer
+                v-if="!configStore.isHome"
+                class="mt-075 mt-lg-200"
+            >
                 <VsRow>
                     <VsCol
                         cols="10"
@@ -43,55 +30,79 @@
                     </VsCol>
                 </VsRow>
             </VsContainer>
+
             <VsBrHeroSection
                 :content="documentData"
+                :video="configStore.heroVideo"
                 :image="heroImage"
             />
         </template>
-        <VsBrPageIntro
-            v-else
-            :content="documentData"
-            :hero-image="heroImage"
-            :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
-        />
+        <template v-else>
+            <VsContainer
+                class="mt-075 mt-lg-200"
+            >
+                <VsRow>
+                    <VsCol
+                        cols="10"
+                        lg="8"
+                    >
+                        <VsBrBreadcrumb />
+                    </VsCol>
+                </VsRow>
+            </VsContainer>
+
+            <VsBrHeroSection
+                :content="documentData"
+                :image="heroImage"
+                :split="true"
+                :favourites-button="true"
+            />
+        </template>
     </template>
+    <template v-else-if="documentData.theme === 'Simple'">
+        <VsContainer
+            class="mt-075 mt-lg-200"
+        >
+            <VsRow>
+                <VsCol
+                    cols="10"
+                    lg="8"
+                >
+                    <VsBrBreadcrumb />
+                </VsCol>
+            </VsRow>
+        </VsContainer>
 
-    <template v-else-if="documentData.theme === 'Standard'">
-        <VsBrPageIntro
-            :content="documentData"
-            :light-background="true"
-        />
-
-        <VsBrIntroImage
-            :image="heroImage"
-        />
-    </template>
-
-    <template v-else-if="documentData.theme === 'Inspiration'">
         <VsBrHeroSection
-            v-if="isSearchResultsPage"
             :content="documentData"
-            :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
-        />
-        <VsBrPageIntro
-            v-else
-            :content="documentData"
-            :hero-image="heroImage"
-            :light-background="true"
-            :full-screen-mobile="true"
+            :favourites-button="true"
         />
     </template>
 
-    <VsBrHeroSection
-        v-else-if="documentData.theme === 'Simple' && isSearchResultsPage"
-        :content="documentData"
-    />
+    <template v-else-if="!configStore.isMainMapPageFlag">
+        <VsContainer
+            v-if="!isSearchResultsPage"
+            class="mt-075 mt-lg-200"
+        >
+            <VsRow>
+                <VsCol
+                    cols="10"
+                    lg="8"
+                >
+                    <VsBrBreadcrumb />
+                </VsCol>
+            </VsRow>
+        </VsContainer>
 
-    <VsBrPageIntro
-        v-else-if="documentData.theme === 'Simple' && !configStore.isMainMapPageFlag"
-        :content="documentData"
-        :light-background="true"
-    />
+        <VsBrHeroSection
+            :content="documentData"
+            :inset="true"
+            :image="isSearchResultsPage ? null : heroImage"
+            class="mb-400"
+            :blog="documentData.blog"
+            :favourites-button="true"
+        />
+    </template>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -125,10 +136,14 @@
     <template
         v-else
     >
-        <VsBrModuleBuilder
-            v-if="pageItems"
-            :modules="pageItems"
-        />
+        <div
+            :class="!configStore.isMainMapPageFlag ? 'mt-500' : ''"
+        >
+            <VsBrModuleBuilder
+                v-if="pageItems"
+                :modules="pageItems"
+            />
+        </div>
     </template>
 
     <NuxtLazyHydrate
@@ -181,9 +196,7 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 import useConfigStore from '~/stores/configStore.ts';
 import { useFavourites } from '#imports';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
-import VsBrIntroImage from '~/components/Modules/VsBrIntroImage.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
