@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.15.2",
+    "@types/google.maps": "^3.64.0",
     "@types/node": "^25.9.1",
     "eslint": "^10.4.0",
     "husky": "^9.1.7",
@@ -31,6 +32,7 @@
   "dependencies": {
     "@bloomreach/spa-sdk": "^27.3.1",
     "@bloomreach/vue3-sdk": "^22.0.5",
+    "@googlemaps/js-api-loader": "^2.0.1",
     "@pinia/nuxt": "^1.0.1",
     "@playwright/test": "^1.61.1",
     "@visitscotland/component-library": "5.78.0",

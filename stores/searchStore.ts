@@ -60,7 +60,7 @@ const useSearchStore = defineStore('search', () => {
         }
     });
 
-    const orderedSubcategories: SearchFilterCategory[] = computed(() => {
+    const orderedSubcategories = computed(() => {
         const subcategories = configStore.getLabelMap('search-events-filters');
         const orderedList: SearchFilterCategory[] = [];
         Object.keys(subcategories).forEach((key) => {
