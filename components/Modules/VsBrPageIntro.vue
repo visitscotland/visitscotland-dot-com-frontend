@@ -114,56 +114,6 @@
                 </dd>
             </div>
         </template>
-
-        <template
-            v-if="itinerary"
-            #vs-intro-summary-box
-        >
-            <VsBrItinerarySummaryBox
-                :itinerary="itinerary"
-                :theme="theme"
-                :all-transports="allTransports"
-            />
-        </template>
-
-        <template
-            v-if="itinerary && allAreas"
-            #vs-intro-lower
-        >
-            <VsContainer>
-                <VsRow>
-                    <VsCol cols="12" xxl="6" offset-lg="1">
-                        <VsDescriptionList class="mb-150">
-                            <VsDescriptionListItem title>
-                                {{ configStore.getLabel("itinerary", "highlights") }}
-                            </VsDescriptionListItem>
-
-                            <VsDescriptionListItem
-                                v-for="(highlight, index) in highlights"
-                                :key="index"
-                                :class="index === 0 ? 'mt-050' : ''"
-                            >
-                                {{ highlight }}
-                            </VsDescriptionListItem>
-                        </VsDescriptionList>
-
-                        <VsDescriptionList class="mb-200">
-                            <VsDescriptionListItem title>
-                                {{ configStore.getLabel("itinerary", "areas-covered") }}
-                            </VsDescriptionListItem>
-
-                            <VsDescriptionListItem
-                                v-for="(area, index) in allAreas"
-                                :key="index"
-                                :class="index === 0 ? 'mt-050' : ''"
-                            >
-                                {{ area.displayName }}
-                            </VsDescriptionListItem>
-                        </VsDescriptionList>
-                    </VsCol>
-                </VsRow>
-            </VsContainer>
-        </template>
     </VsPageIntro>
 </template>
 
@@ -173,11 +123,6 @@ import { inject, toRefs } from 'vue';
 import {
     VsPageIntro,
     VsArticleDetails,
-    VsContainer,
-    VsRow,
-    VsCol,
-    VsDescriptionList,
-    VsDescriptionListItem,
 } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
@@ -189,7 +134,6 @@ import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue'
 import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
 import VsBrVideoModal from '~/components/Modules/VsBrVideoModal.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
-import VsBrItinerarySummaryBox from '~/components/Modules/VsBrItinerarySummaryBox.vue';
 import VsBrFavouriteButton from '~/components/Modules/VsBrFavouriteButton.vue';
 
 const configStore = useConfigStore();

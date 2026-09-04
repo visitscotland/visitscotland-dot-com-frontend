@@ -26,13 +26,8 @@
             :component="component"
         />
 
-        <VsBrItineraryLegacy
-            v-if="pageName === 'itinerary-page' && hasStops"
-            :page="page"
-            :component="component"
-        />
         <VsBrItinerary
-            v-else-if="pageName === 'itinerary-page' && !hasStops"
+            v-else-if="pageName === 'itinerary-page'"
             :page="page"
             :component="component"
         />
@@ -65,7 +60,6 @@ import { useFavourites } from '#imports';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
-import VsBrItineraryLegacy from '~/components/PageTypes/VsBrItineraryLegacy.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
@@ -83,8 +77,6 @@ let pageName : string = '';
 
 let pageDocument : any = {
 };
-
-let hasStops = null;
 
 const configStore = useConfigStore();
 const favourites = useFavourites();
@@ -114,7 +106,6 @@ if (page.value) {
     const componentModels = component.value.getModels();
 
     configStore.activeSite = componentModels['site-id'];
-    configStore.productSearch = componentModels.psrWidget;
     if (componentModels.otyml) {
         configStore.otyml = componentModels.otyml;
     }
@@ -127,7 +118,6 @@ if (page.value) {
     configStore.pageMetaData = componentModels.metadata;
 
     if (componentModels.pageConfiguration) {
-        hasStops = componentModels.pageConfiguration.hasStops;
         configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
         configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];
         configStore.cludoExperienceId = componentModels.pageConfiguration['cludo.experience-id'];

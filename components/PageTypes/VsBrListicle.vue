@@ -128,15 +128,6 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrProductSearch
-            v-if="productSearch"
-            class="mt-300 mt-lg-600"
-        />
-    </NuxtLazyHydrate>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
         <section
             class="mt-500"
             v-if="otyml"
@@ -167,7 +158,6 @@ import useConfigStore from '~/stores/configStore.ts';
 import formatLink from '~/composables/formatLink.ts';
 
 import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
-import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
@@ -193,8 +183,6 @@ const { page, component } = toRefs(props);
 
 let documentData : any = {
 };
-let productSearch : any = {
-};
 let otyml : any = null;
 
 const configStore = useConfigStore();
@@ -206,7 +194,6 @@ if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
-    productSearch = configStore.productSearch;
     if (configStore.otyml) {
         otyml = configStore.otyml;
     }
