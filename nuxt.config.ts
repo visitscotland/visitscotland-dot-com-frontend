@@ -89,9 +89,6 @@ export default defineNuxtConfig({
 
     app: {
         head: {
-            htmlAttrs: {
-                class: 'no-js',
-            },
             script: [
                 {
                     innerHTML: 'document.documentElement.classList.remove(\'no-js\');',

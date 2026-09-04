@@ -148,6 +148,16 @@ const localeStrings = [
 const isMounted = ref(false);
 const hideSkeleton = ref(false);
 
+// This is an SSR fallback only. If it is registered in app.head, Unhead restores the class on the
+// client after the inline removal script has run, leaving the hydrated page in its no-JS state.
+if (import.meta.server) {
+    useHead({
+        htmlAttrs: {
+            class: 'no-js',
+        },
+    });
+}
+
 const scrollToAnchor = (hash, attempts = 0) => {
     const element = document.querySelector(hash);
 
