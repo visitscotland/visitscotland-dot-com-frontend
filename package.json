@@ -34,7 +34,7 @@
     "@pinia/nuxt": "^1.0.1",
     "@playwright/test": "^1.62.1",
     "@visitscotland/component-library": "5.78.0",
-    "axios": "^1.18.0",
+    "axios": "^1.20.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "html-entities": "^2.6.0",
