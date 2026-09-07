@@ -32,3 +32,23 @@ export type SearchApiResults = {
     results: SearchApiResult[];
     totalResults: number;
 };
+
+/** Travel Information module */
+export type Copy = {
+    contentType: string;
+    value: string;
+};
+
+export type TransportRow = {
+    transport: {
+        key: string;
+        label: string;
+    };
+    copy: Copy;
+}
+
+export type TravelTabContent = {
+    title: string;
+    travelInformationTransportRows?: TransportRow[];
+    copy?: Copy;
+}

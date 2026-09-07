@@ -1,13 +1,13 @@
 <template>
-    <VsTabItem :title="tab.title">
+    <VsTabItem :title="props.tab.title">
         <div class="px-075 px-md-150 px-lg-300 px-xl-400 pt-200 pb-125">
-            <VsAccordion>
+            <VsAccordion v-if="props.tab.travelInformationTransportRows">
                 <VsAccordionItem
-                    v-for="(row, rowIndex) in tab.travelInformationTransportRows"
+                    v-for="(row, rowIndex) in props.tab.travelInformationTransportRows"
                     :key="rowIndex"
                     :open-by-default="rowIndex === 0 ? true : false"
                     variant="transparent"
-                    :control-id="`accordion-item-tab-${tabIndex}-${row.transport.key}-${rowIndex}`"
+                    :control-id="`accordion-item-tab-${props.tabIndex}-${row.transport.key}-${rowIndex}`"
                     :class="rowIndex === 0 ? 'border-top-0' : ''"
                 >
                     <template #title>
@@ -31,14 +31,14 @@
                     </div>
                 </VsAccordionItem>
             </VsAccordion>
+            <p v-else>
+                Information copy tab
+            </p>
         </div>
     </VsTabItem>
 </template>
 
 <script lang="ts" setup>
-
-import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
-
 import {
     VsTabItem,
     VsAccordion,
@@ -46,8 +46,13 @@ import {
     VsIcon,
 } from '@visitscotland/component-library/components';
 
-const props = defineProps<{ tab: object, tabIndex: number }>();
-const tab: object = props.tab;
-const tabIndex: number = props.tabIndex;
+import type { TravelTabContent } from '~/types/types.ts';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
+type Props = {
+    tab: TravelTabContent,
+    tabIndex: number,
+};
+
+const props = defineProps<Props>();
 </script>
