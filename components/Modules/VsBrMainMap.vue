@@ -35,7 +35,7 @@
                         </VsAlert>
 
                         <VsDetail
-                            v-else
+                            v-else-if="mainMapStore.noResults === false"
                             class="mb-150"
                             color="secondary"
                             icon="vs-icon-feedback-information"
