@@ -3,7 +3,7 @@
         class="vs-main-container"
         :class="{
             'has-edit-button': page.isPreview(),
-            'has-transparent-nav': configStore.isLocalVideoheader && checkFlags('use-navbar'),
+            'has-transparent-nav': configStore.isLocalVideoheader && checkFlag('use-navbar'),
         }"
     >
         <BrManageContentButton
