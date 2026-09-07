@@ -1,5 +1,5 @@
 <template>
-    <template v-if="favourites.isDisplayPage">
+    <template v-if="favourites.isDisplayPage && !configStore.isMainMapPageFlag">
         <VsContainer class="mt-075 py-150 py-lg-300 ">
             <VsRow>
                 <VsBrHeroHeading
@@ -15,7 +15,7 @@
             </VsRow>
         </VsContainer>
     </template>
-    <template v-else-if="documentData.theme === 'Top-Level'">
+    <template v-else-if="documentData.theme === 'Top-Level' && !configStore.isMainMapPageFlag">
         <template v-if="configStore.heroVideo && configStore.isLocalVideoheader">
             <VsContainer
                 v-if="!configStore.isHome"
@@ -59,7 +59,7 @@
             />
         </template>
     </template>
-    <template v-else-if="documentData.theme === 'Simple'">
+    <template v-else-if="documentData.theme === 'Simple' && !configStore.isMainMapPageFlag">
         <VsContainer
             class="mt-075 mt-lg-200"
         >
