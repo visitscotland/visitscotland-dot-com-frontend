@@ -9,10 +9,11 @@
 
         <VsBody>
             <div>
-                <ul class="list-unstyled d-flex flex-column m-0 p-0 gap-075">
+                <ul class="key-information__highlights list-unstyled d-flex flex-column m-0 p-0 gap-075 text-tertiary">
                     <li v-for="highlight in module.highlights" :key="highlight.category.key" class="d-flex gap-050">
                         <VsIcon
-                            icon="vs-icon-control-dismiss"
+                            :icon="getIconName(highlight.category.key)"
+                            variant="tertiary"
                             aria-hidden="true" />
                         <span>
                             <span>{{ highlight.category.label }}:</span> {{ highlight.copy }}
@@ -36,6 +37,7 @@ import {
     VsIcon,
     VsPanel,
 } from '@visitscotland/component-library/components';
+import getIconName from '~/composables/getIconName';
 
 interface KeyInformationHighlight {
     category: {
@@ -59,3 +61,9 @@ defineProps<{
     module: KeyInformationModule
 }>();
 </script>
+
+<style lang="css" scoped>
+    .key-information__highlights {
+        color: #535396; /* Text tertiary */
+    }
+</style>
