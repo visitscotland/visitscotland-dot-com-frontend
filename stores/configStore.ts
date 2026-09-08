@@ -31,6 +31,7 @@ interface IConfigState {
     enableHeroSection: boolean,
     pathIfError: string,
     isInternalResource: boolean,
+    isHome: boolean,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -71,6 +72,7 @@ const useConfigStore = defineStore('configStore', {
         enableHeroSection: false,
         pathIfError: '',
         isInternalResource: false,
+        isHome: false,
     }),
     actions: {
         getLabel(section: string, key: string) {
