@@ -23,10 +23,10 @@
   "devDependencies": {
     "@nuxt/eslint-config": "^1.15.2",
     "@types/google.maps": "^3.64.0",
-    "@types/node": "^25.9.1",
+    "@types/node": "^26.4.0",
     "eslint": "^10.4.0",
     "husky": "^9.1.7",
-    "nuxt": "^4.0.0",
+    "nuxt": "^4.5.2",
     "nuxt-lazy-hydrate": "^1.0.0"
   },
   "dependencies": {
@@ -34,19 +34,23 @@
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@googlemaps/js-api-loader": "^2.0.1",
     "@pinia/nuxt": "^1.0.1",
-    "@playwright/test": "^1.61.1",
-    "@visitscotland/component-library": "5.71.4",
+    "@playwright/test": "^1.62.1",
+    "@visitscotland/component-library": "5.78.0",
     "axios": "^1.18.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "html-entities": "^2.6.0",
-    "lint-staged": "^17.0.5",
+    "lint-staged": "^17.3.0",
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^2.0.8",
     "pinia": "^3.0.4",
     "sass": "^1.100.0",
     "standard-version": "^9.5.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vue": "3.5.42"
+  },
+  "resolutions": {
+    "vue": "3.5.42"
   },
   "overrides": {
     "minimist": "latest",
