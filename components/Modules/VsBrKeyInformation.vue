@@ -3,24 +3,28 @@
         <VsHeading
             level="2"
             heading-style="heading-s"
+            noMargins
         >
             {{ module.title || 'Key Information' }}
         </VsHeading>
 
         <VsBody>
             <div>
-                <ul class="key-information__highlights list-unstyled d-flex flex-column m-0 p-0 gap-075 text-tertiary">
+                <ul class="key-information__highlights list-unstyled d-flex flex-column m-0 p-0 gap-075 mt-150 text-tertiary">
                     <li v-for="highlight in module.highlights" :key="highlight.category.key" class="d-flex gap-050">
-                        <VsIcon
-                            :icon="getIconName(highlight.category.key)"
-                            variant="tertiary"
-                            aria-hidden="true" />
+                        <span class="key-information__icon-wrapper d-flex justify-content-center">
+                            <VsIcon
+                                :icon="getIconName(highlight.category.key)"
+                                variant="tertiary"
+                                aria-hidden="true"
+                            />
+                        </span>
                         <span>
                             <span>{{ highlight.category.label }}:</span> {{ highlight.copy }}
                         </span>
                     </li>
                 </ul>
-                <VsButton>{{  module.cta.label }}</VsButton>
+                <VsButton class="mt-150">{{  module.cta.label }}</VsButton>
             </div>
             <div>
                 <!-- TODO Placeholder for map inclusion VS-1835 -->
@@ -65,5 +69,8 @@ defineProps<{
 <style lang="css" scoped>
     .key-information__highlights {
         color: #535396; /* Text tertiary */
+        .key-information__icon-wrapper {
+            min-width: 1.6rem;
+        }
     }
 </style>
