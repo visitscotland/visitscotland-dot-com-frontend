@@ -29,8 +29,6 @@ export default function useVerifyCookies() {
         let allowed = false;
 
         if (typeof CookieControl !== 'undefined' && requiredCookies.value) {
-            console.log(CookieControl.getCategoryConsent(requiredCookies.value[0]));
-            console.log(CookieControl.getCategoryConsent(requiredCookies.value[1]));
             allowed = requiredCookies.value.every(
                 (category) => CookieControl.getCategoryConsent(category) === true,
             );

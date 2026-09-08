@@ -46,6 +46,9 @@ export default function useMapSearch(context: MapContext) {
         // Hide the categories.
         mainMapStore.showCategories = false;
 
+        // Clear search results text.
+        mainMapStore.query = '';
+
         // Clear any existing markers.
         mapMarkers.clearMarkers();
 

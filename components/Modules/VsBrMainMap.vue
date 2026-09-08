@@ -195,8 +195,8 @@ const cookieCheck = useVerifyCookies();
 cookieCheck.requiredCookies.value = cookieValues.google_maps;
 
 const showError = computed(() =>
-    !cookieCheck.cookiesLoaded.value
-    || !cookieCheck.cookiesAllowed.value,
+    cookieCheck.cookiesLoaded.value &&
+    !cookieCheck.cookiesAllowed.value,
 );
 
 /**
