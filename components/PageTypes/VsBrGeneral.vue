@@ -117,15 +117,6 @@
         </div>
     </NuxtLazyHydrate>
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrProductSearch
-            v-if="productSearch && productSearch.position === 'Top'"
-            class="mb-300 mb-lg-600 pt-300"
-        />
-    </NuxtLazyHydrate>
-
     <template
         v-if="isSearchResultsPage"
     >
@@ -145,15 +136,6 @@
             />
         </div>
     </template>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-        v-if="!configStore.isMainMapPageFlag"
-    >
-        <VsBrProductSearch
-            v-if="productSearch && productSearch.position === 'Bottom'"
-        />
-    </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -198,7 +180,6 @@ import { useFavourites } from '#imports';
 
 import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
-import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
@@ -217,8 +198,6 @@ const { page } = toRefs(props);
 let documentData : any = {
 };
 let pageItems : any[] = [];
-let productSearch : any = {
-};
 let heroImage = {
     coordinates: null,
 };
@@ -237,7 +216,6 @@ if (page.value) {
 
     documentData = pageDocument.getData();
     pageItems = configStore.pageItems;
-    productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
 
     if (configStore.heroImage && configStore.heroImage.coordinates) {

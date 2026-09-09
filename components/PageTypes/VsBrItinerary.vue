@@ -165,6 +165,7 @@
                             flex-md-row
                             gap-075 gap-md-150
                         "
+                        v-if="itineraryMap"
                     >
                         <VsButton
                             :href="itineraryMap.link"
