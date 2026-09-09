@@ -355,6 +355,7 @@ const isFocused = ref(false);
 const scrollY = ref(1);
 const navElement = ref<HTMLElement | null>(null);
 let navResizeObserver: ResizeObserver | undefined;
+let skipToResizeObserver: ResizeObserver | undefined;
 
 const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
     && checkFlags('use-navbar')
@@ -368,13 +369,22 @@ function handleScroll() {
 
 function updateNavbarHeight() {
     // Navbar height is used in css to set scroll-margin-top for anchor links
-    // Otherwise the navbar can hide to top of content
+    // a11y nav VsBrSkipTo is also considered in the navbar height calculation 
     if (navElement.value) {
+        const skipToElement = document.querySelector<HTMLElement>('[data-test="vs-skip-to"]');
+        const skipToHeight = skipToElement?.matches(':focus-within')
+            ? skipToElement.getBoundingClientRect().height
+            : 0;
+
         document.documentElement.style.setProperty(
             '--vs-navbar-scroll-margin-top',
-            `calc(${navElement.value.getBoundingClientRect().height}px + 1rem)`,
+            `calc(${navElement.value.getBoundingClientRect().height}px + ${skipToHeight}px + 1rem)`,
         );
     }
+}
+
+function handleSkipToFocus() {
+    requestAnimationFrame(updateNavbarHeight);
 }
 
 onMounted(() => {
@@ -386,11 +396,26 @@ onMounted(() => {
         navResizeObserver = new ResizeObserver(updateNavbarHeight);
         navResizeObserver.observe(navElement.value);
     }
+
+    const skipToElement = document.querySelector<HTMLElement>('[data-test="vs-skip-to"]');
+    skipToElement?.addEventListener('focusin', handleSkipToFocus);
+    skipToElement?.addEventListener('focusout', handleSkipToFocus);
+
+    if (skipToElement && typeof ResizeObserver !== 'undefined') {
+        skipToResizeObserver = new ResizeObserver(updateNavbarHeight);
+        skipToResizeObserver.observe(skipToElement);
+    }
 });
 
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
     navResizeObserver?.disconnect();
+    skipToResizeObserver?.disconnect();
+
+    const skipToElement = document.querySelector<HTMLElement>('[data-test="vs-skip-to"]');
+    skipToElement?.removeEventListener('focusin', handleSkipToFocus);
+    skipToElement?.removeEventListener('focusout', handleSkipToFocus);
+
     document.documentElement.style.removeProperty('--vs-navbar-scroll-margin-top');
 });
 
