@@ -87,14 +87,9 @@
             />
 
             <VsBrRichArticleModule
-                v-else-if="checkFlags('use-rich-articles')"
-                :module="item"
-                :next-module-article="index + 1 < modules.length && modules[index + 1].type === 'ArticleModule'"
-            />
-
-            <VsBrArticleModule
                 v-else
                 :module="item"
+                :next-module-article="index + 1 < modules.length && modules[index + 1].type === 'ArticleModule'"
             />
         </NuxtLazyHydrate>
 
@@ -244,7 +239,6 @@ import VsBrCardGroupModule from '~/components/Modules/VsBrCardGroupModule.vue';
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
 import VsBrRichArticleModule from '~/components/Modules/VsBrRichArticleModule.vue';
-import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
 import VsBrSkiListModule from '~/components/Modules/VsBrSkiListModule.vue';
 import VsBrSkiModule from '~/components/Modules/VsBrSkiModule.vue';

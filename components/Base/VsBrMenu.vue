@@ -17,124 +17,234 @@
         </div>
     </div>
 
-    <template v-if="checkFlags('use-navbar')">
-        <VsBrSkipTo />
-        <VsBanner
-            v-if="banner"
-            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
-        >
-            <template #banner-text>
-                <div v-html="banner.copy.value" />
-            </template>
+    <VsBrSkipTo />
+    <VsBanner
+        v-if="banner"
+        :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+    >
+        <template #banner-text>
+            <div v-html="banner.copy.value" />
+        </template>
 
-            <template #banner-cta>
+        <template #banner-cta>
+            <VsLink
+                :href="banner.ctaLink.link"
+                :type="banner.ctaLink.type"
+            >
+                {{ banner.ctaLink.label }}
+            </VsLink>
+        </template>
+    </VsBanner>
+
+    <div class="vs-sticky-nav--no-global">
+        <!-- Navbar To Do - Get real labels -->
+        <VsNavigationBar
+            :sidebar-close-label="configStore.getLabel('navigation.static', 'meganav.sidebar-close-label')"
+            :sidebar-open-label="configStore.getLabel('navigation.static', 'meganav.sidebar-open-label')"
+            :sidebar-title="configStore.getLabel('navigation.static', 'meganav.sidebar-title')"
+            sidebar-breakpoint="xl"
+        >
+            <template #logo-link>
                 <VsLink
-                    :href="banner.ctaLink.link"
-                    :type="banner.ctaLink.type"
+                    :href="`/${configStore.langString}`"
+                    no-visited-styles
                 >
-                    {{ banner.ctaLink.label }}
+                    <VsImg
+                        src="/visitscotland-logo.svg"
+                        :alt="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
+                        :style="{ width: '167px', height: '28px' }"
+                    />
                 </VsLink>
             </template>
-        </VsBanner>
 
-        <!-- Navbar To Do - Switch to feature flag -->
-        <div
-            class="vs-sticky-nav--no-global"
-            :class="{ 'transparent-nav-bar': shouldShowTransparent }"
-            @mouseenter="isHovered = true"
-            @mouseleave="isHovered = false"
-            @focusin="isFocused = true"
-            @focusout="isFocused = false"
-        >
-            <!-- Navbar To Do - Get real labels -->
-            <VsNavigationBar
-                :sidebar-close-label="configStore.getLabel('navigation.static', 'meganav.sidebar-close-label')"
-                :sidebar-open-label="configStore.getLabel('navigation.static', 'meganav.sidebar-open-label')"
-                :sidebar-title="configStore.getLabel('navigation.static', 'meganav.sidebar-title')"
-                sidebar-breakpoint="xl"
-            >
-                <template #logo-link>
-                    <VsLink
-                        :href="`/${configStore.langString}`"
-                        no-visited-styles
+            <template #navigation-bar-menu>
+                <VsNavigationBarMenu
+                    :menu-aria-label="configStore.getLabel('navigation.static', 'meganav.menu-aria-label')"
+                >
+                    <template
+                        v-for="(menuItem, index) in menuItems"
+                        :key="index"
                     >
-                        <VsImg
-                            src="/visitscotland-logo.svg"
-                            :alt="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
-                            :style="{ width: '167px', height: '28px' }"
-                        />
-                    </VsLink>
-                </template>
+                        <li v-if="menuItem.children && menuItem.children.length">
+                            <VsNavigationBarMenuDropdown>
+                                <template #button-content>
+                                    {{ menuItem.model.title }}
+                                </template>
 
-                <template #navigation-bar-menu>
-                    <VsNavigationBarMenu
-                        :menu-aria-label="configStore.getLabel('navigation.static', 'meganav.menu-aria-label')"
-                    >
-                        <template
-                            v-for="(menuItem, index) in menuItems"
-                            :key="index"
-                        >
-                            <li v-if="menuItem.children && menuItem.children.length">
-                                <VsNavigationBarMenuDropdown>
-                                    <template #button-content>
-                                        {{ menuItem.model.title }}
-                                    </template>
+                                <VsNavigationBarMenuItem
+                                    v-for="(dropdownItem, dropdownIndex) in menuItem.children"
+                                    v-show="getNavLink(dropdownItem)"
+                                    :key="dropdownIndex"
+                                    :href="getNavLink(dropdownItem)"
+                                >
+                                    {{ dropdownItem.model.title }}
+                                </VsNavigationBarMenuItem>
 
-                                    <VsNavigationBarMenuItem
-                                        v-for="(dropdownItem, dropdownIndex) in menuItem.children"
-                                        v-show="getNavLink(dropdownItem)"
-                                        :key="dropdownIndex"
-                                        :href="getNavLink(dropdownItem)"
+                                <li
+                                    v-if="menuItem.model.cta"
+                                    class="my-075 mx-100"
+                                >
+                                    <VsLink
+                                        :href="getNavLink(menuItem)"
+                                        type="internal"
+                                        no-visited-styles
                                     >
-                                        {{ dropdownItem.model.title }}
+                                        {{ menuItem.model.cta }}
+                                    </VsLink>
+                                </li>
+                            </VsNavigationBarMenuDropdown>
+                        </li>
+
+                        <VsNavigationBarMenuItem
+                            v-else
+                            variant="primary-menu-item"
+                            :href="getNavLink(menuItem)"
+                        >
+                            {{ menuItem.model.title }}
+                        </VsNavigationBarMenuItem>
+                    </template>
+                </VsNavigationBarMenu>
+            </template>
+
+            <template #navigation-bar-utilities>
+                <nav
+                    :aria-label="configStore.getLabel('navigation.static', 'meganav.utility-aria-label')"
+                >
+                    <ul class="d-flex">
+                        <li class="me-075">
+                            <VsButton
+                                size="sm"
+                                variant="secondary"
+                                :href="configStore.globalSearchPath"
+                                icon="vs-icon-control-search"
+                                class="vs-navigation-bar__search-link"
+                                show-label-breakpoint="md"
+                            >
+                                {{ configStore.getLabel('search', 'search') }}
+                            </VsButton>
+                        </li>
+
+                        <li
+                            class="d-none d-md-block me-025"
+                            v-if="favourites.featureEnabled"
+                        >
+                            <VsTooltip
+                                :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
+                                subtle
+                                variant="subtle"
+                                size="sm"
+                                icon="fa-regular fa-heart"
+                                icon-only
+                                :href="favourites.displaySavedUrl"
+                                class="d-block"
+                            >
+                                {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
+                            </VsTooltip>
+                        </li>
+
+                        <li
+                            class="d-none d-md-block me-025"
+                        >
+                            <VsTooltip
+                                :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
+                                subtle
+                                variant="subtle"
+                                size="sm"
+                                icon="fa-regular fa-map"
+                                icon-only
+                                :href="configStore.mainMapPath"
+                                class="d-block"
+                            >
+                                {{ configStore.getLabel('navigation.static', 'meganav.map-link-tooltip') }}
+                            </VsTooltip>
+                        </li>
+                        <li
+                            class="d-none d-md-block me-0 me-md-075 me-lg-0"
+                        >
+                            <VsNavigationBarMenuDropdown subtle>
+                                <template #button-content>
+                                    {{ configStore.locale.toUpperCase() }}
+                                </template>
+
+                                <VsNavigationBarMenuItem
+                                    v-for="(language, index) in localisedUrls"
+                                    :key="index"
+                                    :href="formatLink(language.url)"
+                                >
+                                    {{ language.displayName }}
+                                </VsNavigationBarMenuItem>
+                            </VsNavigationBarMenuDropdown>
+                        </li>
+                    </ul>
+                </nav>
+            </template>
+
+            <template #sidebar-body>
+                <VsAccordion>
+                    <nav
+                        :aria-label="configStore.getLabel('navigation.static', 'meganav.menu-aria-label')"
+                    >
+                        <ul>
+                            <template
+                                v-for="(menuItem, index) in menuItems"
+                                :key="index"
+                            >
+                                <li v-if="menuItem.children && menuItem.children.length">
+                                    <VsAccordionItem
+                                        :control-id="index.toString()"
+                                    >
+                                        <template #title>
+                                            {{ menuItem.model.title }}
+                                        </template>
+
+                                        <ul>
+                                            <VsNavigationBarMenuItem
+                                                v-for="(mobileDropdownItem, mobileDropdownIndex)
+                                                    in menuItem.children"
+                                                :key="mobileDropdownIndex"
+                                                :href="getNavLink(mobileDropdownItem)"
+                                            >
+                                                {{ mobileDropdownItem.model.title }}
+                                            </VsNavigationBarMenuItem>
+
+                                            <li class="my-075 mx-100">
+                                                <VsLink
+                                                    v-if="menuItem.model.cta"
+                                                    :href="getNavLink(menuItem)"
+                                                    type="internal"
+                                                    no-visited-styles
+                                                >
+                                                    {{ menuItem.model.cta }}
+                                                </VsLink>
+                                            </li>
+                                        </ul>
+                                    </VsAccordionItem>
+                                </li>
+
+                                <template v-else>
+                                    <VsNavigationBarMenuItem
+                                        variant="primary-sidebar-item"
+                                        :href="getNavLink(menuItem)"
+                                    >
+                                        {{ menuItem.model.title }}
                                     </VsNavigationBarMenuItem>
 
-                                    <li
-                                        v-if="menuItem.model.cta"
-                                        class="my-075 mx-100"
-                                    >
-                                        <VsLink
-                                            :href="getNavLink(menuItem)"
-                                            type="internal"
-                                            no-visited-styles
-                                        >
-                                            {{ menuItem.model.cta }}
-                                        </VsLink>
-                                    </li>
-                                </VsNavigationBarMenuDropdown>
-                            </li>
+                                    <VsBrDivider class="my-025" />
+                                </template>
+                            </template>
+                        </ul>
+                    </nav>
+                </VsAccordion>
+            </template>
 
-                            <VsNavigationBarMenuItem
-                                v-else
-                                variant="primary-menu-item"
-                                :href="getNavLink(menuItem)"
-                            >
-                                {{ menuItem.model.title }}
-                            </VsNavigationBarMenuItem>
-                        </template>
-                    </VsNavigationBarMenu>
-                </template>
-
-                <template #navigation-bar-utilities>
-                    <nav
-                        :aria-label="configStore.getLabel('navigation.static', 'meganav.utility-aria-label')"
-                    >
-                        <ul class="d-flex">
-                            <li class="me-075">
-                                <VsButton
-                                    size="sm"
-                                    variant="secondary"
-                                    :href="configStore.globalSearchPath"
-                                    icon="vs-icon-control-search"
-                                    class="vs-navigation-bar__search-link"
-                                    show-label-breakpoint="md"
-                                >
-                                    {{ configStore.getLabel('search', 'search') }}
-                                </VsButton>
-                            </li>
-
+            <template
+                #sidebar-footer
+            >
+                <div class="p-100 pb-300">
+                    <nav :aria-label="configStore.getLabel('navigation.static', 'meganav.sidebar-utility-aria-label')">
+                        <ul class="d-flex justify-content-end">
                             <li
-                                class="d-none d-md-block me-025"
+                                class="d-block d-md-none me-075"
                                 v-if="favourites.featureEnabled"
                             >
                                 <VsTooltip
@@ -151,9 +261,7 @@
                                 </VsTooltip>
                             </li>
 
-                            <li
-                                class="d-none d-md-block me-025"
-                            >
+                            <li class="d-block d-md-none me-075">
                                 <VsTooltip
                                     :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
                                     subtle
@@ -167,9 +275,7 @@
                                     {{ configStore.getLabel('navigation.static', 'meganav.map-link-tooltip') }}
                                 </VsTooltip>
                             </li>
-                            <li
-                                class="d-none d-md-block me-0 me-md-075 me-lg-0"
-                            >
+                            <li class="d-block d-md-none">
                                 <VsNavigationBarMenuDropdown subtle>
                                     <template #button-content>
                                         {{ configStore.locale.toUpperCase() }}
@@ -186,237 +292,20 @@
                             </li>
                         </ul>
                     </nav>
-                </template>
-
-                <template #sidebar-body>
-                    <VsAccordion>
-                        <nav
-                            :aria-label="configStore.getLabel('navigation.static', 'meganav.menu-aria-label')"
-                        >
-                            <ul>
-                                <template
-                                    v-for="(menuItem, index) in menuItems"
-                                    :key="index"
-                                >
-                                    <li v-if="menuItem.children && menuItem.children.length">
-                                        <VsAccordionItem
-                                            :control-id="index.toString()"
-                                        >
-                                            <template #title>
-                                                {{ menuItem.model.title }}
-                                            </template>
-
-                                            <ul>
-                                                <VsNavigationBarMenuItem
-                                                    v-for="(mobileDropdownItem, mobileDropdownIndex)
-                                                        in menuItem.children"
-                                                    :key="mobileDropdownIndex"
-                                                    :href="getNavLink(mobileDropdownItem)"
-                                                >
-                                                    {{ mobileDropdownItem.model.title }}
-                                                </VsNavigationBarMenuItem>
-
-                                                <li class="my-075 mx-100">
-                                                    <VsLink
-                                                        v-if="menuItem.model.cta"
-                                                        :href="getNavLink(menuItem)"
-                                                        type="internal"
-                                                        no-visited-styles
-                                                    >
-                                                        {{ menuItem.model.cta }}
-                                                    </VsLink>
-                                                </li>
-                                            </ul>
-                                        </VsAccordionItem>
-                                    </li>
-
-                                    <template v-else>
-                                        <VsNavigationBarMenuItem
-                                            variant="primary-sidebar-item"
-                                            :href="getNavLink(menuItem)"
-                                        >
-                                            {{ menuItem.model.title }}
-                                        </VsNavigationBarMenuItem>
-
-                                        <VsBrDivider class="my-025" />
-                                    </template>
-                                </template>
-                            </ul>
-                        </nav>
-                    </VsAccordion>
-                </template>
-
-                <template
-                    #sidebar-footer
-                >
-                    <div class="p-100 pb-300">
-                        <nav :aria-label="configStore.getLabel('navigation.static', 'meganav.sidebar-utility-aria-label')">
-                            <ul class="d-flex justify-content-end">
-                                <li
-                                    class="d-block d-md-none me-075"
-                                    v-if="favourites.featureEnabled"
-                                >
-                                    <VsTooltip
-                                        :title="configStore.getLabel('favourites', 'favourites.navigation.link.text')"
-                                        subtle
-                                        variant="subtle"
-                                        size="sm"
-                                        icon="fa-regular fa-heart"
-                                        icon-only
-                                        :href="favourites.displaySavedUrl"
-                                        class="d-block"
-                                    >
-                                        {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
-                                    </VsTooltip>
-                                </li>
-
-                                <li class="d-block d-md-none me-075">
-                                    <VsTooltip
-                                        :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
-                                        subtle
-                                        variant="subtle"
-                                        size="sm"
-                                        icon="fa-regular fa-map"
-                                        icon-only
-                                        :href="configStore.mainMapPath"
-                                        class="d-block"
-                                    >
-                                        {{ configStore.getLabel('navigation.static', 'meganav.map-link-tooltip') }}
-                                    </VsTooltip>
-                                </li>
-                                <li class="d-block d-md-none">
-                                    <VsNavigationBarMenuDropdown subtle>
-                                        <template #button-content>
-                                            {{ configStore.locale.toUpperCase() }}
-                                        </template>
-
-                                        <VsNavigationBarMenuItem
-                                            v-for="(language, index) in localisedUrls"
-                                            :key="index"
-                                            :href="formatLink(language.url)"
-                                        >
-                                            {{ language.displayName }}
-                                        </VsNavigationBarMenuItem>
-                                    </VsNavigationBarMenuDropdown>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </template>
-            </VsNavigationBar>
-        </div>
-    </template>
-    <template v-else>
-        <div
-            class="vs-sticky-nav vs-sticky-nav--has-content"
-            :class="{ 'has-edit-button': page.isPreview() }"
-        >
-            <VsBrSkipTo />
-            <header>
-                <VsGlobalMenu
-                    :active-site="configStore.activeSite === 'be'
-                        ? 'https://businessevents.visitscotland.com/'
-                        : 'https://www.visitscotland.com/'"
-                >
-                    <template #third-menu-item>
-                        <a
-                            v-if="favourites.featureEnabled"
-                            :href="favourites.displaySavedUrl"
-                            class="vs-favourites-link"
-                            :aria-label="configStore.getLabel('navigation.static', 'favourites.navigation.link.text')"
-                        >
-                            <VsIcon
-                                icon="fa-regular fa-heart"
-                                variant="inverse"
-                                size="xxs"
-                            />
-                            <span class="vs-favourites-link--text d-none d-md-block d-lg-flex align-middle">
-                                {{ configStore.getLabel('favourites', 'favourites.navigation.link.text') }}
-                            </span>
-                        </a>
-                        <VsGlobalMenuLanguage
-                            :language="configStore.locale"
-                            :language-label="configStore.getLabel('navigation.static', 'universal.language')"
-                        >
-                            <VsGlobalMenuLanguageItem
-                                v-for="(language, index) in localisedUrls"
-                                :key="index"
-                                :language-link="formatLink(language.url)"
-                                :language-name="language.displayName"
-                                :language="language.locale.language"
-                            />
-                        </VsGlobalMenuLanguage>
-                    </template>
-                </VsGlobalMenu>
-
-                <div style="display: none;" aria-hidden="true">
-                    Navigation generated at {{ cacheBustDate }}
                 </div>
-
-                <BrManageMenuButton :menu="menuData" />
-
-                <VsMeganav
-                    :href="`/${configStore.langString}`"
-                    :menu-toggle-alt-text="configStore.getLabel('navigation.static', 'meganav-toggle-btn-alt-text')"
-                    :search-button-text="configStore.getLabel('search', 'search')"
-                    :search-label-text="configStore.getLabel('search', 'search-label')"
-                    :search-clear-button-text="configStore.getLabel('search', 'clear-form')"
-                    :search-close-button-text="configStore.getLabel('search', 'close-form')"
-                    :logo-alt-text="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
-                    :is-static="true"
-                    :search-link="configStore.searchDmsBased ? '' : configStore.globalSearchPath"
-                >
-                    <template #mega-nav-top-menu-items>
-                        <VsBrMegaNav
-                            :links="menuItems"
-                        />
-                    </template>
-
-                    <template #mega-nav-accordion-items>
-                        <VsBrAccordionNav
-                            :links="menuItems"
-                        />
-                    </template>
-                </VsMeganav>
-            </header>
-        </div>
-
-        <VsBanner
-            v-if="banner"
-            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
-        >
-            <template #banner-text>
-                <div v-html="banner.copy.value" />
             </template>
-
-            <template #banner-cta>
-                <VsLink
-                    :href="banner.ctaLink.link"
-                    :type="banner.ctaLink.type"
-                >
-                    {{ banner.ctaLink.label }}
-                </VsLink>
-            </template>
-        </VsBanner>
-    </template>
+        </VsNavigationBar>
+    </div>
 </template>
 
 <script lang="ts" setup>
-import {
-    toRefs, provide, ref, computed, onMounted, onUnmounted,
-} from 'vue';
+import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
-import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
-
 import formatLink from '~/composables/formatLink.ts';
 import { useFavourites } from '~/stores/favouritesStore.ts';
 import useConfigStore from '~/stores/configStore.ts';
 
 import {
-    VsGlobalMenu,
-    VsGlobalMenuLanguage,
-    VsGlobalMenuLanguageItem,
-    VsMeganav,
     VsBanner,
     VsLink,
     VsNavigationBar,
@@ -428,14 +317,11 @@ import {
     VsAccordion,
     VsAccordionItem,
     VsButton,
-    VsIcon,
 } from '@visitscotland/component-library/components';
 
 import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
 
 import VsBrDivider from '~/components/Modules/VsBrDivider.vue';
-import VsBrMegaNav from '~/components/Modules/VsBrMegaNav.vue';
-import VsBrAccordionNav from '~/components/Modules/VsBrAccordionNav.vue';
 
 const favourites = useFavourites();
 const props = defineProps<{ component: Component, page: Page }>();
@@ -451,32 +337,7 @@ let menuItems : any[] = [];
 let localisedUrls : any[] = [];
 let banner : any = null;
 
-let cacheBustDate : string = '';
-
 const configStore = useConfigStore();
-
-const isHovered = ref(false);
-const isFocused = ref(false);
-const scrollY = ref(1);
-
-const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
-    && checkFlags('use-navbar')
-    && scrollY.value === 0
-    && !isHovered.value
-    && !isFocused.value);
-
-function handleScroll() {
-    scrollY.value = window.scrollY;
-}
-
-onMounted(() => {
-    scrollY.value = window.scrollY;
-    window.addEventListener('scroll', handleScroll);
-});
-
-onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll);
-});
 
 if (page.value) {
     menu = component.value.getModels().menu;
@@ -495,66 +356,12 @@ if (page.value) {
         banner.ctaLink.link = banner.ctaLink.link.replace('/site/resourceapi', '');
     }
 
-    const timestamp = menuData.model.data.timeStamp;
-    const date = new Date(timestamp);
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1);
-    const day = String(date.getDate());
-    const hours = String(date.getHours());
-    const minutes = String(date.getMinutes());
-    const seconds = String(date.getSeconds());
-
-    cacheBustDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 provide('page', page.value);
 </script>
 
 <style lang="scss">
-    .vs-navigation-bar {
-        transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
-    }
-
-    .transparent-nav-bar .vs-navigation-bar {
-        background-color: rgba(0,0,0,0);
-        box-shadow: none;
-
-        .vs-link > img {
-            filter: brightness(0) invert(1);
-        }
-
-        .vs-navigation-bar-menu-dropdown > .btn {
-            color: white;
-
-            &:after {
-                color: white;
-            }
-        }
-
-        .vs-navigation-bar-menu-item > a {
-            color: white;
-        }
-
-        .dropdown-menu > .vs-navigation-bar-menu-item > a {
-            color: #200f2e;
-        }
-
-        .vs-button--icon-only.btn-subtle i {
-            color: white !important;
-        }
-
-        .vs-navigation-bar__search-link {
-            background-color: rgba(0,0,0,0);
-            color: white;
-            border-color: white;
-
-            i {
-                color: white !important;
-            }
-        }
-    }
-
     .vs-favourites-link {
         font-size: .75rem;
         gap: 0.25rem;
