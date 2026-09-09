@@ -8,7 +8,7 @@
             {{ module.title || 'Key Information' }}
         </VsHeading>
 
-        <VsBody>
+        <VsBody class="d-flex flex-column flex-md-row">
             <div>
                 <ul class="key-information__highlights list-unstyled d-flex flex-column m-0 p-0 gap-075 mt-150 text-tertiary">
                     <li v-for="highlight in module.highlights" :key="highlight.category.key" class="d-flex gap-050">
@@ -24,10 +24,16 @@
                         </span>
                     </li>
                 </ul>
-                <VsButton class="mt-150">{{  module.cta.label }}</VsButton>
+                <VsButton class="mt-150 d-none d-md-block">{{  module.cta.label }}</VsButton>
             </div>
             <div>
-                <!-- TODO Placeholder for map inclusion VS-1835 -->
+                <div>
+                    <!-- TODO Placeholder for map inclusion VS-1835 -->
+                     map
+                </div>
+                <div>
+                    <VsButton class="mt-150 d-md-none">{{  module.cta.label }}</VsButton>
+                </div>
             </div>
         </VsBody>
     </VsPanel>
