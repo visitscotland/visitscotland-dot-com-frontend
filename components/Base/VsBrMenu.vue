@@ -38,6 +38,7 @@
 
     <!-- Navbar To Do - Switch to feature flag -->
     <div
+        ref="navElement"
         class="vs-sticky-nav--no-global"
         :class="{ 'transparent-nav-bar': shouldShowTransparent }"
         @mouseenter="isHovered = true"
@@ -370,8 +371,8 @@ function updateNavbarHeight() {
     // Otherwise the navbar can hide to top of content
     if (navElement.value) {
         document.documentElement.style.setProperty(
-            '--vs-navbar-height',
-            `${navElement.value.getBoundingClientRect().height}px`,
+            '--vs-navbar-scroll-margin-top',
+            `calc(${navElement.value.getBoundingClientRect().height}px + 1rem)`,
         );
     }
 }
@@ -390,7 +391,7 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
     navResizeObserver?.disconnect();
-    document.documentElement.style.removeProperty('--vs-navbar-height');
+    document.documentElement.style.removeProperty('--vs-navbar-scroll-margin-top');
 });
 
 if (page.value) {
