@@ -2437,14 +2437,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pinia/nuxt@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@pinia/nuxt@npm:1.0.1"
+"@pinia/nuxt@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@pinia/nuxt@npm:1.0.2"
   dependencies:
     "@nuxt/kit": "npm:^4.4.8"
   peerDependencies:
-    pinia: ^4.0.2
-  checksum: 10c0/c52cc95daf26e48cd608aa8851971849e2f0b5eecaf14f7512e5736c8014cbd1a62414664ffd04775d35cfe3236173764ad834857aa593da95b0edfb5dec3fc3
+    pinia: ^4.0.3
+  checksum: 10c0/54fda4b9f3f7c3c510690c56e4e41b8b1206829f18e162a4808fc490c12e8ffce7a5fa04466f535153ee41e1c364f27373f1a1d7a0aed7b763333503b110ef32
   languageName: node
   linkType: hard
 
@@ -9859,7 +9859,7 @@ __metadata:
     "@bloomreach/spa-sdk": "npm:^27.3.1"
     "@bloomreach/vue3-sdk": "npm:^22.0.5"
     "@nuxt/eslint-config": "npm:^1.15.2"
-    "@pinia/nuxt": "npm:^1.0.1"
+    "@pinia/nuxt": "npm:^1.0.2"
     "@playwright/test": "npm:^1.62.1"
     "@types/node": "npm:^26.4.0"
     "@visitscotland/component-library": "npm:5.78.0"
