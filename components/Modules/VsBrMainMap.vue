@@ -221,7 +221,7 @@ function setupFeatureDestinations() {
     Load the map libraries and initialise the map.
 */
 async function initialiseMap() {
-    if (showError.value || !mapContainer.value) return;
+    if (showError.value || !mapContainer.value || cookieCheck.cookiesLoaded.value) return;
     await googleMap.loadGoogleMaps();
     googleMap.initMap(mapContainer.value);
 }
