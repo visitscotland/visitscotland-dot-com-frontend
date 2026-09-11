@@ -31,7 +31,7 @@
                         class="flex-grow-1"
                         data-test="vs-map-sidebar__heading"
                         heading-style="heading-xxs"
-                        id="vs-map-sidebar__heading"
+                        id="main-heading"
                         level="1"
                         no-margins
                     >
