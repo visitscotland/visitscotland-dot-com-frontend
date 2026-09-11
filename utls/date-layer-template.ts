@@ -77,6 +77,42 @@ const favouritesShareTemplate = [
     'shared_list_id',
 ];
 
+const googleMapSearchTemplate = [
+    'event',
+    'search_query',
+    'search_map_location',
+    'search_results_count',
+    'search_usage_index',
+];
+
+const googleMapFilterInteractionTemplate = [
+    'event',
+    'filter_type',
+    'search_map_location',
+    'filter_selection',
+    'results_count',
+    'filter_usage_index',
+];
+
+const googleMapTimeToFirstInteractionTemplate = [
+    'event',
+    'time_to_first_interaction_ms',
+    'first_interaction_type',
+];
+
+const googleMapInteractionTemplate = [
+    'event',
+    'interaction_type',
+    'search_query',
+    'map_location',
+    'visible_attractions_count',
+    'card_attraction_name',
+    'card_attraction_category',
+    'card_attraction_rating',
+    'card_attraction_url',
+    'interaction_timestamp_ms',
+];
+
 export {
     siteSearchOpenTemplate,
     siteSearchUsageTemplate,
@@ -87,4 +123,8 @@ export {
     favouritesPageViewTemplate,
     favouritesClickTemplate,
     favouritesShareTemplate,
+    googleMapSearchTemplate,
+    googleMapFilterInteractionTemplate,
+    googleMapTimeToFirstInteractionTemplate,
+    googleMapInteractionTemplate,
 };

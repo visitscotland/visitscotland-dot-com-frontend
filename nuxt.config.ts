@@ -45,6 +45,34 @@ export default defineNuxtConfig({
 
     vue: {
         runtimeCompiler: true,
+        compilerOptions: {
+            isCustomElement: (tag) => [
+                'gmp-map',
+                'gmp-advanced-marker',
+                'gmp-place-search',
+                'gmp-place-search-all-content',
+                'gmp-place-text-search-request',
+                'gmp-place-nearby-search-request',
+                'gmp-place-details',
+                'gmp-place-details-place-request',
+                'gmp-place-all-content',
+                'gmp-place-content-config',
+                'gmp-place-address',
+                'gmp-place-rating',
+                'gmp-place-type',
+                'gmp-place-price',
+                'gmp-place-accessible-entrance-icon',
+                'gmp-place-opening-hours',
+                'gmp-place-website',
+                'gmp-place-phone-number',
+                'gmp-place-summary',
+                'gmp-place-type-specific-highlights',
+                'gmp-place-reviews',
+                'gmp-place-feature-list',
+                'gmp-place-media',
+                'gmp-place-attribution',
+            ].includes(tag),
+        },
     },
 
     components: [
