@@ -1,14 +1,14 @@
 <template>
     <VsTabItem :title="props.tab.title">
         <div class="px-075 px-md-150 px-lg-300 px-xl-400 pt-200 pb-125">
-            <VsAccordion v-if="props.tab.travelInformationTransportRows">
+            <VsAccordion v-if="props.tab.type === 'transport'">
                 <VsAccordionItem
-                    v-for="(row, rowIndex) in props.tab.travelInformationTransportRows"
+                    v-for="(row, rowIndex) in transportContent"
                     :key="rowIndex"
-                    :open-by-default="rowIndex === 0 ? true : false"
+                    :open-by-default="Number(rowIndex) === 0"
                     variant="transparent"
                     :control-id="`accordion-item-tab-${props.tabIndex}-${row.transport.key}-${rowIndex}`"
-                    :class="rowIndex === 0 ? 'border-top-0' : ''"
+                    :class="Number(rowIndex) === 0 ? 'border-top-0' : ''"
                 >
                     <template #title>
                         <VsIcon
@@ -25,15 +25,14 @@
                         <VsIcon icon="fa-regular fa-chevron-down" size="sm" />
                     </template>
                     <div class="p-075">
-                        <VsBrRichText
-                            :input-content="row.copy.value"
-                        />
+                        <VsBrRichText :input-content="row.copy.value" />
                     </div>
                 </VsAccordionItem>
             </VsAccordion>
-            <p v-else>
-                Information copy tab
-            </p>
+
+            <div v-else-if="articleContent">
+                <VsBrRichText :input-content="articleContent.value" />
+            </div>
         </div>
     </VsTabItem>
 </template>
@@ -46,13 +45,25 @@ import {
     VsIcon,
 } from '@visitscotland/component-library/components';
 
-import type { TravelTabContent } from '~/types/types.ts';
+import type { TravelInformation } from '~/types/types';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 type Props = {
-    tab: TravelTabContent,
-    tabIndex: number,
+    tab: TravelInformation,
+    tabIndex: string | number,
 };
 
 const props = defineProps<Props>();
+
+const transportContent = computed(() => {
+    if (props.tab.type !== 'transport') return [];
+
+    return props.tab.practicalInformationContent;
+});
+
+const articleContent = computed(() => {
+    if (props.tab.type !== 'article') return null;
+
+    return props.tab.practicalInformationContent;
+});
 </script>
