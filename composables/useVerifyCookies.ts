@@ -14,16 +14,22 @@ export default function useVerifyCookies() {
     });
 
     const cookiesLoaded = computed(() => {
+        console.log('cookiesLoaded');
         if ((typeof window !== 'undefined' && window.bypassCookiesLoaded)
             || import.meta.dev
         ) {
+            console.log('cookiesLoaded2', true);
             return true;
         }
 
+        console.log('cookiesLoaded3', cookieManagerLoaded.value);
         return cookieManagerLoaded.value;
     });
 
-    const managerLoaded = () => cookieManagerLoaded.value = true;
+    const managerLoaded = () => {
+        console.log('manager loaded');
+        cookieManagerLoaded.value = true;
+    };
 
     function cookiesUpdated() {
         console.log('cookiesUpdated');
