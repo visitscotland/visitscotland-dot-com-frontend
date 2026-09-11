@@ -26,6 +26,7 @@ export default function useVerifyCookies() {
     const managerLoaded = () => cookieManagerLoaded.value = true;
 
     function cookiesUpdated() {
+        console.log('cookiesUpdated');
         let allowed = false;
 
         if (typeof CookieControl !== 'undefined' && requiredCookies.value) {
@@ -34,6 +35,7 @@ export default function useVerifyCookies() {
             );
         };
 
+        console.log('cookiesUpdated', allowed);
         requiredCookiesAllowed.value = allowed;
     }
 

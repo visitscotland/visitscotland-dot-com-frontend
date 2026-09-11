@@ -221,7 +221,10 @@ function setupFeatureDestinations() {
     Load the map libraries and initialise the map.
 */
 async function initialiseMap() {
-    if (showError.value || !mapContainer.value || cookieCheck.cookiesLoaded.value) return;
+    console.log('initialisedMap 1');
+    if (showError.value || !mapContainer.value || !cookieCheck.cookiesLoaded.value) return;
+
+    console.log('initialisedMap 2');
     await googleMap.loadGoogleMaps();
     googleMap.initMap(mapContainer.value);
 }
@@ -231,6 +234,7 @@ async function initialiseMap() {
 watch(
     () => [cookieCheck.cookiesAllowed.value, cookieCheck.cookiesLoaded.value],
     async([allowed, loaded]) => {
+        console.log('watch', allowed, loaded);
         if (allowed && loaded) {
             await initialiseMap();
         }
