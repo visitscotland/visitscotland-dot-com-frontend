@@ -5,6 +5,15 @@
         :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
     />
 
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
+        <VsBrKeyInformationPanel
+            v-if="configStore.pageIntro?.keyInformationPanel"
+            :module="configStore.pageIntro.keyInformationPanel"
+        />
+    </NuxtLazyHydrate> 
+    
     <VsBrModuleBuilder
         v-if="pageItems"
         :modules="pageItems"
@@ -105,4 +114,5 @@ if (page.value) {
         }
     }
 }
+
 </script>

@@ -5,7 +5,7 @@
             heading-style="heading-s"
             noMargins
         >
-            {{ module.title || 'Key Information' }}
+            {{ module.title || 'Key Information Panel'}}
         </VsHeading>
 
         <VsBody class="d-flex flex-column flex-md-row">
@@ -19,20 +19,32 @@
                                 aria-hidden="true"
                             />
                         </span>
-                        <span>
-                            <span>{{ highlight.category.label }}:</span> {{ highlight.copy }}
-                        </span>
+                        <div v-html="highlight.copy.value" />
                     </li>
                 </ul>
-                <VsButton class="mt-150 d-none d-md-block">{{  module.cta.label }}</VsButton>
+                <!-- Desktop button -->
+                <VsButton
+                    v-if="module.cta"
+                    :href="module.cta.link"
+                    class="mt-150 d-none d-md-block"
+                >
+                    {{ module.cta.label }}
+                </VsButton>
             </div>
             <div>
                 <div>
                     <!-- TODO Placeholder for map inclusion VS-1835 -->
-                     map
+                    map
                 </div>
                 <div>
-                    <VsButton class="mt-150 d-md-none">{{  module.cta.label }}</VsButton>
+                    <!-- Mobile button -->
+                    <VsButton
+                        v-if="module.cta"
+                        :href="module.cta.link"
+                        class="mt-150 d-md-none"
+                    >
+                        {{ module.cta.label }}
+                    </VsButton>
                 </div>
             </div>
         </VsBody>
@@ -52,14 +64,16 @@ import getIconName from '~/composables/getIconName';
 interface KeyInformationHighlight {
     category: {
         key: string,
-        label: string,
+        value: string,
     },
-    copy: string;
+    copy: {
+        value: string,
+    };
 }
 
 interface KeyInformationModule {
     title: string,
-    cta: {
+    cta?: {
         label: string,
         link: string,
         type: string,
