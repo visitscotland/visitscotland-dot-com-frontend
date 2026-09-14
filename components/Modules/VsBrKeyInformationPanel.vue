@@ -59,7 +59,7 @@ import {
     VsIcon,
     VsPanel,
 } from '@visitscotland/component-library/components';
-import getIconName from '~/composables/getIconName';
+import getIconName from '~/composables/getIconName.ts';
 
 interface KeyInformationHighlight {
     category: {
