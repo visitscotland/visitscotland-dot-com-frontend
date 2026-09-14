@@ -4,7 +4,7 @@ type Icon = {
 
 function getIconDetails(name: string) {
     const icon: Icon = {
-        name: 'fa-solid fa-star',
+        name: '',
     };
     switch (name) {
     case 'cities':
