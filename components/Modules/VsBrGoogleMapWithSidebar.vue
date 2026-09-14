@@ -217,8 +217,7 @@ import {
 } from '@visitscotland/component-library/components';
 import { ref } from 'vue';
 
-// eslint-disable-next-line import/extensions
-import getIconDetails from '~/utls/mapIconMapping';
+import getIconDetails from '~/utls/mapIconMapping.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 import type { BrxmFeature, MapSidebarFilter } from '~/types/types';
