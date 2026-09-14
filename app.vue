@@ -359,6 +359,6 @@ const mapping = {
     }
 
     [id] {
-        scroll-margin-top: 4rem;
+        scroll-margin-top: var(--vs-navbar-scroll-margin-top, 4rem);
     }
 </style>
