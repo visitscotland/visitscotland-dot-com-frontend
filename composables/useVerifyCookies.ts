@@ -14,25 +14,18 @@ export default function useVerifyCookies() {
     });
 
     const cookiesLoaded = computed(() => {
-        console.log('cookiesLoaded');
         if ((typeof window !== 'undefined' && window.bypassCookiesLoaded)
             || import.meta.dev
         ) {
-            console.log('cookiesLoaded2', true);
             return true;
         }
 
-        console.log('cookiesLoaded3', cookieManagerLoaded.value);
         return cookieManagerLoaded.value;
     });
 
-    const managerLoaded = () => {
-        console.log('manager loaded');
-        cookieManagerLoaded.value = true;
-    };
+    const managerLoaded = () => cookieManagerLoaded.value = true;
 
     function cookiesUpdated() {
-        console.log('cookiesUpdated');
         let allowed = false;
 
         if (typeof CookieControl !== 'undefined' && requiredCookies.value) {
@@ -41,7 +34,6 @@ export default function useVerifyCookies() {
             );
         };
 
-        console.log('cookiesUpdated', allowed);
         requiredCookiesAllowed.value = allowed;
     }
 
