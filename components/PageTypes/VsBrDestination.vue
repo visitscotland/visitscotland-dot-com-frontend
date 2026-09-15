@@ -11,6 +11,7 @@
         <VsBrKeyInformationPanel
             v-if="configStore.pageIntro?.keyInformationPanel"
             :module="configStore.pageIntro.keyInformationPanel"
+            class="my-200 mx-075"
         />
     </NuxtLazyHydrate> 
     
