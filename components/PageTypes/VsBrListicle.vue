@@ -259,26 +259,18 @@ if (page.value) {
 }
 
 .listicle-facilities__list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0;
+    display: inline-block;
+    margin: 0 auto;
+    padding: 0 3rem;
+    text-align: left;
 }
 
 .listicle-facilities__item {
-    display: flex;
-    flex: 0 0 90px;
-    flex-direction: column;
-    align-items: center;
+    display: inline-table;
+    width: 80px;
     margin-bottom: 1rem;
     padding: 0 0.25rem;
     font-size: 0.875rem;
     text-align: center;
-}
-
-@media (min-width: 992px) {
-    .listicle-facilities__list {
-        justify-content: flex-start;
-    }
 }
 </style>
