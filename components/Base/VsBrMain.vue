@@ -225,6 +225,8 @@ if (page.value) {
         }
     }
 
+    configStore.isHome = pageModels.isHome;
+
     const canonicalLink = forceHttps(useRequestURL().toString().split('?')[0]);
 
     let ogImageSrc = '';
