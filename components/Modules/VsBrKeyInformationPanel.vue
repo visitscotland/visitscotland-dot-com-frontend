@@ -48,7 +48,7 @@
                         :href="module.cta.link"
                         class="key-information__cta-mobile mt-150 d-md-none"
                     >
-                        {{ module.cta.label }} mobile
+                        {{ module.cta.label }}
                     </VsButton>
                 </div>
             </div>
