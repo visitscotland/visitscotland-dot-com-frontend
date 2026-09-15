@@ -1,5 +1,5 @@
 <template>
-    <VsPanel>
+    <VsPanel class="key-information">
         <VsHeading
             level="2"
             heading-style="heading-s"
@@ -92,6 +92,10 @@ defineProps<{
 </script>
 
 <style lang="css" scoped>
+    .key-information {
+        max-width: 53.5rem /* 856px */;
+        margin: 0 auto;
+    }
     .key-information__highlights {
         color: #535396; /* Text tertiary */
         .highlight__icon-wrapper {
