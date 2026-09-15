@@ -98,17 +98,32 @@
                                 #facilities-slot
                                 v-if="item.facilities && item.facilities.length"
                             >
-                                <div>
-                                    <VsIconList
-                                        :title="configStore.getLabel('listicle', 'keyfacilities.title')"
+                                <div class="listicle-facilities">
+                                    <VsHeading
+                                        level="3"
+                                        heading-style="heading-xxxs"
+                                        class="listicle-facilities__title"
                                     >
-                                        <VsIconListItem
-                                            v-for="(facility, facilityIndex) in item.facilities"
-                                            :key="facilityIndex"
-                                            :icon="getDMSIconName(facility.id)"
-                                            :label="facility.name"
-                                        />
-                                    </vsiconlist>
+                                        {{ configStore.getLabel('listicle', 'keyfacilities.title') }}
+                                    </VsHeading>
+
+                                    <VsList
+                                        inline
+                                        class="listicle-facilities__list mb-0"
+                                    >
+                                        <li
+                                            v-for="facility in item.facilities"
+                                            :key="facility.id"
+                                            class="listicle-facilities__item"
+                                        >
+                                            <VsIcon
+                                                :icon="getDMSIconName(facility.id)"
+                                                size="md"
+                                                class="d-block mx-auto mb-075"
+                                            />
+                                            <span>{{ facility.name }}</span>
+                                        </li>
+                                    </VsList>
                                 </div>
                             </template>
                         </VsListicleItem>
@@ -152,15 +167,6 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrProductSearch
-            v-if="productSearch"
-            class="mt-300 mt-lg-600"
-        />
-    </NuxtLazyHydrate>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
         <section
             class="mt-500"
             v-if="otyml"
@@ -191,7 +197,6 @@ import useConfigStore from '~/stores/configStore.ts';
 import formatLink from '~/composables/formatLink.ts';
 
 import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
-import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
@@ -204,8 +209,8 @@ import {
     VsCol,
     VsListicleItem,
     VsLink,
-    VsIconList,
-    VsIconListItem,
+    VsList,
+    VsIcon,
     VsPanel,
     VsHeading,
     VsBody,
@@ -216,8 +221,6 @@ const props = defineProps<{ component: Component, page: Page }>();
 const { page, component } = toRefs(props);
 
 let documentData : any = {
-};
-let productSearch : any = {
 };
 let otyml : any = null;
 
@@ -230,7 +233,6 @@ if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
-    productSearch = configStore.productSearch;
     if (configStore.otyml) {
         otyml = configStore.otyml;
     }
@@ -243,3 +245,32 @@ if (page.value) {
 }
 
 </script>
+
+<style scoped>
+.listicle-facilities {
+    text-align: center;
+}
+
+.listicle-facilities__title {
+    margin-top: 0;
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.listicle-facilities__list {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 0 3rem;
+    text-align: left;
+}
+
+.listicle-facilities__item {
+    display: inline-table;
+    width: 80px;
+    margin-bottom: 1rem;
+    padding: 0 0.25rem;
+    font-size: 0.875rem;
+    text-align: center;
+}
+</style>
