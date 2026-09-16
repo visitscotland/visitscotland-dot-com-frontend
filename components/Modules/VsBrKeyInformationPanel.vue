@@ -18,6 +18,7 @@
                                     :icon="getIconName(highlight.category.key)"
                                     variant="tertiary"
                                     aria-hidden="true"
+                                    size="sm"
                                 />
                             </span>
                             <span class="highlight__text">
@@ -95,7 +96,7 @@ defineProps<{
 
 <style lang="css" scoped>
     .key-information {
-        width: fit-content;
+        max-width: 53.5rem /* 856px */;
         margin: 0 auto;
     }
     .key-information__highlights {
