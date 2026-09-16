@@ -4,7 +4,7 @@
             <VsHeading
                 level="2"
                 heading-style="heading-s"
-                noMargins
+                no-margins
             >
                 {{ module.title || 'Key Information Panel'}}
             </VsHeading>
@@ -95,7 +95,7 @@ defineProps<{
 
 <style lang="css" scoped>
     .key-information {
-        max-width: 53.5rem /* 856px */;
+        width: fit-content;
         margin: 0 auto;
     }
     .key-information__highlights {
