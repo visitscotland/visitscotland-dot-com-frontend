@@ -19,7 +19,7 @@
                 >
                     <VsTabs>
                         <VsBrTravelInformationTab
-                            v-for="(item, index) in tabItems"
+                            v-for="(item, index) in module.practicalInformation"
                             :key="index"
                             :tab="item"
                             :tab-index="index"
@@ -40,31 +40,21 @@ import {
     VsTabs,
 } from '@visitscotland/component-library/components';
 
-import type { Copy, TravelTabContent } from '~/types/types.ts';
+import type { Copy, TravelInformation } from '~/types/types.ts';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrTravelInformationTab from './VsBrTravelInformationTab.vue';
 
-type Props = {
-    module: {
-        title: string;
-        copy?: Copy;
-        gettingTo?: TravelTabContent;
-        gettingAround?: TravelTabContent;
-        // Don't need to type the rest of the module properties.
-        [key: string]: unknown;
-    };
+type TravelInformationModule = {
+    title: string;
+    copy?: Copy;
+    practicalInformation: TravelInformation[];
+    // Don't need to type the rest of the module properties.
+    [key: string]: unknown;
 }
 
+type Props = {
+    module: TravelInformationModule;
+};
+
 const props = defineProps<Props>();
-
-const tabItems = [
-    ...(props.module.gettingTo) ? [props.module.gettingTo] : [],
-    ...(props.module.gettingAround) ? [props.module.gettingAround] : [],
-];
-
-// const tabItems = [
-//     ...props.module.practicalInformation,
-//     ...(props.module.gettingTo) ? [props.module.gettingTo] : [],
-//     ...(props.module.gettingAround) ? [props.module.gettingAround] : [],
-// ];
 </script>

@@ -33,22 +33,32 @@ export type SearchApiResults = {
     totalResults: number;
 };
 
-/** Travel Information module */
+/* Travel Information Module */
 export type Copy = {
     contentType: string;
     value: string;
 };
 
-export type TransportRow = {
+type PracticalInformationContentTransport = {
     transport: {
         key: string;
         label: string;
     };
     copy: Copy;
-}
+    // Don't need to type the rest of the module properties.
+    [key: string]: unknown;
+};
 
-export type TravelTabContent = {
+type TransportInformation = {
+    type: 'transport';
     title: string;
-    travelInformationTransportRows?: TransportRow[];
-    copy?: Copy;
-}
+    practicalInformationContent: PracticalInformationContentTransport[];
+};
+
+type ArticleInformation = {
+    type: 'article';
+    title: string;
+    practicalInformationContent: Copy;
+};
+
+export type TravelInformation = TransportInformation | ArticleInformation;
