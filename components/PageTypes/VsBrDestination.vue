@@ -17,6 +17,16 @@
         :favourites-button="true"
     />
 
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
+        <VsBrKeyInformationPanel
+            v-if="configStore.pageIntro?.keyInformationPanel"
+            :module="configStore.pageIntro.keyInformationPanel"
+            class="my-200 mx-075"
+        />
+    </NuxtLazyHydrate> 
+
     <div
         class="mt-500"
         v-if="pageItems"
@@ -112,4 +122,5 @@ if (page.value) {
         }
     }
 }
+
 </script>
