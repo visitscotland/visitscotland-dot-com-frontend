@@ -57,6 +57,13 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
         currentY.value = nextPosition;
     }
 
+    /** set the drawer position to either open or closed. */
+    const setDrawerPosition = () => {
+        currentY.value = isOpen.value
+            ? OPEN_POSITION
+            : closedPosition.value;
+    };
+
     /**
      * Determine if the drawer should be open or closed base on the swipe direction.
      * 
@@ -79,13 +86,9 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
         } else if (totalDelta < -SWIPE_THRESHOLD) {
             isOpen.value = true;
         } else {
-            // If the user doesn't swipe passed the threshold then return to the 
-            // previous state.
-            if (isOpen.value) {
-                isOpen.value = true;
-            } else {
-                isOpen.value = false;
-            }
+            // Swipe didn't pass the threshold, so return to the
+            // drawer's previous position.
+            setDrawerPosition();
         }
     }
 
@@ -119,9 +122,7 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
     }
 
     watchEffect(() => {
-        currentY.value = isOpen.value
-            ? OPEN_POSITION
-            : closedPosition.value;
+        setDrawerPosition();
     });
 
     onMounted(() => {    
