@@ -34,7 +34,7 @@
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^1.0.2",
     "@playwright/test": "^1.62.1",
-    "@visitscotland/component-library": "file:.yalc/@visitscotland/component-library",
+    "@visitscotland/component-library": "5.80.0",
     "@vue/devtools-api": "^8.1.5",
     "axios": "^1.18.0",
     "commitizen": "^4.3.1",
