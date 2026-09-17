@@ -79,7 +79,9 @@
             v-for="(utilityMenu, index) in utilityMenuItems"
             :key="index"
         >
-            <VsFooterUtilityList>
+            <VsFooterUtilityList
+                style="position: relative;"
+            >
                 <BrManageMenuButton :menu="utilityData" />
                 <VsFooterNavListItem
                     v-for="(utilityItem, childIndex) in utilityMenu.children"
