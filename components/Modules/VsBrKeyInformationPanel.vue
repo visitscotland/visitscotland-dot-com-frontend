@@ -34,7 +34,7 @@
                     <VsButton
                         v-if="module.cta"
                         :href="module.cta.link"
-                        class="key-information__cta-desktop mt-150 d-none d-md-block"
+                        class="key-information__cta-desktop mt-150 d-none d-sm-block"
                     >
                         {{ module.cta.label }}
                     </VsButton>
@@ -48,7 +48,7 @@
                         <VsButton
                             v-if="module.cta"
                             :href="module.cta.link"
-                            class="key-information__cta-mobile mt-150 d-md-none"
+                            class="key-information__cta-mobile mt-150 d-sm-none"
                         >
                             {{ module.cta.label }}
                         </VsButton>
