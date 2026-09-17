@@ -82,7 +82,9 @@
                                 class="vs-google-map-with-sidebar__feature-list-btn vs-google-map-with-sidebar__category-btn"
                                 @click="handleFeatureClick(feature)"
                                 @mouseover="handleFeatureButtonMouseover(feature.properties.id)"
+                                @focusin="handleFeatureButtonMouseover(feature.properties.id)"
                                 @mouseout="handleFeatureButtonMouseout(feature.properties.id)"
+                                @focusout="handleFeatureButtonMouseout(feature.properties.id)"
                             >
                                 <VsImg
                                     v-if="feature.properties.image"
@@ -182,6 +184,7 @@
                         :id="`marker-${feature.properties.id}`"
                         @click="handleMapMarkerClick(feature.properties.category.id, feature)"
                         @mouseout="handleMouseOut(feature.properties.id)"
+                        @focusout="handleMouseOut(feature.properties.id)"
                         @mouseleave.prevent
                         aria-haspopup="dialog"
                         :aria-expanded="selectedFeature === feature"
@@ -330,6 +333,7 @@ function handleMouseOut(id: string) {
         markerRefs.value[id].markerHovered = null;
         if(markerRefs.value[id]) {
             markerRefs.value[id].handleRemoveMarkerActive(id);
+            markerRefs.value[id].hideTooltip();
         }
         markerRefs.value[id].resetPin();
     }
