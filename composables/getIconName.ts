@@ -7,7 +7,7 @@ const iconMap: Record<string, string> = {
     'film-tv':              'fa-regular fa-camera-movie', 
     'food-drink':           'fa-regular fa-utensils',
     'history-heritage':     'fa-regular fa-chess-rook',
-    'music':                'fa-regular fa-play',                   // fa-music icon missing @visitscotland/component-library": "5.78.0". Using to fa-play for now.
+    'music':                'fa-regular fa-music',
     'nature-outdoor':       'fa-regular fa-mountain',
     'night-sky-wonders':    'fa-regular fa-star',
     'snowsports':           'fa-regular fa-person-ski-lift',
