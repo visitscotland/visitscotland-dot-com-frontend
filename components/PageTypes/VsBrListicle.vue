@@ -98,32 +98,29 @@
                                 #facilities-slot
                                 v-if="item.facilities && item.facilities.length"
                             >
-                                <div class="listicle-facilities">
-                                    <VsHeading
-                                        level="3"
-                                        heading-style="heading-xxxs"
-                                        class="listicle-facilities__title"
+                                <div class="vs-icon-list" data-test="vs-icon-list">
+                                    <div
+                                        v-if="configStore.getLabel('listicle', 'keyfacilities.title')"
+                                        class="vs-icon-list__title"
                                     >
                                         {{ configStore.getLabel('listicle', 'keyfacilities.title') }}
-                                    </VsHeading>
+                                    </div>
 
-                                    <VsList
-                                        inline
-                                        class="listicle-facilities__list mb-0"
-                                    >
+                                    <ul class="vs-icon-list__list mb-0">
                                         <li
                                             v-for="facility in item.facilities"
                                             :key="facility.id"
-                                            class="listicle-facilities__item"
+                                            class="vs-icon-list__item"
+                                            data-test="vs-icon-list__item"
                                         >
                                             <VsIcon
                                                 :icon="getDMSIconName(facility.id)"
                                                 size="md"
-                                                class="d-block mx-auto mb-075"
+                                                class="d-block mx-auto"
                                             />
-                                            <span>{{ facility.name }}</span>
+                                            {{ facility.name }}
                                         </li>
-                                    </VsList>
+                                    </ul>
                                 </div>
                             </template>
                         </VsListicleItem>
@@ -209,7 +206,6 @@ import {
     VsCol,
     VsListicleItem,
     VsLink,
-    VsList,
     VsIcon,
     VsPanel,
     VsHeading,
@@ -247,30 +243,33 @@ if (page.value) {
 </script>
 
 <style scoped>
-.listicle-facilities {
+.vs-icon-list {
     text-align: center;
 }
 
-.listicle-facilities__title {
-    margin-top: 0;
-    margin-bottom: 1.25rem;
+.vs-icon-list .vs-icon-list__title {
     font-size: 1rem;
     font-weight: 600;
+    margin-bottom: 1.25rem;
 }
 
-.listicle-facilities__list {
+.vs-icon-list .vs-icon-list__list {
     display: inline-block;
     margin: 0 auto;
-    padding: 0 3rem;
+    padding: 0;
     text-align: left;
 }
 
-.listicle-facilities__item {
+.vs-icon-list__item {
     display: inline-table;
-    width: 80px;
+    text-align: center;
+    width: 90px;
     margin-bottom: 1rem;
     padding: 0 0.25rem;
     font-size: 0.875rem;
-    text-align: center;
+}
+
+.vs-icon-list__item :deep(.vs-icon) {
+    margin-bottom: 0.75rem;
 }
 </style>
