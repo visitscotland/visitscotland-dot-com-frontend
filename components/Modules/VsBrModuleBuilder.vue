@@ -122,16 +122,6 @@
 
         <NuxtLazyHydrate
             :when-visible="{ rootMargin: '50px' }"
-            v-else-if="item.type === 'ICentreModule'"
-        >
-            <VsBrTourismInformationModule
-                :module="item"
-                theme="grey"
-            />
-        </NuxtLazyHydrate>
-
-        <NuxtLazyHydrate
-            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'MapsModule'"
         >
             <component
@@ -161,15 +151,6 @@
             v-else-if="item.type === 'SkiModule'"
         >
             <VsBrSkiModule
-                :module="item"
-            />
-        </NuxtLazyHydrate>
-
-        <NuxtLazyHydrate
-            :when-visible="{ rootMargin: '50px' }"
-            v-else-if="item.type === 'CannedSearchModule'"
-        >
-            <VsBrCannedSearchModule
                 :module="item"
             />
         </NuxtLazyHydrate>
@@ -257,13 +238,11 @@ import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksM
 import VsBrCardGroupModule from '~/components/Modules/VsBrCardGroupModule.vue';
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
-import VsBrTourismInformationModule from '~/components/Modules/VsBrTourismInformationModule.vue';
 import VsBrRichArticleModule from '~/components/Modules/VsBrRichArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
 import VsBrSkiListModule from '~/components/Modules/VsBrSkiListModule.vue';
 import VsBrSkiModule from '~/components/Modules/VsBrSkiModule.vue';
 import VsBrForm from '~/components/Modules/VsBrForm.vue';
-import VsBrCannedSearchModule from '~/components/Modules/VsBrCannedSearchModule.vue';
 import VsBrUGCModule from '~/components/Modules/VsBrUGCModule.vue';
 import VsBrSpotlightSection from '~/components/Modules/VsBrSpotlightSection.vue';
 import VsBrDevModule from '~/components/Modules/VsBrDevModule.vue';
