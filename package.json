@@ -15,33 +15,36 @@
     "lint:fix": "yarn lint --fix",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:update": "playwright test --update-snapshots"
+    "test:update": "playwright test --update-snapshots",
+    "test:pinia": "node tests/pinia-migration.mjs"
   },
   "lint-staged": {
     "*.{js,vue,ts}": "eslint"
   },
   "devDependencies": {
-    "@nuxt/eslint-config": "^1.15.2",
+    "@nuxt/eslint-config": "^1.17.0",
+    "@types/google.maps": "^3.64.0",
     "@types/node": "^26.4.0",
     "eslint": "^10.4.0",
     "husky": "^9.1.7",
-    "nuxt": "^4.5.2",
+    "nuxt": "4.4.2",
     "nuxt-lazy-hydrate": "^1.0.0"
   },
   "dependencies": {
-    "@bloomreach/spa-sdk": "^27.3.1",
+    "@bloomreach/spa-sdk": "^28.1.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
-    "@pinia/nuxt": "^1.0.1",
+    "@googlemaps/js-api-loader": "^2.0.1",
+    "@pinia/nuxt": "^1.0.2",
     "@playwright/test": "^1.62.1",
-    "@visitscotland/component-library": "5.79.4",
+    "@visitscotland/component-library": "5.81.0",
     "axios": "^1.18.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "html-entities": "^2.6.0",
-    "lint-staged": "^17.3.0",
+    "lint-staged": "^17.5.1",
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^2.0.8",
-    "pinia": "^3.0.4",
+    "pinia": "^4.0.3",
     "sass": "^1.100.0",
     "standard-version": "^9.5.0",
     "typescript": "^6.0.3",
@@ -51,10 +54,7 @@
     "vue": "3.5.42"
   },
   "overrides": {
-    "minimist": "latest",
-    "@visitscotland/component-library": {
-      "pinia": "^3.0.4"
-    }
+    "minimist": "latest"
   },
   "config": {
     "commitizen": {
