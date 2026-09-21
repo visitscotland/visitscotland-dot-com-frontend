@@ -33,6 +33,38 @@ export type SearchApiResults = {
     totalResults: number;
 };
 
+/* Travel Information Module */
+export type Copy = {
+    contentType: string;
+    value: string;
+};
+
+type PracticalInformationContentTransport = {
+    transport: {
+        key: string;
+        label: string;
+    };
+    copy: Copy;
+    // Don't need to type the rest of the module properties.
+    [key: string]: unknown;
+};
+
+type TransportInformation = {
+    type: 'transport';
+    title: string;
+    practicalInformationContent: PracticalInformationContentTransport[];
+};
+
+type ArticleInformation = {
+    type: 'article';
+    title: string;
+    practicalInformationContent: Copy;
+};
+
+export type TravelInformation = TransportInformation | ArticleInformation;
+
+/* GoogleMapWithSidebar Module */
+
 export type BrxmFeatureProperties = {
     category?: {
         id: string;
