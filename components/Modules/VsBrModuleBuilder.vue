@@ -139,12 +139,11 @@
                 :is="VsBrMainMap"
                 :module="item"
             />
-            <Suspense v-else-if="checkFlag('use-google-map')">
-                <component
-                    :is="VsBrGoogleMapWithSidebar"
-                    :module="item"
-                />
-            </Suspense>
+            <component
+                v-else-if="checkFlag('use-google-map')"
+                :is="VsBrGoogleMapWithSidebar"
+                :module="item"
+            />
             <Suspense v-else>
                 <component
                     :is="VsBrMapWithSidebar"
