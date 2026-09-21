@@ -1,21 +1,29 @@
 <template>
     <VsModuleWrapper theme="neutral">
         <template #vs-module-wrapper-heading>
-            {{ module.title }}
+            {{ props.module.title }}
         </template>
 
-        <template #vs-module-wrapper-intro v-if="module.copy">
+        <template #vs-module-wrapper-intro v-if="props.module.copy">
             <VsBrRichText
-                :input-content="module.copy.value"
+                :input-content="props.module.copy.value"
             />
         </template>
 
         <VsContainer>
             <VsRow>
-                <VsCol cols="12" sm="10" offset-sm="1">
+                <VsCol
+                    cols="12"
+                    sm="10"
+                    offset-sm="1"
+                >
                     <VsTabs>
-                        <VsBrTravelInformationTab :tab="module.gettingTo" :tab-index="0" />
-                        <VsBrTravelInformationTab :tab="module.gettingAround" :tab-index="1" />
+                        <VsBrTravelInformationTab
+                            v-for="(item, index) in module.practicalInformation"
+                            :key="index"
+                            :tab="item"
+                            :tab-index="index"
+                        />
                     </VsTabs>
                 </VsCol>
             </VsRow>
@@ -24,9 +32,6 @@
 </template>
 
 <script lang="ts" setup>
-
-import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
-
 import {
     VsModuleWrapper,
     VsContainer,
@@ -35,9 +40,21 @@ import {
     VsTabs,
 } from '@visitscotland/component-library/components';
 
+import type { Copy, TravelInformation } from '~/types/types.ts';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrTravelInformationTab from './VsBrTravelInformationTab.vue';
 
-const props = defineProps<{ module: object }>();
-const module: any = props.module;
+type TravelInformationModule = {
+    title: string;
+    copy?: Copy;
+    practicalInformation: TravelInformation[];
+    // Don't need to type the rest of the module properties.
+    [key: string]: unknown;
+}
 
+type Props = {
+    module: TravelInformationModule;
+};
+
+const props = defineProps<Props>();
 </script>
