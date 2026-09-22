@@ -62,3 +62,38 @@ type ArticleInformation = {
 };
 
 export type TravelInformation = TransportInformation | ArticleInformation;
+
+/* GoogleMapWithSidebar Module */
+
+export type BrxmFeatureProperties = {
+    category?: {
+        id: string;
+        label: string;
+    };
+    stopCount?: number;
+    id: number | string;
+    title: string;
+    description?: string;
+    image?: string;
+    link?: {
+        label: string;
+        link: string;
+        type: string;
+    };
+    subtitle?: string;
+    subcategory?: object[];
+};
+
+export type BrxmFeature = {
+    type: string;
+    properties: BrxmFeatureProperties;
+    geometry: {
+        type: string;
+        coordinates: number[];
+    };
+};
+
+export type MapSidebarFilter = {
+    id: string,
+    label: string,
+} 
