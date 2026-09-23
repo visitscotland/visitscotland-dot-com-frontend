@@ -1,5 +1,5 @@
 const iconMap: Record<string, string> = {
-    'active-adventures':    'fa-regular fa-person-hiking', 
+    'active-adventure':    'fa-regular fa-person-hiking', 
     'archaeological':       'fa-regular fa-landmark', 
     'art-culture':          'fa-regular fa-images',
     'cities-towns':         'fa-solid fa-location-dot',
