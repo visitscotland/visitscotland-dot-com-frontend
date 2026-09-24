@@ -121,7 +121,7 @@ defineProps<{
     }
     @media (min-width: 768px) {
         .key-information__map-wrapper {
-            height: auto;
+            height: 100%;
             min-width: 9.5rem /* 152px */;
         }
     }
