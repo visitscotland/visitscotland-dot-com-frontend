@@ -31,13 +31,13 @@
                         :href="module.cta.link"
                         class="key-information__cta-desktop mt-150 d-none d-md-block"
                     >
-                        {{ module.cta.label }} desktop
+                        {{ module.cta.label }}
                     </VsButton>
                 </div>
                 <div>
                     <div class="key-information__map-wrapper">
                         <!-- Map -->
-                        <VsIllustratedMap :highlighted-regions="[]" class="d-block mx-auto"/>
+                        <VsIllustratedMap :highlighted-regions="[]" class="d-block mx-auto" width="100%"/>
                     </div>
                     <div>
                         <!-- Mobile button -->
@@ -46,7 +46,7 @@
                             :href="module.cta.link"
                             class="key-information__cta-mobile mt-150 d-md-none"
                         >
-                            {{ module.cta.label }} mobile
+                            {{ module.cta.label }}
                         </VsButton>
                     </div>
                 </div>
@@ -113,6 +113,11 @@ defineProps<{
     .key-information__cta-mobile {
         width: 100%;
     }
+    @media (min-width: 576px) {
+        .key-information__cta-mobile {
+            width: fit-content;
+        }
+    }
     .key-information__map-wrapper {
         height: 25.375rem /* 406px */;
     }
@@ -122,7 +127,7 @@ defineProps<{
     @media (min-width: 768px) {
         .key-information__map-wrapper {
             height: 100%;
-            min-width: 9.5rem /* 152px */;
+            width: 9.5rem /* 152px */;
         }
     }
 </style>
