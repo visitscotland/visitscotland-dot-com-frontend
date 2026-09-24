@@ -1,16 +1,11 @@
 <template>
     <div>
         <VsPanel class="key-information">
-            <VsHeading
-                level="2"
-                heading-style="heading-s"
-                no-margins
-            >
-                {{ module.title || 'Key Information Panel'}}
-            </VsHeading>
-    
-            <VsBody class="d-flex flex-column flex-md-row">
+            <VsBody class="d-flex flex-column flex-md-row justify-content-between">
                 <div>
+                    <VsHeading level="2" heading-style="heading-s" no-margins>
+                        {{ module.title || 'Key Information Panel' }}
+                    </VsHeading>
                     <ul class="key-information__highlights list-unstyled d-flex flex-column m-0 p-0 gap-075 mt-150 text-tertiary">
                         <li v-for="highlight in module.highlights" :key="highlight.category.key" class="d-flex gap-050">
                             <span class="highlight__icon-wrapper d-flex justify-content-center">
@@ -34,23 +29,24 @@
                     <VsButton
                         v-if="module.cta"
                         :href="module.cta.link"
-                        class="key-information__cta-desktop mt-150 d-none d-sm-block"
+                        class="key-information__cta-desktop mt-150 d-none d-md-block"
                     >
-                        {{ module.cta.label }}
+                        {{ module.cta.label }} desktop
                     </VsButton>
                 </div>
                 <div>
-                    <div>
-                        <!-- TODO Placeholder for map inclusion VS-1835 -->
+                    <div class="key-information__map-wrapper">
+                        <!-- Map -->
+                        <VsIllustratedMap :highlighted-regions="[]" class="d-block mx-auto"/>
                     </div>
                     <div>
                         <!-- Mobile button -->
                         <VsButton
                             v-if="module.cta"
                             :href="module.cta.link"
-                            class="key-information__cta-mobile mt-150 d-sm-none"
+                            class="key-information__cta-mobile mt-150 d-md-none"
                         >
-                            {{ module.cta.label }}
+                            {{ module.cta.label }} mobile
                         </VsButton>
                     </div>
                 </div>
@@ -65,6 +61,7 @@ import {
     VsButton,
     VsHeading,
     VsIcon,
+    VsIllustratedMap,
     VsPanel,
 } from '@visitscotland/component-library/components';
 import getIconName from '~/composables/getIconName.ts';
@@ -115,5 +112,17 @@ defineProps<{
     }
     .key-information__cta-mobile {
         width: 100%;
+    }
+    .key-information__map-wrapper {
+        height: 25.375rem /* 406px */;
+    }
+    .vs-illustrated-map {
+        height: 100%;
+    }
+    @media (min-width: 768px) {
+        .key-information__map-wrapper {
+            height: auto;
+            min-width: 9.5rem /* 152px */;
+        }
     }
 </style>
