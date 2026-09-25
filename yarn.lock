@@ -927,6 +927,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@googlemaps/js-api-loader@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@googlemaps/js-api-loader@npm:2.1.1"
+  dependencies:
+    "@types/google.maps": "npm:^3.53.1"
+  checksum: 10c0/06cb6eaf686b838be51efd8293010b7bee42e341e9ad41b42a0ee8909cf06cc5711ba6cfdbcd0c62ff05c8ba35d8622c34130e738bc5844011c8bc457d14de64
+  languageName: node
+  linkType: hard
+
 "@humanfs/core@npm:^0.19.2":
   version: 0.19.2
   resolution: "@humanfs/core@npm:0.19.2"
@@ -9723,7 +9732,7 @@ __metadata:
   dependencies:
     "@bloomreach/spa-sdk": "npm:^28.1.0"
     "@bloomreach/vue3-sdk": "npm:^22.0.5"
-    "@googlemaps/js-api-loader": "npm:^2.0.1"
+    "@googlemaps/js-api-loader": "npm:^2.1.1"
     "@nuxt/eslint-config": "npm:^1.17.0"
     "@pinia/nuxt": "npm:^1.0.2"
     "@playwright/test": "npm:^1.62.1"

@@ -33,7 +33,7 @@
   "dependencies": {
     "@bloomreach/spa-sdk": "^28.1.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
-    "@googlemaps/js-api-loader": "^2.0.1",
+    "@googlemaps/js-api-loader": "^2.1.1",
     "@pinia/nuxt": "^1.0.2",
     "@playwright/test": "^1.62.1",
     "@visitscotland/component-library": "5.81.0",
