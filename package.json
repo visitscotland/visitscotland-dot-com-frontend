@@ -35,7 +35,7 @@
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@googlemaps/js-api-loader": "^2.0.1",
     "@pinia/nuxt": "^1.0.2",
-    "@playwright/test": "^1.62.1",
+    "@playwright/test": "^1.63.0",
     "@visitscotland/component-library": "5.81.0",
     "axios": "^1.18.0",
     "commitizen": "^4.3.1",
