@@ -27,7 +27,8 @@ export default defineNuxtConfig({
             BR_NUXT_APP_DEBUG: process.env.BR_NUXT_APP_DEBUG,
             COMP_LIBRARY_VERSION: clVersion,
             VS_BRANCH_NAME: process.env.VS_BRANCH_NAME,
-            VS_CONTAINER_NAME_SHORT: process.env.VS_CONTAINER_NAME_SHORT,
+            CHANGE_ID: process.env.CHANGE_ID,
+            VS_COMMIT_AUTHOR: process.env.VS_COMMIT_AUTHOR,
         },
     },
 

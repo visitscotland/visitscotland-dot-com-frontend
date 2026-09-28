@@ -10,13 +10,19 @@
                 v-if="runtimeConfig.public.VS_BRANCH_NAME"
                 class="text-warning"
             >
-                <strong>FE Branch:</strong> {{ runtimeConfig.public.VS_BRANCH_NAME }}
+                <strong>FE branch:</strong> {{ runtimeConfig.public.VS_BRANCH_NAME }}
+            </span>
+            <span
+                v-if="runtimeConfig.public.VS_COMMIT_AUTHOR"
+                class="text-warning"
+            >
+                <strong>FE author:</strong> {{ runtimeConfig.public.VS_COMMIT_AUTHOR }}
             </span>
             <span
                 v-if="runtimeConfig.public.VS_CONTAINER_NAME_SHORT"
                 class="text-warning"
             >
-                <strong>FE PR:</strong> {{ runtimeConfig.public.VS_CONTAINER_NAME_SHORT }}
+                <strong>FE PR:</strong> {{ runtimeConfig.public.CHANGE_ID }}
             </span>
         </div>
     </div>
