@@ -19,7 +19,7 @@
                 <strong>FE author:</strong> {{ runtimeConfig.public.VS_COMMIT_AUTHOR }}
             </span>
             <span
-                v-if="runtimeConfig.public.VS_CONTAINER_NAME_SHORT"
+                v-if="runtimeConfig.public.CHANGE_ID"
                 class="text-warning"
             >
                 <strong>FE PR:</strong> {{ runtimeConfig.public.CHANGE_ID }}
