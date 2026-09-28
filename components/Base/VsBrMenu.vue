@@ -38,6 +38,7 @@
 
     <!-- Navbar To Do - Switch to feature flag -->
     <div
+        ref="navElement"
         class="vs-sticky-nav--no-global"
         :class="{ 'transparent-nav-bar': shouldShowTransparent }"
         @mouseenter="isHovered = true"
@@ -352,6 +353,9 @@ const configStore = useConfigStore();
 const isHovered = ref(false);
 const isFocused = ref(false);
 const scrollY = ref(1);
+const navElement = ref<HTMLElement | null>(null);
+let navResizeObserver: ResizeObserver | undefined;
+let skipToResizeObserver: ResizeObserver | undefined;
 
 const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
     && checkFlags('use-navbar')
@@ -363,13 +367,56 @@ function handleScroll() {
     scrollY.value = window.scrollY;
 }
 
+function updateNavbarHeight() {
+    // Navbar height is used in css to set scroll-margin-top for anchor links
+    // a11y nav VsBrSkipTo is also considered in the navbar height calculation 
+    if (navElement.value) {
+        const skipToElement = document.querySelector<HTMLElement>('[data-test="vs-skip-to"]');
+        const skipToHeight = skipToElement?.matches(':focus-within')
+            ? skipToElement.getBoundingClientRect().height
+            : 0;
+
+        document.documentElement.style.setProperty(
+            '--vs-navbar-scroll-margin-top',
+            `calc(${navElement.value.getBoundingClientRect().height}px + ${skipToHeight}px + 1rem)`,
+        );
+    }
+}
+
+function handleSkipToFocus() {
+    requestAnimationFrame(updateNavbarHeight);
+}
+
 onMounted(() => {
     scrollY.value = window.scrollY;
     window.addEventListener('scroll', handleScroll);
+    updateNavbarHeight();
+
+    if (navElement.value && typeof ResizeObserver !== 'undefined') {
+        navResizeObserver = new ResizeObserver(updateNavbarHeight);
+        navResizeObserver.observe(navElement.value);
+    }
+
+    const skipToElement = document.querySelector<HTMLElement>('[data-test="vs-skip-to"]');
+    skipToElement?.addEventListener('focusin', handleSkipToFocus);
+    skipToElement?.addEventListener('focusout', handleSkipToFocus);
+
+    if (skipToElement && typeof ResizeObserver !== 'undefined') {
+        skipToResizeObserver = new ResizeObserver(updateNavbarHeight);
+        skipToResizeObserver.observe(skipToElement);
+    }
 });
 
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
+    navResizeObserver?.disconnect();
+    skipToResizeObserver?.disconnect();
+
+    const skipToElement = document.querySelector<HTMLElement>('[data-test="vs-skip-to"]');
+    skipToElement?.removeEventListener('focusin', handleSkipToFocus);
+    skipToElement?.removeEventListener('focusout', handleSkipToFocus);
+
+    document.documentElement.style.removeProperty('--vs-navbar-scroll-margin-top');
 });
 
 if (page.value) {
