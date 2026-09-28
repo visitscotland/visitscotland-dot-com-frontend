@@ -1,18 +1,39 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
     <div
+        v-if="runtimeConfig.public.VS_BRANCH_NAME
+            || runtimeConfig.public.VS_CONTAINER_NAME_SHORT"
+        style="background-color: #200F2E; position: relative; z-index: 10000;"
+    >
+        <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
+            <span
+                v-if="runtimeConfig.public.VS_BRANCH_NAME"
+                class="text-warning"
+            >
+                <strong>FE Branch:</strong> {{ runtimeConfig.public.VS_BRANCH_NAME }}
+            </span>
+            <span
+                v-if="runtimeConfig.public.VS_CONTAINER_NAME_SHORT"
+                class="text-warning"
+            >
+                <strong>FE PR:</strong> {{ runtimeConfig.public.VS_CONTAINER_NAME_SHORT }}
+            </span>
+        </div>
+    </div>
+
+    <div
         v-if="configStore.pageMetaData
             && (configStore.pageMetaData.branch || configStore.pageMetaData.pr)"
         style="background-color: #200F2E; position: relative; z-index: 10000;"
     >
         <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
-            <span class="text-warning"><strong>Branch:</strong> {{ configStore.pageMetaData.branch }}</span>
-            <span class="text-warning"><strong>Author:</strong> {{ configStore.pageMetaData.lastCommitAuthor }}</span>
+            <span class="text-warning"><strong>BRXM branch:</strong> {{ configStore.pageMetaData.branch }}</span>
+            <span class="text-warning"><strong>BRXM author:</strong> {{ configStore.pageMetaData.lastCommitAuthor }}</span>
             <span
                 v-if="configStore.pageMetaData.pr"
                 class="text-warning"
             >
-                <strong>PR:</strong> {{ configStore.pageMetaData.pr }}
+                <strong>BRXM PR:</strong> {{ configStore.pageMetaData.pr }}
             </span>
         </div>
     </div>
@@ -349,6 +370,7 @@ let banner : any = null;
 let cacheBustDate : string = '';
 
 const configStore = useConfigStore();
+const runtimeConfig = useRuntimeConfig();
 
 const isHovered = ref(false);
 const isFocused = ref(false);

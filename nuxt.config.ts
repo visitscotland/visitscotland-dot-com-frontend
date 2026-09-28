@@ -26,6 +26,8 @@ export default defineNuxtConfig({
             BR_CMS_ORIGIN_LOCATION: process.env.BR_CMS_ORIGIN_LOCATION,
             BR_NUXT_APP_DEBUG: process.env.BR_NUXT_APP_DEBUG,
             COMP_LIBRARY_VERSION: clVersion,
+            VS_BRANCH_NAME: process.env.VS_BRANCH_NAME,
+            VS_CONTAINER_NAME_SHORT: process.env.VS_CONTAINER_NAME_SHORT,
         },
     },
 
