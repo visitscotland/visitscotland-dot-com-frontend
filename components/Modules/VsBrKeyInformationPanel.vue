@@ -1,7 +1,7 @@
 <template>
     <div>
         <VsPanel class="key-information">
-            <VsBody class="d-flex flex-column flex-md-row justify-content-between">
+            <VsBody class="d-flex flex-column flex-md-row justify-content-between gap-150">
                 <div>
                     <VsHeading level="2" heading-style="heading-s" no-margins>
                         {{ module.title || 'Key Information Panel' }}
