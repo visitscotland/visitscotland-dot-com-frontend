@@ -1,0 +1,49 @@
+/* Hide video players — these render non-deterministic content (YouTube iframes,
+   HTML5 video frames) that causes false snapshot failures. */
+
+video,
+video ~ * {
+    visibility: hidden;
+}
+
+.vs-video-youtube__player {
+    visibility: hidden;
+}
+
+.vs-hero-section__video {
+    visibility: hidden;
+}
+
+/* Hide externally-loaded images — the Bloomreach API is mocked but image
+   binaries load from external CMS servers, causing non-deterministic page
+   heights between runs. */
+
+img {
+    visibility: hidden;
+}
+
+/* Re-show placeholder / skeleton images so layout is stable */
+img[src*="fallback"],
+img[src*="placeholder"],
+img[src*="skeleton"] {
+    visibility: visible;
+}
+
+/* Remove inline background-image on spotlight sections — the URL points to an
+   external CMS binary that loads non-deterministically. */
+.vs-spotlight-section {
+    background-image: none !important;
+}
+
+/* Remove the Scotland brand logo from layout — its natural dimensions vary
+   slightly between Chromium renders, causing a ~21px page height difference. */
+.vs-footer-copyright .vs-footer-copyright__logo {
+    display: none !important;
+}
+
+/* Normalise font rendering across platforms (Windows vs Linux CI).
+   Prevents systematic pixel diffs caused by different anti-aliasing. */
+* {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+}
