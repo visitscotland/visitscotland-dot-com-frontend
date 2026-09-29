@@ -358,7 +358,7 @@ let navResizeObserver: ResizeObserver | undefined;
 let skipToResizeObserver: ResizeObserver | undefined;
 
 const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
-    && checkFlags('use-navbar')
+    && globalProperties.checkFlag('use-navbar')
     && scrollY.value === 0
     && !isHovered.value
     && !isFocused.value);
