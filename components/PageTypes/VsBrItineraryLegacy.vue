@@ -54,7 +54,7 @@
                             :key="transportIndex"
                         >
                             <VsTooltip
-                                :title="configStore.getLabel('transports', '${transport}')"
+                                :title="configStore.getLabel('transports', transport)"
                                 href="#"
                                 :icon="getDMSIconName(transport)"
                                 size="sm"
@@ -62,7 +62,7 @@
                                 variant="transparent"
                             >
                                 <span class="visually-hidden">
-                                    {{ configStore.getLabel("transports", "${transport}") }}
+                                    {{ configStore.getLabel("transports", transport) }}
                                 </span>
                             </VsTooltip>
                         </VsDescriptionListItem>
@@ -106,11 +106,15 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrHorizontalLinksModule
+        <section
+            class="mt-500"
             v-if="otyml"
-            :module="otyml"
-            theme="light"
-        />
+        >
+            <VsBrHorizontalLinksModule
+                :module="otyml"
+                theme="light"
+            />
+        </section>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate

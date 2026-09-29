@@ -1,10 +1,16 @@
 <template>
-    <div
+    <section
         class="vs-module-wrapper__outer"
         v-for="(item, index) in modules"
         :key="index"
         :id="`section-${index}`"
-        :class="`vs-module-wrapper__outer--${item.themeValue} ${page.isPreview() ? 'has-edit-button' : ''}`"
+        :class="
+            `
+                vs-module-wrapper__outer--${item.themeValue}
+                ${page.isPreview() ? 'has-edit-button' : ''}
+                ${!item.isMegaLink ? 'mt-500' : ''}
+            `
+        "
     >
         <BrManageContentButton
             v-if="item.hippoBean && page"
@@ -81,14 +87,9 @@
             />
 
             <VsBrRichArticleModule
-                v-else-if="checkFlag('use-rich-articles')"
-                :module="item"
-                :next-module-article="index + 1 < modules.length && modules[index + 1].type === 'ArticleModule'"
-            />
-
-            <VsBrArticleModule
                 v-else
                 :module="item"
+                :next-module-article="index + 1 < modules.length && modules[index + 1].type === 'ArticleModule'"
             />
         </NuxtLazyHydrate>
 
@@ -136,6 +137,11 @@
             <component
                 v-if="item.googleMap"
                 :is="VsBrMainMap"
+                :module="item"
+            />
+            <component
+                v-else-if="checkFlag('use-google-map')"
+                :is="VsBrGoogleMapWithSidebar"
                 :module="item"
             />
             <Suspense v-else>
@@ -237,12 +243,11 @@
                 :when-visible="{ rootMargin: '50px' }"
             >
                 <VsBrSearchWidget
-                    class="mt-175 mt-md-500 mb-175 mb-md-500"
                     :module="item"
                 />
             </NuxtLazyHydrate>
         </div>
-    </div>
+    </section>
 </template>
 
 <script lang="ts" setup>
@@ -259,7 +264,6 @@ import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLink
 import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
 import VsBrTourismInformationModule from '~/components/Modules/VsBrTourismInformationModule.vue';
 import VsBrRichArticleModule from '~/components/Modules/VsBrRichArticleModule.vue';
-import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
 import VsBrSkiListModule from '~/components/Modules/VsBrSkiListModule.vue';
 import VsBrSkiModule from '~/components/Modules/VsBrSkiModule.vue';
@@ -272,6 +276,8 @@ import VsBrFavouritesDisplay from '~/components/Modules/VsBrFavouritesDisplay.vu
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
+import VsBrGoogleMapWithSidebar from './VsBrGoogleMapWithSidebar.vue';
+// import checkFlag from '~/composables/checkFlags';
 
 const VsBrMapWithSidebar = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSidebar.vue'));
 const VsBrMainMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMainMap.vue'));
@@ -306,6 +312,15 @@ if (modules) {
             }
 
             newThemeIndex = currentMegaLinkSection % themeCount;
+        }
+
+        if (
+            modules[x].type === 'ListLinksModule'
+            || modules[x].type === 'MultiImageLinksModule'
+            || modules[x].type === 'SingleImageLinksModule'
+            || modules[x].type === 'MapsModule'
+        ) {
+            modules[x].isMegaLink = true;
         }
 
         if (modules[x].type === 'SingleImageLinksModule') {

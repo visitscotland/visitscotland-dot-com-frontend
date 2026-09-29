@@ -13,3 +13,5 @@ yalc.lock
 .yalc
 AGENTS.md
 .yarn/
+test-results/
+playwright-report/

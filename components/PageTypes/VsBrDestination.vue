@@ -1,14 +1,40 @@
 <template>
-    <VsBrPageIntro
+    <VsContainer class="mt-075 mt-lg-200">
+        <VsRow>
+            <VsCol
+                cols="10"
+                lg="8"
+            >
+                <VsBrBreadcrumb />
+            </VsCol>
+        </VsRow>
+    </VsContainer>
+
+    <VsBrHeroSection
         :content="documentData"
-        :hero-image="heroImage"
-        :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
+        :image="heroImage"
+        :inset="true"
+        :favourites-button="true"
     />
 
-    <VsBrModuleBuilder
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
+        <VsBrKeyInformationPanel
+            v-if="configStore.pageIntro?.keyInformationPanel"
+            :module="configStore.pageIntro.keyInformationPanel"
+            class="my-200 mx-075"
+        />
+    </NuxtLazyHydrate> 
+
+    <div
+        class="mt-500"
         v-if="pageItems"
-        :modules="pageItems"
-    />
+    >
+        <VsBrModuleBuilder
+            :modules="pageItems"
+        />
+    </div>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -30,11 +56,15 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrHorizontalLinksModule
+        <section
+            class="mt-500"
             v-if="otyml"
-            :module="otyml"
-            theme="light"
-        />
+        >
+            <VsBrHorizontalLinksModule
+                :module="otyml"
+                theme="light"
+            />
+        </section>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
@@ -53,11 +83,15 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
+import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
+
+import {
+    VsContainer, VsRow, VsCol,
+} from '@visitscotland/component-library/components';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
@@ -101,4 +135,5 @@ if (page.value) {
         }
     }
 }
+
 </script>

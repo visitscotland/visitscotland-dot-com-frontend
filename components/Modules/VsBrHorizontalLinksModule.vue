@@ -1,15 +1,8 @@
 <template>
-    <VsSectionHeader
+    <VsBrSectionHeader
         :heading="module.title"
-        class="mb-050 mt-250"
-    >
-        <template
-            #section-header-lede
-            v-if="module.introduction && module.introduction.value"
-        >
-            <div v-html="module.introduction.value" />
-        </template>
-    </VsSectionHeader>
+        :lede="module.introduction?.value"
+    />
 
     <VsContainer>
         <VsRow>
@@ -81,9 +74,10 @@ import {
     VsCard,
     VsHeading,
     VsLink,
-    VsSectionHeader,
     VsDetail,
 } from '@visitscotland/component-library/components';
+
+import VsBrSectionHeader from './VsBrSectionHeader.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 

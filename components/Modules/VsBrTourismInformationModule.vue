@@ -1,9 +1,9 @@
 <template>
-    <VsModuleWrapper :theme="theme">
-        <template #vs-module-wrapper-heading>
-            {{ module.title }}
-        </template>
-        <VsContainer>
+    <VsBrSectionHeader
+        :heading="module.title"
+    />
+
+    <VsContainer>
             <VsTourismInfo>
                 <template #tourism-info-image-with-caption>
                     <VsBrMedia
@@ -25,15 +25,15 @@
                 </template>
             </VsTourismInfo>
         </VsContainer>
-    </VsModuleWrapper>
 </template>
 
 <script lang="ts" setup>
 
+import VsBrSectionHeader from './VsBrSectionHeader.vue';
+
 // import useConfigStore from '~/stores/configStore.ts';
 
 import {
-    VsModuleWrapper,
     VsContainer,
     VsTourismInfo,
 } from '@visitscotland/component-library/components';
@@ -43,8 +43,7 @@ import VsBrQuote from './VsBrQuote.vue';
 
 // const configStore = useConfigStore();
 
-const props = defineProps<{ module: object, theme: string }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
-const theme: string = props.theme;
 
 </script>

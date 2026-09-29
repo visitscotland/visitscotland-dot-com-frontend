@@ -26,43 +26,29 @@
                 lg="8"
                 class="d-flex flex-column gap-150"
             >
-                <div v-if="videoValue">
-                    <VsVideo
-                        :video-title="videoLabel"
-                        :video-id="youtubeId"
-                        :single-minute-descriptor="configStore.getLabel('video', 'video.minute-text')"
-                        :plural-minute-descriptor="configStore.getLabel('video', 'video.minutes-text')"
-                        :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
-                        :no-js-message="configStore.getLabel('video', 'video.no-js')"
-                        :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
-                        :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
-                    />
-                    <VsMediaCaption :video-id="youtubeId">
-                        <template #caption>
-                            {{ videoLabel ?? configStore.getLabel('video', 'video.play-btn') }}
-                        </template>
-                    </VsMediaCaption>
-                </div>
-                <figure
-                    v-if="imageValue"
+                <template
+                    v-if="day.video"
                 >
-                    <VsImg
-                        :src="imageSrc"
-                        use-lazy-loading
-                        class="rounded-2 w-100"
-                        :alt="imageAlt"
+                    <VsBrMedia
+                        :video-id="day.video.youtubeId"
+                        :video-with-media-caption="true"
+                    >
+                        <template #video-title>
+                            {{ day.video.label }}
+                        </template>
+                    </VsBrMedia>
+                </template>
+                <template
+                    v-else-if="day.image"
+                >
+                    <VsBrMedia
+                        :image="day.image.cmsImage"
+                        :image-description="day.image.description"
+                        :rounded="true"
+                        class="mb-100"
                     />
-                    <figcaption v-if="imageCredit || imageCaption">
-                        <VsMediaCaption>
-                            <template #caption>
-                                {{ imageCaption }}
-                            </template>
-                            <template v-if="imageCredit" #credit>
-                                {{ imageCredit }}
-                            </template>
-                        </VsMediaCaption>
-                    </figcaption>
-                </figure>
+                </template>    
+
                 <div>
                     <VsBody>
                         <VsBrRichText :input-content="day.introduction.value" />
@@ -103,21 +89,19 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
 import useConfigStore from '~/stores/configStore.ts';
 
 import {
-    VsImg,
     VsHeading,
     VsButton,
     VsContainer,
     VsRow,
     VsCol,
     VsBody,
-    VsMediaCaption,
-    VsVideo,
 } from '@visitscotland/component-library/components';
+
 import VsBrRichText from './VsBrRichText.vue';
+import VsBrMedia from './VsBrMedia.vue';
 import VsBrMediaSection from './VsBrMediaSection.vue';
 
 const configStore = useConfigStore();
@@ -127,47 +111,8 @@ const props = defineProps<{
     dayNumber: any,
 }>();
 
-const page: any = inject('page');
 const day: any = props.day;
 const dayNumber: any = props.dayNumber;
-
-let imageValue = false;
-let imageSrc = null;
-let imageCaption = null;
-let imageAlt = null;
-let imageCredit = null;
-
-let videoValue = false;
-let youtubeId = null;
-let videoLabel = null;
-
-let firstDayMedia = null;
-let firstDayVideo = null;
-const firstMediaItem = day.media?.[0];
-
-if (firstMediaItem) {
-    if (firstMediaItem.$ref) {
-        firstDayMedia = page.getContent(firstMediaItem.$ref);
-    }
-
-    if (firstMediaItem.videoLink) {
-        firstDayVideo = page.getContent(firstMediaItem.videoLink);
-    }
-}
-
-if (firstDayMedia) {
-    imageValue = firstDayMedia;
-    imageSrc = imageValue.getOriginal().getUrl();
-    imageCaption = imageValue.model.data.description;
-    imageAlt = imageValue.model.data.altText;
-    imageCredit = imageValue.model.data.credit;
-}
-
-if (firstDayVideo) {
-    videoValue = firstDayVideo;
-    youtubeId = videoValue.model.data.url.split('?v=')[1];
-    videoLabel = videoValue.model.data.label;
-}
 
 const dayLabel = configStore.getLabel('itinerary', 'day');
 

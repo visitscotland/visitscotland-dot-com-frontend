@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-175 mt-md-500 mb-175 mb-md-500">
+    <div class="mt-500 mb-500">
         <VsBrSpotlightSection
             :module="moduleData"
         />

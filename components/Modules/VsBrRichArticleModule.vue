@@ -1,6 +1,6 @@
 <template>
     <VsContainer>
-        <VsRow class="mt-500 mb-500">
+        <VsRow>
             <VsCol
                 cols="12"
                 lg="4"
@@ -32,25 +32,16 @@
                         <template
                             v-if="section.video"
                         >
-                            <VsBrVideoModal
-                                :is-video-modal="true"
-                                :close-btn-text="configStore.getLabel('essentials.global', 'close')"
-                                :modal-id="section.video.youtubeId"
-                                :video="section.video"
-                            />
-
                             <VsBrMedia
-                                :image="section.video.image.cmsImage"
-                                :image-description="section.video.image.description"
-                                :is-video="true"
                                 :video-id="section.video.youtubeId"
-                                :video-title="section.video.label
-                                    ? section.video.label
-                                    : configStore.getLabel('video', 'video.play-btn')
-                                "
-                                :small-play-button="true"
-                                :show-toggle="false"
-                            />
+                                :video-with-media-caption="true"
+                                class="mb-100"
+                                :class="mediaHasTopMargin(index) ? 'mt-150' : ''"
+                            >
+                                <template #video-title>
+                                    {{ section.video.label ?? configStore.getLabel('video', 'video.play-btn') }}
+                                </template>
+                            </VsBrMedia>
                         </template>
                         <template
                             v-else-if="section.image"
@@ -60,6 +51,7 @@
                                 :image-description="section.image.description"
                                 :rounded="true"
                                 class="mb-100"
+                                :class="mediaHasTopMargin(index) ? 'mt-150' : ''"
                             />
                         </template>
 
@@ -121,7 +113,6 @@ import {
     VsQuote,
 } from '@visitscotland/component-library/components';
 
-import VsBrVideoModal from './VsBrVideoModal.vue';
 import VsBrMediaSection from '~/components/Modules/VsBrMediaSection.vue';
 import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
@@ -137,6 +128,18 @@ const props = defineProps<{
 
 const module: any = props.module;
 const nextModuleArticle: boolean = props.nextModuleArticle;
+
+const mediaHasTopMargin = (index : number) => {
+    if (index !== 0) {
+        return true;
+    }
+
+    if (module.introduction && module.introduction.value) {
+        return true;
+    }
+
+    return false;
+}
 
 </script>
 
