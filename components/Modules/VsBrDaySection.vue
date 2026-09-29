@@ -84,6 +84,7 @@
     >
         <VsBrMediaSection
             :media-section="day.mediaSection"
+            :negative-space-top="true"
         />
     </div>
 </template>
