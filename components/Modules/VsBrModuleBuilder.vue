@@ -81,7 +81,7 @@
             />
 
             <VsBrRichArticleModule
-                v-else-if="checkFlags('use-rich-articles')"
+                v-else-if="checkFlag('use-rich-articles')"
                 :module="item"
                 :next-module-article="index + 1 < modules.length && modules[index + 1].type === 'ArticleModule'"
             />
