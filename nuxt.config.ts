@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     vite: {
         resolve: {
             preserveSymlinks: true,
+            dedupe: ['vue', 'pinia'],
         },
         build: {
             cssCodeSplit: false,
@@ -87,6 +88,10 @@ export default defineNuxtConfig({
         'nuxt-jsonld',
         'nuxt-lazy-hydrate',
     ],
+
+    pinia: {
+        storesDirs: ['./stores'],
+    },
 
     'nuxt-jsonld': {
         disableOptionsAPI: true,

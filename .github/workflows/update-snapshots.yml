@@ -1,8 +1,7 @@
 name: Update Snapshots
 
 on:
-  push:
-    branches: [main]
+  # Temporarily disabled for merges to main.
   workflow_dispatch:
 
 concurrency:

@@ -3,6 +3,7 @@
         <template v-if="module.storystreamId">
             <VsBrSectionHeader
                 :heading="module.title"
+                :lede="module.copy.value"
             />
 
             <VsEmbedWrapper
@@ -13,13 +14,6 @@
                 :extra-content="configStore.getLabel('ugc', 'ugc.extra-warning-content')"
                 :embedded-script="`https://apps.storystream.ai/app/js/${module.storystreamId}.js`"
             >
-                <template
-                    #embed-intro-copy
-                    v-if="module.copy"
-                >
-                    <VsBrRichText :input-content="module.copy.value" />
-                </template>
-
                 <template #embed-widget>
                     <div id="stry-wrapper" />
                 </template>
