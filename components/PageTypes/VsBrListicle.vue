@@ -51,7 +51,7 @@
                             :messages="item.errorMessages"
                         />
 
-                        <VsListicleItem
+                        <VsBrListicleItem
                             :index="`${item.index}`"
                             :title="item.title"
                             :sub-title="item.subtitle"
@@ -123,7 +123,7 @@
                                     </ul>
                                 </div>
                             </template>
-                        </VsListicleItem>
+                        </VsBrListicleItem>
                     </template>
                 </ol>
             </VsCol>
@@ -199,12 +199,12 @@ import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.
 import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
+import VsBrListicleItem from '~/components/Modules/VsBrListicleItem.vue';
 
 import {
     VsContainer,
     VsRow,
     VsCol,
-    VsListicleItem,
     VsLink,
     VsIcon,
     VsPanel,
