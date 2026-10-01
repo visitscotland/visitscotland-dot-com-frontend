@@ -8,7 +8,6 @@
                     :image="mediaSection.image.cmsImage"
                     :image-description="mediaSection.image.description"
                     :full-bleed="true"
-                    :class="negativeSpaceTop ? 'mt-n250' : ''"
                 />
             </VsCol>
         </VsRow>
@@ -22,7 +21,6 @@
                 <VsBrMedia
                     :video-id="mediaSection.video.youtubeId"
                     :video-with-media-caption="true"
-                    :class="negativeSpaceTop ? 'mt-n250' : ''"
                 >
                     <template #video-title>
                         {{ mediaSection.video.label }}
@@ -38,7 +36,6 @@
         :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
         :contained="false"
         :slides-per-view-lg="2.2"
-        :class="negativeSpaceTop ? 'mt-n250' : ''"
     >
         <VsContentSwiperSlide
             v-for="(slide, index) in mediaSection.items"
@@ -83,10 +80,8 @@ const configStore = useConfigStore();
 
 const props = defineProps<{
     mediaSection: object,
-    negativeSpaceTop?: boolean
 }>();
 
 const mediaSection: any = props.mediaSection;
-const negativeSpaceTop: boolean = props.negativeSpaceTop || false;
 
 </script>

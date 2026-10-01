@@ -80,11 +80,9 @@
 
     <div
         v-if="day.mediaSection"
-        class="mb-n250"
     >
         <VsBrMediaSection
             :media-section="day.mediaSection"
-            :negative-space-top="true"
         />
     </div>
 </template>
