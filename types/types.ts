@@ -32,3 +32,68 @@ export type SearchApiResults = {
     results: SearchApiResult[];
     totalResults: number;
 };
+
+/* Travel Information Module */
+export type Copy = {
+    contentType: string;
+    value: string;
+};
+
+type PracticalInformationContentTransport = {
+    transport: {
+        key: string;
+        label: string;
+    };
+    copy: Copy;
+    // Don't need to type the rest of the module properties.
+    [key: string]: unknown;
+};
+
+type TransportInformation = {
+    type: 'transport';
+    title: string;
+    practicalInformationContent: PracticalInformationContentTransport[];
+};
+
+type ArticleInformation = {
+    type: 'article';
+    title: string;
+    practicalInformationContent: Copy;
+};
+
+export type TravelInformation = TransportInformation | ArticleInformation;
+
+/* GoogleMapWithSidebar Module */
+
+export type BrxmFeatureProperties = {
+    category?: {
+        id: string;
+        label: string;
+    };
+    stopCount?: number;
+    id: number | string;
+    title: string;
+    description?: string;
+    image?: string;
+    link?: {
+        label: string;
+        link: string;
+        type: string;
+    };
+    subtitle?: string;
+    subcategory?: object[];
+};
+
+export type BrxmFeature = {
+    type: string;
+    properties: BrxmFeatureProperties;
+    geometry: {
+        type: string;
+        coordinates: number[];
+    };
+};
+
+export type MapSidebarFilter = {
+    id: string,
+    label: string,
+} 

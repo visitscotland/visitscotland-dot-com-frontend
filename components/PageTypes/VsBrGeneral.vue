@@ -54,7 +54,6 @@
             <VsBrHeroSection
                 :content="documentData"
                 :image="heroImage"
-                :split="true"
                 :favourites-button="true"
             />
         </template>
