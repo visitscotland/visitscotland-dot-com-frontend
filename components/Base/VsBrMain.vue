@@ -3,7 +3,6 @@
         class="vs-main-container"
         :class="{
             'has-edit-button': page.isPreview(),
-            'has-transparent-nav': configStore.isLocalVideoheader && checkFlags('use-navbar'),
         }"
     >
         <BrManageContentButton
@@ -26,13 +25,8 @@
             :component="component"
         />
 
-        <VsBrItineraryLegacy
-            v-if="pageName === 'itinerary-page' && hasStops"
-            :page="page"
-            :component="component"
-        />
         <VsBrItinerary
-            v-else-if="pageName === 'itinerary-page' && !hasStops"
+            v-else-if="pageName === 'itinerary-page'"
             :page="page"
             :component="component"
         />
@@ -65,7 +59,6 @@ import { useFavourites } from '#imports';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
-import VsBrItineraryLegacy from '~/components/PageTypes/VsBrItineraryLegacy.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
@@ -83,8 +76,6 @@ let pageName : string = '';
 
 let pageDocument : any = {
 };
-
-let hasStops = null;
 
 const configStore = useConfigStore();
 const favourites = useFavourites();
@@ -114,7 +105,6 @@ if (page.value) {
     const componentModels = component.value.getModels();
 
     configStore.activeSite = componentModels['site-id'];
-    configStore.productSearch = componentModels.psrWidget;
     if (componentModels.otyml) {
         configStore.otyml = componentModels.otyml;
     }
@@ -127,7 +117,6 @@ if (page.value) {
     configStore.pageMetaData = componentModels.metadata;
 
     if (componentModels.pageConfiguration) {
-        hasStops = componentModels.pageConfiguration.hasStops;
         configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
         configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];
         configStore.cludoExperienceId = componentModels.pageConfiguration['cludo.experience-id'];
@@ -392,17 +381,4 @@ provide('page', page.value);
         }
     }
 
-    .has-transparent-nav {
-        margin-top: -76px;
-
-        .vs-hero-section__video-overlay {
-            background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 50.48%, rgba(0, 0, 0, 0.30) 89.9%),
-                        linear-gradient(180deg, rgba(0, 0, 0, 0.00) 39.5%, rgba(0, 0, 0, 0.85) 100%);
-        }
-
-        .vs-hero-section__video .vs-video-html5__toggle-video {
-            top: auto;
-            bottom: 1.25rem;
-        }
-    }
 </style>
