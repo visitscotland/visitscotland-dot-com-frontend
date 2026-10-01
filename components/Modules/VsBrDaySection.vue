@@ -1,90 +1,91 @@
 <template>
-    <VsContainer
-        class="vs-daysection-wrapper"
+    <section
+        class="
+            vs-daysection-wrapper
+            d-flex flex-column gap-300
+        "
     >
-        <VsRow>
-            <VsCol>
-                <span class="vs-section-header__divider mb-0" />
-            </VsCol>
-        </VsRow>
-        <div class="row gap-300 gap-lg-0">
-            <VsCol
-                cols="12"
-                lg="4"
-                class="mt-150"
-            >
-                <VsHeading
-                    level="2"
-                    heading-style="heading-l"
-                    no-margins
+        <VsContainer>
+            <VsRow>
+                <VsCol>
+                    <span class="vs-section-header__divider mb-0" />
+                </VsCol>
+            </VsRow>
+            <div class="row gap-300 gap-lg-0">
+                <VsCol
+                    cols="12"
+                    lg="4"
+                    class="mt-150"
                 >
-                    {{ dayLabel }} {{ dayNumber }} - {{ day.title }}
-                </VsHeading>
-            </VsCol>
-            <VsCol
-                cols="12"
-                lg="8"
-                class="d-flex flex-column gap-150"
-            >
-                <template
-                    v-if="day.video"
-                >
-                    <VsBrMedia
-                        :video-id="day.video.youtubeId"
-                        :video-with-media-caption="true"
+                    <VsHeading
+                        level="2"
+                        heading-style="heading-l"
+                        no-margins
                     >
-                        <template #video-title>
-                            {{ day.video.label }}
-                        </template>
-                    </VsBrMedia>
-                </template>
-                <template
-                    v-else-if="day.image"
+                        {{ dayLabel }} {{ dayNumber }} - {{ day.title }}
+                    </VsHeading>
+                </VsCol>
+                <VsCol
+                    cols="12"
+                    lg="8"
+                    class="d-flex flex-column gap-150"
                 >
-                    <VsBrMedia
-                        :image="day.image.cmsImage"
-                        :image-description="day.image.description"
-                        :rounded="true"
-                        class="mb-100"
-                    />
-                </template>    
-
-                <div>
-                    <VsBody>
-                        <VsBrRichText :input-content="day.introduction.value" />
-                    </VsBody>
-                </div>
-
-                <div
-                    class="d-flex flex-wrap gap-075"
-                >
-                    <VsButton
-                        v-if="day.ctaLink.link && day.ctaLink.label"
-                        :href="day.ctaLink.link"
-                        variant="secondary"
+                    <template
+                        v-if="day.video"
                     >
-                        {{ day.ctaLink.label }}
-                    </VsButton>
-                    <VsButton
-                        v-if="day.mapLink.link"
-                        :href="day.mapLink.link"
-                        variant="subtle"
-                        icon="fa-regular fa-map"
+                        <VsBrMedia
+                            :video-id="day.video.youtubeId"
+                            :video-with-media-caption="true"
+                        >
+                            <template #video-title>
+                                {{ day.video.label }}
+                            </template>
+                        </VsBrMedia>
+                    </template>
+                    <template
+                        v-else-if="day.image"
                     >
-                        {{ day.mapLink.label }}
-                    </VsButton>
-                </div>
-            </VsCol>
-        </div>
-    </VsContainer>
+                        <VsBrMedia
+                            :image="day.image.cmsImage"
+                            :image-description="day.image.description"
+                            :rounded="true"
+                            class="mb-100"
+                        />
+                    </template>    
 
-    <div
-        v-if="day.mediaSection"
-    >
+                    <div>
+                        <VsBody>
+                            <VsBrRichText :input-content="day.introduction.value" />
+                        </VsBody>
+                    </div>
+
+                    <div
+                        class="d-flex flex-wrap gap-075"
+                    >
+                        <VsButton
+                            v-if="day.ctaLink.link && day.ctaLink.label"
+                            :href="day.ctaLink.link"
+                            variant="secondary"
+                        >
+                            {{ day.ctaLink.label }}
+                        </VsButton>
+                        <VsButton
+                            v-if="day.mapLink.link"
+                            :href="day.mapLink.link"
+                            variant="subtle"
+                            icon="fa-regular fa-map"
+                        >
+                            {{ day.mapLink.label }}
+                        </VsButton>
+                    </div>
+                </VsCol>
+            </div>
+        </VsContainer>
         <VsBrMediaSection
+            v-if="day.mediaSection"
             :media-section="day.mediaSection"
         />
-    </div>
+    </section>
 </template>
 
 <script setup lang="ts">
