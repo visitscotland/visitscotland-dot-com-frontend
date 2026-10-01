@@ -93,7 +93,6 @@
 
     <div
         v-if="module.mediaSection"
-        :class="nextModuleArticle ? 'mb-n250' : ''"
     >
         <VsBrMediaSection
             :media-section="module.mediaSection"
