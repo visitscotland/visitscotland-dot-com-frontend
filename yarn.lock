@@ -3013,10 +3013,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/google.maps@npm:^3.53.1, @types/google.maps@npm:^3.64.0":
+"@types/google.maps@npm:^3.53.1":
   version: 3.66.2
   resolution: "@types/google.maps@npm:3.66.2"
   checksum: 10c0/31cdc24a2a869983aaf274de1fcfeeb3af4a9462d7af88b09ad17feb7b74c356dc5a29071238737e62c51721490c121cc461f8469a401bbfa7c38833910043ba
+  languageName: node
+  linkType: hard
+
+"@types/google.maps@npm:^3.66.3":
+  version: 3.66.3
+  resolution: "@types/google.maps@npm:3.66.3"
+  checksum: 10c0/b4d8a855ef764ec35e1cc75898409f857d1e8576060ef173dc8cd1858b8b63093fc1e106e62bfbaaf55686c1e105357e839ab3a02179efce1fb448a458342a47
   languageName: node
   linkType: hard
 
@@ -9738,7 +9745,7 @@ __metadata:
     "@nuxt/eslint-config": "npm:^1.17.0"
     "@pinia/nuxt": "npm:^1.0.2"
     "@playwright/test": "npm:^1.63.0"
-    "@types/google.maps": "npm:^3.64.0"
+    "@types/google.maps": "npm:^3.66.3"
     "@types/node": "npm:^26.6.2"
     "@visitscotland/component-library": "npm:5.81.0"
     axios: "npm:^1.20.0"
