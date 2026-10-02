@@ -37,7 +37,7 @@
                 <div>
                     <div class="key-information__map-wrapper">
                         <!-- Map -->
-                        <VsIllustratedMap :highlighted-regions="[]" class="d-block mx-auto" width="100%"/>
+                        <VsBrIllustratedMap :highlighted-regions="[]" class="d-block mx-auto" width="100%"/>
                     </div>
                     <div>
                         <!-- Mobile button -->
@@ -61,9 +61,9 @@ import {
     VsButton,
     VsHeading,
     VsIcon,
-    VsIllustratedMap,
     VsPanel,
 } from '@visitscotland/component-library/components';
+import VsBrIllustratedMap from '~/components/Modules/VsBrIllustratedMap.vue';
 import getIconName from '~/composables/getIconName.ts';
 
 interface KeyInformationHighlight {
