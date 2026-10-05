@@ -38,7 +38,7 @@
                     <div class="key-information__map-wrapper">
                         <!-- Map -->
                         <VsBrIllustratedMap
-                            :highlighted-regions="[]"
+                            :highlighted-regions="region ? [region] : []"
                             :pins="mapPins"
                             class="d-block mx-auto"
                             width="100%"
@@ -70,7 +70,7 @@ import {
     VsIcon,
     VsPanel,
 } from '@visitscotland/component-library/components';
-import VsBrIllustratedMap from '~/components/Modules/VsBrIllustratedMap.vue';
+import VsBrIllustratedMap, { type Region } from '~/components/Modules/VsBrIllustratedMap.vue';
 import getIconName from '~/composables/getIconName.ts';
 
 interface KeyInformationHighlight {
@@ -110,9 +110,37 @@ const props = defineProps<{
     locations?: KeyInformationLocation[] | null,
 }>();
 
+const region = computed(() => {
+    const regionMapping: Record<string, Region> = {
+        'aberdeen-city-shire': 'aberdeen',
+        'argyll-isles': 'argyll',
+        'airshire-arran': 'arranayr',
+        borders: 'borders',
+        'dumfries-galloway': 'dumfries',
+        'dundee-angus': 'dundee',
+        'edinburgh-lothians': 'edinburgh',
+        'kingdom-fife': 'fife',
+        'greater-glasgow': 'glasgow',
+        highlands: 'highlands',
+        'loch-lomond': 'lomond',
+        orkney: 'orkney',
+        'outer-hebrides': 'outerhebs',
+        perthshire: 'perth',
+        sheland: 'shetland',
+    };
+
+    const locationId = props.locations?.[0]?.id;
+    return locationId ? regionMapping[locationId] ?? null : null;
+});
+
 const mapPins = computed(() => {
     return (props.locations ?? [])
-        .filter(({ latitude, longitude }) => Number.isFinite(latitude) && Number.isFinite(longitude))
+        .filter(({ latitude, longitude, region }) => (
+            // Only show map pins when region is false
+            region === false
+            && Number.isFinite(latitude)
+            && Number.isFinite(longitude)
+        ))
         .map(({ latitude, longitude }) => ({
             lat: latitude,
             lng: longitude,
