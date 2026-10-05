@@ -23,6 +23,7 @@
         <VsBrKeyInformationPanel
             v-if="configStore.pageIntro?.keyInformationPanel"
             :module="configStore.pageIntro.keyInformationPanel"
+            :locations="location ? [location] : []"
             class="my-200 mx-075"
         />
     </NuxtLazyHydrate> 
@@ -95,7 +96,7 @@ import {
 
 const props = defineProps<{ component: Component, page: Page }>();
 
-const { page } = toRefs(props);
+const { component, page } = toRefs(props);
 
 let documentData : any = {
 };
@@ -105,6 +106,7 @@ let productSearch : any = {
 let heroImage = {
 };
 let otyml : any = null;
+let location : any = null;
 
 const configStore = useConfigStore();
 
@@ -114,6 +116,7 @@ if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
+    location = component.value.getModels().location;
     pageItems = configStore.pageItems;
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;

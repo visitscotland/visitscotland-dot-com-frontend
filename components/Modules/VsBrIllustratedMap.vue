@@ -97,7 +97,7 @@
                 :transform="`translate(${pin.x}, ${pin.y})`"
                 class="vs-illustrated-map__pin"
             >
-                <circle r="4" />
+                <circle r="6" />
             </g>
         </g>
     </svg>
@@ -123,7 +123,7 @@ export interface MapPin {
 // The bounding box for Scotland, used to project lat/lng into SVG coordinate space
 export const SCOTLAND_BOUNDS = {
     north: 60.847,
-    south: 54.633,
+    south: 54.695,
     east: -0.766,
     west: -8.623,
 };

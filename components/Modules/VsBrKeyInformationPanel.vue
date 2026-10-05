@@ -37,7 +37,12 @@
                 <div>
                     <div class="key-information__map-wrapper">
                         <!-- Map -->
-                        <VsBrIllustratedMap :highlighted-regions="[]" class="d-block mx-auto" width="100%"/>
+                        <VsBrIllustratedMap
+                            :highlighted-regions="[]"
+                            :pins="mapPins"
+                            class="d-block mx-auto"
+                            width="100%"
+                        />
                     </div>
                     <div>
                         <!-- Mobile button -->
@@ -56,6 +61,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import {
     VsBody,
     VsButton,
@@ -86,9 +93,31 @@ interface KeyInformationModule {
     highlights: KeyInformationHighlight[]
 }
 
-defineProps<{
-    module: KeyInformationModule
+interface KeyInformationLocation {
+    id: string,
+    key: string,
+    name: string,
+    type: string,
+    latitude: number,
+    longitude: number,
+    parentId: string,
+    types: string[],
+    region: boolean,
+}
+
+const props = defineProps<{
+    module: KeyInformationModule,
+    locations?: KeyInformationLocation[] | null,
 }>();
+
+const mapPins = computed(() => {
+    return (props.locations ?? [])
+        .filter(({ latitude, longitude }) => Number.isFinite(latitude) && Number.isFinite(longitude))
+        .map(({ latitude, longitude }) => ({
+            lat: latitude,
+            lng: longitude,
+        }));
+});
 </script>
 
 <style lang="css" scoped>
