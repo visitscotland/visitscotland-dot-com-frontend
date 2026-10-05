@@ -90,15 +90,13 @@
             d="M42.2625 231.565L48.5831 221.483L52.2519 210.237L60.9598 218.253L61.521 202.467L63.1827 194.13L62.4085 188.702L65.6214 186.368L69.854 170.601L55.0736 173.952L39.144 171.715L27.6386 179.013L26.6485 193.901L39.2061 192.377L52.0981 177.832L42.8937 196.909L25.9768 208.276L23.9023 213.801L28.5207 221.82L43.2148 204.755L44.364 206.684L37.396 224.232L42.2625 231.565Z"
             :class="{ 'is-highlighted': isHighlighted('argyll') }"
         />
-        <g v-if="isFeatureEnabledShowMapPins">
-            <g
-                v-for="(pin, index) in mapPins"
-                :key="`${pin.x}-${pin.y}-${index}`"
-                :transform="`translate(${pin.x}, ${pin.y})`"
-                class="vs-illustrated-map__pin"
-            >
-                <circle r="6" />
-            </g>
+        <g
+            v-for="(pin, index) in mapPins"
+            :key="`${pin.x}-${pin.y}-${index}`"
+            :transform="`translate(${pin.x}, ${pin.y})`"
+            class="vs-illustrated-map__pin"
+        >
+            <circle r="4" />
         </g>
     </svg>
 </template>
@@ -135,9 +133,6 @@ const VIEW_BOX = {
 </script>
 
 <script lang="ts" setup>
-// eslint-disable-next-line import/first
-import checkFlags from '~/composables/checkFlags.ts';
-
 const props = defineProps({
     /**
      * Array of region IDs to highlight
@@ -181,9 +176,6 @@ const props = defineProps({
 });
 
 const isHighlighted = (regionId: Region): boolean => props.highlightedRegions.includes(regionId);
-
-// Feature flag for map pinning
-const isFeatureEnabledShowMapPins: boolean = checkFlags('test_feature_flag');
 
 const mapPins = computed(() => {
     const pins = Array.isArray(props.pins) ? props.pins : [];
