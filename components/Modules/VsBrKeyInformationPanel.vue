@@ -38,8 +38,9 @@
                     <div class="key-information__map-wrapper">
                         <!-- Map -->
                         <VsBrIllustratedMap
-                            :highlighted-regions="region ? [region] : []"
+                            :highlighted-regions="regions"
                             :pins="mapPins"
+                            :aria-label="mapAriaLabel"
                             class="d-block mx-auto"
                             width="100%"
                         />
@@ -110,41 +111,90 @@ const props = defineProps<{
     locations?: KeyInformationLocation[] | null,
 }>();
 
-const region = computed(() => {
-    const regionMapping: Record<string, Region> = {
-        'aberdeen-city-shire': 'aberdeen',
-        'argyll-isles': 'argyll',
-        'airshire-arran': 'arranayr',
-        borders: 'borders',
-        'dumfries-galloway': 'dumfries',
-        'dundee-angus': 'dundee',
-        'edinburgh-lothians': 'edinburgh',
-        'kingdom-fife': 'fife',
-        'greater-glasgow': 'glasgow',
-        highlands: 'highlands',
-        'loch-lomond': 'lomond',
-        orkney: 'orkney',
-        'outer-hebrides': 'outerhebs',
-        perthshire: 'perth',
-        sheland: 'shetland',
-    };
+const regionMapping: Record<string, Region> = {
+    'aberdeen-city-shire': 'aberdeen',
+    'argyll-isles': 'argyll',
+    'airshire-arran': 'arranayr',
+    borders: 'borders',
+    'dumfries-galloway': 'dumfries',
+    'dundee-angus': 'dundee',
+    'edinburgh-lothians': 'edinburgh',
+    'kingdom-fife': 'fife',
+    'greater-glasgow': 'glasgow',
+    highlands: 'highlands',
+    'loch-lomond': 'lomond',
+    orkney: 'orkney',
+    'outer-hebrides': 'outerhebs',
+    perthshire: 'perth',
+    shetland: 'shetland',
+};
 
-    const locationId = props.locations?.[0]?.id;
-    return locationId ? regionMapping[locationId] ?? null : null;
-});
+const regionNameFallbacks: Record<Region, string> = {
+    aberdeen: 'Aberdeen & Aberdeenshire',
+    argyll: 'Argyll & the Isles',
+    arranayr: 'Ayrshire & Arran',
+    borders: 'the Scottish Borders',
+    dumfries: 'Dumfries & Galloway',
+    dundee: 'Dundee & Angus',
+    edinburgh: 'Edinburgh & the Lothians',
+    fife: 'Fife',
+    glasgow: 'Greater Glasgow',
+    highlands: 'the Highlands',
+    lomond: 'Loch Lomond',
+    orkney: 'Orkney',
+    outerhebs: 'the Outer Hebrides',
+    perth: 'Perthshire',
+    shetland: 'Shetland',
+};
+
+const regionLocations = computed(() => (props.locations ?? [])
+    .filter(({ id, region }) => region && id in regionMapping));
+
+const regions = computed<Region[]>(() => [...new Set(
+    regionLocations.value
+        .map(({ id }) => regionMapping[id])
+        .filter((region): region is Region => region !== undefined),
+)]);
+
+const regionNames = computed(() => regions.value.map((mappedRegion) => {
+    const location = regionLocations.value.find(({ id }) => regionMapping[id] === mappedRegion);
+    return location?.name?.trim() || regionNameFallbacks[mappedRegion];
+}));
+
+const mapPinLocations = computed(() => (props.locations ?? [])
+    .filter(({ latitude, longitude, region }) => (
+        // Only show map pins when region is false
+        region === false
+        && Number.isFinite(latitude)
+        && Number.isFinite(longitude)
+    )));
 
 const mapPins = computed(() => {
-    return (props.locations ?? [])
-        .filter(({ latitude, longitude, region }) => (
-            // Only show map pins when region is false
-            region === false
-            && Number.isFinite(latitude)
-            && Number.isFinite(longitude)
-        ))
-        .map(({ latitude, longitude }) => ({
-            lat: latitude,
-            lng: longitude,
-        }));
+    return mapPinLocations.value.map(({ latitude, longitude }) => ({
+        lat: latitude,
+        lng: longitude,
+    }));
+});
+
+const mapAriaLabel = computed(() => {
+    const descriptions: string[] = [];
+
+    if (regionNames.value.length === 1) {
+        descriptions.push(`the ${regionNames.value[0]} region`);
+    } else if (regionNames.value.length > 1) {
+        descriptions.push(`regions ${regionNames.value.join(', ')}`);
+    }
+
+    const pinNames = mapPinLocations.value.map(({ name }) => name?.trim() || 'location');
+    if (pinNames.length === 1) {
+        descriptions.push(`a pin for ${pinNames[0]}`);
+    } else if (pinNames.length > 1) {
+        descriptions.push(`pins for ${pinNames.join(', ')}`);
+    }
+
+    return descriptions.length
+        ? `Illustrated map of Scotland showing ${descriptions.join(' and ')}`
+        : 'Illustrated map of Scotland';
 });
 </script>
 

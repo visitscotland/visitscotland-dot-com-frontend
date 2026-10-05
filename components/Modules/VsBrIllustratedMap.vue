@@ -149,7 +149,7 @@ const props = defineProps({
      */
     ariaLabel: {
         type: String,
-        default: 'Illustrated map of Scotland showing regions and/or pins',
+        default: 'Illustrated map of Scotland',
     },
     /**
      * Title for the map
