@@ -25,35 +25,19 @@
                         :input-content="module.introduction.value"
                     />
 
+                    <VsBrMedia
+                        v-if="module.image && module.image.cmsImage"
+                        :image="module.image.cmsImage"
+                        :image-description="module.image.description"
+                        :rounded="true"
+                        class="mb-100"
+                        :class="module.introduction && module.introduction.value ? 'mt-150' : ''"
+                    />
+
                     <template
                         v-for="(section, index) in module.sections"
                         :key="index"
                     >
-                        <template
-                            v-if="section.video"
-                        >
-                            <VsBrMedia
-                                :video-id="section.video.youtubeId"
-                                :video-with-media-caption="true"
-                                class="mb-100"
-                                :class="mediaHasTopMargin(index) ? 'mt-150' : ''"
-                            >
-                                <template #video-title>
-                                    {{ section.video.label ?? configStore.getLabel('video', 'video.play-btn') }}
-                                </template>
-                            </VsBrMedia>
-                        </template>
-                        <template
-                            v-else-if="section.image"
-                        >
-                            <VsBrMedia
-                                :image="section.image.cmsImage"
-                                :image-description="section.image.description"
-                                :rounded="true"
-                                class="mb-100"
-                                :class="mediaHasTopMargin(index) ? 'mt-150' : ''"
-                            />
-                        </template>
 
                         <template
                             v-if="section.copy"
@@ -84,6 +68,32 @@
                                     <span>{{ section.quote.authorTitle }}</span>
                                 </template>
                             </VsQuote>
+                        </template>
+
+                        <template
+                            v-if="section.video"
+                        >
+                            <VsBrMedia
+                                :video-id="section.video.youtubeId"
+                                :video-with-media-caption="true"
+                                class="mb-100"
+                                :class="mediaHasTopMargin(index) ? 'mt-150' : ''"
+                            >
+                                <template #video-title>
+                                    {{ section.video.label ?? configStore.getLabel('video', 'video.play-btn') }}
+                                </template>
+                            </VsBrMedia>
+                        </template>
+                        <template
+                            v-else-if="section.image"
+                        >
+                            <VsBrMedia
+                                :image="section.image.cmsImage"
+                                :image-description="section.image.description"
+                                :rounded="true"
+                                class="mb-100"
+                                :class="mediaHasTopMargin(index) ? 'mt-150' : ''"
+                            />
                         </template>
                     </template>
                 </VsBody>
