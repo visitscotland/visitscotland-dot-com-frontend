@@ -1,9 +1,8 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
     <div
-        v-if="runtimeConfig.public.VS_BRANCH_NAME
-            || runtimeConfig.public.VS_CONTAINER_NAME_SHORT"
-        style="background-color: #200F2E; position: relative; z-index: 10000;"
+        v-if="configStore.pageMetaData
+            && (configStore.pageMetaData.branch || configStore.pageMetaData.pr)"
     >
         <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
             <span
