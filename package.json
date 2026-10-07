@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.17.0",
-    "@types/google.maps": "^3.64.0",
+    "@types/google.maps": "^3.66.4",
     "@types/node": "^26.6.2",
     "eslint": "^10.11.0",
     "husky": "^9.1.7",
