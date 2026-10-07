@@ -6,7 +6,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "postinstall": "npm view @visitscotland/component-library version > .clversion && nuxt prepare",
+    "postinstall": "node -p \"require('./node_modules/@visitscotland/component-library/package.json').version\" > .clversion && nuxt prepare",
     "commit": "cz",
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
