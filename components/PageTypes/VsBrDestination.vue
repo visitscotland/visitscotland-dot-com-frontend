@@ -21,8 +21,8 @@
         :when-visible="{ rootMargin: '50px' }"
     >
         <VsBrKeyInformationPanel
-            v-if="configStore.pageIntro?.keyInformationPanel"
-            :module="configStore.pageIntro.keyInformationPanel"
+            v-if="configStore.pageTemplate?.keyInformationPanel"
+            :module="configStore.pageTemplate.keyInformationPanel"
             :locations="location ? [location] : []"
             class="my-200 mx-075"
         />
