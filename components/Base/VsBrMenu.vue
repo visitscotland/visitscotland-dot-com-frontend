@@ -3,6 +3,7 @@
     <div
         v-if="configStore.pageMetaData
             && (configStore.pageMetaData.branch || configStore.pageMetaData.pr)"
+        style="background-color: #200F2E; position: relative; z-index: 10000;"
     >
         <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
             <span
