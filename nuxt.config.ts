@@ -45,6 +45,7 @@ export default defineNuxtConfig({
     experimental: {
         payloadExtraction: false,
         inlineSSRStyles: false,
+        entryImportMap: false,
     },
 
     vue: {
