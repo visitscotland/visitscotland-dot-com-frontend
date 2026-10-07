@@ -23,6 +23,7 @@
         <VsBrKeyInformationPanel
             v-if="configStore.pageIntro?.keyInformationPanel"
             :module="configStore.pageIntro.keyInformationPanel"
+            :locations="location ? [location] : []"
             class="my-200 mx-075"
         />
     </NuxtLazyHydrate> 
@@ -41,15 +42,6 @@
     >
         <VsBrSocialShare
             :no-js="true"
-        />
-    </NuxtLazyHydrate>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrProductSearch
-            v-if="productSearch"
-            class="mt-300 mt-lg-600"
         />
     </NuxtLazyHydrate>
 
@@ -85,7 +77,6 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
-import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 
@@ -95,16 +86,15 @@ import {
 
 const props = defineProps<{ component: Component, page: Page }>();
 
-const { page } = toRefs(props);
+const { component, page } = toRefs(props);
 
 let documentData : any = {
 };
 let pageItems : any[] = [];
-let productSearch : any = {
-};
 let heroImage = {
 };
 let otyml : any = null;
+let location : any = null;
 
 const configStore = useConfigStore();
 
@@ -114,8 +104,8 @@ if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
+    location = component.value.getModels().location;
     pageItems = configStore.pageItems;
-    productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
     if (configStore.otyml) {
         otyml = configStore.otyml;
