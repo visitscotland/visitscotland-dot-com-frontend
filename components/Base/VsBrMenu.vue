@@ -6,13 +6,40 @@
         style="background-color: #200F2E; position: relative; z-index: 10000;"
     >
         <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
-            <span class="text-warning"><strong>Branch:</strong> {{ configStore.pageMetaData.branch }}</span>
-            <span class="text-warning"><strong>Author:</strong> {{ configStore.pageMetaData.lastCommitAuthor }}</span>
+            <span
+                v-if="runtimeConfig.public.VS_BRANCH_NAME"
+                class="text-warning"
+            >
+                <strong>FE branch:</strong> {{ runtimeConfig.public.VS_BRANCH_NAME }}
+            </span>
+            <span
+                v-if="runtimeConfig.public.VS_COMMIT_AUTHOR"
+                class="text-warning"
+            >
+                <strong>FE author:</strong> {{ runtimeConfig.public.VS_COMMIT_AUTHOR }}
+            </span>
+            <span
+                v-if="runtimeConfig.public.CHANGE_ID"
+                class="text-warning"
+            >
+                <strong>FE PR:</strong> {{ runtimeConfig.public.CHANGE_ID }}
+            </span>
+        </div>
+    </div>
+
+    <div
+        v-if="configStore.pageMetaData
+            && (configStore.pageMetaData.branch || configStore.pageMetaData.pr)"
+        style="background-color: #200F2E; position: relative; z-index: 10000;"
+    >
+        <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
+            <span class="text-warning"><strong>BRXM branch:</strong> {{ configStore.pageMetaData.branch }}</span>
+            <span class="text-warning"><strong>BRXM author:</strong> {{ configStore.pageMetaData.lastCommitAuthor }}</span>
             <span
                 v-if="configStore.pageMetaData.pr"
                 class="text-warning"
             >
-                <strong>PR:</strong> {{ configStore.pageMetaData.pr }}
+                <strong>BRXM PR:</strong> {{ configStore.pageMetaData.pr }}
             </span>
         </div>
     </div>
@@ -41,7 +68,6 @@
         ref="navElement"
         class="vs-sticky-nav--no-global"
         :class="{
-            'transparent-nav-bar': shouldShowTransparent,
             'has-edit-button': page.isPreview(),
         }"
         @mouseenter="isHovered = true"
@@ -59,14 +85,16 @@
             sidebar-breakpoint="xl"
         >
             <template #logo-link>
-                <VsSvgLink
-                    :link-alt-text="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
+                <VsLink
                     :href="`/${configStore.langString}`"
-                    svg-fill="#5B2487"
-                    svg-path="visitscotland-logo"
-                    svg-width="167px"
-                    svg-height="28px"
-                />
+                    no-visited-styles
+                >
+                    <VsImg
+                        src="/visitscotland-logo.svg"
+                        :alt="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
+                        :style="{ width: '167px', height: '28px' }"
+                    />
+                </VsLink>
             </template>
 
             <template #navigation-bar-menu>
@@ -311,9 +339,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    toRefs, provide, ref, computed, onMounted, onUnmounted,
-} from 'vue';
+import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 import formatLink from '~/composables/formatLink.ts';
@@ -324,7 +350,7 @@ import {
     VsBanner,
     VsLink,
     VsNavigationBar,
-    VsSvgLink,
+    VsImg,
     VsNavigationBarMenu,
     VsNavigationBarMenuDropdown,
     VsNavigationBarMenuItem,
@@ -352,9 +378,8 @@ let menuItems : any[] = [];
 let localisedUrls : any[] = [];
 let banner : any = null;
 
-let cacheBustDate : string = '';
-
 const configStore = useConfigStore();
+const runtimeConfig = useRuntimeConfig();
 
 const isHovered = ref(false);
 const isFocused = ref(false);
@@ -442,66 +467,12 @@ if (page.value) {
         banner.ctaLink.link = banner.ctaLink.link.replace('/site/resourceapi', '');
     }
 
-    const timestamp = menuData.model.data.timeStamp;
-    const date = new Date(timestamp);
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1);
-    const day = String(date.getDate());
-    const hours = String(date.getHours());
-    const minutes = String(date.getMinutes());
-    const seconds = String(date.getSeconds());
-
-    cacheBustDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 provide('page', page.value);
 </script>
 
 <style lang="scss">
-    .vs-navigation-bar {
-        transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
-    }
-
-    .transparent-nav-bar .vs-navigation-bar {
-        background-color: rgba(0,0,0,0);
-        box-shadow: none;
-
-        .vs-svg-link > svg {
-            fill: white !important;
-        }
-
-        .vs-navigation-bar-menu-dropdown > .btn {
-            color: white;
-
-            &:after {
-                color: white;
-            }
-        }
-
-        .vs-navigation-bar-menu-item > a {
-            color: white;
-        }
-
-        .dropdown-menu > .vs-navigation-bar-menu-item > a {
-            color: #200f2e;
-        }
-
-        .vs-button--icon-only.btn-subtle i {
-            color: white !important;
-        }
-
-        .vs-navigation-bar__search-link {
-            background-color: rgba(0,0,0,0);
-            color: white;
-            border-color: white;
-
-            i {
-                color: white !important;
-            }
-        }
-    }
-
     .vs-favourites-link {
         font-size: .75rem;
         gap: 0.25rem;

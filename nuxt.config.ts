@@ -19,6 +19,21 @@ const clVersion = bufferFile('.clversion');
 export default defineNuxtConfig({
     ssr: process.env.NUXT_SSR !== 'false',
 
+    devtools: {
+        // DevTools 3.4.2 imports the removed simple-git default export, so it
+        // cannot run with the security-patched simple-git 4 release.
+        enabled: false,
+    },
+
+    // Nuxt 4.6.0 can externalize its SSR renderer on Windows because Nitro's
+    // string matcher does not recognize backslash-separated module paths.
+    // Keep the renderer bundled until the upstream fix is released.
+    nitro: {
+        externals: {
+            inline: [/[\\/]node_modules[\\/]nuxt[\\/]dist[\\/]/],
+        },
+    },
+
     runtimeConfig: {
         BR_RESOURCE_API_ENDPOINT: process.env.BR_RESOURCE_API_ENDPOINT,
         BR_X_FORWARDED_HOST: process.env.BR_X_FORWARDED_HOST,
@@ -26,6 +41,9 @@ export default defineNuxtConfig({
             BR_CMS_ORIGIN_LOCATION: process.env.BR_CMS_ORIGIN_LOCATION,
             BR_NUXT_APP_DEBUG: process.env.BR_NUXT_APP_DEBUG,
             COMP_LIBRARY_VERSION: clVersion,
+            VS_BRANCH_NAME: process.env.VS_BRANCH_NAME,
+            CHANGE_ID: process.env.CHANGE_ID,
+            VS_COMMIT_AUTHOR: process.env.VS_COMMIT_AUTHOR,
         },
     },
 
@@ -42,6 +60,7 @@ export default defineNuxtConfig({
     experimental: {
         payloadExtraction: false,
         inlineSSRStyles: false,
+        entryImportMap: false,
     },
 
     vue: {
