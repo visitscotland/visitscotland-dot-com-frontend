@@ -67,12 +67,17 @@
     <div
         ref="navElement"
         class="vs-sticky-nav--no-global"
+        :class="{
+            'has-edit-button': page.isPreview(),
+        }"
         @mouseenter="isHovered = true"
         @mouseleave="isHovered = false"
         @focusin="isFocused = true"
         @focusout="isFocused = false"
     >
         <!-- Navbar To Do - Get real labels -->
+        <BrManageMenuButton :menu="menuData" />
+
         <VsNavigationBar
             :sidebar-close-label="configStore.getLabel('navigation.static', 'meganav.sidebar-close-label')"
             :sidebar-open-label="configStore.getLabel('navigation.static', 'meganav.sidebar-open-label')"
@@ -336,6 +341,7 @@
 <script lang="ts" setup>
 import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
+import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 import formatLink from '~/composables/formatLink.ts';
 import { useFavourites } from '~/stores/favouritesStore.ts';
 import useConfigStore from '~/stores/configStore.ts';
