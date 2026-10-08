@@ -9607,7 +9607,7 @@ __metadata:
     lint-staged: "npm:^17.5.1"
     mitt: "npm:^3.0.0"
     nuxt: "npm:^4.5.2"
-    nuxt-jsonld: "npm:^2.0.8"
+    nuxt-jsonld: "npm:^2.3.0"
     nuxt-lazy-hydrate: "npm:^1.0.0"
     pinia: "npm:^4.0.3"
     sass: "npm:^1.104.1"
@@ -9617,13 +9617,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"nuxt-jsonld@npm:^2.0.8":
-  version: 2.2.1
-  resolution: "nuxt-jsonld@npm:2.2.1"
+"nuxt-jsonld@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "nuxt-jsonld@npm:2.3.0"
   dependencies:
-    pathe: "npm:^1.1.2"
-    schema-dts: "npm:^1.1.2"
-  checksum: 10c0/6905f1fea972c23b4a4c9a69ffe2ab5f847e65abebd872cbe335133748577892a143081f26123344b5bd23da872b01b989f50ccf252ad4279c9c0920153c1b4c
+    "@nuxt/kit": "npm:^4.5.2"
+    pathe: "npm:^2.0.3"
+    schema-dts: "npm:^2.0.0"
+  checksum: 10c0/3bfd5701f675d83292b5fdefe3bef709533dba411e3cfe3cd35fc768a112724429c15987564b849f0ccff0b2c65f6988a125be341b4f690eb8b55398789ad65e
   languageName: node
   linkType: hard
 
@@ -10173,7 +10174,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pathe@npm:^1.1.1, pathe@npm:^1.1.2":
+"pathe@npm:^1.1.1":
   version: 1.1.2
   resolution: "pathe@npm:1.1.2"
   checksum: 10c0/64ee0a4e587fb0f208d9777a6c56e4f9050039268faaaaecd50e959ef01bf847b7872785c36483fa5cdcdbdfdb31fef2ff222684d4fc21c330ab60395c681897
@@ -11507,10 +11508,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-dts@npm:^1.1.2":
-  version: 1.1.5
-  resolution: "schema-dts@npm:1.1.5"
-  checksum: 10c0/babe23a1577c75c5df79d73acf34af3399e60928eab46f2236a0c4212061f5778d613a31c9e9ec86a2807d20b1ea460673d72d3fe1f64fb7543867460e607f76
+"schema-dts-lib@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "schema-dts-lib@npm:1.0.0"
+  peerDependencies:
+    typescript: ">=4.9.5"
+  checksum: 10c0/18b5d1ceb57f1e57073fe5a94c035201b924562dfed77ebf472767fde853014d7d0baab31e2006383c07b5608439b6e72c375cd9798c4d655a6c514355fdb527
+  languageName: node
+  linkType: hard
+
+"schema-dts@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "schema-dts@npm:2.0.0"
+  dependencies:
+    schema-dts-lib: "npm:^1.0.0"
+  checksum: 10c0/139e2178b0609549338e9b8b970e34f44f342a3f75911806d0e4221f1e0ab2c09a482133f9fa1f55a29c4ec7fdb3cace056853368a9db487c572bc408db2b2c9
   languageName: node
   linkType: hard
 
