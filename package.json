@@ -27,7 +27,7 @@
     "@types/node": "^26.6.2",
     "eslint": "^10.11.0",
     "husky": "^9.1.7",
-    "nuxt": "^4.5.2",
+    "nuxt": "^4.6.0",
     "nuxt-lazy-hydrate": "^1.0.0"
   },
   "dependencies": {
@@ -51,7 +51,8 @@
     "vue": "3.5.42"
   },
   "resolutions": {
-    "vue": "3.5.42"
+    "vue": "3.5.42",
+    "simple-git": "4.0.2"
   },
   "overrides": {
     "minimist": "latest"
