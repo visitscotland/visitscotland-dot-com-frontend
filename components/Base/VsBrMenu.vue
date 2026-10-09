@@ -70,10 +70,6 @@
         :class="{
             'has-edit-button': page.isPreview(),
         }"
-        @mouseenter="isHovered = true"
-        @mouseleave="isHovered = false"
-        @focusin="isFocused = true"
-        @focusout="isFocused = false"
     >
         <!-- Navbar To Do - Get real labels -->
         <BrManageMenuButton :menu="menuData" />
@@ -381,18 +377,10 @@ let banner : any = null;
 const configStore = useConfigStore();
 const runtimeConfig = useRuntimeConfig();
 
-const isHovered = ref(false);
-const isFocused = ref(false);
 const scrollY = ref(1);
 const navElement = ref<HTMLElement | null>(null);
 let navResizeObserver: ResizeObserver | undefined;
 let skipToResizeObserver: ResizeObserver | undefined;
-
-const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
-    && checkFlags('use-navbar')
-    && scrollY.value === 0
-    && !isHovered.value
-    && !isFocused.value);
 
 function handleScroll() {
     scrollY.value = window.scrollY;
