@@ -16,6 +16,8 @@ import {
     googleMapFilterInteractionTemplate,
     googleMapTimeToFirstInteractionTemplate,
     googleMapInteractionTemplate,
+    carbonQuestionTemplate,
+    carbonCompleteTemplate,
 } from '~/utls/date-layer-template.ts';
 
 /**
@@ -106,6 +108,31 @@ export default function dataLayerComposable() {
         let dataLayerData;
 
         switch (type) {
+        case 'carbonQuestionEvent':
+            templateValues = {
+                event: 'carbonCalculatorQuestion',
+                tag_name: 'VS - GA - Carbon Calculator Question Answered',
+                question_number: event.questionNumber,
+                answer: event.answer,
+            };
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(carbonQuestionTemplate, fullTemplate);
+            break;
+
+        case 'carbonCompleteEvent':
+            templateValues = {
+                event: 'carbonCalculatorComplete',
+                tag_name: 'VS - GA - Carbon Calculator Complete',
+                total_emissions: event.totalEmissions,
+                total_per_day: event.totalPerDay,
+                travel_percent: event.travelPercent,
+                accommodation_percent: event.accommodationPercent,
+                food_percent: event.foodPercent,
+            };
+            fullTemplate = compileFullTemplate(templateValues);
+            dataLayerData = templateFiller(carbonCompleteTemplate, fullTemplate);
+            break;
+
         case 'siteSearchOpenEvent':
             eventName = 'site_search_open';
             templateValues = {

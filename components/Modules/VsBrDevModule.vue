@@ -1,5 +1,9 @@
 <template>
+    <VsBrCarbonCalculator
+        v-if="moduleData.bespoken === 'carbon-calculator'"
+    />
     <div
+        v-else
         v-html="moduleData.html"
     />
 </template>
