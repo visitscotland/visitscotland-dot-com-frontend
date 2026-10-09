@@ -6,13 +6,40 @@
         style="background-color: #200F2E; position: relative; z-index: 10000;"
     >
         <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
-            <span class="text-warning"><strong>Branch:</strong> {{ configStore.pageMetaData.branch }}</span>
-            <span class="text-warning"><strong>Author:</strong> {{ configStore.pageMetaData.lastCommitAuthor }}</span>
+            <span
+                v-if="runtimeConfig.public.VS_BRANCH_NAME"
+                class="text-warning"
+            >
+                <strong>FE branch:</strong> {{ runtimeConfig.public.VS_BRANCH_NAME }}
+            </span>
+            <span
+                v-if="runtimeConfig.public.VS_COMMIT_AUTHOR"
+                class="text-warning"
+            >
+                <strong>FE author:</strong> {{ runtimeConfig.public.VS_COMMIT_AUTHOR }}
+            </span>
+            <span
+                v-if="runtimeConfig.public.CHANGE_ID"
+                class="text-warning"
+            >
+                <strong>FE PR:</strong> {{ runtimeConfig.public.CHANGE_ID }}
+            </span>
+        </div>
+    </div>
+
+    <div
+        v-if="configStore.pageMetaData
+            && (configStore.pageMetaData.branch || configStore.pageMetaData.pr)"
+        style="background-color: #200F2E; position: relative; z-index: 10000;"
+    >
+        <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
+            <span class="text-warning"><strong>BRXM branch:</strong> {{ configStore.pageMetaData.branch }}</span>
+            <span class="text-warning"><strong>BRXM author:</strong> {{ configStore.pageMetaData.lastCommitAuthor }}</span>
             <span
                 v-if="configStore.pageMetaData.pr"
                 class="text-warning"
             >
-                <strong>PR:</strong> {{ configStore.pageMetaData.pr }}
+                <strong>BRXM PR:</strong> {{ configStore.pageMetaData.pr }}
             </span>
         </div>
     </div>
@@ -36,11 +63,17 @@
         </template>
     </VsBanner>
 
+    <!-- Navbar To Do - Switch to feature flag -->
     <div
         ref="navElement"
         class="vs-sticky-nav--no-global"
+        :class="{
+            'has-edit-button': page.isPreview(),
+        }"
     >
         <!-- Navbar To Do - Get real labels -->
+        <BrManageMenuButton :menu="menuData" />
+
         <VsNavigationBar
             :sidebar-close-label="configStore.getLabel('navigation.static', 'meganav.sidebar-close-label')"
             :sidebar-open-label="configStore.getLabel('navigation.static', 'meganav.sidebar-open-label')"
@@ -304,6 +337,7 @@
 <script lang="ts" setup>
 import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
+import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 import formatLink from '~/composables/formatLink.ts';
 import { useFavourites } from '~/stores/favouritesStore.ts';
 import useConfigStore from '~/stores/configStore.ts';
@@ -341,19 +375,12 @@ let localisedUrls : any[] = [];
 let banner : any = null;
 
 const configStore = useConfigStore();
+const runtimeConfig = useRuntimeConfig();
 
-const isHovered = ref(false);
-const isFocused = ref(false);
 const scrollY = ref(1);
 const navElement = ref<HTMLElement | null>(null);
 let navResizeObserver: ResizeObserver | undefined;
 let skipToResizeObserver: ResizeObserver | undefined;
-
-const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
-    && checkFlags('use-navbar')
-    && scrollY.value === 0
-    && !isHovered.value
-    && !isFocused.value);
 
 function handleScroll() {
     scrollY.value = window.scrollY;
