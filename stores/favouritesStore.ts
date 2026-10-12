@@ -28,6 +28,7 @@ export const useFavourites = defineStore('favourites', {
         displaySavedUrl: '',
         displaySharedUrl: '',
         brGetPagesEndpoint: '',
+        serviceUrl: '',
     }),
     actions: {
         add(uuid) {
