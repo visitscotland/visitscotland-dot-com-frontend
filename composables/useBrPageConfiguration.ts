@@ -36,7 +36,7 @@ export default function useBrPageConfiguration() {
             },
             newsletterSignpost: models.newsletterSignpost ?? {
             },
-            pageIntro: models.pageIntro ?? {
+            pageTemplate: models.pageTemplate ?? {
             },
             gtm: models.gtm ?? null,
             pageMetaData: models.metadata ?? {
