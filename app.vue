@@ -12,20 +12,22 @@
                     :configuration="configuration"
                     :mapping="mapping"
                 >
-                    <template #default>
-                        <div
-                            :class="!isMounted ? 'no-js' : ''"
-                        >
-                            <br-component
-                                component="menu"
-                            />
-                            <br-component
-                                component="main"
-                            />
-                            <br-component
-                                component="footer"
-                            />
-                        </div>
+                    <template #default="{ page }">
+                        <VsBrPageContext :page="page">
+                            <div
+                                :class="!isMounted ? 'no-js' : ''"
+                            >
+                                <br-component
+                                    component="menu"
+                                />
+                                <br-component
+                                    component="main"
+                                />
+                                <br-component
+                                    component="footer"
+                                />
+                            </div>
+                        </VsBrPageContext>
                     </template>
                 </br-page>
             </div>
@@ -42,20 +44,22 @@
             <div id="start-fragment" style="display: none;" />
             <div id="__nuxt" class="external-header-integration">
                 <br-page :configuration="configuration" :mapping="mapping">
-                    <template #default>
-                        <CssHeader
-                            v-if="internalResourceName === 'header'"
-                        />
-                        <br-component
-                            v-if="internalResourceName === 'header'"
-                            component="menu"
-                        />
-                        <div style="display: none">
-                            <br-component
-                                component="main"
+                    <template #default="{ page }">
+                        <VsBrPageContext :page="page">
+                            <CssHeader
+                                v-if="internalResourceName === 'header'"
                             />
-                        </div>
-                        <br-component component="footer" v-if="internalResourceName === 'footer'" />
+                            <br-component
+                                v-if="internalResourceName === 'header'"
+                                component="menu"
+                            />
+                            <div style="display: none">
+                                <br-component
+                                    component="main"
+                                />
+                            </div>
+                            <br-component component="footer" v-if="internalResourceName === 'footer'" />
+                        </VsBrPageContext>
                     </template>
                 </br-page>
             </div>
@@ -83,6 +87,7 @@ import mitt from 'mitt';
 import { useFlagsStore } from './stores/flags.ts';
 import checkFlag from './composables/checkFlags.ts';
 
+import VsBrPageContext from '~/components/Base/VsBrPageContext.vue';
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';

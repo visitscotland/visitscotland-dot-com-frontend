@@ -11,14 +11,16 @@
                 :configuration="configuration"
                 :mapping="mapping"
             >
-                <template #default>
-                    <div
-                        :class="!isMounted ? 'no-js' : ''"
-                    >
-                        <br-component component="menu" />
-                        <br-component component="main" />
-                        <br-component component="footer" />
-                    </div>
+                <template #default="{ page }">
+                    <VsBrPageContext :page="page">
+                        <div
+                            :class="!isMounted ? 'no-js' : ''"
+                        >
+                            <br-component component="menu" />
+                            <br-component component="main" />
+                            <br-component component="footer" />
+                        </div>
+                    </VsBrPageContext>
                 </template>
             </br-page>
         </div>
@@ -43,6 +45,7 @@ import {
 } from 'vue';
 import mitt from 'mitt';
 
+import VsBrPageContext from '~/components/Base/VsBrPageContext.vue';
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
@@ -82,11 +85,9 @@ const PREVIEW_SERVER_ID_KEY = 'server-id';
 let authorizationToken = '';
 let serverId = '';
 
-if (window && window.location) {
-    const searchParams = new URLSearchParams(window.location.search);
-    authorizationToken = searchParams.get(PREVIEW_TOKEN_KEY);
-    serverId = searchParams.get(PREVIEW_SERVER_ID_KEY);
-}
+const query = useRoute().query;
+authorizationToken = query[PREVIEW_TOKEN_KEY] || '';
+serverId = query[PREVIEW_SERVER_ID_KEY] || '';
 
 const runtimeConfig = useRuntimeConfig();
 
