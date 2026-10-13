@@ -3,7 +3,7 @@
         <template v-if="module.storystreamId">
             <VsBrSectionHeader
                 :heading="module.title"
-                :lede="module.copy.value"
+                :lede="module?.copy?.value"
             />
 
             <VsEmbedWrapper
@@ -32,8 +32,6 @@ import { VsEmbedWrapper } from '@visitscotland/component-library/components';
 import VsBrSectionHeader from './VsBrSectionHeader.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
-
-import VsBrRichText from './VsBrRichText.vue';
 
 const configStore = useConfigStore();
 
