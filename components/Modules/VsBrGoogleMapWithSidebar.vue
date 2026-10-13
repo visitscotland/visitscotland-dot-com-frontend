@@ -10,7 +10,7 @@
                 <VsButton
                     class="vs-google-map-with-sidebar__sidebar-toggle-button d-xs-block d-md-none"
                     size="sm"
-                    variant="secondary"
+                    :variant="isSidebarVisible ? 'primary' : 'secondary'"
                     icon="fa-regular fa-bars"
                     @click="isSidebarVisible = false"
                 >

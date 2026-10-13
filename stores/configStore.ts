@@ -2,13 +2,12 @@ import { defineStore } from 'pinia';
 
 interface IConfigState {
     activeSite: string,
-    productSearch: any,
     otyml: any,
     pageItems: any[],
     heroImage: any,
     labels: any,
     newsletterSignpost: any,
-    pageIntro: any,
+    pageTemplate: any,
     gtm: any,
     locale: string,
     langString: string,
@@ -37,8 +36,6 @@ interface IConfigState {
 const useConfigStore = defineStore('configStore', {
     state: (): IConfigState => ({
         activeSite: '',
-        productSearch: {
-        },
         otyml: null,
         pageItems: [],
         heroImage: null,
@@ -46,7 +43,7 @@ const useConfigStore = defineStore('configStore', {
         },
         newsletterSignpost: {
         },
-        pageIntro: {
+        pageTemplate: {
         },
         gtm: null,
         locale: '',

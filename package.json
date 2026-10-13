@@ -6,7 +6,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "postinstall": "npm view @visitscotland/component-library version > .clversion && nuxt prepare",
+    "postinstall": "node -p \"require('./node_modules/@visitscotland/component-library/package.json').version\" > .clversion && nuxt prepare",
     "commit": "cz",
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
@@ -23,27 +23,27 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.17.0",
-    "@types/google.maps": "^3.64.0",
+    "@types/google.maps": "^3.66.4",
     "@types/node": "^26.6.2",
-    "eslint": "^10.4.0",
+    "eslint": "^10.11.0",
     "husky": "^9.1.7",
-    "nuxt": "4.4.2",
+    "nuxt": "^4.6.0",
     "nuxt-lazy-hydrate": "^1.0.0"
   },
   "dependencies": {
     "@bloomreach/spa-sdk": "^28.1.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
-    "@googlemaps/js-api-loader": "^2.1.1",
+    "@googlemaps/js-api-loader": "^2.1.3",
     "@pinia/nuxt": "^1.0.2",
     "@playwright/test": "^1.63.0",
-    "@visitscotland/component-library": "5.81.0",
+    "@visitscotland/component-library": "5.81.2",
     "axios": "^1.20.0",
-    "commitizen": "^4.3.1",
+    "commitizen": "^4.3.2",
     "cz-conventional-changelog": "^3.3.0",
     "html-entities": "^2.6.0",
     "lint-staged": "^17.5.1",
     "mitt": "^3.0.0",
-    "nuxt-jsonld": "^2.0.8",
+    "nuxt-jsonld": "^2.3.0",
     "pinia": "^4.0.3",
     "sass": "^1.104.1",
     "standard-version": "^9.5.0",
@@ -51,7 +51,10 @@
     "vue": "3.5.42"
   },
   "resolutions": {
-    "vue": "3.5.42"
+    "vue": "3.5.42",
+    "simple-git": "4.0.2",
+    "axios": "1.20.0",
+    "lodash": "4.18.1"
   },
   "overrides": {
     "minimist": "latest"

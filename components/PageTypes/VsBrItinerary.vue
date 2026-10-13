@@ -165,6 +165,7 @@
                             flex-md-row
                             gap-075 gap-md-150
                         "
+                        v-if="itineraryMap"
                     >
                         <VsButton
                             :href="itineraryMap.link"
@@ -183,7 +184,7 @@
                     mt-075 mt-md-0
                 "
             >
-                <div v-html="pageIntro.iframeMap"/>
+                <div v-html="pageTemplate.iframeMap"/>
             </div>  
         </VsRow>
     </VsContainer>
@@ -306,7 +307,7 @@ let documentData : any = {
 };
 let pageItems = {
 };
-let pageIntro = {
+let pageTemplate = {
 };
 let itineraryMap = null;
 let numberOfMiles = null;
@@ -360,15 +361,16 @@ if (page.value) {
 
     if (component.value) {
         pageItems = component.value.model.models.pageItems;
-        pageIntro = component.value.model.models.pageIntro;
-        numberOfDays = pageIntro.dayCount;
+        const componentModels = component.value.getModels();
+        pageTemplate = componentModels.pageTemplate;
+        numberOfDays = pageTemplate.dayCount;
         durationText = `${ numberOfDays } ${ numberOfDays === 1 ? daySingular : daysPlural }`;
-        numberOfMiles = Math.round(pageIntro.distance);
+        numberOfMiles = Math.round(pageTemplate.distance);
         numberOfKm = Math.round(numberOfMiles * 1.6093);
         distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm } ${ kmLabel })`;
-        locationNames = component.value.model.models.pageIntro.locations;
-        seasonInfo = component.value.model.models.pageIntro.seasons;
-        transportTypes = component.value.model.models.pageIntro.transports;
+        locationNames = pageTemplate.locations;
+        seasonInfo = pageTemplate.seasons;
+        transportTypes = pageTemplate.transports;
     }
 }
 </script>
