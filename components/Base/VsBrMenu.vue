@@ -482,4 +482,20 @@ provide('page', page.value);
         box-shadow: 0 0 0 2px #fffa99 inset;
         outline: none;
     }
+
+    .no-js {
+        .vs-navigation-bar__utilities {
+            nav > ul > li:not(first-child) {
+                margin: 0 1rem !important;
+            }
+
+            nav > ul > li:not(:first-child) {
+                margin: 1.5rem 0 !important;
+            }
+
+            .vs-button {
+                display: inline !important;
+            }
+        }
+    }
 </style>
