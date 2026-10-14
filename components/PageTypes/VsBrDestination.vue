@@ -31,7 +31,6 @@
         :content="documentData"
         :image="heroImage"
         :inset="true"
-        :favourites-button="true"
     />
 
     <NuxtLazyHydrate
