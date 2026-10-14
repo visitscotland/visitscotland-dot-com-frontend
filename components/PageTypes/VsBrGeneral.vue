@@ -43,10 +43,27 @@
             >
                 <VsRow>
                     <VsCol
-                        cols="10"
+                        col
                         lg="8"
                     >
                         <VsBrBreadcrumb />
+                    </VsCol>
+                    <VsCol
+                        cols="auto"
+                        lg="4"
+                        class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                    >
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            icon-only
+                            class="d-lg-none"
+                        />
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            class="d-none d-lg-flex"
+                        />
                     </VsCol>
                 </VsRow>
             </VsContainer>
@@ -54,7 +71,6 @@
             <VsBrHeroSection
                 :content="documentData"
                 :image="heroImage"
-                :favourites-button="true"
             />
         </template>
     </template>
@@ -64,17 +80,33 @@
         >
             <VsRow>
                 <VsCol
-                    cols="10"
+                    col
                     lg="8"
                 >
                     <VsBrBreadcrumb />
+                </VsCol>
+                <VsCol
+                    cols="auto"
+                    lg="4"
+                    class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                >
+                    <VsBrFavouriteButton
+                        :uuid="documentData.id"
+                        :gtm-data="{ title: documentData.title, }"
+                        icon-only
+                        class="d-lg-none"
+                    />
+                    <VsBrFavouriteButton
+                        :uuid="documentData.id"
+                        :gtm-data="{ title: documentData.title, }"
+                        class="d-none d-lg-flex"
+                    />
                 </VsCol>
             </VsRow>
         </VsContainer>
 
         <VsBrHeroSection
             :content="documentData"
-            :favourites-button="true"
         />
     </template>
 
@@ -85,10 +117,27 @@
         >
             <VsRow>
                 <VsCol
-                    cols="10"
+                    col
                     lg="8"
                 >
                     <VsBrBreadcrumb />
+                </VsCol>
+                <VsCol
+                    cols="auto"
+                    lg="4"
+                    class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                >
+                    <VsBrFavouriteButton
+                        :uuid="documentData.id"
+                        :gtm-data="{ title: documentData.title, }"
+                        icon-only
+                        class="d-lg-none"
+                    />
+                    <VsBrFavouriteButton
+                        :uuid="documentData.id"
+                        :gtm-data="{ title: documentData.title, }"
+                        class="d-none d-lg-flex"
+                    />
                 </VsCol>
             </VsRow>
         </VsContainer>
@@ -99,7 +148,6 @@
             :image="isSearchResultsPage ? null : heroImage"
             class="mb-400"
             :blog="documentData.blog"
-            :favourites-button="true"
         />
     </template>
 
