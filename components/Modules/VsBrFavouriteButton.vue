@@ -3,6 +3,7 @@
         icon-position="right"
         :icon="buttonSavedState ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"
         :variant="buttonSavedState ? 'primary' : 'secondary'"
+        :icon-only="props.iconOnly"
         @click="toggleSaved(props.uuid)"
     >
         {{ buttonSavedState
@@ -27,7 +28,8 @@ const dataLayerHelper = dataLayerComposable();
 
 const props = defineProps<{
     uuid: string,
-    gtmData?: Record<string, unknown>
+    gtmData?: Record<string, unknown>,
+    iconOnly?: boolean
 }>();
 
 // Derived state: is this page saved?
