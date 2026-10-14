@@ -45,23 +45,25 @@
     </div>
 
     <VsBrSkipTo />
-    <VsBanner
-        v-if="banner"
-        :close-btn-text="configStore.getLabel('essentials.global', 'close')"
-    >
-        <template #banner-text>
-            <div v-html="banner.copy.value" />
-        </template>
+    <div ref="bannerElement">
+        <VsBanner
+            v-if="banner"
+            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+        >
+            <template #banner-text>
+                <div v-html="banner.copy.value" />
+            </template>
 
-        <template #banner-cta>
-            <VsLink
-                :href="banner.ctaLink.link"
-                :type="banner.ctaLink.type"
-            >
-                {{ banner.ctaLink.label }}
-            </VsLink>
-        </template>
-    </VsBanner>
+            <template #banner-cta>
+                <VsLink
+                    :href="banner.ctaLink.link"
+                    :type="banner.ctaLink.type"
+                >
+                    {{ banner.ctaLink.label }}
+                </VsLink>
+            </template>
+        </VsBanner>
+    </div>
 
     <!-- Navbar To Do - Switch to feature flag -->
     <div
@@ -379,6 +381,7 @@ const runtimeConfig = useRuntimeConfig();
 
 const scrollY = ref(1);
 const navElement = ref<HTMLElement | null>(null);
+const bannerElement = ref<HTMLElement | null>(null);
 let navResizeObserver: ResizeObserver | undefined;
 let skipToResizeObserver: ResizeObserver | undefined;
 
@@ -395,9 +398,16 @@ function updateNavbarHeight() {
             ? skipToElement.getBoundingClientRect().height
             : 0;
 
+        const navHeight = navElement.value.getBoundingClientRect().height;
+        const bannerHeight = bannerElement.value?.getBoundingClientRect().height ?? 0;
+
+        document.documentElement.style.setProperty(
+            '--vs-nav-banner-scroll-height',
+            `${navHeight + bannerHeight}px`,
+        );
         document.documentElement.style.setProperty(
             '--vs-navbar-scroll-margin-top',
-            `calc(${navElement.value.getBoundingClientRect().height}px + ${skipToHeight}px + 1rem)`,
+            `calc(${navHeight}px + ${skipToHeight}px + 1rem)`,
         );
     }
 }
@@ -414,6 +424,9 @@ onMounted(() => {
     if (navElement.value && typeof ResizeObserver !== 'undefined') {
         navResizeObserver = new ResizeObserver(updateNavbarHeight);
         navResizeObserver.observe(navElement.value);
+        if (bannerElement.value) {
+            navResizeObserver.observe(bannerElement.value);
+        }
     }
 
     const skipToElement = document.querySelector<HTMLElement>('[data-test="vs-skip-to"]');
@@ -436,6 +449,7 @@ onUnmounted(() => {
     skipToElement?.removeEventListener('focusout', handleSkipToFocus);
 
     document.documentElement.style.removeProperty('--vs-navbar-scroll-margin-top');
+    document.documentElement.style.removeProperty('--vs-nav-banner-scroll-height');
 });
 
 if (page.value) {
