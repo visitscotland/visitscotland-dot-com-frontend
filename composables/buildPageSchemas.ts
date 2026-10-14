@@ -4,6 +4,8 @@ import type {
     WithContext,
     FAQPage,
     Question,
+    BlogPosting,
+    Thing,
 } from 'schema-dts';
 
 import { decode } from 'html-entities';
@@ -15,6 +17,12 @@ type PageItem = {
         heading?: string;
         copy?: { value?: string };
     }[];
+};
+
+type DocumentData = {
+    title?: string;
+    blog?: { publishDate?: number | string } | null;
+    heroImage?: { $ref?: Parameters<Page['getContent']>[0] };
 };
 
 const plainText = (html: string): string => decode(html
@@ -70,11 +78,68 @@ const buildFaqSchema = (
     };
 };
 
-/** Build module-dependent schemas together to account for multiple of the same module type. */
-const buildPageSchemas = (pageItems: PageItem[] | undefined, page: Page, canonicalUrl: string) => {
-    const faqSchema = buildFaqSchema(pageItems ?? [], page, canonicalUrl);
+const buildBlogPostingSchema = (
+    documentData: DocumentData | undefined,
+    page: Page,
+    canonicalUrl: string,
+): WithContext<BlogPosting> | undefined => {
+    if (!documentData?.blog) {
+        return undefined;
+    }
 
-    return faqSchema ? [faqSchema] : [];
+    const organizationId = 'https://www.visitscotland.com/#organization';
+    const schema: WithContext<BlogPosting> = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        '@id': `${canonicalUrl.split('#')[0]}#blogposting`,
+        headline: documentData.title,
+        author: {
+            '@type': 'Organization',
+            '@id': organizationId,
+        },
+        publisher: {
+            '@id': organizationId,
+        },
+    };
+
+    const { publishDate } = documentData.blog;
+    if (publishDate !== undefined && publishDate !== null) {
+        const published = new Date(publishDate);
+        if (!Number.isNaN(published.getTime())) {
+            schema.datePublished = published.toISOString();
+        }
+    }
+
+    if (documentData.heroImage?.$ref) {
+        const image = page.getContent<{ getOriginal: () => { getUrl: () => string } }>(documentData.heroImage.$ref);
+        const imageSrc = image?.getOriginal()?.getUrl();
+        if (imageSrc) {
+            schema.image = [imageSrc];
+        }
+    }
+
+    return schema;
+};
+
+/** Build page schemas together to account for multiple of the same module type. */
+const buildPageSchemas = (
+    pageItems: PageItem[] | undefined,
+    page: Page,
+    canonicalUrl: string,
+    documentData?: DocumentData,
+): WithContext<Thing>[] => {
+    const schemas: WithContext<Thing>[] = [];
+    const faqSchema = buildFaqSchema(pageItems ?? [], page, canonicalUrl);
+    const blogSchema = buildBlogPostingSchema(documentData, page, canonicalUrl);
+
+    if (faqSchema) {
+        schemas.push(faqSchema);
+    }
+    if (blogSchema) {
+        schemas.push(blogSchema);
+    }
+
+    return schemas;
 };
 
 export default buildPageSchemas;

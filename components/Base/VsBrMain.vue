@@ -220,7 +220,12 @@ if (page.value) {
     const canonicalLink = forceHttps(useRequestURL().toString().split('?')[0]);
 
     useJsonld(() => {
-        const schemas = buildPageSchemas(component.value.getModels().pageItems, page.value, canonicalLink);
+        const schemas = buildPageSchemas(
+            component.value.getModels().pageItems,
+            page.value,
+            canonicalLink,
+            pageDocument.getData(),
+        );
         return schemas.length ? schemas : null;
     });
 
