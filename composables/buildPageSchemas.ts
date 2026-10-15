@@ -6,6 +6,7 @@ import type {
     Question,
     BlogPosting,
     Thing,
+    ImageObject,
 } from 'schema-dts';
 
 import { decode } from 'html-entities';
@@ -20,9 +21,70 @@ type PageItem = {
 };
 
 type DocumentData = {
+    theme?: string;
     title?: string;
     blog?: { publishDate?: number | string } | null;
     heroImage?: { $ref?: Parameters<Page['getContent']>[0] };
+};
+
+type HeroContext = {
+    pageName: string;
+    isMainMapPage?: boolean;
+    isFavouritesPage?: boolean;
+    isSearchResultsPage?: boolean;
+};
+
+type HeroImage = {
+    contentUrl: string;
+    credit?: string;
+};
+
+export const hasVisibleHeroImage = (documentData: DocumentData | undefined, context?: HeroContext): boolean => {
+    if (context?.pageName === 'destination-page') {
+        return true;
+    }
+    if (!context || !['general-page', 'pagenotfound'].includes(context.pageName)) {
+        return false;
+    }
+    if (context.isMainMapPage || context.isFavouritesPage || documentData?.theme === 'Simple') {
+        return false;
+    }
+    return documentData?.theme === 'Top-Level' || !context.isSearchResultsPage;
+};
+
+const resolveHeroImage = (documentData: DocumentData | undefined, page: Page): HeroImage | undefined => {
+    if (!documentData?.heroImage?.$ref) {
+        return undefined;
+    }
+    const image = page.getContent<{
+        model?: { data?: { credit?: string } };
+        getOriginal: () => { getUrl: () => string };
+            }>(documentData.heroImage.$ref);
+    const contentUrl = image?.getOriginal()?.getUrl();
+    return contentUrl ? {
+        contentUrl,
+        credit: image?.model?.data?.credit?.trim(),
+    } : undefined;
+};
+
+const buildHeroImageSchema = (image: HeroImage | undefined): WithContext<ImageObject> | undefined => {
+    if (!image) {
+        return undefined;
+    }
+    const schema: WithContext<ImageObject> = {
+        '@context': 'https://schema.org',
+        '@type': 'ImageObject',
+        contentUrl: image.contentUrl,
+    };
+    if (image.credit) {
+        schema.creditText = image.credit;
+        schema.creator = {
+            '@type': 'Organization',
+            name: image.credit,
+        };
+        schema.copyrightNotice = image.credit;
+    }
+    return schema;
 };
 
 const plainText = (html: string): string => decode(html
@@ -80,7 +142,7 @@ const buildFaqSchema = (
 
 const buildBlogPostingSchema = (
     documentData: DocumentData | undefined,
-    page: Page,
+    heroImage: HeroImage | undefined,
     canonicalUrl: string,
 ): WithContext<BlogPosting> | undefined => {
     if (!documentData?.blog) {
@@ -110,12 +172,8 @@ const buildBlogPostingSchema = (
         }
     }
 
-    if (documentData.heroImage?.$ref) {
-        const image = page.getContent<{ getOriginal: () => { getUrl: () => string } }>(documentData.heroImage.$ref);
-        const imageSrc = image?.getOriginal()?.getUrl();
-        if (imageSrc) {
-            schema.image = [imageSrc];
-        }
+    if (heroImage) {
+        schema.image = [heroImage.contentUrl];
     }
 
     return schema;
@@ -127,16 +185,22 @@ const buildPageSchemas = (
     page: Page,
     canonicalUrl: string,
     documentData?: DocumentData,
+    heroContext?: HeroContext,
 ): WithContext<Thing>[] => {
     const schemas: WithContext<Thing>[] = [];
     const faqSchema = buildFaqSchema(pageItems ?? [], page, canonicalUrl);
-    const blogSchema = buildBlogPostingSchema(documentData, page, canonicalUrl);
+    const heroImage = resolveHeroImage(documentData, page);
+    const blogSchema = buildBlogPostingSchema(documentData, heroImage, canonicalUrl);
+    const imageSchema = hasVisibleHeroImage(documentData, heroContext) ? buildHeroImageSchema(heroImage) : undefined;
 
     if (faqSchema) {
         schemas.push(faqSchema);
     }
     if (blogSchema) {
         schemas.push(blogSchema);
+    }
+    if (imageSchema) {
+        schemas.push(imageSchema);
     }
 
     return schemas;
