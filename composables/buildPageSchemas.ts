@@ -5,6 +5,7 @@ import type {
     FAQPage,
     Question,
     BlogPosting,
+    Article,
     Thing,
     ImageObject,
 } from 'schema-dts';
@@ -179,6 +180,43 @@ const buildBlogPostingSchema = (
     return schema;
 };
 
+const buildArticleSchema = (
+    pageItems: PageItem[],
+    page: Page,
+    documentData: DocumentData | undefined,
+    heroImage: HeroImage | undefined,
+    canonicalUrl: string,
+): WithContext<Article> | undefined => {
+    if (documentData?.blog) {
+        return undefined;
+    }
+    const hasArticle = pageItems.some((module) => {
+        if (module.type !== 'ArticleModule') {
+            return false;
+        }
+        const content = module.hippoBean
+            ? page.getContent<{ model?: { data?: { theme?: string } } }>(module.hippoBean)
+            : undefined;
+        return content?.model?.data?.theme !== 'accordion';
+    });
+    if (!hasArticle) {
+        return undefined;
+    }
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        '@id': `${canonicalUrl.split('#')[0]}#article`,
+        headline: documentData?.title,
+        publisher: {
+            '@id': 'https://www.visitscotland.com/#organization',
+        },
+        ...(heroImage ? {
+            image: [heroImage.contentUrl],
+        } : {
+        }),
+    };
+};
+
 /** Build page schemas together to account for multiple of the same module type. */
 const buildPageSchemas = (
     pageItems: PageItem[] | undefined,
@@ -191,6 +229,8 @@ const buildPageSchemas = (
     const faqSchema = buildFaqSchema(pageItems ?? [], page, canonicalUrl);
     const heroImage = resolveHeroImage(documentData, page);
     const blogSchema = buildBlogPostingSchema(documentData, heroImage, canonicalUrl);
+    const articleSchema = blogSchema ? undefined
+        : buildArticleSchema(pageItems ?? [], page, documentData, heroImage, canonicalUrl);
     const imageSchema = hasVisibleHeroImage(documentData, heroContext) ? buildHeroImageSchema(heroImage) : undefined;
 
     if (faqSchema) {
@@ -198,6 +238,8 @@ const buildPageSchemas = (
     }
     if (blogSchema) {
         schemas.push(blogSchema);
+    } else if (articleSchema) {
+        schemas.push(articleSchema);
     }
     if (imageSchema) {
         schemas.push(imageSchema);
