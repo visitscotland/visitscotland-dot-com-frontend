@@ -9927,7 +9927,7 @@ __metadata:
     lint-staged: "npm:^17.6.0"
     mitt: "npm:^3.0.0"
     nuxt: "npm:^4.6.0"
-    nuxt-jsonld: "npm:^2.3.0"
+    nuxt-jsonld: "npm:^2.3.1"
     nuxt-lazy-hydrate: "npm:^1.0.0"
     pinia: "npm:^4.0.3"
     sass: "npm:^1.105.1"
@@ -9937,14 +9937,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"nuxt-jsonld@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "nuxt-jsonld@npm:2.3.0"
+"nuxt-jsonld@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "nuxt-jsonld@npm:2.3.1"
   dependencies:
     "@nuxt/kit": "npm:^4.5.2"
-    pathe: "npm:^2.0.3"
     schema-dts: "npm:^2.0.0"
-  checksum: 10c0/3bfd5701f675d83292b5fdefe3bef709533dba411e3cfe3cd35fc768a112724429c15987564b849f0ccff0b2c65f6988a125be341b4f690eb8b55398789ad65e
+  checksum: 10c0/dfac776c2234e9948e4ccc33b2221b1168528c7414066b9b647f6cb1c37a81561793c0d89d20060179e08a332f94d5b0b4da50241ae4cb842266961d2fc8688a
   languageName: node
   linkType: hard
 
