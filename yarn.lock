@@ -1652,7 +1652,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:4.6.0":
+"@nuxt/kit@npm:4.6.0, @nuxt/kit@npm:^4.0.0":
   version: 4.6.0
   resolution: "@nuxt/kit@npm:4.6.0"
   dependencies:
@@ -9927,7 +9927,7 @@ __metadata:
     lint-staged: "npm:^17.6.0"
     mitt: "npm:^3.0.0"
     nuxt: "npm:^4.6.0"
-    nuxt-jsonld: "npm:^2.3.1"
+    nuxt-jsonld: "npm:^3.0.0"
     nuxt-lazy-hydrate: "npm:^1.0.0"
     pinia: "npm:^4.0.3"
     sass: "npm:^1.105.1"
@@ -9937,13 +9937,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"nuxt-jsonld@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "nuxt-jsonld@npm:2.3.1"
+"nuxt-jsonld@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "nuxt-jsonld@npm:3.0.0"
   dependencies:
-    "@nuxt/kit": "npm:^4.5.2"
-    schema-dts: "npm:^2.0.0"
-  checksum: 10c0/dfac776c2234e9948e4ccc33b2221b1168528c7414066b9b647f6cb1c37a81561793c0d89d20060179e08a332f94d5b0b4da50241ae4cb842266961d2fc8688a
+    "@nuxt/kit": "npm:^4.0.0"
+    schema-dts: "npm:^2.1.0"
+  checksum: 10c0/e16d4665f123b3ac938de1255c9b177ca43991812d7d7443aa0240dcfd83f2f0377e22eb754409db9df9662e440f886eaa7ee929a1a9ce56539d2fd58fe6d6dd
   languageName: node
   linkType: hard
 
@@ -11919,21 +11919,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-dts-lib@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "schema-dts-lib@npm:1.0.0"
-  peerDependencies:
-    typescript: ">=4.9.5"
-  checksum: 10c0/18b5d1ceb57f1e57073fe5a94c035201b924562dfed77ebf472767fde853014d7d0baab31e2006383c07b5608439b6e72c375cd9798c4d655a6c514355fdb527
+"schema-dts-lib@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "schema-dts-lib@npm:1.1.0"
+  checksum: 10c0/ee8992c0363b2a37de3562fb21dce3c04db8376ff0e5447c5b4ee5984d904b67507897011dad819c1e3673e0339dd7f07cd0ee0e620a70195b0f7119eeedb463
   languageName: node
   linkType: hard
 
-"schema-dts@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "schema-dts@npm:2.0.0"
+"schema-dts@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "schema-dts@npm:2.1.0"
   dependencies:
-    schema-dts-lib: "npm:^1.0.0"
-  checksum: 10c0/139e2178b0609549338e9b8b970e34f44f342a3f75911806d0e4221f1e0ab2c09a482133f9fa1f55a29c4ec7fdb3cace056853368a9db487c572bc408db2b2c9
+    schema-dts-lib: "npm:^1.1.0"
+  checksum: 10c0/93fc3df29744b9f55e5c8453bbc1969145fa32fa2d132e85d68f3647861d2d22f9b3cc2c0e28e04c7e778d333e2d83d7790d75df0b675d3381fbdb11f4e4309b
   languageName: node
   linkType: hard
 
