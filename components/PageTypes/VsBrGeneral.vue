@@ -58,11 +58,13 @@
                             :gtm-data="{ title: documentData.title, }"
                             icon-only
                             class="d-lg-none"
+                            data-test="vs-favourite-button"
                         />
                         <VsBrFavouriteButton
                             :uuid="documentData.id"
                             :gtm-data="{ title: documentData.title, }"
                             class="d-none d-lg-flex"
+                            data-test="vs-favourite-button"
                         />
                     </VsCol>
                 </VsRow>
@@ -95,11 +97,13 @@
                         :gtm-data="{ title: documentData.title, }"
                         icon-only
                         class="d-lg-none"
+                        data-test="vs-favourite-button"
                     />
                     <VsBrFavouriteButton
                         :uuid="documentData.id"
                         :gtm-data="{ title: documentData.title, }"
                         class="d-none d-lg-flex"
+                        data-test="vs-favourite-button"
                     />
                 </VsCol>
             </VsRow>
@@ -132,11 +136,13 @@
                         :gtm-data="{ title: documentData.title, }"
                         icon-only
                         class="d-lg-none"
+                        data-test="vs-favourite-button"
                     />
                     <VsBrFavouriteButton
                         :uuid="documentData.id"
                         :gtm-data="{ title: documentData.title, }"
                         class="d-none d-lg-flex"
+                        data-test="vs-favourite-button"
                     />
                 </VsCol>
             </VsRow>
