@@ -64,6 +64,8 @@ const localeStrings = [
     'it-it',
     'nl-nl',
     'de-de',
+    'travel-trade', // This isn't a locale, but is being temporarily rebuilt as a sub-folder using
+    // the same structure as the languages. It should not appear in the CMS.
 ];
 
 // Get API endpoint from the server side.
