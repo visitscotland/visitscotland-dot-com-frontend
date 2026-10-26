@@ -112,6 +112,7 @@
                     cols="auto"
                     lg="4"
                     class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                    v-if="favourites.featureEnabled"
                 >
                     <VsBrFavouriteButton
                         :uuid="documentData.id"
