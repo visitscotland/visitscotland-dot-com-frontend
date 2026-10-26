@@ -304,7 +304,10 @@
                                 </VsTooltip>
                             </li>
 
-                            <li class="d-block d-md-none me-075">
+                            <li
+                                class="d-block d-md-none me-075"
+                                v-if="configStore.mainMapPath"
+                            >
                                 <VsTooltip
                                     :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
                                     subtle
@@ -318,7 +321,10 @@
                                     {{ configStore.getLabel('navigation.static', 'meganav.map-link-tooltip') }}
                                 </VsTooltip>
                             </li>
-                            <li class="d-block d-md-none">
+                            <li
+                                class="d-block d-md-none"
+                                v-if="localisedUrls && localisedUrls.length"
+                            >
                                 <VsNavigationBarMenuDropdown subtle>
                                     <template #button-content>
                                         {{ configStore.locale.toUpperCase() }}
