@@ -149,7 +149,10 @@
                     :aria-label="configStore.getLabel('navigation.static', 'meganav.utility-aria-label')"
                 >
                     <ul class="d-flex">
-                        <li class="me-075">
+                        <li
+                            class="me-075"
+                            v-if="configStore.globalSearchPath"
+                        >
                             <VsButton
                                 size="sm"
                                 variant="secondary"
@@ -182,6 +185,7 @@
 
                         <li
                             class="d-none d-md-block me-025"
+                            v-if="configStore.mainMapPath"
                         >
                             <VsTooltip
                                 :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
@@ -198,6 +202,7 @@
                         </li>
                         <li
                             class="d-none d-md-block me-0 me-md-075 me-lg-0"
+                            v-if="localisedUrls && localisedUrls.length"
                         >
                             <VsNavigationBarMenuDropdown subtle>
                                 <template #button-content>
