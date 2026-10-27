@@ -71,25 +71,25 @@
                                             v-for="highlight in keyInfo.highlights"
                                             :key="highlight.category.key"
                                         >
-                                        <VsDetail
-                                            no-margins
-                                            color="tertiary"
-                                            :icon="getIconName(highlight.category.key)"
-                                            icon-variant="tertiary"
-                                        >
-                                        {{ highlight.category.value }}:
-                                        <VsBrRichText
-                                            :input-content="highlight.copy.value"
-                                            class="d-inline"
-                                        />
-                                        </VsDetail>
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                :icon="getIconName(highlight.category.key)"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ highlight.category.value }}:
+                                                <VsBrRichText
+                                                    :input-content="highlight.copy.value"
+                                                    class="d-inline"
+                                                />
+                                            </VsDetail>
                                         </li>
                                     </VsBody>
                                 </ul>
                                 <!-- Desktop button -->
                                 <VsButton
                                     v-if="keyInfo.cta"
-                                    :href="keyInfo.cta.link"
+                                    :hre                                        f="keyInfo.cta.link"
                                     class="key-information__cta-desktop mt-150 d-none d-md-block">
                                     {{ keyInfo.cta.label }}
                                 </VsButton>
@@ -132,13 +132,15 @@
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate :when-visible="{ rootMargin: '50px' }">
-        <VsBrNewsletterSignpost v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
-                                :data="configStore.newsletterSignpost" />
+        <VsBrNewsletterSignpost
+            v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
+            :data="configStore.newsletterSignpost"
+        />
     </NuxtLazyHydrate>
 </template>
 
 <script lang="ts" setup>
-import { toRefs } from 'vue';
+import { toRefs, computed } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
