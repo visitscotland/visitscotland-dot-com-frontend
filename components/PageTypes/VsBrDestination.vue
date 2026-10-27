@@ -207,91 +207,91 @@ if (page.value) {
             firstModuleIsLink = true;
         }
     }
-    const regionMapping: Record<string, Region> = {
-        'aberdeen-city-shire': 'aberdeen',
-        'argyll-isles': 'argyll',
-        'airshire-arran': 'arranayr',
-        borders: 'borders',
-        'dumfries-galloway': 'dumfries',
-        'dundee-angus': 'dundee',
-        'edinburgh-lothians': 'edinburgh',
-        'kingdom-fife': 'fife',
-        'greater-glasgow': 'glasgow',
-        highlands: 'highlands',
-        'loch-lomond': 'lomond',
-        orkney: 'orkney',
-        'outer-hebrides': 'outerhebs',
-        perthshire: 'perth',
-        shetland: 'shetland',
-    };
-
-    const regionNameFallbacks: Record<Region, string> = {
-        aberdeen: 'Aberdeen & Aberdeenshire',
-        argyll: 'Argyll & the Isles',
-        arranayr: 'Ayrshire & Arran',
-        borders: 'the Scottish Borders',
-        dumfries: 'Dumfries & Galloway',
-        dundee: 'Dundee & Angus',
-        edinburgh: 'Edinburgh & the Lothians',
-        fife: 'Fife',
-        glasgow: 'Greater Glasgow',
-        highlands: 'the Highlands',
-        lomond: 'Loch Lomond',
-        orkney: 'Orkney',
-        outerhebs: 'the Outer Hebrides',
-        perth: 'Perthshire',
-        shetland: 'Shetland',
-    };
-
-    const regionLocations = computed(() => (props.locations ?? [])
-        .filter(({ id, region }) => region && id in regionMapping));
-
-    const regions = computed<Region[]>(() => [...new Set(
-        regionLocations.value
-            .map(({ id }) => regionMapping[id])
-            .filter((region): region is Region => region !== undefined),
-    )]);
-
-    const regionNames = computed(() => regions.value.map((mappedRegion) => {
-        const location = regionLocations.value.find(({ id }) => regionMapping[id] === mappedRegion);
-        return location?.name?.trim() || regionNameFallbacks[mappedRegion];
-    }));
-
-    const mapPinLocations = computed(() => (location ?? [])
-        .filter(({ latitude, longitude, region }) => (
-            // Only show map pins when region is false
-            region === false
-            && Number.isFinite(latitude)
-            && Number.isFinite(longitude)
-        )));
-
-    const mapPins = computed(() => {
-        return mapPinLocations.value.map(({ latitude, longitude }) => ({
-            lat: latitude,
-            lng: longitude,
-        }));
-    });
-
-    const mapAriaLabel = computed(() => {
-        const descriptions: string[] = [];
-
-        if (regionNames.value.length === 1) {
-            descriptions.push(`the ${regionNames.value[0]} region`);
-        } else if (regionNames.value.length > 1) {
-            descriptions.push(`regions ${regionNames.value.join(', ')}`);
-        }
-
-        const pinNames = mapPinLocations.value.map(({ name }) => name?.trim() || 'location');
-        if (pinNames.length === 1) {
-            descriptions.push(`a pin for ${pinNames[0]}`);
-        } else if (pinNames.length > 1) {
-            descriptions.push(`pins for ${pinNames.join(', ')}`);
-        }
-
-        return descriptions.length
-            ? `Illustrated map of Scotland showing ${descriptions.join(' and ')}`
-            : 'Illustrated map of Scotland';
-    });
 }
 
+const regionMapping: Record<string, Region> = {
+    'aberdeen-city-shire': 'aberdeen',
+    'argyll-isles': 'argyll',
+    'airshire-arran': 'arranayr',
+    borders: 'borders',
+    'dumfries-galloway': 'dumfries',
+    'dundee-angus': 'dundee',
+    'edinburgh-lothians': 'edinburgh',
+    'kingdom-fife': 'fife',
+    'greater-glasgow': 'glasgow',
+    highlands: 'highlands',
+    'loch-lomond': 'lomond',
+    orkney: 'orkney',
+    'outer-hebrides': 'outerhebs',
+    perthshire: 'perth',
+    shetland: 'shetland',
+};
+
+const regionNameFallbacks: Record<Region, string> = {
+    aberdeen: 'Aberdeen & Aberdeenshire',
+    argyll: 'Argyll & the Isles',
+    arranayr: 'Ayrshire & Arran',
+    borders: 'the Scottish Borders',
+    dumfries: 'Dumfries & Galloway',
+    dundee: 'Dundee & Angus',
+    edinburgh: 'Edinburgh & the Lothians',
+    fife: 'Fife',
+    glasgow: 'Greater Glasgow',
+    highlands: 'the Highlands',
+    lomond: 'Loch Lomond',
+    orkney: 'Orkney',
+    outerhebs: 'the Outer Hebrides',
+    perth: 'Perthshire',
+    shetland: 'Shetland',
+};
+
+const mapLocations = computed<any[]>(() => (location ? [location] : []));
+
+const regionLocations = computed(() => mapLocations.value
+    .filter(({ id, region }) => region && id in regionMapping));
+
+const regions = computed<Region[]>(() => [...new Set(
+    regionLocations.value
+        .map(({ id }) => regionMapping[id])
+        .filter((region): region is Region => region !== undefined),
+)]);
+
+const regionNames = computed(() => regions.value.map((mappedRegion) => {
+    const match = regionLocations.value.find(({ id }) => regionMapping[id] === mappedRegion);
+    return match?.name?.trim() || regionNameFallbacks[mappedRegion];
+}));
+
+const mapPinLocations = computed(() => mapLocations.value
+    .filter(({ latitude, longitude, region }) => (
+        // Only show map pins when region is false
+        region === false
+        && Number.isFinite(latitude)
+        && Number.isFinite(longitude)
+    )));
+
+const mapPins = computed(() => mapPinLocations.value.map(({ latitude, longitude }) => ({
+    lat: latitude,
+    lng: longitude,
+})));
+
+const mapAriaLabel = computed(() => {
+    const descriptions: string[] = [];
+
+    if (regionNames.value.length === 1) {
+        descriptions.push(`the ${regionNames.value[0]} region`);
+    } else if (regionNames.value.length > 1) {
+        descriptions.push(`regions ${regionNames.value.join(', ')}`);
+    }
+
+    const pinNames = mapPinLocations.value.map(({ name }) => name?.trim() || 'location');
+    if (pinNames.length === 1) {
+        descriptions.push(`a pin for ${pinNames[0]}`);
+    } else if (pinNames.length > 1) {
+        descriptions.push(`pins for ${pinNames.join(', ')}`);
+    }
+
+    return descriptions.length
+        ? `Illustrated map of Scotland showing ${descriptions.join(' and ')}`
+        : 'Illustrated map of Scotland';
+});
 </script>
