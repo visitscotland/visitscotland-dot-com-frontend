@@ -278,6 +278,7 @@ if (page.value) {
 
     // Remove trailing slashes from the global search path to remove path ambiguity
     if (window
+        && configStore.globalSearchPath
         && window.location.pathname.includes(configStore.globalSearchPath.replace(/\/+$/, ''))) {
         isSearchResultsPage = true;
     }
