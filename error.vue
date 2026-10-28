@@ -101,9 +101,10 @@ let locale = 'resourceapi';
 let deLocalisedRoute = route;
 
 for (let x = 0; x < localeStrings.length; x++) {
-    if (route.includes(localeStrings[x])) {
+    if (route === `/${localeStrings[x]}` || route.startsWith(`/${localeStrings[x]}/`)) {
         locale = `${localeStrings[x]}/resourceapi`;
-        deLocalisedRoute = deLocalisedRoute.replace(`/${localeStrings[x]}`, '');
+        deLocalisedRoute = route.slice(localeStrings[x].length + 1) || '/';
+        break;
     }
 }
 
