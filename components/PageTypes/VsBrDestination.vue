@@ -18,14 +18,12 @@
                     :gtm-data="{ title: documentData.title, }"
                     icon-only
                     class="d-lg-none"
-                    data-test="vs-favourite-button"
-                />
+                    data-test="vs-favourite-button" />
                 <VsBrFavouriteButton
                     :uuid="documentData.id"
                     :gtm-data="{ title: documentData.title, }"
                     class="d-none d-lg-flex"
-                    data-test="vs-favourite-button"
-                />
+                    data-test="vs-favourite-button" />
             </VsCol>
         </VsRow>
     </VsContainer>
@@ -36,51 +34,98 @@
         :inset="true"
     />
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrKeyInformationPanel
-            v-if="configStore.pageTemplate?.keyInformationPanel"
-            :module="configStore.pageTemplate.keyInformationPanel"
-            :locations="location ? [location] : []"
-            class="my-200 mx-075"
-        />
-    </NuxtLazyHydrate> 
-
-    <div
-        class="mt-500"
-        v-if="pageItems"
-    >
-        <VsBrModuleBuilder
-            :modules="pageItems"
-        />
-    </div>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrSocialShare
-            :no-js="true"
-        />
+    <NuxtLazyHydrate>
+        <VsContainer>
+            <VsRow>
+                <VsCol
+                    lg="10"
+                    offset-lg="1"
+                    xl="4"
+                    offset-xl="0"
+                >
+                    <VsPanel
+                        v-if="configStore.pageTemplate?.keyInformationPanel"
+                    >
+                        <div
+                            class="key-information--layout
+                                d-flex
+                                justify-content-between gap-150
+                            "
+                        >
+                            <div>
+                                <VsHeading
+                                    level="2"
+                                    heading-style="heading-l"
+                                    no-margins
+                                >
+                                    {{ keyInfo.title || 'Key Information Panel' }}
+                                </VsHeading>
+                                <ul class="mt-150">
+                                    <VsBody>
+                                        <li 
+                                            v-for="highlight in keyInfo.highlights"
+                                            :key="highlight.category.key"
+                                        >
+                                            <VsDetail
+                                                no-margins
+                                                color="tertiary"
+                                                :icon="getIconName(highlight.category.key)"
+                                                icon-variant="tertiary"
+                                            >
+                                                {{ highlight.category.value }}:
+                                                <VsBrRichText
+                                                    :input-content="highlight.copy.value"
+                                                    class="d-inline"
+                                                />
+                                            </VsDetail>
+                                        </li>
+                                    </VsBody>
+                                </ul>
+                                <!-- Desktop button -->
+                                <VsButton
+                                    v-if="keyInfo.cta"
+                                    :href="keyInfo.cta.link"
+                                    class="key-information__cta-desktop mt-150 d-none d-md-block">
+                                    {{ keyInfo.cta.label }}
+                                </VsButton>
+                            </div>
+                            <!-- Map -->
+                            <VsBrIllustratedMap
+                                :highlighted-regions="regions"
+                                :pins="mapPins"
+                                :aria-label="mapAriaLabel"
+                                width="100%"
+                                class="align-self-center"
+                            />
+                            <!-- Mobile button -->
+                            <VsButton
+                                v-if="keyInfo.cta"
+                                :href="keyInfo.cta.link"
+                                class="key-information__cta-mobile mt-150 d-md-none">
+                                {{ keyInfo.cta.label }}
+                            </VsButton>
+                        </div>
+                    </VsPanel>
+                </VsCol>
+            </VsRow>
+        </VsContainer>
     </NuxtLazyHydrate>
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <section
-            class="mt-500"
-            v-if="otyml"
-        >
-            <VsBrHorizontalLinksModule
-                :module="otyml"
-                theme="light"
-            />
+    <div class="mt-500" v-if="pageItems">
+        <VsBrModuleBuilder :modules="pageItems" />
+    </div>
+
+    <NuxtLazyHydrate :when-visible="{ rootMargin: '50px' }">
+        <VsBrSocialShare :no-js="true" />
+    </NuxtLazyHydrate>
+
+    <NuxtLazyHydrate :when-visible="{ rootMargin: '50px' }">
+        <section class="mt-500" v-if="otyml">
+            <VsBrHorizontalLinksModule :module="otyml" theme="light" />
         </section>
     </NuxtLazyHydrate>
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
+    <NuxtLazyHydrate :when-visible="{ rootMargin: '50px' }">
         <VsBrNewsletterSignpost
             v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
             :data="configStore.newsletterSignpost"
@@ -89,7 +134,7 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs } from 'vue';
+import { toRefs, computed } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
@@ -100,9 +145,19 @@ import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrFavouriteButton from '~/components/Modules/VsBrFavouriteButton.vue';
+import VsBrIllustratedMap, { type Region } from '~/components/Modules/VsBrIllustratedMap.vue';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import {
-    VsContainer, VsRow, VsCol,
+    VsContainer,
+    VsRow,
+    VsCol,
+    VsBody,
+    VsButton,
+    VsHeading,
+    VsPanel,
+    VsDetail,
+
 } from '@visitscotland/component-library/components';
 
 const favourites = useFavourites();
@@ -111,17 +166,19 @@ const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
 
-let documentData : any = {
+let documentData: any = {
 };
-let pageItems : any[] = [];
+let pageItems: any[] = [];
 let heroImage = {
 };
-let otyml : any = null;
-let location : any = null;
+let otyml: any = null;
+let location: any = null;
 
 const configStore = useConfigStore();
 
 let firstModuleIsLink = false;
+
+const keyInfo = configStore.pageTemplate.keyInformationPanel;
 
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
@@ -149,4 +206,108 @@ if (page.value) {
     }
 }
 
+const regionMapping: Record<string, Region> = {
+    'aberdeen-city-shire': 'aberdeen',
+    'argyll-isles': 'argyll',
+    'airshire-arran': 'arranayr',
+    borders: 'borders',
+    'dumfries-galloway': 'dumfries',
+    'dundee-angus': 'dundee',
+    'edinburgh-lothians': 'edinburgh',
+    'kingdom-fife': 'fife',
+    'greater-glasgow': 'glasgow',
+    highlands: 'highlands',
+    'loch-lomond': 'lomond',
+    orkney: 'orkney',
+    'outer-hebrides': 'outerhebs',
+    perthshire: 'perth',
+    shetland: 'shetland',
+};
+
+const regionNameFallbacks: Record<Region, string> = {
+    aberdeen: 'Aberdeen & Aberdeenshire',
+    argyll: 'Argyll & the Isles',
+    arranayr: 'Ayrshire & Arran',
+    borders: 'the Scottish Borders',
+    dumfries: 'Dumfries & Galloway',
+    dundee: 'Dundee & Angus',
+    edinburgh: 'Edinburgh & the Lothians',
+    fife: 'Fife',
+    glasgow: 'Greater Glasgow',
+    highlands: 'the Highlands',
+    lomond: 'Loch Lomond',
+    orkney: 'Orkney',
+    outerhebs: 'the Outer Hebrides',
+    perth: 'Perthshire',
+    shetland: 'Shetland',
+};
+
+const mapLocations = computed<any[]>(() => (location ? [location] : []));
+
+const regionLocations = computed(() => mapLocations.value
+    .filter(({ id, region }) => region && id in regionMapping));
+
+const regions = computed<Region[]>(() => [...new Set(
+    regionLocations.value
+        .map(({ id }) => regionMapping[id])
+        .filter((region): region is Region => region !== undefined),
+)]);
+
+const regionNames = computed(() => regions.value.map((mappedRegion) => {
+    const match = regionLocations.value.find(({ id }) => regionMapping[id] === mappedRegion);
+    return match?.name?.trim() || regionNameFallbacks[mappedRegion];
+}));
+
+const mapPinLocations = computed(() => mapLocations.value
+    .filter(({ latitude, longitude, region }) => (
+        // Only show map pins when region is false
+        region === false
+        && Number.isFinite(latitude)
+        && Number.isFinite(longitude)
+    )));
+
+const mapPins = computed(() => mapPinLocations.value.map(({ latitude, longitude }) => ({
+    lat: latitude,
+    lng: longitude,
+})));
+
+const mapAriaLabel = computed(() => {
+    const descriptions: string[] = [];
+
+    if (regionNames.value.length === 1) {
+        descriptions.push(`the ${regionNames.value[0]} region`);
+    } else if (regionNames.value.length > 1) {
+        descriptions.push(`regions ${regionNames.value.join(', ')}`);
+    }
+
+    const pinNames = mapPinLocations.value.map(({ name }) => name?.trim() || 'location');
+    if (pinNames.length === 1) {
+        descriptions.push(`a pin for ${pinNames[0]}`);
+    } else if (pinNames.length > 1) {
+        descriptions.push(`pins for ${pinNames.join(', ')}`);
+    }
+
+    return descriptions.length
+        ? `Illustrated map of Scotland showing ${descriptions.join(' and ')}`
+        : 'Illustrated map of Scotland';
+});
 </script>
+
+<style lang="css" scoped>
+    .vs-illustrated-map {
+        max-width: 9.5rem;
+    }
+    .vs-panel {
+        container-name: key-info-panel;
+        container-type: inline-size;
+    }
+    .key-information--layout {
+        flex-direction: column;
+    }
+
+    @container key-info-panel (width > 500px) {
+        .key-information--layout {
+            flex-direction: row;
+        }
+    }
+</style>
