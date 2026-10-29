@@ -33,29 +33,23 @@
         :inset="true"
     />
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }">
-        <VsBrKeyInformationPanel
-            v-if="configStore.pageTemplate?.keyInformationPanel"
-            :module="configStore.pageTemplate.keyInformationPanel"
-            :locations="location ? [location] : []"
-            class="my-200 mx-075"
-        />
+    <NuxtLazyHydrate>
         <VsContainer>
             <VsRow>
                 <VsCol
-                    cols="12"
                     lg="10"
                     offset-lg="1"
+                    xl="4"
+                    offset-xl="0"
                 >
                     <VsPanel
                         v-if="configStore.pageTemplate?.keyInformationPanel"
-                        class="key-information"
                     >
                         <div
-                            class="d-flex flex-column flex-md-row
-                            justify-content-between 
-                            gap-150"
+                            class="key-information--layout
+                                d-flex
+                                justify-content-between gap-150
+                            "
                         >
                             <div>
                                 <VsHeading
@@ -89,7 +83,7 @@
                                 <!-- Desktop button -->
                                 <VsButton
                                     v-if="keyInfo.cta"
-                                    :hre                                        f="keyInfo.cta.link"
+                                    :href="keyInfo.cta.link"
                                     class="key-information__cta-desktop mt-150 d-none d-md-block">
                                     {{ keyInfo.cta.label }}
                                 </VsButton>
@@ -99,17 +93,16 @@
                                 :highlighted-regions="regions"
                                 :pins="mapPins"
                                 :aria-label="mapAriaLabel"
-                                class="w-25 align-self-center"
+                                width="100%"
+                                class="align-self-center"
                             />
-                            <div>
-                                <!-- Mobile button -->
-                                <VsButton
-                                    v-if="keyInfo.cta"
-                                    :href="keyInfo.cta.link"
-                                    class="key-information__cta-mobile mt-150 d-md-none">
-                                    {{ keyInfo.cta.label }}
-                                </VsButton>
-                            </div>
+                            <!-- Mobile button -->
+                            <VsButton
+                                v-if="keyInfo.cta"
+                                :href="keyInfo.cta.link"
+                                class="key-information__cta-mobile mt-150 d-md-none">
+                                {{ keyInfo.cta.label }}
+                            </VsButton>
                         </div>
                     </VsPanel>
                 </VsCol>
@@ -295,3 +288,22 @@ const mapAriaLabel = computed(() => {
         : 'Illustrated map of Scotland';
 });
 </script>
+
+<style lang="css" scoped>
+    .vs-illustrated-map {
+        max-width: 9.5rem;
+    }
+    .vs-panel {
+        container-name: key-info-panel;
+        container-type: inline-size;
+    }
+    .key-information--layout {
+        flex-direction: column;
+    }
+
+    @container key-info-panel (width > 500px) {
+        .key-information--layout {
+            flex-direction: row;
+        }
+    }
+</style>
