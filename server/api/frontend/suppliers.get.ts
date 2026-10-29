@@ -8,8 +8,8 @@ const collator = new Intl.Collator('en', {
     sensitivity: 'base',
 });
 
-const suppliers: Supplier[] = supplierData.map((supplier) => ({
-    id: supplier.id,
+const suppliers: Supplier[] = supplierData.map((supplier, index) => ({
+    id: 'id' in supplier ? String(supplier.id) : String(index + 1),
     name: decode(supplier.Title),
     description: decode(supplier.Description
         .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, ' ')
@@ -29,7 +29,7 @@ const suppliers: Supplier[] = supplierData.map((supplier) => ({
         supplier.Postcode,
     ].map((part) => decode(part).trim()).filter(Boolean).join(', '),
     supplierTypes: supplier['Supplier Types'].split('|').map((type) => type.trim()).filter(Boolean),
-    date: supplier.Date,
+    date: 'Date' in supplier ? String(supplier.Date) : '',
 }));
 
 const supplierTypes = [...new Set(suppliers.flatMap((supplier) => supplier.supplierTypes))]
