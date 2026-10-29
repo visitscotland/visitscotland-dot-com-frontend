@@ -195,7 +195,7 @@ const filterPanel = ref<InstanceType<typeof VsBrFilter>>();
 const resultsHeading = ref<HTMLElement>();
 const supplierTypes = ref<string[]>([]);
 
-const { data, pending, error, refresh } = useFetch<SupplierListingResponse>('/api/suppliers', {
+const { data, pending, error, refresh } = useFetch<SupplierListingResponse>('/api/frontend/suppliers', {
     key: `suppliers-${id}`,
     query,
 });

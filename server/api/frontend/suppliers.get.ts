@@ -1,6 +1,6 @@
 import { decode } from 'html-entities';
-import supplierData from '../../public/assets/suppliers.json';
-import type { Supplier, SupplierListingResponse } from '../../types/suppliers';
+import supplierData from '../../../public/assets/suppliers.json';
+import type { Supplier, SupplierListingResponse } from '../../../types/suppliers';
 
 const pageSize = 12;
 
