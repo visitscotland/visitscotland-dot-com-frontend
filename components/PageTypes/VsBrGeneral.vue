@@ -21,12 +21,32 @@
                 v-if="!configStore.isHome"
                 class="mt-075 mt-lg-200"
             >
-                <VsRow>
+                <VsRow class="mb-100">
                     <VsCol
-                        cols="10"
+                        col
                         lg="8"
                     >
                         <VsBrBreadcrumb />
+                    </VsCol>
+                    <VsCol
+                        cols="auto"
+                        lg="4"
+                        class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                        v-if="favourites.featureEnabled"
+                    >
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            icon-only
+                            class="d-lg-none"
+                            data-test="vs-favourite-button"
+                        />
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            class="d-none d-lg-flex"
+                            data-test="vs-favourite-button"
+                        />
                     </VsCol>
                 </VsRow>
             </VsContainer>
