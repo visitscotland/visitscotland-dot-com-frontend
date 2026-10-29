@@ -81,9 +81,29 @@ const configStore = useConfigStore();
 const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
-const filteredFeatures = module.geoJson.features.filter(
-    (feature: any) => feature.geometry && feature.geometry.type,
-);
+// Destinations in multiple categories may come through as polygons in every
+// category. Outside of regions, show them as a pin at their centre instead.
+const filteredFeatures = module.geoJson.features
+    .filter((feature: any) => feature.geometry && feature.geometry.type)
+    .map((feature: any) => {
+        const centre = feature.properties?.locationCentre;
+
+        if (
+            feature.geometry.type !== 'Point'
+            && feature.properties?.category?.id !== 'regions'
+            && centre
+        ) {
+            return {
+                ...feature,
+                geometry: {
+                    type: 'Point',
+                    coordinates: [centre.longitude, centre.latitude],
+                },
+            };
+        }
+
+        return feature;
+    });
 
 for (let x = 0; x < filteredFeatures.length; x++) {
     if (filteredFeatures[x].properties && filteredFeatures[x].properties.link) {
