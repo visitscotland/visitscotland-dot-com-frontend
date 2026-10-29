@@ -119,8 +119,12 @@ const resetAll = () => {
     filter.value.resetAll();
 };
 
+const resetOne = (id: string) => {
+    filter.value.resetOne(id);
+};
 defineExpose({
     resetAll,
+    resetOne,
 });
 
 const cleanKey = (key: string) => key.slice(props.filterId.length + 1);
