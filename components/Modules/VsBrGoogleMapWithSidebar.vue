@@ -238,7 +238,27 @@ const uiLabels = {
 
 const isSidebarVisible = ref<boolean>(true);
 
-const features = module.geoJson.features;
+// Destinations in multiple categories may come through as polygons in every
+// category. Outside of regions, show them as a pin at their centre instead.
+const features = module.geoJson.features.map((feature: any) => {
+    const centre = feature.properties?.locationCentre;
+
+    if (
+        feature.geometry?.type !== 'Point'
+        && feature.properties?.category?.id !== 'regions'
+        && centre
+    ) {
+        return {
+            ...feature,
+            geometry: {
+                type: 'Point',
+                coordinates: [centre.longitude, centre.latitude],
+            },
+        };
+    }
+
+    return feature;
+});
 const filters = module.filters;
 
 const visibleFeatures = ref(features);
