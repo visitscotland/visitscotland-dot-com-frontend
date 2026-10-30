@@ -153,6 +153,7 @@
                 </VsButton>
             </div>
             <VsGoogleMap
+                ref="googleMap"
                 class="vs-google-map-with-sidebar__map"
                 :api-key="configStore.googleMapApiKey"
                 :center="{
@@ -218,7 +219,7 @@ import {
     VsImg,
     VsRow,
 } from '@visitscotland/component-library/components';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import getIconDetails from '~/utls/mapIconMapping.ts';
 
@@ -254,6 +255,38 @@ const markerRefs = ref<any>({
 });
 
 const sidebarBody = ref<HTMLElement | null>(null);
+
+const regionFeatures = features.filter((feature: any) =>
+    feature.properties?.category?.id === 'regions'
+    && feature.geometry?.type !== 'Point');
+
+const googleMap = ref<any>(null);
+
+let map: google.maps.Map | undefined;
+
+// Draw the region polygons using the map's data layer once the map is ready.
+// https://developers.google.com/maps/documentation/javascript/datalayer
+onMounted(async() => {
+    await customElements.whenDefined('gmp-map');
+
+    map = googleMap.value?.$el?.querySelector('gmp-map')?.innerMap;
+    if (!map) return;
+
+    // The API sends a lowercase 'feature' type, Google requires 'Feature'.
+    // spread it to a new object with uppercase name
+    map.data.addGeoJson(
+        {
+            type: 'FeatureCollection',
+            features: regionFeatures.map((feature: any) => ({
+                ...feature,
+                type: 'Feature',
+            })),
+        },
+        {
+            idPropertyName: 'id',
+        },
+    );
+});
 
 const titleLabel = computed(() => {
     if (selectedCategory.value) {
