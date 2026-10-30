@@ -3,6 +3,13 @@
         card-style="elevated"
         class="vs-br-supplier-card p-100"
     >
+        <template v-if="supplier.imageUrl" #vs-card-header>
+            <VsImg
+                :src="supplier.imageUrl"
+                :alt="supplier.name"
+                class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover"
+            />
+        </template>
         <template #vs-card-body>
             <VsHeading
                 heading-style="heading-xxs"
@@ -110,6 +117,7 @@ import {
     VsHeading,
     VsBody,
     VsIcon,
+    VsImg,
 } from '@visitscotland/component-library/components';
 
 defineProps<{
@@ -127,8 +135,12 @@ function websiteHref(url: string) {
 .vs-br-supplier-card:hover {
     min-width: 0;
     cursor: default;
+
 }
 
+.vs-br-supplier-card :deep(.vs-card__header) {
+    margin: -1rem -1rem 1rem;
+}
 .supplier-card__footer-field {
     display: grid;
     grid-template-columns: 1.25rem minmax(0, 1fr);

@@ -2,7 +2,7 @@ import { decode } from 'html-entities';
 import supplierData from '../../../public/assets/suppliers.json';
 import type { Supplier, SupplierListingResponse } from '../../../types/suppliers';
 
-const pageSize = 12;
+const pageSize = 8;
 
 const collator = new Intl.Collator('en', {
     sensitivity: 'base',
@@ -11,6 +11,7 @@ const collator = new Intl.Collator('en', {
 const suppliers: Supplier[] = supplierData.map((supplier, index) => ({
     id: 'id' in supplier ? String(supplier.id) : String(index + 1),
     name: decode(supplier.Title),
+    imageUrl: supplier['Image URL'].split('|').map((url) => url.trim()).find(Boolean) || '',
     description: decode(supplier.Description
         .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, ' ')
         .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, ' ')

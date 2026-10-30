@@ -1,6 +1,7 @@
 export interface Supplier {
     id: string;
     name: string;
+    imageUrl: string;
     description: string;
     commission: string;
     contactName: string;
