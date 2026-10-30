@@ -367,15 +367,16 @@ function filterById(categoryId: string) {
 function selectFeature(feature: BrxmFeature) {
     selectedFeature.value = feature;
     
-    markerRefs.value[feature.properties.id.toString()].showTooltip(); 
+    // Regions don't have markers so there's no tooltip to show.
+    markerRefs.value[feature.properties.id.toString()]?.showTooltip();
 }
 
 function unselectFeature() {
     if (selectedFeature.value) {
         const selectedFeatureId: string = selectedFeature.value.properties.id.toString();
 
-        markerRefs.value[selectedFeatureId].hideTooltip();
-        markerRefs.value[selectedFeatureId].handleRemoveMarkerActive(selectedFeatureId);
+        markerRefs.value[selectedFeatureId]?.hideTooltip();
+        markerRefs.value[selectedFeatureId]?.handleRemoveMarkerActive(selectedFeatureId);
     };
     selectedFeature.value = undefined;
 }
@@ -398,14 +399,14 @@ function handleMapMarkerClick(category: string, feature: BrxmFeature) {
 }
 
 function handleFeatureButtonMouseover(id: string) {
-    // Regions don't have markers, highlight the region polygon instead.
+    // regions don't have markers, highlight the region polygon instead.
     if (selectedCategory.value === 'regions') {
         hoveredRegionId.value = id;
         return;
     }
 
-    markerRefs.value[id].showTooltip();
     if (markerRefs.value[id]) {
+        markerRefs.value[id].showTooltip();
         markerRefs.value[id].handleSetMarkerActive(id);
     }
 }
@@ -416,14 +417,16 @@ function handleFeatureButtonMouseout(id: string) {
         return;
     }
 
-    markerRefs.value[id].hideTooltip();
     if (markerRefs.value[id]) {
+        markerRefs.value[id].hideTooltip();
         markerRefs.value[id].handleRemoveMarkerActive(id);
+        markerRefs.value[id].markerHovered = null;
     }
-    markerRefs.value[id].markerHovered = null;
 }
 
 function handleMouseOut(id: string) {
+    if (!markerRefs.value[id]) return;
+
     if (selectedFeature.value && selectedFeature.value.properties.id === id) {
         markerRefs.value[id].showTooltip();
     } else {
