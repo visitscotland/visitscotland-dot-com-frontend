@@ -153,6 +153,7 @@
                 </VsButton>
             </div>
             <VsGoogleMap
+                ref="googleMap"
                 class="vs-google-map-with-sidebar__map"
                 :api-key="configStore.googleMapApiKey"
                 :center="{
@@ -176,7 +177,7 @@
                 <template #vs-google-map-marker>
                     <VsGoogleMapMarker
                         class="vs-google-map-with-sidebar__marker"
-                        v-for="feature in visibleFeatures"
+                        v-for="feature in markerFeatures"
                         :key="feature.properties.id"
                         :ref="(el) => { if (el) markerRefs[feature.properties.id] = el}"
                         :feature-data="feature"
@@ -218,7 +219,11 @@ import {
     VsImg,
     VsRow,
 } from '@visitscotland/component-library/components';
-import { ref } from 'vue';
+import {
+    onMounted,
+    ref,
+    watch,
+} from 'vue';
 
 import getIconDetails from '~/utls/mapIconMapping.ts';
 
@@ -242,6 +247,10 @@ const features = module.geoJson.features;
 const filters = module.filters;
 
 const visibleFeatures = ref(features);
+
+// Only points can be shown as markers, regions are drawn as polygons instead.
+const markerFeatures = computed(() => visibleFeatures.value
+    .filter((feature: any) => feature.geometry?.type === 'Point'));
 const filteredFeatures = ref<BrxmFeature[]>([]);
 const selectedCategory = ref<string | undefined>(undefined);
 const selectedFeature = ref<BrxmFeature | undefined>(undefined);
@@ -250,6 +259,103 @@ const markerRefs = ref<any>({
 });
 
 const sidebarBody = ref<HTMLElement | null>(null);
+
+const regionFeatures = features.filter((feature: any) =>
+    feature.properties?.category?.id === 'regions'
+    && feature.geometry?.type !== 'Point');
+
+const googleMap = ref<any>(null);
+
+let map: google.maps.Map | undefined;
+let regionPopup: google.maps.InfoWindow | undefined;
+
+const hoveredRegionId = ref<string | null>(null);
+
+// Show regions only while in region view
+function regionStyle(feature: google.maps.Data.Feature): google.maps.Data.StyleOptions {
+    const id = feature.getId();
+    const highlighted = id === hoveredRegionId.value
+        || id === selectedFeature.value?.properties.id;
+
+    return {
+        // pretty regional styles
+        visible: selectedCategory.value === 'regions',
+        fillColor: highlighted ? '#A8308C' : '#19C8C5',
+        fillOpacity: highlighted ? 0.4 : 0.5,
+        strokeColor: '#FFFFFF',
+        strokeWeight: 1,
+    };
+}
+
+// Restyle the regions whenever the category, selection or hover changes.
+watch([selectedCategory, selectedFeature, hoveredRegionId], () => {
+    map?.data.setStyle(regionStyle);
+});
+
+// Draw the region polygons using the map's data layer once the map is ready.
+// https://developers.google.com/maps/documentation/javascript/datalayer
+onMounted(async() => {
+    await customElements.whenDefined('gmp-map');
+
+    map = googleMap.value?.$el?.querySelector('gmp-map')?.innerMap;
+    if (!map) return;
+
+    // The API sends a lowercase 'feature' type, Google requires 'Feature'.
+    // spread it to a new object with uppercase name
+    map.data.addGeoJson(
+        {
+            type: 'FeatureCollection',
+            features: regionFeatures.map((feature: any) => ({
+                ...feature,
+                type: 'Feature',
+            })),
+        },
+        {
+            idPropertyName: 'id',
+        },
+    );
+
+    map.data.setStyle(regionStyle);
+
+    // tooltip popup for region polygons 
+    regionPopup = new google.maps.InfoWindow({
+        headerDisabled: true,
+        disableAutoPan: true,
+        pixelOffset: new google.maps.Size(0, -10),
+    });
+
+    map.data.addListener('mouseover', (event: google.maps.Data.MouseEvent) => {
+        hoveredRegionId.value = event.feature.getId() as string;
+        
+        const popupContent = document.createElement('div');
+        popupContent.textContent = event.feature.getProperty('title') as string;
+
+        regionPopup?.setContent(popupContent);
+        regionPopup?.setPosition(event.latLng);
+        regionPopup?.open(map);
+    });
+
+    map.data.addListener('mousemove', (event: google.maps.Data.MouseEvent) => {
+        regionPopup?.setPosition(event.latLng);
+    });
+
+    map.data.addListener('mouseout', () => {
+        hoveredRegionId.value = null;
+        regionPopup?.close();
+    });
+
+    // Show the region's details in the sidebar, the same as clicking a marker.
+    map.data.addListener('click', (event: google.maps.Data.MouseEvent) => {
+        const region = regionFeatures.find((feature: any) =>
+            feature.properties.id === event.feature.getId());
+        if (!region) return;
+
+        unselectFeature();
+        isSidebarVisible.value = true;
+        filterById('regions');
+        handleFeatureClick(region);
+    });
+});
 
 const titleLabel = computed(() => {
     if (selectedCategory.value) {
@@ -281,15 +387,16 @@ function filterById(categoryId: string) {
 function selectFeature(feature: BrxmFeature) {
     selectedFeature.value = feature;
     
-    markerRefs.value[feature.properties.id.toString()].showTooltip(); 
+    // Regions don't have markers so there's no tooltip to show.
+    markerRefs.value[feature.properties.id.toString()]?.showTooltip();
 }
 
 function unselectFeature() {
     if (selectedFeature.value) {
         const selectedFeatureId: string = selectedFeature.value.properties.id.toString();
 
-        markerRefs.value[selectedFeatureId].hideTooltip();
-        markerRefs.value[selectedFeatureId].handleRemoveMarkerActive(selectedFeatureId);
+        markerRefs.value[selectedFeatureId]?.hideTooltip();
+        markerRefs.value[selectedFeatureId]?.handleRemoveMarkerActive(selectedFeatureId);
     };
     selectedFeature.value = undefined;
 }
@@ -312,21 +419,34 @@ function handleMapMarkerClick(category: string, feature: BrxmFeature) {
 }
 
 function handleFeatureButtonMouseover(id: string) {
-    markerRefs.value[id].showTooltip();
+    // regions don't have markers, highlight the region polygon instead.
+    if (selectedCategory.value === 'regions') {
+        hoveredRegionId.value = id;
+        return;
+    }
+
     if (markerRefs.value[id]) {
+        markerRefs.value[id].showTooltip();
         markerRefs.value[id].handleSetMarkerActive(id);
     }
 }
 
 function handleFeatureButtonMouseout(id: string) {
-    markerRefs.value[id].hideTooltip();
-    if (markerRefs.value[id]) {
-        markerRefs.value[id].handleRemoveMarkerActive(id);
+    if (selectedCategory.value === 'regions') {
+        hoveredRegionId.value = null;
+        return;
     }
-    markerRefs.value[id].markerHovered = null;
+
+    if (markerRefs.value[id]) {
+        markerRefs.value[id].hideTooltip();
+        markerRefs.value[id].handleRemoveMarkerActive(id);
+        markerRefs.value[id].markerHovered = null;
+    }
 }
 
 function handleMouseOut(id: string) {
+    if (!markerRefs.value[id]) return;
+
     if (selectedFeature.value && selectedFeature.value.properties.id === id) {
         markerRefs.value[id].showTooltip();
     } else {
