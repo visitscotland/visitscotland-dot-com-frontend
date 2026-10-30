@@ -142,6 +142,10 @@
             </Suspense>
         </NuxtLazyHydrate>
 
+        <VsBrSupplierListingModule
+            v-else-if="item.type === 'SupplierListingModule'"
+            :module="item"
+        />
         <NuxtLazyHydrate
             :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'SkiListModule'"
