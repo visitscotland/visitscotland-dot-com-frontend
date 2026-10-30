@@ -3,6 +3,9 @@
         v-if="moduleData.bespoken === 'carbon-calculator'"
     />
 
+    <VsBrSupplierDetails
+        v-else-if="module.id === 'supplier-listing'"
+    />
     <VsBrSupplierListingModule
         v-else-if="module.id === 'supplier-search'"
     />

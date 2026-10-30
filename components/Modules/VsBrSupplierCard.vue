@@ -105,6 +105,12 @@
                     </span>
                 </div>
             </div>
+            <VsButton
+                :href="`/blog/supplier/${supplier.id}`"
+                class="mt-150"
+            >
+                Read More
+            </VsButton>
         </template>
     </VsCard>
 </template>
@@ -114,6 +120,7 @@ import type { Supplier } from '~/types/suppliers';
 
 import {
     VsCard,
+    VsButton,
     VsHeading,
     VsBody,
     VsIcon,
