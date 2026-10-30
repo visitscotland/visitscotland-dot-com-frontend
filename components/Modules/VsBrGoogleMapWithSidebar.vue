@@ -176,7 +176,7 @@
                 <template #vs-google-map-marker>
                     <VsGoogleMapMarker
                         class="vs-google-map-with-sidebar__marker"
-                        v-for="feature in visibleFeatures"
+                        v-for="feature in markerFeatures"
                         :key="feature.properties.id"
                         :ref="(el) => { if (el) markerRefs[feature.properties.id] = el}"
                         :feature-data="feature"
@@ -242,6 +242,10 @@ const features = module.geoJson.features;
 const filters = module.filters;
 
 const visibleFeatures = ref(features);
+
+// Only points can be shown as markers, regions are drawn as polygons instead.
+const markerFeatures = computed(() => visibleFeatures.value
+    .filter((feature: any) => feature.geometry?.type === 'Point'));
 const filteredFeatures = ref<BrxmFeature[]>([]);
 const selectedCategory = ref<string | undefined>(undefined);
 const selectedFeature = ref<BrxmFeature | undefined>(undefined);
