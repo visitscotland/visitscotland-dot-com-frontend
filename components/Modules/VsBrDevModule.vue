@@ -2,6 +2,11 @@
     <VsBrCarbonCalculator
         v-if="moduleData.bespoken === 'carbon-calculator'"
     />
+
+    <VsBrSupplierListingModule
+        v-else-if="module.id === 'supplier-search'"
+    />
+
     <div
         v-else
         v-html="moduleData.html"
@@ -12,7 +17,7 @@
  
 /* eslint no-undef: 0 */
 
-const props = defineProps<{ module: object, content: object, }>();
+const props = defineProps<{ module: any, content: object, }>();
 const content: any = props.content;
 const moduleData = content?.model?.data || {
 };

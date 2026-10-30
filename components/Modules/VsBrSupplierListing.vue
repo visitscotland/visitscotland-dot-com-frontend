@@ -11,9 +11,9 @@
                 role="status"
                 class="vs-br-supplier-listing__result-count"
             >
-                <span v-if="pending">Loading suppliers…</span>
+                <span v-if="pending">{{ configStore.getLabel('supplier-search', 'loading') }}</span>
                 <span v-else-if="error">Suppliers could not be loaded.</span>
-                <span v-else-if="data">Results ({{ data.total }})</span>
+                <span v-else-if="data">{{ configStore.getLabel('supplier-search', 'results') }} ({{ data.total }})</span>
             </div>
             <VsBrFilter
                 :filter-id="`${id}-filters`"
@@ -23,7 +23,7 @@
             >
                 <VsFilterSection type="list">
                     <label class="vs-br-supplier-listing__filter-field" :for="`${id}-search`">
-                        Search suppliers
+                        {{ configStore.getLabel('supplier-search', 'search-suppliers')}}
                         <input
                             :id="`${id}-search`"
                             :value="query.q"
@@ -55,7 +55,7 @@
                         size="md"
                         @click="clearAllFilters"
                     >
-                        Clear all
+                        {{ configStore.getLabel('supplier-search', 'clear-all') }}
                     </VsButton>
 
                     <VsButton
@@ -76,7 +76,7 @@
                 <div class="vs-br-supplier-listing__sort">
                     <VsDropdown variant="secondary">
                         <template #button-content>
-                            Sort by: {{ selectedSortLabel }}
+                            {{ configStore.getLabel('supplier-search', 'sort-by') }}: {{ selectedSortLabel }}
                         </template>
 
                         <VsDropdownItem
@@ -122,7 +122,7 @@
                 </VsContainer>
 
                 <p v-else-if="!pending">
-                    No suppliers match your filters.
+                    {{ configStore.getLabel('essentials.pagination', 'no-results-message') }}
                 </p>
 
                 <VsPagination
@@ -130,10 +130,10 @@
                     class="mt-300"
                     :model-value="data?.page || 1"
                     :number-of-pages="numberOfPages"
-                    of-label="of"
-                    page-label="Page"
-                    next-button-label="Next"
-                    previous-button-label="Previous"
+                    :of-label="configStore.getLabel('essentials.pagination', 'page.of')"
+                    :page-label="configStore.getLabel('essentials.pagination', 'page.page')"
+                    :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
+                    :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
                     :inert="pending"
                     @update:model-value="changePage"
                 />
@@ -152,6 +152,8 @@ import {
 
 import { useFetch } from '#imports';
 
+import useConfigStore from '~/stores/configStore.ts';
+
 import {
     VsButton,
     VsDropdown,
@@ -168,6 +170,7 @@ import VsBrSupplierCard from './VsBrSupplierCard.vue';
 
 import type { SupplierListingResponse } from '~/types/suppliers';
 
+const configStore = useConfigStore();
 
 const id = useId();
 
@@ -181,11 +184,11 @@ const query = ref({
 const sortOptions = [
     {
         key: 'date',
-        label: 'New suppliers', 
+        label: configStore.getLabel('supplier-search', 'date'),
     },
     {
         key: 'name',
-        label: 'Alphabetical', 
+        label: configStore.getLabel('supplier-search', 'alphabetical'),
     },
 ] as const;
 
@@ -209,7 +212,7 @@ watch(data, (response) => {
 const typeFilters = computed(() => [{
     group: 'supplier-types',
     key: 'type',
-    label: 'Supplier types',
+    label: configStore.getLabel('supplier-search', 'supplier-types'),
     type: 'MULTISELECT',
     open: true,
     values: supplierTypes.value.map((type, index) => ({

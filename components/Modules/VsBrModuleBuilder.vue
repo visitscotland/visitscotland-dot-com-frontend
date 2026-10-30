@@ -233,19 +233,6 @@
             </NuxtLazyHydrate>
         </div>
     </section>
-
-    <!-- Temporary hardcoded supplier listing behind a flag for testing, remove when the
-     module can be added through the CMS. -->
-    <section
-        v-if="checkFlag('use-supplier-listing')"
-        class="vs-module-wrapper__outer mt-500"
-    >
-        <VsBrSupplierListingModule
-            :module="{
-                title: 'Suppliers',
-            }"
-        />
-    </section>
 </template>
 
 <script lang="ts" setup>
@@ -262,7 +249,6 @@ import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLink
 import VsBrTravelInformationModule from '~/components/Modules/VsBrTravelInformationModule.vue';
 import VsBrRichArticleModule from '~/components/Modules/VsBrRichArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
-import VsBrSupplierListingModule from '~/components/Modules/VsBrSupplierListingModule.vue';
 import VsBrSkiListModule from '~/components/Modules/VsBrSkiListModule.vue';
 import VsBrSkiModule from '~/components/Modules/VsBrSkiModule.vue';
 import VsBrForm from '~/components/Modules/VsBrForm.vue';
