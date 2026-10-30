@@ -219,7 +219,11 @@ import {
     VsImg,
     VsRow,
 } from '@visitscotland/component-library/components';
-import { onMounted, ref } from 'vue';
+import {
+    onMounted,
+    ref,
+    watch,
+} from 'vue';
 
 import getIconDetails from '~/utls/mapIconMapping.ts';
 
@@ -264,6 +268,34 @@ const googleMap = ref<any>(null);
 
 let map: google.maps.Map | undefined;
 
+const hoveredRegionId = ref<string | null>(null);
+
+/**
+ * Style for each region polygon. Regions are only visible when the regions
+ * category is selected, and are highlighted when hovered or selected.
+ *
+ * @param feature - the region in the map's data layer.
+ * @returns The style options for the region.
+ */
+function regionStyle(feature: google.maps.Data.Feature): google.maps.Data.StyleOptions {
+    const id = feature.getId();
+    const highlighted = id === hoveredRegionId.value
+        || id === selectedFeature.value?.properties.id;
+
+    return {
+        visible: selectedCategory.value === 'regions',
+        fillColor: highlighted ? '#A8308C' : '#19C8C5',
+        fillOpacity: highlighted ? 0.4 : 0.5,
+        strokeColor: '#FFFFFF',
+        strokeWeight: 1,
+    };
+}
+
+// Restyle the regions whenever the category, selection or hover changes.
+watch([selectedCategory, selectedFeature, hoveredRegionId], () => {
+    map?.data.setStyle(regionStyle);
+});
+
 // Draw the region polygons using the map's data layer once the map is ready.
 // https://developers.google.com/maps/documentation/javascript/datalayer
 onMounted(async() => {
@@ -286,6 +318,8 @@ onMounted(async() => {
             idPropertyName: 'id',
         },
     );
+
+    map.data.setStyle(regionStyle);
 });
 
 const titleLabel = computed(() => {
