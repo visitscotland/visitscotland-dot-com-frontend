@@ -267,6 +267,7 @@ const regionFeatures = features.filter((feature: any) =>
 const googleMap = ref<any>(null);
 
 let map: google.maps.Map | undefined;
+let regionPopup: google.maps.InfoWindow | undefined;
 
 const hoveredRegionId = ref<string | null>(null);
 
@@ -316,12 +317,31 @@ onMounted(async() => {
 
     map.data.setStyle(regionStyle);
 
+    // tooltip popup for region polygons 
+    regionPopup = new google.maps.InfoWindow({
+        headerDisabled: true,
+        disableAutoPan: true,
+        pixelOffset: new google.maps.Size(0, -10),
+    });
+
     map.data.addListener('mouseover', (event: google.maps.Data.MouseEvent) => {
         hoveredRegionId.value = event.feature.getId() as string;
+        
+        const popupContent = document.createElement('div');
+        popupContent.textContent = event.feature.getProperty('title') as string;
+
+        regionPopup?.setContent(popupContent);
+        regionPopup?.setPosition(event.latLng);
+        regionPopup?.open(map);
+    });
+
+    map.data.addListener('mousemove', (event: google.maps.Data.MouseEvent) => {
+        regionPopup?.setPosition(event.latLng);
     });
 
     map.data.addListener('mouseout', () => {
         hoveredRegionId.value = null;
+        regionPopup?.close();
     });
 
     // Show the region's details in the sidebar, the same as clicking a marker.
