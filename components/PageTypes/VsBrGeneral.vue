@@ -22,16 +22,12 @@
                 class="mt-075 mt-lg-200"
             >
                 <VsRow class="mb-100">
-                    <VsCol
-                        col
-                        lg="8"
-                    >
+                    <VsCol>
                         <VsBrBreadcrumb />
                     </VsCol>
                     <VsCol
                         cols="auto"
-                        lg="4"
-                        class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                        class="d-flex align-items-center"
                         v-if="favourites.featureEnabled"
                     >
                         <VsBrFavouriteButton
