@@ -398,6 +398,12 @@ function handleMapMarkerClick(category: string, feature: BrxmFeature) {
 }
 
 function handleFeatureButtonMouseover(id: string) {
+    // Regions don't have markers, highlight the region polygon instead.
+    if (selectedCategory.value === 'regions') {
+        hoveredRegionId.value = id;
+        return;
+    }
+
     markerRefs.value[id].showTooltip();
     if (markerRefs.value[id]) {
         markerRefs.value[id].handleSetMarkerActive(id);
@@ -405,6 +411,11 @@ function handleFeatureButtonMouseover(id: string) {
 }
 
 function handleFeatureButtonMouseout(id: string) {
+    if (selectedCategory.value === 'regions') {
+        hoveredRegionId.value = null;
+        return;
+    }
+
     markerRefs.value[id].hideTooltip();
     if (markerRefs.value[id]) {
         markerRefs.value[id].handleRemoveMarkerActive(id);
