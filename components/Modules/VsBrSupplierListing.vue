@@ -184,11 +184,11 @@ const query = ref({
 const sortOptions = [
     {
         key: 'date',
-        label: configStore.getLabel('supplier-search', 'date'),
+        label: configStore.getLabel('supplier-search', 'sort-by.date'),
     },
     {
         key: 'name',
-        label: configStore.getLabel('supplier-search', 'alphabetical'),
+        label: configStore.getLabel('supplier-search', 'sort-by.alphabetical'),
     },
 ] as const;
 
