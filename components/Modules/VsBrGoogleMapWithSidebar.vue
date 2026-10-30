@@ -270,19 +270,14 @@ let map: google.maps.Map | undefined;
 
 const hoveredRegionId = ref<string | null>(null);
 
-/**
- * Style for each region polygon. Regions are only visible when the regions
- * category is selected, and are highlighted when hovered or selected.
- *
- * @param feature - the region in the map's data layer.
- * @returns The style options for the region.
- */
+// Show regions only while in region view
 function regionStyle(feature: google.maps.Data.Feature): google.maps.Data.StyleOptions {
     const id = feature.getId();
     const highlighted = id === hoveredRegionId.value
         || id === selectedFeature.value?.properties.id;
 
     return {
+        // pretty regional styles
         visible: selectedCategory.value === 'regions',
         fillColor: highlighted ? '#A8308C' : '#19C8C5',
         fillOpacity: highlighted ? 0.4 : 0.5,
@@ -320,6 +315,26 @@ onMounted(async() => {
     );
 
     map.data.setStyle(regionStyle);
+
+    map.data.addListener('mouseover', (event: google.maps.Data.MouseEvent) => {
+        hoveredRegionId.value = event.feature.getId() as string;
+    });
+
+    map.data.addListener('mouseout', () => {
+        hoveredRegionId.value = null;
+    });
+
+    // Show the region's details in the sidebar, the same as clicking a marker.
+    map.data.addListener('click', (event: google.maps.Data.MouseEvent) => {
+        const region = regionFeatures.find((feature: any) =>
+            feature.properties.id === event.feature.getId());
+        if (!region) return;
+
+        unselectFeature();
+        isSidebarVisible.value = true;
+        filterById('regions');
+        handleFeatureClick(region);
+    });
 });
 
 const titleLabel = computed(() => {
