@@ -4,7 +4,8 @@ import type { Supplier } from '../../types/suppliers';
 export const suppliers: Supplier[] = supplierData.map((supplier, index) => ({
     id: 'id' in supplier ? String(supplier.id) : String(index + 1),
     name: decode(supplier.Title),
-    imageUrl: supplier['Image URL'].split('|').map((url) => url.trim()).find(Boolean) || '',
+    imageUrl: (supplier['Image URL'].split('|').map((url) => url.trim()).find(Boolean) || '')
+        .replace(/\.jpg(?=[?#]|$)/i, '-wpcf_726x484.jpg'),
     description: decode(supplier.Description
         .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, ' ')
         .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, ' ')
