@@ -34,13 +34,11 @@
     />
 
     <NuxtLazyHydrate>
-        <VsContainer>
+        <VsContainer class="mt-250">
             <VsRow>
                 <VsCol
                     lg="10"
                     offset-lg="1"
-                    xl="4"
-                    offset-xl="0"
                 >
                     <VsPanel
                         v-if="configStore.pageTemplate?.keyInformationPanel"
@@ -75,18 +73,11 @@
                                                 <VsBrRichText
                                                     :input-content="highlight.copy.value"
                                                     class="d-inline"
-                                                />
+                                                />git p
                                             </VsDetail>
                                         </li>
                                     </VsBody>
                                 </ul>
-                                <!-- Desktop button -->
-                                <VsButton
-                                    v-if="keyInfo.cta"
-                                    :href="keyInfo.cta.link"
-                                    class="key-information__cta-desktop mt-150 d-none d-md-block">
-                                    {{ keyInfo.cta.label }}
-                                </VsButton>
                             </div>
                             <!-- Map -->
                             <VsBrIllustratedMap
@@ -96,11 +87,13 @@
                                 width="100%"
                                 class="align-self-center"
                             />
-                            <!-- Mobile button -->
+                        </div>
+                        <div class="d-flex mt-150 ">
                             <VsButton
                                 v-if="keyInfo.cta"
                                 :href="keyInfo.cta.link"
-                                class="key-information__cta-mobile mt-150 d-md-none">
+                                class="flex-grow-1 flex-md-grow-0"
+                            >
                                 {{ keyInfo.cta.label }}
                             </VsButton>
                         </div>
