@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import YAML from 'yaml';
 import semver from 'semver';
+import { resolutionSelector } from './dependency-graph.mjs';
 
 const ranks = ['unknown', 'low', 'medium', 'high', 'critical'];
 const read = (name) => readFileSync(`triage-results/${name}`, 'utf8');
@@ -42,6 +43,7 @@ export function prepare(evidence, startingSha) {
         groups.get(key).alerts.push(alert);
     }
 
+    const gaps = [];
     const packages = [...groups.values()].map(({ name, ecosystem, alerts }) => {
         const versions = [...new Set(lock.filter((entry) => entry?.resolution?.startsWith(`${name}@npm:`)).map((entry) => String(entry.version)))];
         const parents = lock.filter((entry) => entry?.dependencies?.[name] || entry?.optionalDependencies?.[name]).map((entry) => ({
@@ -57,6 +59,12 @@ export function prepare(evidence, startingSha) {
                 firstPatchedVersion: v.first_patched_version?.identifier || null,
             })),
         }));
+        for (const advisory of advisories) {
+            if (!advisory.ranges.length) gaps.push(`Missing advisory ranges for ${ecosystem}:${name} alert #${advisory.number}`);
+            for (const range of advisory.ranges) {
+                if (!semver.validRange(range.vulnerableRange)) gaps.push(`Unparseable advisory range for ${ecosystem}:${name} alert #${advisory.number}: ${range.vulnerableRange}`);
+            }
+        }
         const affectedVersions = versions.filter((version) => advisories.some((a) => a.ranges.some((r) => semver.valid(version) && semver.validRange(r.vulnerableRange) && semver.satisfies(version, r.vulnerableRange))));
         const highestSeverity = alerts.reduce((severity, alert) => ranks.indexOf(alert.security_advisory.severity) > ranks.indexOf(severity) ? alert.security_advisory.severity : severity, 'unknown');
         const direct = Object.hasOwn(manifest.dependencies || {
@@ -93,7 +101,7 @@ export function prepare(evidence, startingSha) {
         evidenceMode: evidence.mode,
         collectionStatus: evidence.status,
         analysisStatus: 'pending',
-        gaps: [],
+        gaps,
         packages: packages.map((p) => ({
             name: p.name,
             ecosystem: p.ecosystem,
@@ -134,6 +142,8 @@ export function validateTriage(evidence, triage) {
         assert.deepEqual(triage[field], skeleton[field], `Preserve triage provenance: ${field}`);
     }
 
+    for (const gap of skeleton.gaps) assert.ok(triage.gaps.includes(gap), 'Preserve recorded advisory gaps');
+
     const packageKey = (p) => `${p.ecosystem}:${p.name}`;
 
     assert.deepEqual(triage.packages.map(packageKey).sort(), skeleton.packages.map(packageKey).sort(), 'Preserve all affected packages exactly once');
@@ -152,6 +162,13 @@ export function validateTriage(evidence, triage) {
             assert.ok(typeof r.action === 'string' && r.action.trim() && !/pending investigation/i.test(r.action), `Explain the action for ${p.name}`);
             assert.ok(r.targetVersion === null || semver.valid(r.targetVersion), `Invalid exact target for ${p.name}`);
             assert.ok(r.pinVersion === null || semver.valid(r.pinVersion), `Invalid exact pin for ${p.name}`);
+            const recorded = input.packages.find((candidate) => packageKey(candidate) === packageKey(p));
+            for (const version of [r.targetVersion, r.pinVersion].filter((v) => v !== null)) {
+                assert.ok(recorded.advisories.every((advisory) => advisory.ranges.length
+                    && advisory.ranges.every((range) => semver.validRange(range.vulnerableRange)
+                        && !semver.satisfies(version, range.vulnerableRange))),
+                `Recommended version for ${p.name} is vulnerable or has unknown advisory ranges`);
+            }
         }
     }
 
@@ -169,6 +186,13 @@ export function validateTriage(evidence, triage) {
         if (pin.assessment === 'unassessed') {
             assert.ok(triage.gaps.includes(pin.note), 'Unassessed pins must be explicit report gaps');
         }
+    }
+    for (const pin of triage.laggingPins) {
+        const matches = triage.pinAssessments.filter((assessed) => assessed.mechanism === pin.mechanism
+            && assessed.assessment === 'assessed' && assessed.value === pin.configuredPin
+            && resolutionSelector(assessed.selector)?.name === pin.name
+            && (pin.selector ? assessed.selector === pin.selector : assessed.selector === pin.name));
+        assert.equal(matches.length, 1, 'Lagging pin must match an assessed configured selector and value');
     }
 }
 

@@ -250,3 +250,66 @@ test('report generation does not present an unassessed pin inventory as current'
     assert.match(report, /Gap: Human investigation/);
     assert.ok(!report.includes('None found'));
 });
+
+
+test('invalid or missing advisory ranges remain report gaps and block claimed safe targets', () => {
+    for (const ranges of [['not semver'], []]) {
+        const e = evidence();
+        e.alerts.data[0].security_advisory.vulnerabilities = ranges.map((range) => ({
+            package: {
+                name: 'example',
+                ecosystem: 'npm',
+            },
+            vulnerable_version_range: range,
+        }));
+        const triage = reviewed(e);
+        assert.ok(triage.gaps.some((gap) => /advisory range/.test(gap)));
+        assert.doesNotThrow(() => validateTriage(e, triage), 'Explicit unresolved decisions may be reported');
+        const omitted = structuredClone(triage);
+        omitted.gaps = omitted.gaps.filter((gap) => !/advisory range/.test(gap));
+        assert.throws(() => validateTriage(e, omitted), /Preserve recorded advisory gaps/);
+        triage.packages[0].recommendations[0].targetVersion = '1.0.2';
+        assert.throws(() => validateTriage(e, triage), /unknown advisory ranges/);
+    }
+});
+
+test('targets and pins must fix every recorded advisory', () => {
+    const e = evidence();
+    for (const field of ['targetVersion', 'pinVersion']) {
+        const triage = reviewed(e);
+        triage.packages[0].recommendations[0][field] = '1.0.1';
+        assert.throws(() => validateTriage(e, triage), /is vulnerable/);
+        triage.packages[0].recommendations[0][field] = '1.0.2';
+        assert.doesNotThrow(() => validateTriage(e, triage));
+    }
+});
+
+test('lagging pin rows require assessed configured selectors and matching values', () => {
+    const e = evidence();
+    const triage = reviewed(e);
+    const row = {
+        name: 'example',
+        mechanism: 'resolutions',
+        configuredPin: '1.0.1',
+    };
+    triage.laggingPins = [row];
+    assert.throws(() => validateTriage(e, triage), /assessed configured selector/);
+    triage.pinAssessments[0].assessment = 'assessed';
+    assert.doesNotThrow(() => validateTriage(e, triage));
+    for (const override of [{
+        name: 'invented',
+    }, {
+        name: 'invented',
+        selector: 'example',
+    }, {
+        configuredPin: '9.0.0',
+    }, {
+        mechanism: 'overrides',
+    }]) {
+        triage.laggingPins = [{
+            ...row,
+            ...override,
+        }];
+        assert.throws(() => validateTriage(e, triage), /assessed configured selector/);
+    }
+});

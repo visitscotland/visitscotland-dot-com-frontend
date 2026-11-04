@@ -9,7 +9,7 @@ import { readJson } from './dependency-http.mjs';
 import { completedRemediation } from './dependency-execution.mjs';
 
 const lifetimeMs = 6 * 86400_000; // Shorter than the report artifact's seven-day retention.
-export async function shouldRun(input, previous, { force = false, now = Date.now(), readPR } = {
+export async function shouldRun(input, previous, { force = false, now = Date.now(), readPR, baseBranch } = {
 }) {
     if (force || !input.registryComplete || !previous || previous.schemaVersion !== 1
         || previous.fingerprint !== input.fingerprint || previous.repository !== input.repository
@@ -19,7 +19,7 @@ export async function shouldRun(input, previous, { force = false, now = Date.now
     if (previous.prNumber) {
         try {
             const pr = await readPR(previous.prNumber);
-            if (pr.state !== 'open' || pr.user?.login !== 'github-actions[bot]'
+            if (!baseBranch || pr.base?.ref !== baseBranch || pr.state !== 'open' || pr.user?.login !== 'github-actions[bot]'
                 || pr.head?.repo?.full_name !== input.repository
                 || !previous.prHeadSha || pr.head?.sha !== previous.prHeadSha
                 || !pr.body?.includes('<!-- dotcom-dependency-maintenance:v1 -->')) return true;
@@ -81,6 +81,7 @@ export async function main(command) {
         try { previous = existsSync(statePath) ? JSON.parse(readFileSync(statePath, 'utf8')) : null; } catch { /* Corrupt cache is a miss. */ }
         const run = await shouldRun(input, previous, {
             force: process.env.FORCE_MAINTENANCE === 'true',
+            baseBranch: process.env.DEFAULT_BRANCH,
             readPR,
         });
         writeFileSync(process.env.GITHUB_OUTPUT, `should_run=${run}\n`, {

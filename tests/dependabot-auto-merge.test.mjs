@@ -35,3 +35,81 @@ test('privileged merge workflow verifies bot metadata, never checks out PR code,
     assert.match(script, /'--auto', '--squash'/);
     assert.match(script, /'--match-head-commit', EXPECTED_HEAD/);
 });
+
+
+test('unreadable lockfile fallback records manual review without approval or merge', () => {
+    for (const unavailable of ['encoding', 'api']) {
+        const comments = [];
+        const commands = [];
+        const repo = 'example/demo';
+        const sha = 'b'.repeat(40);
+        const pr = {
+            state: 'open',
+            draft: false,
+            user: {
+                login: 'dependabot[bot]',
+            },
+            head: {
+                sha,
+                repo: {
+                    full_name: repo,
+                },
+            },
+            base: {
+                sha: 'a'.repeat(40),
+            },
+            changed_files: 1,
+        };
+        const gh = (_binary, args) => {
+            commands.push(args);
+            assert.equal(args[0], 'api', 'Must not attempt to merge');
+            const endpoint = args.find((arg) => arg.startsWith('repos/'));
+            if (endpoint.includes('/contents/')) {
+                if (unavailable === 'api') throw new Error('Unavailable');
+                return JSON.stringify({
+                    encoding: 'none',
+                });
+            }
+            if (endpoint.includes('/files')) return JSON.stringify([[{
+                filename: 'yarn.lock',
+                status: 'modified',
+            }]]);
+            if (endpoint.includes('/comments')) {
+                if (args.includes('POST')) comments.push(args.find((arg) => arg.startsWith('body=')));
+                return JSON.stringify(args.includes('--paginate') ? [[]] : {
+                });
+            }
+            return JSON.stringify(pr);
+        };
+        const code = script.slice(script.indexOf('(() => {'), script.lastIndexOf('})();') + 5);
+        runInNewContext(code, {
+            require: (name) => {
+                if (name === 'node:child_process') return {
+                    execFileSync: gh,
+                };
+                if (name === 'node:fs') return {
+                    appendFileSync() {},
+                };
+                throw new Error(name);
+            },
+            console: {
+                log() {},
+            },
+            Buffer,
+            process: {
+                env: {
+                    GH_REPO: repo,
+                    PR_NUMBER: '7',
+                    EXPECTED_HEAD: sha,
+                    UPDATE_TYPE: '',
+                    PACKAGE_ECOSYSTEM: 'npm_and_yarn',
+                    GITHUB_STEP_SUMMARY: 'summary',
+                },
+            },
+        });
+        assert.equal(comments.length, 1);
+        assert.match(comments[0], /Manual review required/);
+        assert.match(comments[0], /could not be retrieved/);
+        assert.ok(!commands.some((args) => args.includes('event=APPROVE')));
+    }
+});

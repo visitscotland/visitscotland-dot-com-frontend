@@ -192,11 +192,11 @@ export function verifyGraphChanges(input, manifest, afterGraph) {
     }
     const prior = new Map();
     for (const p of input.paths || []) {
-        const key = `${p.resolution}:${p.requestedName}`;
+        const key = `${p.name}:${p.requestedName}`;
         prior.set(key, [...(prior.get(key) || []), ...p.effectiveVersions.filter((v) => semver.valid(v))]);
     }
     for (const p of afterGraph.paths) {
-        const versions = prior.get(`${p.resolution}:${p.requestedName}`);
+        const versions = prior.get(`${p.name}:${p.requestedName}`);
         if (!versions?.length) continue;
         const minimum = versions.sort(semver.compare)[0];
         assert.ok(p.effectiveVersions.every((v) => !semver.valid(v) || semver.gte(v, minimum)),

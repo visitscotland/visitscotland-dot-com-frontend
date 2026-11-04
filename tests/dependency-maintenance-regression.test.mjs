@@ -5,7 +5,7 @@ import YAML from 'yaml';
 import {
     assess, renderBody, marker,
 } from '../ci/dependency-maintenance.mjs';
-import { replaceOld } from '../ci/replace-maintenance-pr.mjs';
+import { replaceOld, fixedAlerts } from '../ci/replace-maintenance-pr.mjs';
 
 const repository = 'visitscotland/visitscotland-dot-com-frontend';
 const baselineSha = 'a'.repeat(40);
@@ -87,6 +87,27 @@ function inventory(range = '>= 1.0.0, < 1.0.2') {
     };
 }
 
+function fixReport(numbers) {
+    return renderBody({
+        repository,
+        baseline: {
+            data: {
+                sha: baselineSha,
+            },
+        },
+        collectedAt: '2026-10-23',
+    }, '',
+    numbers.map((number) => ({
+        number,
+        package: 'example',
+        severity: 'high',
+        url: `https://github.com/${repository}/security/dependabot/${number}`,
+        outcome: 'expected-fixed',
+        reason: 'Updated',
+        remaining: [],
+    })));
+}
+
 function maintenancePr(number, overrides = {
 }) {
     return {
@@ -104,7 +125,7 @@ function maintenancePr(number, overrides = {
             ref: 'main',
         },
         title: '[dependency-maintenance] Security updates',
-        body: marker,
+        body: fixReport([1]),
         ...overrides,
     };
 }
@@ -314,4 +335,46 @@ test('workflows retain scheduled and manual runs, opt-in gates and validated liv
     assert.ok(compiled.on.workflow_call.outputs.created_pr_number);
     assert.equal(caller.jobs.maintain.secrets.DEPENDABOT_READ_TOKEN, undefined);
     assert.match(caller.jobs.replace_previous.if, /created_pr_number != ''/);
+});
+
+
+test('cleanup retains old fixes missing from the replacement and rejects unparseable reports', async() => {
+    const old = maintenancePr(10, {
+        body: fixReport([1, 2]),
+    });
+    for (const body of [fixReport([1]), marker, fixReport([]), fixReport([1, 2]).replace('security/dependabot/2', 'security/dependabot/3')]) {
+        const writes = [];
+        const replacement = maintenancePr(20, {
+            body,
+        });
+        const request = async(path, method = 'GET') => {
+            if (method === 'PATCH') writes.push(path);
+            if (path.includes('?')) return [old];
+            return path.endsWith('/20') ? replacement : old;
+        };
+        assert.deepEqual(await replaceOld(repository, 20, request), []);
+        assert.deepEqual(writes, []);
+    }
+    assert.deepEqual([...fixedAlerts(fixReport([1, 2]), repository)], ['1', '2']);
+    assert.equal(fixedAlerts(fixReport([1]), 'other/repo'), null);
+});
+
+test('cleanup accepts a strict superset and rechecks coverage immediately before closing', async() => {
+    for (const changed of [false, true]) {
+        let reads = 0;
+        const writes = [];
+        const request = async(path, method = 'GET') => {
+            if (method === 'PATCH') writes.push(path);
+            if (path.includes('?')) return [maintenancePr(10)];
+            if (path.endsWith('/20')) {
+                reads += 1;
+                return maintenancePr(20, {
+                    body: fixReport(changed && reads > 1 ? [2] : [1, 2]),
+                });
+            }
+            return maintenancePr(10);
+        };
+        assert.deepEqual(await replaceOld(repository, 20, request), changed ? [] : [10]);
+        assert.equal(writes.length, changed ? 0 : 1);
+    }
 });

@@ -13,7 +13,9 @@ if (process.argv.slice(2).some((argument) => !allowed.has(argument))) {
 
 const results = [];
 let running;
+let stopping = false;
 const stop = () => {
+    stopping = true;
     terminateTree(running);
     process.exitCode = 1;
 };
@@ -25,6 +27,7 @@ await mkdir('smoke-results', {
 });
 
 async function stage(name, args, timeoutMs) {
+    if (stopping) throw new Error('Dependency smoke cancelled');
     const start = Date.now();
     const log = createWriteStream(`smoke-results/${name}.log`);
 

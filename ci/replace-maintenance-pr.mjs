@@ -11,6 +11,31 @@ export function owned(pr, repository, base) {
         && pr.title.startsWith(prefix) && pr.body?.includes(marker);
 }
 
+// Only the generated expected-fixes table is evidence of fix coverage.
+// Missing or malformed reports retain the old PR for manual review.
+export function fixedAlerts(body, repository) {
+    if (typeof body !== 'string') return null;
+    const section = body.replace(/\r\n/g, '\n').match(/^## Expected to be fixed by this PR \((\d+)\)\n\n([\s\S]*?)\n\n/m);
+    if (!section) return null;
+    const count = Number(section[1]);
+    if (count === 0) return section[2].trim() === 'None.' ? new Set() : null;
+    const lines = section[2].split('\n');
+    if (lines[0] !== '| Package | Severity | Alert | Result / action |' || lines[1] !== '|---|---|---|---|') return null;
+    const alerts = new Set();
+    for (const line of lines.slice(2)) {
+        const row = line.match(/^\| [^|]* \| [^|]* \| \[#(\d+)\]\((https:\/\/github\.com\/[^)]+)\) \|/);
+        if (!row || row[2] !== `https://github.com/${repository}/security/dependabot/${row[1]}`) return null;
+        alerts.add(row[1]);
+    }
+    return alerts.size === count && lines.length === count + 2 ? alerts : null;
+}
+
+function coversPrevious(previous, replacement, repository) {
+    const before = fixedAlerts(previous.body, repository);
+    const after = fixedAlerts(replacement.body, repository);
+    return before?.size > 0 && after !== null && [...before].every((number) => after.has(number));
+}
+
 export async function replaceOld(repository, replacementNumber, request) {
     assert.match(repository || '', /^[\w.-]+\/[\w.-]+$/);
     assert.match(String(replacementNumber), /^[1-9]\d*$/);
@@ -44,7 +69,7 @@ export async function replaceOld(repository, replacementNumber, request) {
 
         const fresh = await request(`${root}/${pr.number}`);
 
-        if (!owned(fresh, repository, replacement.base.ref)) {
+        if (!owned(fresh, repository, replacement.base.ref) || !coversPrevious(fresh, replacement, repository)) {
             continue;
         }
 
@@ -52,6 +77,7 @@ export async function replaceOld(repository, replacementNumber, request) {
         const current = await request(`${root}/${replacement.number}`);
 
         assert.ok(owned(current, repository, replacement.base.ref), 'Replacement is no longer open');
+        if (!coversPrevious(fresh, current, repository)) continue;
         await request(`${root}/${pr.number}`, 'PATCH', {
             state: 'closed',
         });

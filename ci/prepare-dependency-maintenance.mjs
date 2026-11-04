@@ -317,6 +317,11 @@ export function releaseCandidates(name, metadata, currentVersions, ranges, {now 
         const known = paths.length > 0 && paths.every((p) => p.pathVerified && semver.validRange(p.constraint));
         const compatible = (v) => known && paths.every((p) => semver.satisfies(v, p.constraint));
         const forward = eligible.filter((v) => semver.gt(v, from));
+        if (purpose === 'parent-upgrade') {
+            // Every compatible release can carry a distinct child dependency range.
+            // Keeping only endpoints can miss the only release that fixes the child.
+            for (const version of forward.filter(compatible)) add(version, from, 'within-parent-constraints');
+        }
         const sameBranch = forward.filter((v) => branch(v) === branch(from));
         const within = sameBranch.filter(compatible);
         if (within.length) {
@@ -393,13 +398,13 @@ export async function prepare(evidence, { registryRead, nodeVersion, policyHash,
     const parentsOf = (name) => resolvedGraph.paths.filter((p) => p.targetName === name);
     // Only alert targets and evidenced lagging pins need primary registry lookups.
     const load = async(name, purpose) => {
-        if (metadataCache.has(name)) return;
         try {
-            const metadata = await registryRead(name);
+            if (metadataCache.has(name) && metadataCache.get(name) === null) return;
+            const metadata = metadataCache.has(name) ? metadataCache.get(name) : await registryRead(name);
             assert.ok(metadata?.versions && typeof metadata.versions === 'object'
                 && !Array.isArray(metadata.versions) && metadata.time && typeof metadata.time === 'object',
             'Invalid registry evidence');
-            metadataCache.set(name, true);
+            metadataCache.set(name, metadata);
             const fact = facts.find((f) => f.name === name);
             const versions = entries.filter((e) => e.name === name).map((e) => String(e.version));
             const candidateOptions = {
@@ -409,10 +414,19 @@ export async function prepare(evidence, { registryRead, nodeVersion, policyHash,
                 parents: parentsOf(name),
                 purpose,
             };
-            releases[name] = releaseCandidates(name, metadata, versions, fact?.ranges || [], candidateOptions);
+            const candidates = releaseCandidates(name, metadata, versions, fact?.ranges || [], candidateOptions);
+            const combined = new Map((releases[name] || []).map((r) => [r.version, r]));
+            for (const candidate of candidates) {
+                const previous = combined.get(candidate.version);
+                combined.set(candidate.version, {
+                    ...candidate,
+                    applicableFromVersions: unique([...(previous?.applicableFromVersions || []), ...candidate.applicableFromVersions]),
+                });
+            }
+            releases[name] = [...combined.values()].sort((a, b) => semver.compare(a.version, b.version));
             releaseDispositions[name] = releaseDisposition(name, metadata, versions, fact?.ranges || [], candidateOptions, releases[name]);
         } catch {
-            metadataCache.set(name, false);
+            metadataCache.set(name, null);
             releases[name] = [];
             releaseDispositions[name] = {
                 status: 'unknown',

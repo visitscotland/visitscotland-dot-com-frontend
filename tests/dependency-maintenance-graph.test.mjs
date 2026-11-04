@@ -273,3 +273,31 @@ test('runtime setup regenerates the marker from the installed library without ru
         force: true,
     }); }
 });
+
+
+test('parent upgrades cannot hide child downgrades, including duplicate parent versions', () => {
+    const paths = [path('parent', '^6', '6.29.0'), {
+        ...path('parent', '^8', '8.12.2'),
+        resolution: 'parent@npm:2.0.0',
+    }];
+    const input = {
+        paths,
+        manifest: {
+        },
+        pins: [],
+    };
+    const upgraded = {
+        ...path('parent', '^6', '6.28.0'),
+        resolution: 'parent@npm:3.0.0',
+        version: '3.0.0',
+    };
+    assert.throws(() => verifyGraphChanges(input, {
+    }, {
+        paths: [upgraded],
+    }), /downgrades undici/);
+    upgraded.effectiveVersions = ['6.29.1'];
+    assert.doesNotThrow(() => verifyGraphChanges(input, {
+    }, {
+        paths: [upgraded],
+    }));
+});

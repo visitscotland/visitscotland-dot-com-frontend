@@ -226,7 +226,14 @@ jobs:
 
                       return Buffer.from(file.content, 'base64').toString('utf8');
                   };
-                  const changes = evaluateLockfileAlignment(readLock(pr.base.sha), readLock(EXPECTED_HEAD));
+                  let changes = null;
+                  try {
+                      changes = evaluateLockfileAlignment(readLock(pr.base.sha), readLock(EXPECTED_HEAD));
+                  } catch {
+                      manualReview('The lockfile could not be retrieved completely. Retry the evaluation or review this update manually.');
+
+                      return;
+                  }
 
                   if (!changes) {
                       manualReview('The lockfile-only update could not be verified as stable npm patch/minor version alignment with unchanged selectors and dependency structure. Major updates, downgrades, prereleases and structural changes require human review.');

@@ -8,12 +8,24 @@ export async function readJson(url, options = {
 } = {
 }) {
     for (let attempt = 0; ; attempt += 1) {
-        const response = await fetcher(url, {
-            ...options,
-            method: 'GET',
-            redirect: 'error',
-            signal: AbortSignal.timeout(30_000),
-        });
+        let response;
+        try {
+            response = await fetcher(url, {
+                ...options,
+                method: 'GET',
+                redirect: 'error',
+                signal: AbortSignal.timeout(30_000),
+            });
+        } catch (error) {
+            const transient = error?.name === 'TimeoutError' || error?.name === 'AbortError'
+                || ['ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT', 'EAI_AGAIN', 'ENETUNREACH',
+                    'UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_HEADERS_TIMEOUT', 'UND_ERR_SOCKET']
+                    .includes(error?.cause?.code || error?.code);
+            const delay = 2000 * (2 ** attempt) + Math.floor(random() * 1000);
+            if (!transient || attempt >= retries || delay > maxDelayMs) throw error;
+            await sleep(delay);
+            continue;
+        }
         if (response.ok) return {
             data: await response.json(),
             headers: response.headers,

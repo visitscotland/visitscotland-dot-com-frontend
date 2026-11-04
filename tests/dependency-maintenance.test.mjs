@@ -435,6 +435,9 @@ test('closed, modified or inaccessible maintenance PRs never suppress a fresh ru
         now,
     });
     const pr = {
+        base: {
+            ref: 'main',
+        },
         state: 'open',
         user: {
             login: 'github-actions[bot]',
@@ -449,10 +452,12 @@ test('closed, modified or inaccessible maintenance PRs never suppress a fresh ru
     };
     assert.equal(await shouldRun(input, previous, {
         now,
+        baseBranch: 'main',
         readPR: async() => pr,
     }), false);
     assert.equal(await shouldRun(input, previous, {
         now,
+        baseBranch: 'main',
         readPR: async() => ({
             ...pr,
             state: 'closed',
@@ -460,6 +465,7 @@ test('closed, modified or inaccessible maintenance PRs never suppress a fresh ru
     }), true);
     assert.equal(await shouldRun(input, previous, {
         now,
+        baseBranch: 'main',
         readPR: async() => ({
             ...pr,
             head: {
@@ -470,7 +476,52 @@ test('closed, modified or inaccessible maintenance PRs never suppress a fresh ru
     }), true);
     assert.equal(await shouldRun(input, previous, {
         now,
+        baseBranch: 'main',
         readPR: async() => { throw new Error('Unavailable'); },
+    }), true);
+});
+
+test('retargeted or unspecified maintenance bases never suppress a run', async() => {
+    const input = await prepare(sample(), options);
+    const previous = completedState(input, {
+        passed: true,
+        analysisComplete: true,
+        reviewAccepted: true,
+        remediationStatus: 'not-attempted',
+        base,
+        fingerprint: input.fingerprint,
+        changed: ['yarn.lock'],
+        testsRun: true,
+    }, {
+        runId: '1',
+        prNumber: '2',
+        prHeadSha: head,
+        now,
+    });
+    const pr = {
+        state: 'open',
+        user: {
+            login: 'github-actions[bot]',
+        },
+        head: {
+            sha: head,
+            repo: {
+                full_name: input.repository,
+            },
+        },
+        base: {
+            ref: 'release',
+        },
+        body: '<!-- dotcom-dependency-maintenance:v1 -->',
+    };
+    assert.equal(await shouldRun(input, previous, {
+        now,
+        baseBranch: 'main',
+        readPR: async() => pr,
+    }), true);
+    assert.equal(await shouldRun(input, previous, {
+        now,
+        readPR: async() => pr,
     }), true);
 });
 
@@ -743,7 +794,10 @@ test('replacement cleanup rechecks ownership and replacement before closing olde
             ref: 'main',
         },
         title: '[dependency-maintenance] Update',
-        body: '<!-- dotcom-dependency-maintenance:v1 -->',
+        body: '<!-- dotcom-dependency-maintenance:v1 -->\n' +
+            '## Expected to be fixed by this PR (1)\n\n' +
+            '| Package | Severity | Alert | Result / action |\n|---|---|---|---|\n' +
+            '| thing | high | [#1](https://github.com/example/demo/security/dependabot/1) | fixed |\n\n## Validation\n',
     });
     const calls = [];
     const closed = await replaceOld('example/demo', 3, async(path, method) => {
@@ -821,4 +875,127 @@ test('empty, missing and placeholder package decisions cannot establish complete
     }, {
         now,
     }), true);
+});
+
+
+test('HTTP retries transient connection failures and timeouts within the same bounded budget', async() => {
+    for (const error of [Object.assign(new TypeError('fetch failed'), {
+        cause: {
+            code: 'ECONNRESET',
+        },
+    }),
+    Object.assign(new Error('timed out'), {
+        name: 'TimeoutError',
+    })]) {
+        let calls = 0;
+        const delays = [];
+        const deps = {
+            fetcher: async() => { calls += 1; if (calls < 3) throw error; return new Response('{"ok":true}'); },
+            sleep: async(ms) => delays.push(ms),
+            random: () => 0,
+        };
+        assert.equal((await readJson('https://example.test', {
+        }, deps)).data.ok, true);
+        assert.deepEqual(delays, [2000, 4000]);
+        calls = 0;
+        await assert.rejects(readJson('https://example.test', {
+        }, {
+            ...deps,
+            fetcher: async() => { calls += 1; throw error; },
+        }), error);
+        assert.equal(calls, 3);
+    }
+    let calls = 0;
+    await assert.rejects(readJson('https://example.test', {
+    }, {
+        fetcher: async() => { calls += 1; throw new TypeError('Invalid URL'); },
+        sleep: async() => assert.fail('Permanent request errors must not retry'),
+    }), /Invalid URL/);
+    assert.equal(calls, 1);
+});
+
+function parentUpgradeFixture(parentAlert = false) {
+    const e = sample();
+    e.files['package.json'].data.content = {
+        dependencies: {
+            parent: '^2.0.0',
+        },
+    };
+    const entries = YAML.parse(e.files['yarn.lock'].data.content);
+    entries['parent@npm:2.0.0'].dependencies.thing = 'npm:^1.0.0';
+    e.files['yarn.lock'].data.content = YAML.stringify(entries);
+    e.alerts.data = [e.alerts.data[0]];
+    e.alerts.data[0].security_vulnerability.vulnerable_version_range = '<2.0.0';
+    const paths = [{
+        name: 'parent',
+        version: '2.0.0',
+        resolution: 'parent@npm:2.0.0',
+        requestedName: 'thing',
+        targetName: 'thing',
+        declaredRange: 'npm:^1.0.0',
+        constraint: '^1.0.0',
+        effectiveVersions: ['1.0.0'],
+        pathVerified: true,
+        workspace: false,
+    }, {
+        name: 'app',
+        version: '1.0.0',
+        resolution: 'app@workspace:.',
+        requestedName: 'parent',
+        targetName: 'parent',
+        declaredRange: 'npm:^2.0.0',
+        constraint: '^2.0.0',
+        effectiveVersions: ['2.0.0'],
+        pathVerified: true,
+        workspace: true,
+    }];
+    if (parentAlert) {
+        const alert = structuredClone(e.alerts.data[0]);
+        alert.number = 3;
+        alert.dependency.package.name = 'parent';
+        alert.security_vulnerability.package.name = 'parent';
+        // The currently safe parent still needs another release to fix its child.
+        alert.security_vulnerability.vulnerable_version_range = '<2.0.0';
+        e.alerts.data.push(alert);
+    }
+    const reads = [];
+    return {
+        e,
+        paths,
+        reads,
+        registryRead: async(name) => {
+            reads.push(name);
+            const versions = name === 'parent' ? ['2.0.0', '2.0.1', '2.0.2', '2.0.3'] : ['1.0.0', '2.0.0'];
+            return {
+                versions: Object.fromEntries(versions.map((v) => [v, {
+                    dependencies: name === 'parent' ? {
+                        thing: v === '2.0.2' ? '^2.0.0' : '^1.0.0',
+                    } : {
+                    },
+                }])),
+                time: Object.fromEntries(versions.map((v) => [v, '2026-09-01T00:00:00Z'])),
+            };
+        },
+    };
+}
+
+test('preparation retains the only compatible middle parent release and the planner uses it', async() => {
+    for (const parentAlert of [false, true]) {
+        const { e, paths, reads, registryRead } = parentUpgradeFixture(parentAlert);
+        const input = await prepare(e, {
+            ...options,
+            registryRead,
+            graph: {
+                complete: true,
+                source: 'test',
+                paths,
+            },
+        });
+        assert.deepEqual(input.releases.parent.filter((r) => r.version !== '2.0.0').map((r) => r.version), ['2.0.1', '2.0.2', '2.0.3']);
+        assert.equal(reads.filter((name) => name === 'parent').length, 1, 'Metadata is fetched once and evaluated for both purposes');
+        const group = planGroups(input).groups.find((g) => g.name === 'thing');
+        assert.ok(group, 'Prepared candidates must yield a remediation group');
+        assert.equal(group.edits[0].name, 'parent');
+        assert.equal(group.edits[0].value, '2.0.2');
+    }
 });
