@@ -1,0 +1,206 @@
+{
+  "channel": {
+    "info": {
+      "props": {}
+    }
+  },
+  "meta": {
+    "version": "1.0",
+    "locale": "en_GB",
+    "preview": false
+  },
+  "links": {
+    "site": {
+      "href": "__APP_ORIGIN__/",
+      "type": "external"
+    },
+    "self": {
+      "href": "__CMS_ORIGIN__/resourceapi",
+      "type": "external"
+    }
+  },
+  "root": {
+    "$ref": "/page/root"
+  },
+  "document": {
+    "$ref": "/page/document"
+  },
+  "page": {
+    "root": {
+      "id": "root",
+      "type": "component",
+      "name": "general-page",
+      "meta": {},
+      "links": {},
+      "models": {
+        "breadcrumb": {
+          "items": []
+        },
+        "document": {
+          "$ref": "/page/document"
+        },
+        "isHome": true
+      },
+      "children": [
+        {
+          "$ref": "/page/menu"
+        },
+        {
+          "$ref": "/page/main"
+        },
+        {
+          "$ref": "/page/footer"
+        }
+      ]
+    },
+    "menu": {
+      "id": "menu",
+      "type": "component",
+      "name": "menu",
+      "meta": {},
+      "links": {},
+      "models": {
+        "menu": {
+          "$ref": "/page/navigation"
+        }
+      }
+    },
+    "main": {
+      "id": "main",
+      "type": "component",
+      "name": "main",
+      "meta": {},
+      "links": {},
+      "models": {
+        "metadata": {
+          "version": "smoke-fixture"
+        },
+        "site-id": "visitscotland",
+        "psrWidget": {},
+        "newsletterSignpost": null,
+        "gtm": null,
+        "pageConfiguration": {
+          "language": "en",
+          "cludo.customer-id": "not-defined"
+        },
+        "labels": {
+          "seo": {
+            "title-suffix": "| VisitScotland"
+          },
+          "navigation.static": {
+            "meganav-toggle-btn-alt-text": "Open menu",
+            "meganav.logo-alt-text": "VisitScotland home",
+            "footer.logo-alt-text": "Scotland"
+          },
+          "search": {
+            "search": "Search",
+            "search-label": "Search Scotland",
+            "close-form": "Close search"
+          },
+          "essentials.global": {
+            "back-to-top": "Back to top"
+          },
+          "navigation.social-media": {}
+        },
+        "pageItems": [
+          {
+            "type": "ArticleModule",
+            "layout": "accordion",
+            "title": "Plan your visit",
+            "anchor": "guidance",
+            "introduction": {
+              "value": "Plan your next adventure in Scotland."
+            },
+            "nested": false,
+            "sections": [
+              {
+                "heading": "How can we help?",
+                "copy": {
+                  "value": "<p>Explore places to visit and things to do in Scotland.</p>"
+                }
+              }
+            ],
+            "hippoBean": {
+              "$ref": "/page/article"
+            }
+          }
+        ]
+      }
+    },
+    "footer": {
+      "id": "footer",
+      "type": "component",
+      "name": "footer",
+      "meta": {},
+      "links": {},
+      "models": {
+        "menu": {
+          "$ref": "/page/footer-navigation"
+        }
+      }
+    },
+    "navigation": {
+      "type": "menu",
+      "meta": {},
+      "data": {
+        "name": "Main navigation",
+        "siteMenuItems": [
+          {
+            "name": "Travel advice",
+            "title": "Travel advice",
+            "depth": 1,
+            "expanded": false,
+            "repositoryBased": false,
+            "selected": false,
+            "parameters": {},
+            "childMenuItems": [],
+            "links": {
+              "site": {
+                "href": "__APP_ORIGIN__/#guidance",
+                "type": "external"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "footer-navigation": {
+      "type": "menu",
+      "meta": {},
+      "data": {
+        "name": "Footer navigation",
+        "siteMenuItems": []
+      }
+    },
+    "document": {
+      "type": "document",
+      "meta": {},
+      "links": {
+        "site": {
+          "href": "__APP_ORIGIN__/",
+          "type": "external"
+        }
+      },
+      "data": {
+        "id": "smoke-home",
+        "name": "Home",
+        "localeString": "en",
+        "theme": "Simple",
+        "title": "Discover Scotland",
+        "teaser": "Advice and resources from VisitScotland.",
+        "seoTitle": "Business support",
+        "seoDescription": "Tourism business advice and resources.",
+        "hideNewsletter": true,
+        "noIndex": true,
+        "heroImage": {}
+      }
+    },
+    "article": {
+      "type": "document",
+      "meta": {},
+      "data": {
+        "theme": "accordion"
+      }
+    }
+  }
+}

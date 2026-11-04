@@ -8,6 +8,7 @@ const filteredApps = PW_PROJECT ? apps.filter((app) => app.name === PW_PROJECT) 
 
 export default defineConfig({
     testDir: './tests',
+    testIgnore: ['**/dependency-smoke/**', '**/*.test.mjs'],
     fullyParallel: true,
     forbidOnly: CI,
     retries: CI ? 2 : 0,

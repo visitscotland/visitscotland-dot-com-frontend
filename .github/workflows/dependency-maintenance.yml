@@ -1,0 +1,156 @@
+name: Scheduled dependency maintenance
+
+on:
+  schedule:
+    - cron: '0 9 * * 3,5'
+      timezone: Europe/London
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Run Copilot even when a recent validated result has identical inputs
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dependency-maintenance
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    if: >-
+      vars.DEPENDENCY_MAINTENANCE_ENABLED == 'true' &&
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      should_run: ${{ steps.gate.outputs.should_run }}
+      fingerprint: ${{ steps.prepare.outputs.fingerprint }}
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: .nvmrc
+      - name: Collect complete live evidence
+        env:
+          GH_TOKEN: ${{ secrets.DEPENDABOT_READ_TOKEN }}
+          TARGET_REPOSITORY: ${{ github.repository }}
+        run: node .github/skills/dependency-triage/scripts/collect.mjs --repo "$TARGET_REPOSITORY" --profile maintenance
+
+      - name: Install locked analysis tools without lifecycle scripts
+        run: node .yarn/releases/yarn-4.14.1.cjs install --immutable --mode=skip-build
+
+      - name: Reject an unsupported baseline runtime before preparation
+        run: node ci/dependency-runtime.mjs check-installed
+
+      - name: Prepare compact dependency facts and release candidates
+        id: prepare
+        run: node ci/prepare-dependency-maintenance.mjs
+
+      - name: Restore last validated result for these inputs
+        uses: actions/cache/restore@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: triage-results/completed-state
+          key: dependency-maintenance-v1-${{ steps.prepare.outputs.fingerprint }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: dependency-maintenance-v1-${{ steps.prepare.outputs.fingerprint }}-
+
+      - name: Skip unchanged recently validated inputs
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORCE_MAINTENANCE: ${{ inputs.force || false }}
+        run: node ci/dependency-maintenance-state.mjs check
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: dependency-evidence
+          path: |
+            triage-results/evidence.json
+            triage-results/agent-context/
+            triage-results/agent-input.json
+            triage-results/dependency-paths.json
+          retention-days: 7
+
+  maintain:
+    needs: collect
+    if: needs.collect.outputs.should_run == 'true'
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: read
+      copilot-requests: write
+    uses: ./.github/workflows/dependency-maintenance-agent.lock.yml
+    secrets:
+      GH_AW_CI_TRIGGER_TOKEN: ${{ secrets.GH_AW_CI_TRIGGER_TOKEN }}
+
+  remember:
+    needs: [collect, maintain]
+    if: needs.maintain.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: .nvmrc
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: dependency-evidence
+          path: triage-results
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: dependency-maintenance-report
+          path: triage-results
+      - name: Record only a successfully validated result
+        id: complete
+        env:
+          REPLACEMENT_PR: ${{ needs.maintain.outputs.created_pr_number }}
+          # Must match safe-outputs.staged in dependency-maintenance-agent.md.
+          MAINTENANCE_STAGED: 'false'
+          GH_TOKEN: ${{ github.token }}
+        run: node ci/dependency-maintenance-state.mjs complete
+      - uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        if: steps.complete.outputs.save == 'true'
+        with:
+          path: triage-results/completed-state
+          key: dependency-maintenance-v1-${{ needs.collect.outputs.fingerprint }}-${{ github.run_id }}-${{ github.run_attempt }}
+
+  replace_previous:
+    needs: maintain
+    if: >-
+      needs.maintain.result == 'success' &&
+      needs.maintain.outputs.created_pr_number != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: .nvmrc
+      - name: Close superseded bot-owned PRs after successful replacement
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPLACEMENT_PR: ${{ needs.maintain.outputs.created_pr_number }}
+        run: node ci/replace-maintenance-pr.mjs

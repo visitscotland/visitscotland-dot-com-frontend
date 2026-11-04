@@ -11,12 +11,19 @@
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
-    "lint": "eslint . --ext .js,.vue,.ts",
+    "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:update": "playwright test --update-snapshots",
-    "test:pinia": "node tests/pinia-migration.mjs"
+    "test:pinia": "node tests/pinia-migration.mjs",
+    "test:dependencies": "node --test tests/dependency-*.test.mjs tests/prepare-dependency-triage.test.mjs tests/dependabot-auto-merge.test.mjs .github/skills/dependency-triage/scripts/collect.test.mjs",
+    "test:smoke": "node ci/dependency-smoke.mjs",
+    "test:smoke:browser": "node ci/dependency-smoke.mjs --skip-build",
+    "test:smoke:harness": "node ci/dependency-smoke.mjs --skip-build --harness",
+    "test:smoke:unit": "node --test tests/dependency-smoke/harness.test.mjs",
+    "test:smoke:install": "playwright install chromium",
+    "test:smoke:diagnostics": "node ci/smoke-diagnostics.mjs"
   },
   "lint-staged": {
     "*.{js,vue,ts}": "eslint"
