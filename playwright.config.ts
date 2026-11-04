@@ -13,7 +13,9 @@ export default defineConfig({
     forbidOnly: CI,
     retries: CI ? 2 : 0,
     workers: CI ? 1 : undefined,
-    reporter: CI ? [['html', { open: 'never' }], ['github']] : 'html',
+    reporter: CI ? [['html', {
+        open: 'never', 
+    }], ['github']] : 'html',
     timeout: 60000,
 
     use: {
@@ -40,7 +42,10 @@ export default defineConfig({
         url: `http://localhost:${app.port}`,
         reuseExistingServer: !CI,
         timeout: 120000,
-        env: CI ? { ...process.env, NUXT_SSR: 'false' } : undefined,
+        env: CI ? {
+            ...process.env,
+            NUXT_SSR: 'false', 
+        } : undefined,
     })),
 
     projects: filteredApps.map((app) => ({

@@ -70,9 +70,9 @@ import formatLink from '~/composables/formatLink.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-const configStore = useConfigStore();
-
 import VsBrSectionHeader from './VsBrSectionHeader.vue';
+
+const configStore = useConfigStore();
 
 const page: Page | undefined = inject('page');
 
