@@ -106,7 +106,7 @@
                 </div>
             </div>
             <VsButton
-                :href="`/blog/supplier/${supplier.id}`"
+                :href="`/blog/supplier/${encodeURIComponent(supplier.slug)}`"
                 class="mt-150"
             >
                 Read More

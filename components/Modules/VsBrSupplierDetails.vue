@@ -127,9 +127,9 @@ import type { Supplier } from '~/types/suppliers';
 import VsBrRichText from './VsBrRichText.vue';
 
 const route = useRoute();
-const supplierId = computed(() => route.path.split('/').filter(Boolean).at(-1) || 'missing');
+const supplierSlug = computed(() => route.path.split('/').filter(Boolean).at(-1) || 'missing');
 const { data: supplier, pending, error, refresh } = useFetch<Supplier>(
-    () => `/api/frontend/suppliers/${encodeURIComponent(supplierId.value)}`,
+    () => `/api/frontend/suppliers/${encodeURIComponent(supplierSlug.value)}`,
 );
 
 function websiteHref(url: string) {
