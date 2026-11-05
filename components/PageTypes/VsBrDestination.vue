@@ -121,7 +121,6 @@ let location : any = null;
 
 const configStore = useConfigStore();
 
-let firstModuleIsLink = false;
 
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
@@ -134,19 +133,6 @@ if (page.value) {
         otyml = configStore.otyml;
     }
 
-    if (pageItems && pageItems.length) {
-        let firstNonPersonalisationModule = 0;
-        if (pageItems.length > 1 && pageItems[0].type === 'PersonalisationModule') {
-            firstNonPersonalisationModule = 1;
-        }
-        if (
-            pageItems[firstNonPersonalisationModule].type === 'ListLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'MultiImageLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'SingleImageLinksModule'
-        ) {
-            firstModuleIsLink = true;
-        }
-    }
 }
 
 </script>
