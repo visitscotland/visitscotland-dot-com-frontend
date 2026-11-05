@@ -2,11 +2,14 @@
     <div>
         <VsPanel class="key-information">
             <VsBody class="d-flex flex-column flex-md-row justify-content-between gap-150">
+                <!-- VsBody applies — or intends to apply — "document-like" styles to its content. It ought to apply like a CSS BEM Block namespace; a hook to style its children. Passthrough classes on VsBody are (I think?) a smell. -->
                 <div>
                     <VsHeading level="2" heading-style="heading-s" no-margins>
+                        <!-- The no-margins prop removes default doc-like styles so that the element can be used predictably in app-like layouts (cards, accordions, etc). Here the default styles are removed by no-margins, but are re-applied by the VsBody wrapper. Heading level styles will also be in conflict -->
                         {{ module.title || 'Key Information Panel' }}
                     </VsHeading>
                     <ul class="key-information__highlights list-unstyled d-flex flex-column m-0 p-0 gap-075 mt-150 text-tertiary">
+                        <!-- There's a VsDetail component that handles this icon/list-item pattern -->
                         <li v-for="highlight in module.highlights" :key="highlight.category.key" class="d-flex gap-050">
                             <span class="highlight__icon-wrapper d-flex justify-content-center">
                                 <VsIcon
@@ -93,6 +96,8 @@ interface KeyInformationModule {
     },
     highlights: KeyInformationHighlight[]
 }
+
+// All the regions and data for the maps is stable and uniform across use cases isn't it? could all this be put in the illustrated map template? we don't want to do this every time the map's called?
 
 interface KeyInformationLocation {
     id: string,
@@ -198,17 +203,24 @@ const mapAriaLabel = computed(() => {
 });
 </script>
 
+<!-- I expect a certain amount of custom CSS will need to exist in the products, but I think it should be kept to a minimum. It points to something non-standard being done locally OR that the library interfaces are lacking in some way.  -->
+
+<!-- My theory is that the CL should be all semantic BEM and no utility classes and the products should be all utilities and no BEM (or as little as possible) -->
+
 <style lang="css" scoped>
     .key-information {
         max-width: 53.5rem /* 856px */;
         margin: 0 auto;
     }
+    /* min and max widths and magic numbers make me anxious */
+    
     .key-information__highlights {
         color: #535396; /* Text tertiary */
         .highlight__icon-wrapper {
             min-width: 1.6rem;
         }
         /* :deep uses vue scoped css for dynamically rendered HTML */
+        /* I didn't know about this; could be useful in other places */
         .highlight__copy :deep(p) {
             display: inline;
             margin: 0;
