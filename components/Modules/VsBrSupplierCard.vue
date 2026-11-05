@@ -13,7 +13,7 @@
         <template #vs-card-body>
             <VsHeading
                 heading-style="heading-xxs"
-                level="3"
+                level="2"
                 class="mt-0 mb-075"
             >
                 {{ supplier.name }}
