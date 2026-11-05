@@ -4,6 +4,7 @@
             cols="12"
             lg="4"
             xxl="3"
+            class="mb-100"
         >
             <div
                 ref="resultsHeading"
