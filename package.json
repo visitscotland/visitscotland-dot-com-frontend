@@ -16,6 +16,8 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:update": "playwright test --update-snapshots",
+    "chromatic": "node scripts/run-chromatic.mjs",
+    "chromatic:upload": "chromatic",
     "test:pinia": "node tests/pinia-migration.mjs"
   },
   "lint-staged": {

@@ -126,6 +126,6 @@ jobs:
         run: npx --yes chromatic@18.13.6 --skip --branch-name "$CHROMATIC_BRANCH"
       - name: Compare captured pages
         if: needs.classify.outputs.exempt != 'true'
-        run: yarn chromatic --playwright --exit-zero-on-changes --branch-name "$CHROMATIC_BRANCH"
+        run: yarn chromatic:upload --playwright --exit-zero-on-changes --branch-name "$CHROMATIC_BRANCH"
         env:
           CHROMATIC_ARCHIVE_LOCATION: visual-results/test-results
