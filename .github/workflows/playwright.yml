@@ -16,6 +16,9 @@ permissions:
   contents: read
   pull-requests: read
 
+env:
+  YARN_ENABLE_GLOBAL_CACHE: 'false'
+
 jobs:
   classify:
     name: Classify visual coverage
@@ -47,10 +50,16 @@ jobs:
                 : 'Run the fixture-driven desktop visual suite.').write();
 
   test:
-    name: Playwright rendering and capture
+    name: Playwright and Chromatic
     needs: classify
     if: needs.classify.outputs.exempt != 'true'
     runs-on: ubuntu-latest
+    container:
+      # Keep aligned with the @playwright/test version in yarn.lock.
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --init --ipc=host
+    env:
+      HOME: /root
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -63,8 +72,21 @@ jobs:
           node-version: 24
       - run: corepack enable
       - run: node --test .github/visual-pr-policy.test.cjs
+      - name: Restore Yarn downloads
+        id: yarn-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: .yarn/cache
+          key: yarn-${{ runner.os }}-node24-v1-${{ hashFiles('yarn.lock', '.yarnrc.yml') }}
+          restore-keys: |
+            yarn-${{ runner.os }}-node24-v1-
       - run: yarn install --immutable
-      - run: yarn playwright install chromium --with-deps
+      - name: Save Yarn downloads before tests
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: .yarn/cache
+          key: ${{ steps.yarn-cache.outputs.cache-primary-key }}
       - name: Assert rendering and capture Chromatic archives
         run: yarn playwright test
         env:
@@ -80,13 +102,32 @@ jobs:
             test-results/
           retention-days: 14
           if-no-files-found: warn
+      - name: Check project token
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        run: |
+          if [ -z "$CHROMATIC_PROJECT_TOKEN" ]; then
+            echo '::error::Configure the CHROMATIC_PROJECT_TOKEN repository secret for this project.'
+            exit 1
+          fi
+      - name: Compare captured pages
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: chromaui/action@6ac4c49524e1b1358b8c593c5eea877604228268 # v18.14.2
+        with:
+          playwright: true
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          exitZeroOnChanges: true
+          branchName: ${{ github.head_ref || github.ref_name }}
+        env:
+          CHROMATIC_ARCHIVE_LOCATION: test-results
 
   chromatic:
-    name: Chromatic visual comparison
-    needs: [classify, test]
+    name: Report visual exemption
+    needs: classify
     if: >-
       !cancelled() && needs.classify.result == 'success' &&
-      (needs.test.result == 'success' || needs.classify.outputs.exempt == 'true') &&
+      needs.classify.outputs.exempt == 'true' &&
       (github.event_name != 'pull_request' ||
        github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
@@ -109,23 +150,9 @@ jobs:
             echo '::error::Configure the CHROMATIC_PROJECT_TOKEN repository secret for this project.'
             exit 1
           fi
-      - name: Download captures
-        if: needs.classify.outputs.exempt != 'true'
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
-        with:
-          name: playwright-results-${{ github.run_id }}-${{ github.run_attempt }}
-          path: visual-results
-      - name: Enable project package manager
-        if: needs.classify.outputs.exempt != 'true'
-        run: corepack enable
-      - name: Install archive tooling
-        if: needs.classify.outputs.exempt != 'true'
-        run: yarn install --immutable
       - name: Mark exempt PR as skipped in Chromatic
-        if: needs.classify.outputs.exempt == 'true'
-        run: npx --yes chromatic@18.13.6 --skip --branch-name "$CHROMATIC_BRANCH"
-      - name: Compare captured pages
-        if: needs.classify.outputs.exempt != 'true'
-        run: yarn chromatic:upload --playwright --exit-zero-on-changes --branch-name "$CHROMATIC_BRANCH"
-        env:
-          CHROMATIC_ARCHIVE_LOCATION: visual-results/test-results
+        uses: chromaui/action@6ac4c49524e1b1358b8c593c5eea877604228268 # v18.14.2
+        with:
+          skip: true
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          branchName: ${{ github.head_ref || github.ref_name }}

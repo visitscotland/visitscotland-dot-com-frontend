@@ -21,5 +21,8 @@ An empty archive directory is not a captured test suite. The repository's
 yarn chromatic --playwright --project-token=YOUR_PROJECT_TOKEN
 ```
 
-CI uses `yarn chromatic:upload --playwright` to upload archives already produced
-by its capture job. Do not use that upload-only command before generating captures.
+CI uses the official `chromaui/action` with `playwright: true` after capturing
+tests in the Playwright Docker image. It does not use the local launcher.
+
+`yarn chromatic:upload --playwright` remains an upload-only command for local
+archives. Do not use it before generating captures.
