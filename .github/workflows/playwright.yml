@@ -67,6 +67,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
           persist-credentials: false
+      - name: Trust the mounted workspace in the container
+        # Checkout uses a temporary HOME for its Git configuration. Chromatic
+        # reads /root/.gitconfig, so register this workspace there explicitly.
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git --no-pager log -1 --format=%H
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 24
