@@ -1,139 +1,131 @@
 name: Playwright Tests
 
 on:
-  # Temporarily disabled for pull requests.
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  push:
+    branches: [main]
   workflow_dispatch:
 
+# Pilot only: no branch protection requirements are added.
 concurrency:
-  group: playwright-${{ github.ref }}
+  group: playwright-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-env:
-  PLAYWRIGHT_BROWSERS_PATH: ~/.cache/ms-playwright
-
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  pull-requests: read
 
 jobs:
-  test:
-    name: Playwright Tests
+  classify:
+    name: Classify visual coverage
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
+    outputs:
+      exempt: ${{ steps.policy.outputs.exempt }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        id: policy
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            let exempt = false;
+            if (pr) {
+              const files = await github.paginate(github.rest.pulls.listFiles, {
+                ...context.repo, pull_number: pr.number, per_page: 100,
+              });
+              const policy = require('./.github/visual-pr-policy.cjs');
+              // Fail closed if the API did not return the full PR diff.
+              exempt = files.length === pr.changed_files && policy(pr.user.login, files);
+            }
+            core.setOutput('exempt', String(exempt));
+            await core.summary.addHeading('Visual test policy')
+              .addRaw(exempt
+                ? 'Exempt: approved automation author; only package.json/yarn.lock changed.'
+                : 'Run the fixture-driven desktop visual suite.').write();
 
-      - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+  test:
+    name: Playwright rendering and capture
+    needs: classify
+    if: needs.classify.outputs.exempt != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 24
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Get Yarn cache directory
-        id: yarn-cache
-        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-
-      - name: Cache Yarn
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            yarn-${{ runner.os }}-
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Install Playwright browsers
-        run: npx playwright install chromium --with-deps
-
-      - name: Clean up port
-        run: sudo fuser -k 3070/tcp || true
-
-      - name: Run Playwright tests
-        id: run-tests
-        run: npx playwright test
+      - run: corepack enable
+      - run: node --test .github/visual-pr-policy.test.cjs
+      - run: yarn install --immutable
+      - run: yarn playwright install chromium --with-deps
+      - name: Assert rendering and capture Chromatic archives
+        run: yarn playwright test
         env:
           PW_PROJECT: visitscotland-dot-com
-
-      - name: Upload HTML report artifact
+          CHROMATIC_CAPTURE: 'true'
+      - name: Preserve reports and captures
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: playwright-results-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            playwright-report/
+            test-results/
           retention-days: 14
+          if-no-files-found: warn
 
-      - name: Save test outcome
-        if: ${{ !cancelled() }}
-        run: echo "${{ steps.run-tests.outcome }}" > outcome.txt
-
-      - name: Upload test outcome
-        if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: test-outcome
-          path: outcome.txt
-          retention-days: 1
-
-  deploy-reports:
-    name: Deploy Playwright Report
-    needs: test
+  chromatic:
+    name: Chromatic visual comparison
+    needs: [classify, test]
+    if: >-
+      !cancelled() && needs.classify.result == 'success' &&
+      (needs.test.result == 'success' || needs.classify.outputs.exempt == 'true') &&
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
+    timeout-minutes: 15
+    env:
+      CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      CHROMATIC_BRANCH: ${{ github.head_ref || github.ref_name }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-
-      - name: Download report
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          name: playwright-report
-          path: temp-report
-
-      - name: Download test outcome
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          name: test-outcome
-          path: test-outcome
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@329bcc8f12caed2cefe5a5b80781499a6f3b361b # v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./temp-report
-          keep_files: true
-          destination_dir: reports/${{ github.event.pull_request.number || github.run_id }}
-
-      - name: Generate PR Comment
-        if: github.event_name == 'pull_request'
-        id: build-comment
+          node-version: 24
+      - name: Check project token
         run: |
-          RUN_ID="${{ github.event.pull_request.number || github.run_id }}"
-          BASE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/$RUN_ID"
-          OUTCOME=$(cat test-outcome/outcome.txt 2>/dev/null || echo "skipped")
-          STATUS_EMOJI=$([ "$OUTCOME" = "success" ] && echo "✅ Passed" || echo "❌ Failed")
-          echo "COMMENT_BODY<<EOF" >> $GITHUB_OUTPUT
-          echo "### 🎭 Playwright E2E Test Results" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "| Application | Status | Interactive Report |" >> $GITHUB_OUTPUT
-          echo "|---|---|---|" >> $GITHUB_OUTPUT
-          echo "| \`visitscotland-dot-com\` | $STATUS_EMOJI | [View HTML Report]($BASE_URL/index.html) |" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Post Report Link to PR
-        if: github.event_name == 'pull_request'
-        uses: mshick/add-pr-comment@c96a9caed2a8cc0ed55e1f105725e383d63569d0 # v2
+          if [ -z "$CHROMATIC_PROJECT_TOKEN" ]; then
+            echo '::error::Configure the CHROMATIC_PROJECT_TOKEN repository secret for this project.'
+            exit 1
+          fi
+      - name: Download captures
+        if: needs.classify.outputs.exempt != 'true'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          message: ${{ steps.build-comment.outputs.COMMENT_BODY }}
+          name: playwright-results-${{ github.run_id }}-${{ github.run_attempt }}
+          path: visual-results
+      - name: Enable project package manager
+        if: needs.classify.outputs.exempt != 'true'
+        run: corepack enable
+      - name: Install archive tooling
+        if: needs.classify.outputs.exempt != 'true'
+        run: yarn install --immutable
+      - name: Mark exempt PR as skipped in Chromatic
+        if: needs.classify.outputs.exempt == 'true'
+        run: npx --yes chromatic@18.13.6 --skip --branch-name "$CHROMATIC_BRANCH"
+      - name: Compare captured pages
+        if: needs.classify.outputs.exempt != 'true'
+        run: yarn chromatic --playwright --exit-zero-on-changes --branch-name "$CHROMATIC_BRANCH"
+        env:
+          CHROMATIC_ARCHIVE_LOCATION: visual-results/test-results
