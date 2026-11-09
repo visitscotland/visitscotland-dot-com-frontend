@@ -73,7 +73,7 @@
                                                 <VsBrRichText
                                                     :input-content="highlight.copy.value"
                                                     class="d-inline"
-                                                />git p
+                                                />
                                             </VsDetail>
                                         </li>
                                     </VsBody>
