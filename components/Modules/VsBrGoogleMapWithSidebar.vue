@@ -226,6 +226,7 @@ import getIconDetails from '~/utls/mapIconMapping.ts';
 import { FULL_SHADED_PLACES, SHADED_AREA_STYLE } from '~/main-map-constants.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
+import formatLink from '~/composables/formatLink.ts';
 import type { BrxmFeature, MapSidebarFilter } from '~/types/types';
 
 const configStore = useConfigStore();
@@ -242,6 +243,13 @@ const uiLabels = {
 const isSidebarVisible = ref<boolean>(true);
 
 const features = module.geoJson.features;
+
+for (const feature of features) {
+    if (feature.properties?.link?.link) {
+        feature.properties.link.link = formatLink(feature.properties.link.link);
+    }
+}
+
 const filters = module.filters;
 
 const visibleFeatures = ref(features);
