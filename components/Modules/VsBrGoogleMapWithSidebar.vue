@@ -153,6 +153,7 @@
                 </VsButton>
             </div>
             <VsGoogleMap
+                ref="googleMap"
                 class="vs-google-map-with-sidebar__map"
                 :api-key="configStore.googleMapApiKey"
                 :center="{
@@ -169,6 +170,7 @@
                 }"
                 :google-maps-options="{
                     clickableIcons: false,
+                    renderingTypeVector: true,
                 }"
                 :language-code="`${configStore.locale}`"
                 :ui-labels="uiLabels"
@@ -218,11 +220,13 @@ import {
     VsImg,
     VsRow,
 } from '@visitscotland/component-library/components';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import getIconDetails from '~/utls/mapIconMapping.ts';
+import { FULL_SHADED_PLACES, SHADED_AREA_STYLE } from '~/main-map-constants.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
+import formatLink from '~/composables/formatLink.ts';
 import type { BrxmFeature, MapSidebarFilter } from '~/types/types';
 
 const configStore = useConfigStore();
@@ -238,7 +242,34 @@ const uiLabels = {
 
 const isSidebarVisible = ref<boolean>(true);
 
-const features = module.geoJson.features;
+// Destinations in multiple categories may come through as polygons in every
+// category. Outside of regions, show them as a pin at their centre instead.
+const features = module.geoJson.features.map((feature: any) => {
+    const centre = feature.properties?.locationCentre;
+
+    if (
+        feature.geometry?.type !== 'Point'
+        && feature.properties?.category?.id !== 'regions'
+        && centre
+    ) {
+        return {
+            ...feature,
+            geometry: {
+                type: 'Point',
+                coordinates: [centre.longitude, centre.latitude],
+            },
+        };
+    }
+
+    return feature;
+});
+
+for (const feature of features) {
+    if (feature.properties?.link?.link) {
+        feature.properties.link.link = formatLink(feature.properties.link.link);
+    }
+}
+
 const filters = module.filters;
 
 const visibleFeatures = ref(features);
@@ -250,6 +281,31 @@ const markerRefs = ref<any>({
 });
 
 const sidebarBody = ref<HTMLElement | null>(null);
+
+const googleMap = ref<any>(null);
+
+// Shade non Scottish countries similar to the MainMap
+onMounted(async() => {
+    await customElements.whenDefined('gmp-map');
+
+    const map = googleMap.value?.$el?.querySelector('gmp-map')?.innerMap;
+    if (!map) return;
+
+    const layers = [
+        map.getFeatureLayer(google.maps.FeatureType.COUNTRY),
+        map.getFeatureLayer(
+            google.maps.FeatureType.ADMINISTRATIVE_AREA_LEVEL_1,
+        ),
+    ];
+
+    layers.forEach((layer) => {
+        layer.style = (options: any) => {
+            if (FULL_SHADED_PLACES.includes(options.feature.placeId)) {
+                return SHADED_AREA_STYLE;
+            }
+        };
+    });
+});
 
 const titleLabel = computed(() => {
     if (selectedCategory.value) {
