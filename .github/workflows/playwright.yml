@@ -115,15 +115,22 @@ jobs:
             exit 1
           fi
       - name: Compare captured pages
+        id: chromatic
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         uses: chromaui/action@6ac4c49524e1b1358b8c593c5eea877604228268 # v18.14.2
         with:
           playwright: true
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          exitZeroOnChanges: true
+          exitZeroOnChanges: false
           branchName: ${{ github.head_ref || github.ref_name }}
         env:
           CHROMATIC_ARCHIVE_LOCATION: test-results
+      - name: Link to Chromatic visual review
+        if: ${{ !cancelled() && steps.chromatic.outputs.buildUrl != '' }}
+        env:
+          CHROMATIC_BUILD_URL: ${{ steps.chromatic.outputs.buildUrl }}
+        run: |
+          printf '### Chromatic visual review\n\n[Review and accept or reject visual changes](%s)\n' "$CHROMATIC_BUILD_URL" >> "$GITHUB_STEP_SUMMARY"
 
   chromatic:
     name: Report visual exemption
