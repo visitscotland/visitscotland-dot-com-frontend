@@ -596,6 +596,8 @@ function handleMouseOut(id: string) {
 
             &-open-button {
                 display: flex;
+                width: auto;
+                padding: 0;
                 position: absolute;
                 top: 1rem;
                 left: 1rem;
