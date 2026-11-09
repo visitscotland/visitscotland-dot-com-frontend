@@ -180,7 +180,7 @@
                         class="vs-google-map-with-sidebar__marker"
                         v-for="feature in markerFeatures"
                         :key="feature.properties.id"
-                        :ref="(el) => { if (el) markerRefs[feature.properties.id] = el}"
+                        :ref="(el) => setMarkerRef(feature.properties.id, el)"
                         :feature-data="feature"
                         marker-tooltips-enabled
                         :id="`marker-${feature.properties.id}`"
@@ -287,6 +287,18 @@ const selectedFeature = ref<BrxmFeature | undefined>(undefined);
 
 const markerRefs = ref<any>({
 });
+
+// Remove refs when a marker unmounts (eg after filtering) so we never call
+// methods on a stale marker whose internal tooltip ref has been nulled.
+function setMarkerRef(id: string, el: any) {
+    markerRefs.value[id] = el ?? undefined;
+}
+
+function getMarkerRef(feature: BrxmFeature) {
+    if (feature.geometry?.type !== 'Point') return undefined;
+
+    return markerRefs.value[feature.properties.id.toString()];
+}
 
 const sidebarBody = ref<HTMLElement | null>(null);
 
@@ -434,15 +446,16 @@ function selectFeature(feature: BrxmFeature) {
     selectedFeature.value = feature;
     
     // Regions don't have markers so there's no tooltip to show.
-    markerRefs.value[feature.properties.id.toString()]?.showTooltip();
+    getMarkerRef(feature)?.showTooltip();
 }
 
 function unselectFeature() {
     if (selectedFeature.value) {
         const selectedFeatureId: string = selectedFeature.value.properties.id.toString();
+        const marker = getMarkerRef(selectedFeature.value);
 
-        markerRefs.value[selectedFeatureId]?.hideTooltip();
-        markerRefs.value[selectedFeatureId]?.handleRemoveMarkerActive(selectedFeatureId);
+        marker?.hideTooltip();
+        marker?.handleRemoveMarkerActive(selectedFeatureId);
     };
     selectedFeature.value = undefined;
 }
