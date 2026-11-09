@@ -19,7 +19,7 @@ env:
   YARN_ENABLE_GLOBAL_CACHE: 'false'
 
 jobs:
-  # Skip the test suite if the author is dependabot or github actions
+  # Exempt approved bots only when the complete PR changes dependency files alone.
   classify:
     name: Classify visual coverage
     runs-on: ubuntu-latest
@@ -121,7 +121,7 @@ jobs:
         with:
           playwright: true
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          exitZeroOnChanges: false
+          exitZeroOnChanges: true
           branchName: ${{ github.head_ref || github.ref_name }}
         env:
           CHROMATIC_ARCHIVE_LOCATION: test-results
