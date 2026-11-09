@@ -200,9 +200,7 @@ const cardData = ref<FavouriteCard[]>([]);
 
 // Retrieve My Favourites
 // const favouritesEndpoint = `https://develop-brc.visitscotland.com${favourites.brGetPagesEndpoint}`;
-// TODO: temporary - use the Nuxt forwarding route (feature proxy only passes /api/frontend/* to Nuxt). Revert before merging.
-// const favouritesEndpoint = favourites.brGetPagesEndpoint;
-const favouritesEndpoint = '/api/frontend/favourites/get-favourites';
+const favouritesEndpoint = favourites.brGetPagesEndpoint;
 
 
 // Fetch UUID list for a shared collection
