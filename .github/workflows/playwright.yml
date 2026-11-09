@@ -7,7 +7,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Pilot only: no branch protection requirements are added.
 concurrency:
   group: playwright-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -20,6 +19,7 @@ env:
   YARN_ENABLE_GLOBAL_CACHE: 'false'
 
 jobs:
+  # Skip the test suite if the author is dependabot or github actions
   classify:
     name: Classify visual coverage
     runs-on: ubuntu-latest
@@ -55,7 +55,6 @@ jobs:
     if: needs.classify.outputs.exempt != 'true'
     runs-on: ubuntu-latest
     container:
-      # Keep aligned with the @playwright/test version in yarn.lock.
       image: mcr.microsoft.com/playwright:v1.64.1-noble
       options: --init --ipc=host
     env:
@@ -68,8 +67,6 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Trust the mounted workspace in the container
-        # Checkout uses a temporary HOME for its Git configuration. Chromatic
-        # reads /root/.gitconfig, so register this workspace there explicitly.
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git --no-pager log -1 --format=%H
