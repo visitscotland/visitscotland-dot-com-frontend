@@ -1,0 +1,6 @@
+{
+  "$schema": "https://www.chromatic.com/config-file.schema.json",
+  "playwright": true,
+  "exitOnceUploaded": true,
+  "zip": true
+}

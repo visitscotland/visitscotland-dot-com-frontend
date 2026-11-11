@@ -1,6 +1,6 @@
-import { type Page } from '@playwright/test';
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import type { Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 /**
  * Intercepts Bloomreach Resource API requests and responds with stored fixture data.
@@ -39,26 +39,10 @@ export async function mockBloomreachApi(
  * The app dispatches a 'vs-app-hydrated' window event on mount.
  */
 export async function waitForHydration(page: Page): Promise<void> {
-    await page.evaluate(() => new Promise<void>((resolve) => {
-        const check = () => {
-            const hydrate = document.querySelector('.hydrate');
-            if (hydrate && hydrate.offsetParent !== null) {
-                resolve();
-                return;
-            }
-        };
-
-        check();
-
-        window.addEventListener('vs-app-hydrated', () => resolve(), { once: true });
-
-        const observer = new MutationObserver(check);
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        setTimeout(() => {
-            observer.disconnect();
-            check();
-            resolve();
-        }, 15000);
-    }));
+    // Locator waits survive development-server reloads and fail if hydration
+    // never completes, rather than resolving successfully after a timeout.
+    await page.locator('.hydrate').waitFor({
+        state: 'visible',
+        timeout: 30000,
+    });
 }
