@@ -2,10 +2,30 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol
-                cols="10"
+                col
                 lg="8"
             >
                 <VsBrBreadcrumb />
+            </VsCol>
+            <VsCol
+                cols="auto"
+                lg="4"
+                class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                v-if="favourites.featureEnabled"
+            >
+                <VsBrFavouriteButton
+                    :uuid="documentData.id"
+                    :gtm-data="{ title: documentData.title, }"
+                    icon-only
+                    class="d-lg-none"
+                    data-test="vs-favourite-button"
+                />
+                <VsBrFavouriteButton
+                    :uuid="documentData.id"
+                    :gtm-data="{ title: documentData.title, }"
+                    class="d-none d-lg-flex"
+                    data-test="vs-favourite-button"
+                />
             </VsCol>
         </VsRow>
     </VsContainer>
@@ -14,7 +34,6 @@
         :content="documentData"
         :inset="true"
         class="mb-400"
-        :favourites-button="true"
     />
 
     <VsContainer>
@@ -190,6 +209,7 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
 import formatLink from '~/composables/formatLink.ts';
 
@@ -211,6 +231,8 @@ import {
     VsHeading,
     VsBody,
 } from '@visitscotland/component-library/components';
+
+const favourites = useFavourites();
 
 const props = defineProps<{ component: Component, page: Page }>();
 
