@@ -13,7 +13,7 @@ export default defineEventHandler(async() => {
         return await response.json();
     } catch (error) {
         console.error('Error fetching feature flags:', error);
-        return {};
+        return {}; 
     }
 });
 
