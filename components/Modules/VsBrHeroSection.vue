@@ -4,8 +4,8 @@
         :lede="content.teaser"
         :img-src="imageSrc"
         :video-src="video ? video.link : null"
-        :img-caption="imageData?.description"
-        :img-credit="imageData?.credit"
+        :img-caption="imageCaption"
+        :img-credit="imageCredit"
         :play-button-label="configStore.getLabel('ambient-video', 'play-button.text')"
         :pause-button-label="configStore.getLabel('ambient-video', 'pause-button.text')"
         :inset
@@ -82,11 +82,18 @@ const {
 let imageValue = null;
 let imageData = null;
 let imageSrc = '';
+let imageCaption = '';
+let imageCredit = '';
 
 if (image.value) {
     imageValue = page.getContent(image.value.$ref);
     imageData = imageValue.model.data;
     imageSrc = imageValue.getOriginal().getUrl();
+
+    // The raw image document's description is always English. The heroImage component model
+    // holds the caption localised for the current page, so prefer it on translated pages.
+    imageCaption = configStore.heroImage?.description || imageData?.description;
+    imageCredit = configStore.heroImage?.credit || imageData?.credit;
 }
 
 let blogAuthor = '';
