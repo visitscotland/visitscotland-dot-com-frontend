@@ -447,7 +447,7 @@ watch(isLoading, (newValue) => {
             text-decoration: none;
 
             &:hover {
-                background: #D6E5FF;
+                background: #C69EE5;
             }
 
             &:focus{
