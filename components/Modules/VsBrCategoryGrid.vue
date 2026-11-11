@@ -55,9 +55,6 @@ import { inject } from 'vue';
 import formatLink from '~/composables/formatLink.ts';
 
 import {
-    VsContainer,
-    VsRow,
-    VsCol,
     VsImg,
     VsCard,
     VsLink,
