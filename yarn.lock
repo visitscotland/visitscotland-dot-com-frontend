@@ -433,16 +433,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bloomreach/spa-sdk@npm:^28.1.0":
-  version: 28.1.0
-  resolution: "@bloomreach/spa-sdk@npm:28.1.0"
+"@bloomreach/spa-sdk@npm:^28.2.0":
+  version: 28.2.0
+  resolution: "@bloomreach/spa-sdk@npm:28.2.0"
   dependencies:
     cookie: "npm:0.7.2"
     dom-serializer: "npm:3.1.1"
     domutils: "npm:4.0.2"
     emittery: "npm:0.7.2"
     htmlparser2: "npm:12.0.0"
-  checksum: 10c0/27f8ad8597b2161b2c8318c82f6616d36f607d04338a7aada72462610d6f4414c9af6df24a9f5fd016fb946403e8ca6d119d88bd960f85000d42bb3f50437b79
+  checksum: 10c0/c4c5789ba1669d74b18c94597849f19f6d4c0b823f0a5f759e479d0bd56b12b8414240d5bc0c26be11b3a5f03e4dc6a67b1f6f24ab63d46f4cf5c4805df93940
   languageName: node
   linkType: hard
 
@@ -9731,7 +9731,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nuxt-bloomreach-headless-white-label@workspace:."
   dependencies:
-    "@bloomreach/spa-sdk": "npm:^28.1.0"
+    "@bloomreach/spa-sdk": "npm:^28.2.0"
     "@bloomreach/vue3-sdk": "npm:^22.0.5"
     "@googlemaps/js-api-loader": "npm:^2.1.3"
     "@nuxt/eslint-config": "npm:^1.17.0"
