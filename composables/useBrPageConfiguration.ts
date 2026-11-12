@@ -34,8 +34,7 @@ export default function useBrPageConfiguration() {
             heroImage: models.heroImage ?? null,
             labels: models.labels ?? {
             },
-            newsletterSignpost: models.newsletterSignpost ?? {
-            },
+            newsletterSignpost: models.newsletterSignpost ?? null,
             pageTemplate: models.pageTemplate ?? {
             },
             gtm: models.gtm ?? null,

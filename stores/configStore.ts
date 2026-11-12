@@ -42,8 +42,7 @@ const useConfigStore = defineStore('configStore', {
         heroImage: null,
         labels: {
         },
-        newsletterSignpost: {
-        },
+        newsletterSignpost: null,
         pageTemplate: {
         },
         gtm: null,

@@ -94,7 +94,7 @@ if (page.value) {
 
     const pageModels = page.value.getComponent().getModels();
     pageDocument = page.value.getContent(pageModels.document);
-    const langString = configStore.langString;
+    const langString = configStore.langString || 'en-gb';
 
     const hrefLangs = [];
 
@@ -118,9 +118,10 @@ if (page.value) {
 
     let ogImageSrc = '';
 
-    if (pageDocument.model.data.heroImage.$ref) {
-        const ogImageValue = page.value.getContent(pageDocument.model.data.heroImage.$ref);
-        ogImageSrc = ogImageValue.getOriginal().getUrl();
+    const heroImageRef = pageDocument.model.data.heroImage?.$ref;
+    if (heroImageRef) {
+        const ogImageValue = page.value.getContent(heroImageRef);
+        ogImageSrc = ogImageValue?.getOriginal()?.getUrl() ?? '';
     }
 
     const runtimeConfig = useRuntimeConfig();
