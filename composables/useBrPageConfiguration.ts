@@ -19,7 +19,7 @@ export default function useBrPageConfiguration() {
         const locale = configuration.language ?? 'en';
 
         const languages: Record<string, string> = {
-            en: 'en-gb',
+            en: '',
             fr: 'fr-fr',
             nl: 'nl-nl',
             de: 'de-de',
@@ -60,7 +60,7 @@ export default function useBrPageConfiguration() {
             },
             pageDocument: rootModels.document ?? null,
             locale,
-            langString: languages[locale] ?? 'en-gb',
+            langString: languages[locale] ?? '',
             isHome: rootModels.isHome ?? false,
         }));
 
