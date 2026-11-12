@@ -39,6 +39,7 @@
                 :when-visible="{ rootMargin: '50px' }"
             >
                 <VsBrHorizontalLinksModule
+                    v-if="hippoContent[index].model.data.layout === 'Horizontal Links'"
                     :module="item"
                     :theme="item.themeValue"
                     :aria-label="`${configStore.getLabel('content-swipers', 'horizontal-links')} ${item.title}`"

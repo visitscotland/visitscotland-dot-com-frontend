@@ -6,9 +6,7 @@
 
     <VsContainer>
         <VsRow>
-            <VsCol
-                :aria-label="ariaLabel"
-            >
+            <VsCol>
                 <VsContentSwiper
                     :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
                     :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
@@ -16,6 +14,7 @@
                     :slides-per-view-sm="2"
                     :slides-per-view-lg="3"
                     :slides-per-view-xl="4"
+                    :aria-label="ariaLabel"
                 >
                     <VsContentSwiperSlide
                         v-for="(link, index) in links"
