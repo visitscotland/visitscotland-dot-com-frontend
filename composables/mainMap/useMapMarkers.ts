@@ -273,9 +273,12 @@ export default function useMapMarkers(context: MapContext) {
         viewportController.runProgrammaticMove(() => {
             if (places.length === 1 && places[0]!.location) {
                 // If there's only one result then centre the map and zoom
-                // in to that result position.
-                map.setCenter(places[0]!.location);
-                map.setZoom(14);
+                // in to that result position. Set both together, otherwise the map's
+                // bounds restriction can clamp the centre before the zoom is applied.
+                map.moveCamera({
+                    center: places[0]!.location,
+                    zoom: 14,
+                });
             } else {
                 // Make sure all of the makers are visible.
                 map.fitBounds(bounds);

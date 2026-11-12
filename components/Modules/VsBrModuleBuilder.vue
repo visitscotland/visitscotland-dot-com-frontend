@@ -142,6 +142,10 @@
             </Suspense>
         </NuxtLazyHydrate>
 
+        <VsBrSupplierListingModule
+            v-else-if="item.type === 'SupplierListingModule'"
+            :module="item"
+        />
         <NuxtLazyHydrate
             :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'SkiListModule'"
@@ -256,7 +260,7 @@ import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
 import VsBrGoogleMapWithSidebar from './VsBrGoogleMapWithSidebar.vue';
-import checkFlag from '~/composables/checkFlags';
+// import checkFlag from '~/composables/checkFlags';
 
 const VsBrMapWithSidebar = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSidebar.vue'));
 const VsBrMainMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMainMap.vue'));

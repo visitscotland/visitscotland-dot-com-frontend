@@ -21,12 +21,28 @@
                 v-if="!configStore.isHome"
                 class="mt-075 mt-lg-200"
             >
-                <VsRow>
-                    <VsCol
-                        cols="10"
-                        lg="8"
-                    >
+                <VsRow class="mb-100">
+                    <VsCol>
                         <VsBrBreadcrumb />
+                    </VsCol>
+                    <VsCol
+                        cols="auto"
+                        class="d-flex align-items-center"
+                        v-if="favourites.featureEnabled"
+                    >
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            icon-only
+                            class="d-lg-none"
+                            data-test="vs-favourite-button"
+                        />
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            class="d-none d-lg-flex"
+                            data-test="vs-favourite-button"
+                        />
                     </VsCol>
                 </VsRow>
             </VsContainer>
@@ -43,10 +59,30 @@
             >
                 <VsRow>
                     <VsCol
-                        cols="10"
+                        col
                         lg="8"
                     >
                         <VsBrBreadcrumb />
+                    </VsCol>
+                    <VsCol
+                        cols="auto"
+                        lg="4"
+                        class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                        v-if="favourites.featureEnabled"
+                    >
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            icon-only
+                            class="d-lg-none"
+                            data-test="vs-favourite-button"
+                        />
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            class="d-none d-lg-flex"
+                            data-test="vs-favourite-button"
+                        />
                     </VsCol>
                 </VsRow>
             </VsContainer>
@@ -54,7 +90,6 @@
             <VsBrHeroSection
                 :content="documentData"
                 :image="heroImage"
-                :favourites-button="true"
             />
         </template>
     </template>
@@ -64,8 +99,8 @@
         >
             <VsRow>
                 <VsCol
-                    cols="10"
-                    lg="8"
+                    col
+                    lg="10"
                 >
                     <VsBrBreadcrumb />
                 </VsCol>
@@ -74,7 +109,6 @@
 
         <VsBrHeroSection
             :content="documentData"
-            :favourites-button="true"
         />
     </template>
 
@@ -85,10 +119,30 @@
         >
             <VsRow>
                 <VsCol
-                    cols="10"
+                    col
                     lg="8"
                 >
                     <VsBrBreadcrumb />
+                </VsCol>
+                <VsCol
+                    cols="auto"
+                    lg="4"
+                    class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                    v-if="favourites.featureEnabled"
+                >
+                    <VsBrFavouriteButton
+                        :uuid="documentData.id"
+                        :gtm-data="{ title: documentData.title, }"
+                        icon-only
+                        class="d-lg-none"
+                        data-test="vs-favourite-button"
+                    />
+                    <VsBrFavouriteButton
+                        :uuid="documentData.id"
+                        :gtm-data="{ title: documentData.title, }"
+                        class="d-none d-lg-flex"
+                        data-test="vs-favourite-button"
+                    />
                 </VsCol>
             </VsRow>
         </VsContainer>
@@ -99,7 +153,6 @@
             :image="isSearchResultsPage ? null : heroImage"
             class="mb-400"
             :blog="documentData.blog"
-            :favourites-button="true"
         />
     </template>
 
@@ -205,10 +258,8 @@ let otyml : any = null;
 const configStore = useConfigStore();
 const favourites = useFavourites();
 
-let firstModuleIsLink = false;
 let isSearchResultsPage = false;
 
-let isSearchWidgetPresent = false;
 
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
@@ -225,22 +276,10 @@ if (page.value) {
         otyml = configStore.otyml;
     }
 
-    if (pageItems && pageItems.length) {
-        let firstNonPersonalisationModule = 0;
-        if (pageItems.length > 1 && pageItems[0].type === 'PersonalisationModule') {
-            firstNonPersonalisationModule = 1;
-        }
-        if (
-            pageItems[firstNonPersonalisationModule].type === 'ListLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'MultiImageLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'SingleImageLinksModule'
-        ) {
-            firstModuleIsLink = true;
-        }
-    }
 
     // Remove trailing slashes from the global search path to remove path ambiguity
     if (window
+        && configStore.globalSearchPath
         && window.location.pathname.includes(configStore.globalSearchPath.replace(/\/+$/, ''))) {
         isSearchResultsPage = true;
     }

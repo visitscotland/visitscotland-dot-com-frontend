@@ -1,0 +1,268 @@
+name: Dependabot auto-merge
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: dependabot-auto-merge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  evaluate:
+    name: Evaluate Dependabot update
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      # This privileged workflow must never check out or execute PR code.
+      # Verification remains enabled: metadata must come from Dependabot commits.
+      - name: Read verified Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@d7267f607e9d3fb96fc2fbe83e0af444713e90b7 # Pinned release
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check changes, approve and enable auto-merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
+          PACKAGE_ECOSYSTEM: ${{ steps.metadata.outputs.package-ecosystem }}
+        shell: bash
+        run: |
+          node <<'NODE'
+          (() => {
+              const { execFileSync } = require('node:child_process');
+              const { appendFileSync } = require('node:fs');
+              const { GH_REPO, PR_NUMBER, EXPECTED_HEAD, UPDATE_TYPE, PACKAGE_ECOSYSTEM } = process.env;
+              const gh = (...args) => execFileSync('gh', args, {
+                  encoding: 'utf8',
+              }).trim();
+              const api = (...args) => JSON.parse(gh('api', ...args));
+
+              // BEGIN LOCKFILE ALIGNMENT CHECK (also exercised by the local regression tests)
+              function evaluateLockfileAlignment(before, after) {
+                  const parse = (text) => {
+                      const blocks = new Map();
+                      let current = '';
+
+                      blocks.set(current, {
+                          lines: [],
+                          fields: {
+                          },
+                      });
+                      for (const line of text.replace(/\r\n/g, '\n').split('\n')) {
+                          if (/^[^\s#].*:\s*$/.test(line)) {
+                              if (blocks.has(line)) {
+                                  throw new Error('Duplicate lockfile entry');
+                              }
+
+                              current = line;
+                              blocks.set(current, {
+                                  lines: [],
+                                  fields: {
+                                  },
+                              });
+                          }
+
+                          const block = blocks.get(current);
+                          const field = line.match(/^ {2}(version|resolution|checksum): (.+)$/);
+
+                          if (current.startsWith('"') && field) {
+                              if (field[1] in block.fields) {
+                                  throw new Error('Duplicate lockfile field');
+                              }
+
+                              block.fields[field[1]] = field[2].startsWith('"') ? JSON.parse(field[2]) : field[2];
+                              block.lines.push(`  ${field[1]}: <value>`);
+                          } else {
+                              block.lines.push(line);
+                          }
+                      }
+
+                      return blocks;
+                  };
+
+                  try {
+                      const previous = parse(before);
+                      const next = parse(after);
+
+                      if (previous.size !== next.size) {
+                          return null;
+                      }
+
+                      const changes = [];
+
+                      for (const [key, oldBlock] of previous) {
+                          const newBlock = next.get(key);
+
+                          if (!newBlock || oldBlock.lines.join('\n') !== newBlock.lines.join('\n')) {
+                              return null;
+                          }
+
+                          const oldVersion = oldBlock.fields.version;
+                          const newVersion = newBlock.fields.version;
+
+                          if (oldVersion === newVersion && oldBlock.fields.resolution === newBlock.fields.resolution) {
+                              continue;
+                          }
+
+                          const oldParts = oldVersion?.match(/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/);
+                          const newParts = newVersion?.match(/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/);
+
+                          if (!oldParts || !newParts) {
+                              return null;
+                          }
+
+                          const oldResolution = oldBlock.fields.resolution;
+                          const name = oldResolution?.match(/^(.+)@npm:\d+\.\d+\.\d+$/)?.[1];
+
+                          if (!name || oldResolution !== `${name}@npm:${oldVersion}` ||
+                    newBlock.fields.resolution !== `${name}@npm:${newVersion}`) {
+                              return null;
+                          }
+
+                          const [oldMajor, oldMinor, oldPatch] = oldParts.slice(1).map(BigInt);
+                          const [newMajor, newMinor, newPatch] = newParts.slice(1).map(BigInt);
+
+                          if (newMajor !== oldMajor || newMinor < oldMinor ||
+                    (newMinor === oldMinor && newPatch <= oldPatch)) {
+                              return null;
+                          }
+
+                          changes.push(`${name}: ${oldVersion} -> ${newVersion}`);
+                      }
+
+                      return changes.length ? changes : null;
+                  } catch {
+                      return null;
+                  }
+              }
+
+              // END LOCKFILE ALIGNMENT CHECK
+              const summary = (message) => {
+                  console.log(message);
+                  appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${message}\n`);
+              };
+              const endpoint = `repos/${GH_REPO}/pulls/${PR_NUMBER}`;
+              const commentMarker = '<!-- dependabot-auto-merge-decision -->';
+              const updateDecisionComment = (message, create = true) => {
+                  if (api(endpoint).head.sha !== EXPECTED_HEAD) {
+                      throw new Error('PR changed during evaluation; wait for the next workflow run.');
+                  }
+
+                  const commentsEndpoint = `repos/${GH_REPO}/issues/${PR_NUMBER}/comments`;
+                  const comments = api('--paginate', '--slurp', `${commentsEndpoint}?per_page=100`).flat();
+                  const existing = comments.find((comment) =>
+                      comment.user?.login === 'github-actions[bot]' && comment.body?.startsWith(commentMarker));
+                  const body = `${commentMarker}\n${message}\n\nEvaluated commit: ${EXPECTED_HEAD}`;
+
+                  if (existing) {
+                      if (existing.body !== body) {
+                          gh('api', '--method', 'PATCH', `repos/${GH_REPO}/issues/comments/${existing.id}`, '-f', `body=${body}`);
+                      }
+                  } else if (create) {
+                      gh('api', '--method', 'POST', commentsEndpoint, '-f', `body=${body}`);
+                  }
+              };
+              const manualReview = (reason) => {
+                  summary(`Manual review required: ${reason}`);
+                  updateDecisionComment(`### Manual review required\n\n${reason}\n\nThis workflow has not approved or enabled auto-merge for this commit. Please review and remediate or merge manually once required checks pass.`);
+              };
+              const pr = api(endpoint);
+
+              if (pr.state !== 'open' || pr.draft || pr.user.login !== 'dependabot[bot]' ||
+              pr.head.repo?.full_name !== GH_REPO || pr.head.sha !== EXPECTED_HEAD) {
+                  summary('Skipped: PR is no longer an eligible Dependabot PR at the evaluated commit.');
+
+                  return;
+              }
+
+              // fetch-metadata uses Dependabot's internal name, not the config value "npm".
+              if (PACKAGE_ECOSYSTEM !== 'npm_and_yarn') {
+                  manualReview(`Only npm/Yarn updates qualify. Received ecosystem=${JSON.stringify(PACKAGE_ECOSYSTEM)}.`);
+
+                  return;
+              }
+
+              const pages = api('--paginate', '--slurp', `${endpoint}/files?per_page=100`);
+              const files = pages.flat();
+              const allowed = new Set(['package.json', 'yarn.lock']);
+
+              if (!files.length || files.length !== pr.changed_files ||
+              files.some((file) => !allowed.has(file.filename) || file.status !== 'modified')) {
+                  manualReview('The diff must contain only modifications to existing root package.json and yarn.lock files. It contains other file changes, unsupported file operations, or an incomplete file list.');
+
+                  return;
+              }
+
+              let eligibility = UPDATE_TYPE;
+
+              if (!['version-update:semver-patch', 'version-update:semver-minor'].includes(UPDATE_TYPE)) {
+                  const lockfileOnly = files.length === 1 && files[0].filename === 'yarn.lock';
+
+                  if (!lockfileOnly || !['', 'null'].includes(UPDATE_TYPE)) {
+                      manualReview(`Only patch/minor updates qualify. Received update-type=${JSON.stringify(UPDATE_TYPE)}; the lockfile fallback requires missing metadata and a yarn.lock-only diff.`);
+
+                      return;
+                  }
+
+                  const readLock = (ref) => {
+                      const file = api(`repos/${GH_REPO}/contents/yarn.lock?ref=${ref}`);
+
+                      if (file.encoding !== 'base64' || typeof file.content !== 'string') {
+                          throw new Error('Unable to retrieve complete lockfile content');
+                      }
+
+                      return Buffer.from(file.content, 'base64').toString('utf8');
+                  };
+                  let changes = null;
+                  try {
+                      changes = evaluateLockfileAlignment(readLock(pr.base.sha), readLock(EXPECTED_HEAD));
+                  } catch {
+                      manualReview('The lockfile could not be retrieved completely. Retry the evaluation or review this update manually.');
+
+                      return;
+                  }
+
+                  if (!changes) {
+                      manualReview('The lockfile-only update could not be verified as stable npm patch/minor version alignment with unchanged selectors and dependency structure. Major updates, downgrades, prereleases and structural changes require human review.');
+
+                      return;
+                  }
+
+                  eligibility = `verified lockfile alignment (${changes.join('; ')})`;
+                  summary(eligibility);
+              }
+
+              // Recheck the head after inspecting the diff, and bind approval to that commit.
+              if (api(endpoint).head.sha !== EXPECTED_HEAD) {
+                  throw new Error('PR changed during evaluation; wait for the next workflow run.');
+              }
+
+              const reviews = api('--paginate', '--slurp', `${endpoint}/reviews?per_page=100`).flat();
+              const botReviews = reviews.filter((review) => review.user?.login === 'github-actions[bot]');
+              const latestReview = botReviews.at(-1);
+
+              if (latestReview?.state !== 'APPROVED' || latestReview.commit_id !== EXPECTED_HEAD) {
+                  gh('api', '--method', 'POST', `${endpoint}/reviews`,
+                      '-f', 'event=APPROVE', '-f', `commit_id=${EXPECTED_HEAD}`,
+                      '-f', `body=Verified Dependabot npm patch/minor update: ${eligibility}. Changes are limited to package.json and/or yarn.lock. Required CI checks must pass before merging.`);
+              }
+
+              gh('pr', 'merge', PR_NUMBER, '--repo', GH_REPO, '--auto', '--squash',
+                  '--match-head-commit', EXPECTED_HEAD);
+              summary(`Approved PR #${PR_NUMBER} (${eligibility}) and enabled squash auto-merge. Required branch checks still apply.`);
+              updateDecisionComment('### Eligible for auto-merge\n\nThe previous manual-review decision is superseded. This commit qualifies as an npm/Yarn patch or minor update, has been approved, and auto-merge has been enabled subject to required branch checks.', false);
+          })();
+          NODE
