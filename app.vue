@@ -121,7 +121,10 @@ const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 
 
-let featureFlags = {flags:{}};
+let featureFlags = {
+    flags:{
+    },
+};
 
 
 // only get flags from API if we don't have them in session storage already
