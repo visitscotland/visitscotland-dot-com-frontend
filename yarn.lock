@@ -433,16 +433,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bloomreach/spa-sdk@npm:^28.1.0":
-  version: 28.1.0
-  resolution: "@bloomreach/spa-sdk@npm:28.1.0"
+"@bloomreach/spa-sdk@npm:^28.2.0":
+  version: 28.2.0
+  resolution: "@bloomreach/spa-sdk@npm:28.2.0"
   dependencies:
     cookie: "npm:0.7.2"
     dom-serializer: "npm:3.1.1"
     domutils: "npm:4.0.2"
     emittery: "npm:0.7.2"
     htmlparser2: "npm:12.0.0"
-  checksum: 10c0/27f8ad8597b2161b2c8318c82f6616d36f607d04338a7aada72462610d6f4414c9af6df24a9f5fd016fb946403e8ca6d119d88bd960f85000d42bb3f50437b79
+  checksum: 10c0/c4c5789ba1669d74b18c94597849f19f6d4c0b823f0a5f759e479d0bd56b12b8414240d5bc0c26be11b3a5f03e4dc6a67b1f6f24ab63d46f4cf5c4805df93940
   languageName: node
   linkType: hard
 
@@ -2863,10 +2863,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/google.maps@npm:^3.66.7":
-  version: 3.66.7
-  resolution: "@types/google.maps@npm:3.66.7"
-  checksum: 10c0/ef1c7c4a7717865c1b5bf7cfa920662eb11915d900683ec784cf2d7aab450bba6f2d579ed2333cdd996603e5fdb3ad6bfbc73fad600ca895fc7d7fa77d7a011d
+"@types/google.maps@npm:^3.66.9":
+  version: 3.66.9
+  resolution: "@types/google.maps@npm:3.66.9"
+  checksum: 10c0/4632b42cc1e056f532ac67e5c0d3daa1d3a9a74da494e3db4adaf528ef9f866557736b03e4ea58586e024f38bdca69c37053ce068ee315274aa00d1d586ecd23
   languageName: node
   linkType: hard
 
@@ -3274,9 +3274,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@visitscotland/component-library@npm:5.81.2":
-  version: 5.81.2
-  resolution: "@visitscotland/component-library@npm:5.81.2"
+"@visitscotland/component-library@npm:5.83.2":
+  version: 5.83.2
+  resolution: "@visitscotland/component-library@npm:5.83.2"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.6"
     "@googlemaps/js-api-loader": "npm:^2.0.1"
@@ -3304,7 +3304,7 @@ __metadata:
   dependenciesMeta:
     husky:
       built: true
-  checksum: 10c0/85136366ae5e566ab5fddcf3bf49b1ce09d3322351a932a44e4024d1bf8e2e598d407ae5580a236324f745bf77f0372456b8d35674843d1c24f261f4dbbd199f
+  checksum: 10c0/02a3c38c2da799663d3178a187f3dfeab0f29ec3d8fa7f3fa51d84f03f0c4baeb87cc9e451fedf51838734cee53e89d28e042275f71044cc0e2cf0d1079cc491
   languageName: node
   linkType: hard
 
@@ -9731,15 +9731,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nuxt-bloomreach-headless-white-label@workspace:."
   dependencies:
-    "@bloomreach/spa-sdk": "npm:^28.1.0"
+    "@bloomreach/spa-sdk": "npm:^28.2.0"
     "@bloomreach/vue3-sdk": "npm:^22.0.5"
     "@googlemaps/js-api-loader": "npm:^2.1.3"
     "@nuxt/eslint-config": "npm:^1.17.0"
     "@pinia/nuxt": "npm:^1.0.2"
     "@playwright/test": "npm:^1.64.1"
-    "@types/google.maps": "npm:^3.66.7"
+    "@types/google.maps": "npm:^3.66.9"
     "@types/node": "npm:^26.6.5"
-    "@visitscotland/component-library": "npm:5.81.2"
+    "@visitscotland/component-library": "npm:5.83.2"
     axios: "npm:^1.21.0"
     commitizen: "npm:^4.3.2"
     cz-conventional-changelog: "npm:^3.3.0"
