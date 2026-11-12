@@ -7,6 +7,7 @@
         :slides-per-view-md="2.5"
         :slides-per-view-lg="2.7"
         :slides-per-view-xl="3.7"
+        :aria-label="`${configStore.getLabel('content-swipers', 'category-grid')}`"
     >
         <VsContentSwiperSlide
             v-for="(card, index) in outLinks"

@@ -6,7 +6,9 @@
 
     <VsContainer>
         <VsRow>
-            <VsCol>
+            <VsCol
+                :aria-label="ariaLabel"
+            >
                 <VsContentSwiper
                     :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
                     :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
@@ -85,8 +87,14 @@ import formatLink from '~/composables/formatLink.ts';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: object, theme: string }>();
+const props = defineProps<{
+    module: object,
+    theme: string,
+    ariaLabel?: string,
+}>();
+
 const module: any = props.module;
+const ariaLabel: string | undefined = props.ariaLabel;
 
 const page: Page | undefined = inject('page');
 const links: any[] = [];

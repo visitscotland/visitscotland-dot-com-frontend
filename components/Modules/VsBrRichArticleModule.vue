@@ -106,6 +106,7 @@
     >
         <VsBrMediaSection
             :media-section="module.mediaSection"
+            :aria-label="`${configStore.getLabel('content-swipers', 'media-section')} ${module.title}`"
         />
     </div>
 </template>

@@ -39,9 +39,9 @@
                 :when-visible="{ rootMargin: '50px' }"
             >
                 <VsBrHorizontalLinksModule
-                    v-if="hippoContent[index].model.data.layout === 'Horizontal Links'"
                     :module="item"
                     :theme="item.themeValue"
+                    :aria-label="`${configStore.getLabel('content-swipers', 'horizontal-links')} ${item.title}`"
                 />
             </NuxtLazyHydrate>
         </template>
@@ -261,6 +261,10 @@ import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 import themeCalculator from '~/composables/themeCalculator.ts';
 import VsBrGoogleMapWithSidebar from './VsBrGoogleMapWithSidebar.vue';
 // import checkFlag from '~/composables/checkFlags';
+
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
 
 const VsBrMapWithSidebar = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSidebar.vue'));
 const VsBrMainMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMainMap.vue'));
