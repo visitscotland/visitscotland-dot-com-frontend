@@ -54,7 +54,7 @@
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^3.0.0",
     "pinia": "^4.1.0",
-    "sass": "^1.107.1",
+    "sass": "^1.108.0",
     "standard-version": "^9.5.0",
     "typescript": "^6.0.3",
     "vue": "3.5.45"
