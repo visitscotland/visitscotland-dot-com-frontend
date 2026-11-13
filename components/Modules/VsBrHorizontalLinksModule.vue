@@ -14,6 +14,7 @@
                     :slides-per-view-sm="2"
                     :slides-per-view-lg="3"
                     :slides-per-view-xl="4"
+                    :aria-label="ariaLabel"
                 >
                     <VsContentSwiperSlide
                         v-for="(link, index) in links"
@@ -85,8 +86,14 @@ import formatLink from '~/composables/formatLink.ts';
 
 const configStore = useConfigStore();
 
-const props = defineProps<{ module: object, theme: string }>();
+const props = defineProps<{
+    module: object,
+    theme: string,
+    ariaLabel?: string,
+}>();
+
 const module: any = props.module;
+const ariaLabel: string | undefined = props.ariaLabel;
 
 const page: Page | undefined = inject('page');
 const links: any[] = [];
