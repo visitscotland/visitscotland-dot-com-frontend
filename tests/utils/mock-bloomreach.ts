@@ -1,6 +1,6 @@
-import { type Page } from '@playwright/test';
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import type { Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 /**
  * Intercepts Bloomreach Resource API requests and responds with stored fixture data.
@@ -50,10 +50,15 @@ export async function waitForHydration(page: Page): Promise<void> {
 
         check();
 
-        window.addEventListener('vs-app-hydrated', () => resolve(), { once: true });
+        window.addEventListener('vs-app-hydrated', () => resolve(), {
+            once: true, 
+        });
 
         const observer = new MutationObserver(check);
-        observer.observe(document.body, { childList: true, subtree: true });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true, 
+        });
 
         setTimeout(() => {
             observer.disconnect();

@@ -20,7 +20,11 @@ export default defineEventHandler((event): SupplierListingResponse => {
         ? Number(query.page) : 1;
 
     const matches = suppliers.filter((supplier) => (
-        (!q || supplier.name.toLowerCase().includes(q))
+        (
+            !q
+            || supplier.name.toLowerCase().includes(q)
+            || supplier.description.toLowerCase().includes(q)
+        )
         && (!types.length || types.some((type) => supplier.supplierTypes.includes(type)))
     ));
 

@@ -258,10 +258,8 @@ let otyml : any = null;
 const configStore = useConfigStore();
 const favourites = useFavourites();
 
-let firstModuleIsLink = false;
 let isSearchResultsPage = false;
 
-let isSearchWidgetPresent = false;
 
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
@@ -278,19 +276,6 @@ if (page.value) {
         otyml = configStore.otyml;
     }
 
-    if (pageItems && pageItems.length) {
-        let firstNonPersonalisationModule = 0;
-        if (pageItems.length > 1 && pageItems[0].type === 'PersonalisationModule') {
-            firstNonPersonalisationModule = 1;
-        }
-        if (
-            pageItems[firstNonPersonalisationModule].type === 'ListLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'MultiImageLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'SingleImageLinksModule'
-        ) {
-            firstModuleIsLink = true;
-        }
-    }
 
     // Remove trailing slashes from the global search path to remove path ambiguity
     if (window
