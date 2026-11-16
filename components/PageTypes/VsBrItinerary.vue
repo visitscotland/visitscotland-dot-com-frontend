@@ -35,7 +35,7 @@
                 :content="documentData"
             />
         </VsRow>
-        <div class="mt-300">
+        <div v-if="configStore.heroImage" class="mt-300">
             <VsBrMedia
                 :image="configStore.heroImage.cmsImage"
                 :image-description="configStore.heroImage.description"
