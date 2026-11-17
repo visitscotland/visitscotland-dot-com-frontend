@@ -22,51 +22,7 @@
                     class="vs-google-map-with-sidebar__sidebar-wrapper"
                     :class="{ 'p-150': isMapUnavailable }"
                 >
-                    <div
-                        v-if="isMapUnavailable"
-                    >
-                        <VsHeading
-                            level="3"
-                            heading-style="heading-s"
-                            class="vs-google-map-with-sidebar__sidebar-error-heading mb-150"
-                            no-margins
-                        >
-                            {{ mapUnavailableTitle }}
-                        </VsHeading>
-                        <VsPanel
-                            variant="information"
-                            class="vs-google-map-with-sidebar__sidebar-error p-125 rounded-0"
-                            role="alert"
-                        >
-                            <div class="d-flex flex-column flex-sm-row">
-                                <VsIcon
-                                    icon="fa-regular fa-triangle-exclamation"
-                                    size="sm"
-                                    class="me-125 mt-025 mb-050"
-                                    variant="highlight"
-                                />
-                                <div>
-                                    <VsHeading
-                                        level="6"
-                                        heading-style="heading-xxs"
-                                        class="mb-100"
-                                        no-margins
-                                    >{{ mapUnavailablePanelTitle }}
-                                    </VsHeading>
-                                    <VsBody>
-                                        {{ mapUnavailableMessage }}
-                                    </VsBody>
-                                    <VsButton
-                                        size="sm"
-                                        class="mt-125 mb-050"
-                                        href="#section-1"
-                                    >
-                                        {{ mapUnavailableButtonCTA }}
-                                    </VsButton>
-                                </div>
-                            </div>
-                        </VsPanel>
-                    </div>
+                    <VsBrMapUnavailable v-if="isMapUnavailable" />
                     <template v-else>
                         <div class="vs-google-map-with-sidebar__sidebar-header">
                             <VsButton
@@ -271,7 +227,6 @@ import {
     VsHeading,
     VsIcon,
     VsImg,
-    VsPanel,
     VsRow,
 } from '@visitscotland/component-library/components';
 import {
@@ -286,6 +241,7 @@ import { FULL_SHADED_PLACES, SHADED_AREA_STYLE } from '~/main-map-constants.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 import formatLink from '~/composables/formatLink.ts';
+import VsBrMapUnavailable from './VsBrMapUnavailable.vue';
 import type { BrxmFeature, MapSidebarFilter } from '~/types/types';
 
 const configStore = useConfigStore();
@@ -301,12 +257,6 @@ const uiLabels = {
 
 const isSidebarVisible = ref<boolean>(true);
 
-const mapUnavailableTitle = 'Explore Scotland';
-const mapUnavailablePanelTitle = 'Map temporarily unavailable';
-const mapUnavailableMessage = 'We\'re having trouble displaying the map at the moment. '
-+ 'You can still explore Scotland using search, navigation and destination pages '
-+ 'while we work to restore the map.';
-const mapUnavailableButtonCTA = 'Explore Scotland\'s Destinations';
 const isMapUnavailable = ref<boolean>(false);
 
 // Destinations in multiple categories may come through as polygons in every
@@ -681,10 +631,6 @@ function handleMouseOut(id: string) {
                 @media screen and (min-width: 768px) {
                     width: auto;
                 }
-            }
-
-            &-error {
-                max-width: 29.625rem; /* 474px */
             }
 
             &-wrapper {
