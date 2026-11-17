@@ -207,7 +207,7 @@
             <VsGoogleMap
                 ref="googleMap"
                 class="vs-google-map-with-sidebar__map"
-                :class="{ invisible: isMapUnavailable }"
+                :class="{ 'vs-google-map-with-sidebar__map--error': isMapUnavailable }"
                 :api-key="configStore.googleMapApiKey"
                 :center="{
                     lat: 57.7,
@@ -609,6 +609,14 @@ function handleMouseOut(id: string) {
             height: 40rem;
             width: 100%;
             display: block;
+
+            &--error {
+                background: #E5E5E5;
+
+                > * {
+                    visibility: hidden;
+                }
+            }
         }
 
         &__marker {
