@@ -6,6 +6,7 @@
             <div
                 v-if="isSidebarVisible"
                 class="vs-google-map-with-sidebar__sidebar"
+                :class="{ 'vs-google-map-with-sidebar__sidebar--error': isMapUnavailable }"
             >
                 <VsButton
                     class="vs-google-map-with-sidebar__sidebar-toggle-button d-xs-block d-md-none"
@@ -20,26 +21,36 @@
                     <VsPanel
                         v-if="isMapUnavailable"
                         variant="information"
-                        class="vs-google-map-with-sidebar__sidebar-error"
+                        class="vs-google-map-with-sidebar__sidebar-error p-125 rounded-0"
                         role="alert"
                     >
-                        <div class="flex flex-row align-items-center mb-075">
+                        <div class="d-flex flex-row">
                             <VsIcon
                                 icon="fa-regular fa-triangle-exclamation"
                                 size="sm"
-                                class="me-075"
+                                class="me-125 mt-025"
+                                variant="highlight"
                             />
-                            <VsHeading
-                                level="6"
-                                heading-style="heading-xxs"
-                                class="vs-google-map-with-sidebar__sidebar-heading"
-                                no-margins
-                            >{{ mapUnavailableTitle }}
-                            </VsHeading>
+                            <div>
+                                <VsHeading
+                                    level="6"
+                                    heading-style="heading-xxs"
+                                    class="mb-100"
+                                    no-margins
+                                >{{ mapUnavailableTitle }}
+                                </VsHeading>
+                                <VsBody>
+                                    {{ mapUnavailableMessage }}
+                                </VsBody>
+                                <VsButton
+                                    size="sm"
+                                    class="mt-125 mb-050"
+                                    href="#section-1"
+                                >
+                                    {{ mapUnavailableButtonCTA }}
+                                </VsButton>
+                            </div>
                         </div>
-                        <VsBody>
-                            {{ mapUnavailableMessage }}
-                        </VsBody>
                     </VsPanel>
                     <template v-else>
                         <div class="vs-google-map-with-sidebar__sidebar-header">
@@ -276,8 +287,9 @@ const isSidebarVisible = ref<boolean>(true);
 
 const mapUnavailableTitle = 'Map temporarily unavailable';
 const mapUnavailableMessage = 'We\'re having trouble displaying the map at the moment. '
-    + 'You can still explore Scotland using search, navigation and destination pages '
-    + 'while we work to restore the map.';
++ 'You can still explore Scotland using search, navigation and destination pages '
++ 'while we work to restore the map.';
+const mapUnavailableButtonCTA = 'Explore Scotland\'s Destinations';
 const isMapUnavailable = ref<boolean>(false);
 
 // Destinations in multiple categories may come through as polygons in every
@@ -635,7 +647,21 @@ function handleMouseOut(id: string) {
             @media screen and (min-width: 768px) {
                 width: 22.5rem;
             }
-            
+
+            // Let the sidebar size to the error panel rather than the
+            // fixed 22.5rem sidebar width, so the panel's max-width applies.
+            &--error {
+                max-width: none;
+
+                @media screen and (min-width: 768px) {
+                    width: auto;
+                }
+            }
+
+            &-error {
+                max-width: 29.625rem; /* 474px */
+            }
+
             &-wrapper {
                 background: #fff;
                 border-radius: 0.625rem;
