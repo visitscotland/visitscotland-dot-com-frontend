@@ -1,10 +1,5 @@
 <template>
     <div>
-        <!-- test feature flags for production use - to be removed once verified -->
-        <template v-if="checkFlag('productiontest')">
-            <span data-testid="prod-test" />
-        </template>
-        
         <div v-if="!isInternalResource">
             <VsBrSkeleton
                 v-show="!hideSkeleton"
@@ -89,12 +84,15 @@ import {
     getCurrentInstance, ref, onMounted, nextTick,
 } from 'vue';
 import mitt from 'mitt';
+import { useFlagsStore } from './stores/flags.ts';
+import checkFlag from './composables/checkFlags.ts';
 
 import VsBrPageContext from '~/components/Base/VsBrPageContext.vue';
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
+import featureFlagsData from './composables/featureFlags.ts';
 
 import CssHeader from '~/components/InternalResources/CssHeader.vue';
 
@@ -114,6 +112,9 @@ const app = getCurrentInstance();
 const emitter = mitt();
 app.appContext.config.globalProperties.emitter = emitter;
 
+const checkFlags = () => checkFlag;
+app.appContext.config.globalProperties.checkFlags = checkFlags();
+
 /**
  * The current path, which is then transformed into a resource api endpoint to get from the CMS
  */
@@ -126,41 +127,18 @@ const route = useRoute().path;
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 
+const flagStore = useFlagsStore();
 
-let featureFlags = {
-    flags:{
-    },
-};
-
-
-// only get flags from API if we don't have them in session storage already
-if (!process.server && sessionStorage.getItem('flags') && sessionStorage.getItem('flags').length > 0) {
-    featureFlags.flags = JSON.parse(sessionStorage.getItem('flags'));
-} else {
+const fetchFlags = async() => {
     try {
-        await $fetch('/api/frontend/getFeatureFlagValues')
-            .then((response) => {        
-                if (!process.server) {
-                    featureFlags = response;
-                    sessionStorage.setItem('flags', JSON.stringify(response));
-                }       
-            });
+        const flags = featureFlagsData;
+        flagStore.flags = flags;
     } catch (error) {
-        console.log('error fetching flags', error);
-    }
-}
-
-// set up a global function to allow checking of flags
-app.appContext.config.globalProperties.checkFlag = (str) => {
-    if (typeof(featureFlags.flags) !== 'undefined'
-        && typeof(featureFlags.flags[str]) !== 'undefined'
-        && featureFlags.flags[str].enabled
-        || checkQueryString(str)) {
-        return true;
-    } else {
-        return false;
+        console.error('Error fetching flags:', error);
     }
 };
+
+await fetchFlags();
 
 let locale = 'resourceapi';
 

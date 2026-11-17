@@ -2,11 +2,23 @@
 const checkQueryString = (flag : string) => {
     try {
         const urlParams = new URLSearchParams(window.location.search);
-        const flagID = urlParams.get('flag');
-        if (flagID === str) {
-            sessionStorage.setItem('queryStr', flagID);
+        const urlFlagID = urlParams.get('flag');
+
+        const activeFlagsString = sessionStorage.getItem('activeFlags');
+        let activeFlags : any = {
+        };
+
+        if (activeFlagsString) {
+            activeFlags = JSON.parse(activeFlagsString);
+        }
+
+        if (urlFlagID && urlFlagID === flag) {
+            activeFlags[urlFlagID] = true;
+
+            sessionStorage.setItem('activeFlags', JSON.stringify(activeFlags));
+
             return true;
-        } else if (sessionStorage.getItem('queryStr') === str) {
+        } else if (activeFlags[flag]) {
             return true;
         }
     } catch(e) {
