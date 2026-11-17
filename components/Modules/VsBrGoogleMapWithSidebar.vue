@@ -207,6 +207,7 @@
             <VsGoogleMap
                 ref="googleMap"
                 class="vs-google-map-with-sidebar__map"
+                :class="{ invisible: isMapUnavailable }"
                 :api-key="configStore.googleMapApiKey"
                 :center="{
                     lat: 57.7,
