@@ -46,7 +46,7 @@
     "@pinia/nuxt": "^1.0.3",
     "@playwright/test": "^1.65.0",
     "@visitscotland/component-library": "5.83.3",
-    "axios": "^1.21.0",
+    "axios": "^1.21.1",
     "commitizen": "^4.3.2",
     "cz-conventional-changelog": "^3.3.0",
     "html-entities": "^2.6.0",
@@ -62,7 +62,7 @@
   "resolutions": {
     "vue": "3.5.45",
     "simple-git": "4.0.2",
-    "axios": "1.21.0",
+    "axios": "1.21.1",
     "lodash": "4.18.1"
   },
   "overrides": {
