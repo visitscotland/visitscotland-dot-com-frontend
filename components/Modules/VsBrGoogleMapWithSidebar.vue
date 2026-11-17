@@ -17,13 +17,30 @@
                     {{ configStore.getLabel('map', 'map.open-panel') }}
                 </VsButton>
                 <div class="vs-google-map-with-sidebar__sidebar-wrapper">
-                    <VsBody
+                    <VsPanel
                         v-if="isMapUnavailable"
+                        variant="information"
                         class="vs-google-map-with-sidebar__sidebar-error"
                         role="alert"
                     >
-                        {{ mapUnavailableMessage }}
-                    </VsBody>
+                        <div class="flex flex-row align-items-center mb-075">
+                            <VsIcon
+                                icon="fa-regular fa-triangle-exclamation"
+                                size="sm"
+                                class="me-075"
+                            />
+                            <VsHeading
+                                level="6"
+                                heading-style="heading-xxs"
+                                class="vs-google-map-with-sidebar__sidebar-heading"
+                                no-margins
+                            >{{ mapUnavailableTitle }}
+                            </VsHeading>
+                        </div>
+                        <VsBody>
+                            {{ mapUnavailableMessage }}
+                        </VsBody>
+                    </VsPanel>
                     <template v-else>
                         <div class="vs-google-map-with-sidebar__sidebar-header">
                             <VsButton
@@ -227,6 +244,7 @@ import {
     VsHeading,
     VsIcon,
     VsImg,
+    VsPanel,
     VsRow,
 } from '@visitscotland/component-library/components';
 import {
@@ -256,6 +274,7 @@ const uiLabels = {
 
 const isSidebarVisible = ref<boolean>(true);
 
+const mapUnavailableTitle = 'Map temporarily unavailable';
 const mapUnavailableMessage = 'We\'re having trouble displaying the map at the moment. '
     + 'You can still explore Scotland using search, navigation and destination pages '
     + 'while we work to restore the map.';
