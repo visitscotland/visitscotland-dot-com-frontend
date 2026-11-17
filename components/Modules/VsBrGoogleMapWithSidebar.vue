@@ -9,6 +9,7 @@
                 :class="{ 'vs-google-map-with-sidebar__sidebar--error': isMapUnavailable }"
             >
                 <VsButton
+                    v-if="!isMapUnavailable"
                     class="vs-google-map-with-sidebar__sidebar-toggle-button d-xs-block d-md-none"
                     size="sm"
                     :variant="isSidebarVisible ? 'primary' : 'secondary'"
@@ -17,41 +18,55 @@
                 >
                     {{ configStore.getLabel('map', 'map.open-panel') }}
                 </VsButton>
-                <div class="vs-google-map-with-sidebar__sidebar-wrapper">
-                    <VsPanel
+                <div
+                    class="vs-google-map-with-sidebar__sidebar-wrapper"
+                    :class="{ 'p-150': isMapUnavailable }"
+                >
+                    <div
                         v-if="isMapUnavailable"
-                        variant="information"
-                        class="vs-google-map-with-sidebar__sidebar-error p-125 rounded-0"
-                        role="alert"
                     >
-                        <div class="d-flex flex-row">
-                            <VsIcon
-                                icon="fa-regular fa-triangle-exclamation"
-                                size="sm"
-                                class="me-125 mt-025"
-                                variant="highlight"
-                            />
-                            <div>
-                                <VsHeading
-                                    level="6"
-                                    heading-style="heading-xxs"
-                                    class="mb-100"
-                                    no-margins
-                                >{{ mapUnavailableTitle }}
-                                </VsHeading>
-                                <VsBody>
-                                    {{ mapUnavailableMessage }}
-                                </VsBody>
-                                <VsButton
+                        <VsHeading
+                            level="3"
+                            heading-style="heading-s"
+                            class="vs-google-map-with-sidebar__sidebar-error-heading mb-150"
+                            no-margins
+                        >
+                            {{ mapUnavailableTitle }}
+                        </VsHeading>
+                        <VsPanel
+                            variant="information"
+                            class="vs-google-map-with-sidebar__sidebar-error p-125 rounded-0"
+                            role="alert"
+                        >
+                            <div class="d-flex flex-column flex-sm-row">
+                                <VsIcon
+                                    icon="fa-regular fa-triangle-exclamation"
                                     size="sm"
-                                    class="mt-125 mb-050"
-                                    href="#section-1"
-                                >
-                                    {{ mapUnavailableButtonCTA }}
-                                </VsButton>
+                                    class="me-125 mt-025 mb-050"
+                                    variant="highlight"
+                                />
+                                <div>
+                                    <VsHeading
+                                        level="6"
+                                        heading-style="heading-xxs"
+                                        class="mb-100"
+                                        no-margins
+                                    >{{ mapUnavailablePanelTitle }}
+                                    </VsHeading>
+                                    <VsBody>
+                                        {{ mapUnavailableMessage }}
+                                    </VsBody>
+                                    <VsButton
+                                        size="sm"
+                                        class="mt-125 mb-050"
+                                        href="#section-1"
+                                    >
+                                        {{ mapUnavailableButtonCTA }}
+                                    </VsButton>
+                                </div>
                             </div>
-                        </div>
-                    </VsPanel>
+                        </VsPanel>
+                    </div>
                     <template v-else>
                         <div class="vs-google-map-with-sidebar__sidebar-header">
                             <VsButton
@@ -285,7 +300,8 @@ const uiLabels = {
 
 const isSidebarVisible = ref<boolean>(true);
 
-const mapUnavailableTitle = 'Map temporarily unavailable';
+const mapUnavailableTitle = 'Explore Scotland';
+const mapUnavailablePanelTitle = 'Map temporarily unavailable';
 const mapUnavailableMessage = 'We\'re having trouble displaying the map at the moment. '
 + 'You can still explore Scotland using search, navigation and destination pages '
 + 'while we work to restore the map.';
