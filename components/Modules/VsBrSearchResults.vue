@@ -16,10 +16,10 @@
                             class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                             :src="result.imgSrc || fallbackImg"
                         />
-                        <div class="position-absolute bottom-0 start-0 d-flex gap-2">
+                        <div class="position-absolute bottom-0 start-0 d-flex">
                             <VsBadge
                                 v-if="result.minPrice"
-                                class="rounded-top-end rounded-bottom-start"
+                                class="rounded-top-end rounded-bottom-start me-050"
                                 variant="information"
                             >
                                 {{ configStore.getLabel('search', 'price.from') }} {{ formattedPrice(result.minPrice) }}
@@ -33,12 +33,12 @@
                                 {{ setEventDate(result.startDate, result.endDate) }}
                             </VsBadge>
                         </div>
-                        <div class="position-absolute bottom-0 end-0 d-flex">
+                        <div class="position-absolute bottom-0 end-0">
                             <VsBadge
                                 v-if="
                                     result.categoryCard
                                         && cardCategoryLabels[result.categoryCard]"
-                                class="rounded-top-start rounded-bottom-start mx-0"
+                                class="rounded-top-start rounded-bottom-start me-0"
                                 variant="highlight"
                             >
                                 {{ cardCategoryLabels[result.categoryCard] }}
