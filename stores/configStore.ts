@@ -19,6 +19,7 @@ interface IConfigState {
     cludoExperienceId: string,
     cludoEngineId: string,
     cludoLanguage: string,
+    showSearchWidget: boolean,
     searchDmsBased: boolean,
     eventsApiUrl: string,
     searchFilters: object,
@@ -41,8 +42,7 @@ const useConfigStore = defineStore('configStore', {
         heroImage: null,
         labels: {
         },
-        newsletterSignpost: {
-        },
+        newsletterSignpost: null,
         pageTemplate: {
         },
         gtm: null,
@@ -57,6 +57,7 @@ const useConfigStore = defineStore('configStore', {
         cludoExperienceId: '',
         cludoEngineId: '',
         cludoLanguage: '',
+        showSearchWidget: false,
         searchDmsBased: false,
         eventsApiUrl: '',
         searchFilters: {
