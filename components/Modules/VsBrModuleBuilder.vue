@@ -77,19 +77,54 @@
         </NuxtLazyHydrate>
 
         <NuxtLazyHydrate
-            :when-visible="{ rootMargin: '50px' }"
+            :when-visible="{ rootMargin: '50px' }"  c
             v-else-if="item.type === 'ArticleModule'"
         >
-            <VsBrAccordionModule
-                v-if="hippoContent[index]?.model?.data?.theme === 'accordion'"
-                :id-prefix="`accordionItem-${index}-`"
-                :module="item"
-            />
-
+            <div v-if="hippoContent[index]?.model?.data?.theme === 'accordion'" class="d-flex flex-column gap-500">
+                <div>
+                    <VsBrAccordionModule
+                        :id-prefix="`accordionItem-${index}-`"
+                        :module="item"
+                    />
+                </div>
+                <div>
+                <VsBrSectionHeader
+                    :heading="item.title"
+                    :lede="item.introduction?.value"
+                />
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-md-8">
+                            <VsDetailsAccordionItem
+                                v-for="(section, index) in item.sections"
+                                :key="index"
+                            >
+                                <template #title>
+                                    <VsHeading
+                                    no-margins
+                                    level="3"
+                                    heading-style="heading-xxxs"
+                                    >
+                                        {{ section.heading }}
+                                    </VsHeading>
+                                </template>
+                                <template #content>
+                                    <VsBody class="mt-125"> 
+                                        <VsBrRichText
+                                            :input-content="section.copy.value"
+                                        />
+                                    </VsBody>
+                                </template>
+                            </VsDetailsAccordionItem>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
             <VsBrRichArticleModule
-                v-else
-                :module="item"
-                :next-module-article="index + 1 < modules.length && modules[index + 1].type === 'ArticleModule'"
+            v-else
+            :module="item"
+            :next-module-article="index + 1 < modules.length && modules[index + 1].type === 'ArticleModule'"
             />
         </NuxtLazyHydrate>
 
@@ -142,10 +177,6 @@
             </Suspense>
         </NuxtLazyHydrate>
 
-        <VsBrSupplierListingModule
-            v-else-if="item.type === 'SupplierListingModule'"
-            :module="item"
-        />
         <NuxtLazyHydrate
             :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'SkiListModule'"
@@ -241,6 +272,9 @@ import { inject, defineAsyncComponent } from 'vue';
 import type { Page } from '@bloomreach/spa-sdk';
 import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 
+import { VsBody, VsHeading, VsIcon } from '@visitscotland/component-library/components';
+
+
 import VsBrListLinksModule from '~/components/Modules/VsBrListLinksModule.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksModule.vue';
@@ -257,10 +291,13 @@ import VsBrSpotlightSection from '~/components/Modules/VsBrSpotlightSection.vue'
 import VsBrDevModule from '~/components/Modules/VsBrDevModule.vue';
 import VsBrFavouritesDisplay from '~/components/Modules/VsBrFavouritesDisplay.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrSectionHeader from '~/components/Modules/VsBrSectionHeader.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
 import VsBrGoogleMapWithSidebar from './VsBrGoogleMapWithSidebar.vue';
 // import checkFlag from '~/composables/checkFlags';
+import VsDetailsAccordionItem from '../Prototypes/VsDetailsAccordionItem.vue';
 
 const VsBrMapWithSidebar = defineAsyncComponent(() => import('~/components/Modules/VsBrMapWithSidebar.vue'));
 const VsBrMainMap = defineAsyncComponent(() => import('~/components/Modules/VsBrMainMap.vue'));
@@ -320,3 +357,25 @@ if (modules) {
     }
 }
 </script>
+
+<style>
+    summary {
+        display: flex;
+        justify-content: space-between;
+    }
+    summary::after {
+        content: "\f078";
+        font-family: 'Font Awesome 6 Pro';
+        font-size: 1.25rem;
+    }
+    details summary::after {
+        transform: scaleY(1);
+    }
+    details[open] summary::after {
+        transform: scaleY(-1);
+    }
+    details {
+        border-bottom: solid 1px #e9e9e9;
+        padding: 1rem 0 1rem;
+    }
+</style>
