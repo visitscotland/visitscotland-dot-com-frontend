@@ -16,7 +16,7 @@
                             class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                             :src="result.imgSrc || fallbackImg"
                         />
-                        <div class="position-absolute bottom-0 start-0 d-flex">
+                        <div class="position-absolute bottom-0 start-0">
                             <VsBadge
                                 v-if="result.minPrice"
                                 class="rounded-top-end rounded-bottom-start me-050"
