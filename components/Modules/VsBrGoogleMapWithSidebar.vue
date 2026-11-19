@@ -241,6 +241,7 @@ import { FULL_SHADED_PLACES, SHADED_AREA_STYLE } from '~/main-map-constants.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 import formatLink from '~/composables/formatLink.ts';
+import checkFlag from '~/composables/checkFlags.ts';
 import VsBrMapUnavailable from './VsBrMapUnavailable.vue';
 import type { BrxmFeature, MapSidebarFilter } from '~/types/types';
 
@@ -352,7 +353,7 @@ watch([selectedCategory, selectedFeature, hoveredRegionId], () => {
 onMounted(async() => {
     // https://developers.google.com/maps/documentation/javascript/events#auth-errors
     (window as any).gm_authFailure = () => {
-        isMapUnavailable.value = true;
+        isMapUnavailable.value = checkFlag('use-map-unavailable');
     };
 
     try {
@@ -360,7 +361,7 @@ onMounted(async() => {
     } catch {
         // Catch google maps unavailable error
         // Could be triggered by network issues, google outage or adblocker
-        isMapUnavailable.value = true;
+        isMapUnavailable.value = checkFlag('use-map-unavailable');
         return;
     }
 

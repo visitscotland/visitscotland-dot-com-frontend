@@ -174,6 +174,7 @@ import useGoogleMap from '~/composables/mainMap/useGoogleMap.ts';
 import useMapSearch from '~/composables/mainMap/useMapSearch.ts';
 import useMapMarkers from '~/composables/mainMap/useMapMarkers.ts';
 import useVerifyCookies from '~/composables/useVerifyCookies.ts';
+import checkFlag from '~/composables/checkFlags.ts';
 import cookieValues from '~/utls/required-cookies-data.ts';
 import VsBrMainMapSidebar from './VsBrMainMapSidebar.vue';
 
@@ -235,7 +236,7 @@ async function initialiseMap() {
     } catch {
         // Google Maps couldn't be loaded, eg network issues,
         // a Google outage or an ad blocker.
-        isMapUnavailable.value = true;
+        isMapUnavailable.value = checkFlag('use-map-unavailable');
         return;
     }
 
@@ -260,7 +261,7 @@ onMounted(async() => {
     // Google calls this when the API key is rejected after the script loads.
     // https://developers.google.com/maps/documentation/javascript/events#auth-errors
     (window as any).gm_authFailure = () => {
-        isMapUnavailable.value = true;
+        isMapUnavailable.value = checkFlag('use-map-unavailable');
     };
 
     setupFeatureDestinations();
