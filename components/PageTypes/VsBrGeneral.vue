@@ -208,7 +208,7 @@
             <VsBrHorizontalLinksModule
                 :module="otyml"
                 theme="light"
-                :aria-label="configStore.getLabel('content-swipers', 'otyml')"
+                :aria-description="configStore.getLabel('otyml', 'carousel.description')"
             />
         </section>
     </NuxtLazyHydrate>

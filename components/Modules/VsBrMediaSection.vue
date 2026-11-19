@@ -36,7 +36,7 @@
         :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
         :contained="false"
         :slides-per-view-lg="2.2"
-        :aria-label="ariaLabel"
+        :aria-description="ariaDescription"
     >
         <VsContentSwiperSlide
             v-for="(slide, index) in mediaSection.items"
@@ -81,10 +81,10 @@ const configStore = useConfigStore();
 
 const props = defineProps<{
     mediaSection: object,
-    ariaLabel?: string,
+    ariaDescription?: string,
 }>();
 
 const mediaSection: any = props.mediaSection;
-const ariaLabel: string | undefined = props.ariaLabel;
+const ariaDescription: string | undefined = props.ariaDescription;
 
 </script>

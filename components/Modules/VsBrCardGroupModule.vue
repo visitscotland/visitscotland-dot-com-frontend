@@ -12,7 +12,7 @@
         :slides-per-view-md="2"
         :slides-per-view-lg="2.6"
         :slides-per-view-xl="cardsPerRow"
-        :aria-label="`${configStore.getLabel('content-swipers', 'card-group')} ${module.title}`"
+        :aria-description="`${configStore.getLabel('megalinks', 'carousel.description')} ${module.title}`"
     >
         <VsContentSwiperSlide
             v-for="(link, index) in links"

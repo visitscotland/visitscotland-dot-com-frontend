@@ -42,7 +42,7 @@
                     v-if="hippoContent[index].model.data.layout === 'Horizontal Links'"
                     :module="item"
                     :theme="item.themeValue"
-                    :aria-label="`${configStore.getLabel('content-swipers', 'horizontal-links')} ${item.title}`"
+                    :aria-description="`${configStore.getLabel('megalinks', 'carousel.description')} ${item.title}`"
                 />
             </NuxtLazyHydrate>
         </template>
