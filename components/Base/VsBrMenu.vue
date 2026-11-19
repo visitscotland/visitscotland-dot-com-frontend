@@ -149,7 +149,10 @@
                     :aria-label="configStore.getLabel('navigation.static', 'meganav.utility-aria-label')"
                 >
                     <ul class="d-flex">
-                        <li class="me-075">
+                        <li
+                            class="me-075"
+                            v-if="configStore.globalSearchPath"
+                        >
                             <VsButton
                                 size="sm"
                                 variant="secondary"
@@ -182,6 +185,7 @@
 
                         <li
                             class="d-none d-md-block me-025"
+                            v-if="configStore.mainMapPath"
                         >
                             <VsTooltip
                                 :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
@@ -198,6 +202,7 @@
                         </li>
                         <li
                             class="d-none d-md-block me-0 me-md-075 me-lg-0"
+                            v-if="localisedUrls && localisedUrls.length"
                         >
                             <VsNavigationBarMenuDropdown subtle>
                                 <template #button-content>
@@ -299,7 +304,10 @@
                                 </VsTooltip>
                             </li>
 
-                            <li class="d-block d-md-none me-075">
+                            <li
+                                class="d-block d-md-none me-075"
+                                v-if="configStore.mainMapPath"
+                            >
                                 <VsTooltip
                                     :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
                                     subtle
@@ -313,7 +321,10 @@
                                     {{ configStore.getLabel('navigation.static', 'meganav.map-link-tooltip') }}
                                 </VsTooltip>
                             </li>
-                            <li class="d-block d-md-none">
+                            <li
+                                class="d-block d-md-none"
+                                v-if="localisedUrls && localisedUrls.length"
+                            >
                                 <VsNavigationBarMenuDropdown subtle>
                                     <template #button-content>
                                         {{ configStore.locale.toUpperCase() }}
@@ -495,5 +506,21 @@ provide('page', page.value);
     .vs-favourites-link:focus {
         box-shadow: 0 0 0 2px #fffa99 inset;
         outline: none;
+    }
+
+    .no-js {
+        .vs-navigation-bar__utilities {
+            nav > ul > li:not(first-child) {
+                margin: 0 1rem !important;
+            }
+
+            nav > ul > li:not(:first-child) {
+                margin: 1.5rem 0 !important;
+            }
+
+            .vs-button {
+                display: inline !important;
+            }
+        }
     }
 </style>

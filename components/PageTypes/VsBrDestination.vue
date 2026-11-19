@@ -11,6 +11,7 @@
                 cols="auto"
                 lg="4"
                 class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                v-if="favourites.featureEnabled"
             >
                 <VsBrFavouriteButton
                     :uuid="documentData.id"
@@ -130,6 +131,7 @@ import { toRefs, computed } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
 import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
@@ -151,6 +153,8 @@ import {
 
 } from '@visitscotland/component-library/components';
 
+const favourites = useFavourites();
+
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
@@ -165,7 +169,6 @@ let location: any = null;
 
 const configStore = useConfigStore();
 
-let firstModuleIsLink = false;
 
 const keyInfo = configStore.pageTemplate.keyInformationPanel;
 
@@ -180,19 +183,6 @@ if (page.value) {
         otyml = configStore.otyml;
     }
 
-    if (pageItems && pageItems.length) {
-        let firstNonPersonalisationModule = 0;
-        if (pageItems.length > 1 && pageItems[0].type === 'PersonalisationModule') {
-            firstNonPersonalisationModule = 1;
-        }
-        if (
-            pageItems[firstNonPersonalisationModule].type === 'ListLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'MultiImageLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'SingleImageLinksModule'
-        ) {
-            firstModuleIsLink = true;
-        }
-    }
 }
 
 const regionMapping: Record<string, Region> = {

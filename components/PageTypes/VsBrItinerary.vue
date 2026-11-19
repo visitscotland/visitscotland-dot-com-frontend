@@ -11,6 +11,7 @@
                 cols="auto"
                 lg="4"
                 class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                v-if="favourites.featureEnabled"
             >
                 <VsBrFavouriteButton
                     :uuid="documentData.id"
@@ -34,7 +35,7 @@
                 :content="documentData"
             />
         </VsRow>
-        <div class="mt-300">
+        <div v-if="configStore.heroImage" class="mt-300">
             <VsBrMedia
                 :image="configStore.heroImage.cmsImage"
                 :image-description="configStore.heroImage.description"
@@ -283,6 +284,7 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 
@@ -305,6 +307,7 @@ import {
 } from '@visitscotland/component-library/components';
 
 
+const favourites = useFavourites();
 const configStore = useConfigStore();
 
 const props = defineProps<{ component: Component, page: Page }>();
