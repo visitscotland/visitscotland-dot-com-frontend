@@ -2,6 +2,7 @@ export interface PageTest {
     name: string;
     path: string;
     fixtureFile: string;
+    heading: string;
 }
 
 export interface AppTestConfig {
@@ -24,22 +25,26 @@ export const apps: AppTestConfig[] = [
             {
                 name: 'Homepage',
                 path: '/',
-                fixtureFile: 'homepage.json', 
+                fixtureFile: 'homepage.json',
+                heading: 'Start Your Story in Scotland',
             },
             {
                 name: 'Glasgow',
                 path: '/places-to-go/glasgow',
                 fixtureFile: 'glasgow.json',
+                heading: 'Glasgow',
             },
             {
                 name: '7 Day East Coast Itinerary',
                 path: '/travel-planning/touring/7-days-east-scotland',
                 fixtureFile: '7-day-itinerary.json',
+                heading: '7 Days in the east of Scotland',
             },
             {
                 name: 'Outdoor Safety In Scotland',
                 path: '/things-to-do/outdoor-activities/outdoor-safety-tips',
                 fixtureFile: 'outdoor-safety.json',
+                heading: 'Outdoor safety in Scotland',
             },
         ],
     },
