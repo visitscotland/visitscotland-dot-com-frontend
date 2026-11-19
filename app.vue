@@ -12,20 +12,22 @@
                     :configuration="configuration"
                     :mapping="mapping"
                 >
-                    <template #default>
-                        <div
-                            :class="!isMounted ? 'no-js' : ''"
-                        >
-                            <br-component
-                                component="menu"
-                            />
-                            <br-component
-                                component="main"
-                            />
-                            <br-component
-                                component="footer"
-                            />
-                        </div>
+                    <template #default="{ page }">
+                        <VsBrPageContext :page="page">
+                            <div
+                                :class="!isMounted ? 'no-js' : ''"
+                            >
+                                <br-component
+                                    component="menu"
+                                />
+                                <br-component
+                                    component="main"
+                                />
+                                <br-component
+                                    component="footer"
+                                />
+                            </div>
+                        </VsBrPageContext>
                     </template>
                 </br-page>
             </div>
@@ -42,12 +44,22 @@
             <div id="start-fragment" style="display: none;" />
             <div id="__nuxt" class="external-header-integration">
                 <br-page :configuration="configuration" :mapping="mapping">
-                    <template #default>
-                        <Suspense v-if="internalResourceName === 'header'">
-                            <component :is="CssHeader" />
-                        </Suspense>
-                        <br-component component="menu" v-if="internalResourceName === 'header'" />
-                        <br-component component="footer" v-if="internalResourceName === 'footer'" />
+                    <template #default="{ page }">
+                        <VsBrPageContext :page="page">
+                            <CssHeader
+                                v-if="internalResourceName === 'header'"
+                            />
+                            <br-component
+                                v-if="internalResourceName === 'header'"
+                                component="menu"
+                            />
+                            <div style="display: none">
+                                <br-component
+                                    component="main"
+                                />
+                            </div>
+                            <br-component component="footer" v-if="internalResourceName === 'footer'" />
+                        </VsBrPageContext>
                     </template>
                 </br-page>
             </div>
@@ -75,13 +87,20 @@ import mitt from 'mitt';
 import { useFlagsStore } from './stores/flags.ts';
 import checkFlag from './composables/checkFlags.ts';
 
+import VsBrPageContext from '~/components/Base/VsBrPageContext.vue';
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
 import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
 import featureFlagsData from './composables/featureFlags.ts';
 
-const CssHeader = defineAsyncComponent(() => import('~/components/InternalResources/CssHeader.vue'));
+import CssHeader from '~/components/InternalResources/CssHeader.vue';
+
+import useConfigStore from '~/stores/configStore.ts';
+
+
+
+const configStore = useConfigStore();
 
 /**
  * This section sets up all of the information we need to make available for the Bloomreach SDK
@@ -119,7 +138,7 @@ const fetchFlags = async() => {
     }
 };
 
-await fetchFlags();  
+await fetchFlags();
 
 let locale = 'resourceapi';
 
@@ -129,10 +148,22 @@ const localeStrings = [
     'it-it',
     'nl-nl',
     'de-de',
+    'travel-trade', // This isn't a locale, but is being temporarily rebuilt as a sub-folder using
+    // the same structure as the languages. It should not appear in the CMS.
 ];
 
 const isMounted = ref(false);
 const hideSkeleton = ref(false);
+
+// This is an SSR fallback only. If it is registered in app.head, Unhead restores the class on the
+// client after the inline removal script has run, leaving the hydrated page in its no-JS state.
+if (import.meta.server) {
+    useHead({
+        htmlAttrs: {
+            class: 'no-js',
+        },
+    });
+}
 
 const scrollToAnchor = (hash, attempts = 0) => {
     const element = document.querySelector(hash);
@@ -172,9 +203,10 @@ onMounted(async() => {
 let deLocalisedRoute = route;
 
 for (let x = 0; x < localeStrings.length; x++) {
-    if (route.includes(localeStrings[x])) {
+    if (route === `/${localeStrings[x]}` || route.startsWith(`/${localeStrings[x]}/`)) {
         locale = `${localeStrings[x]}/resourceapi`;
-        deLocalisedRoute = deLocalisedRoute.replace(`/${localeStrings[x]}`, '');
+        deLocalisedRoute = route.slice(localeStrings[x].length + 1) || '/';
+        break;
     }
 }
 
@@ -264,6 +296,8 @@ const state = determineInternalState();
 isInternalResource = state.isInternal;
 internalResourceName = state.name;
 
+configStore.isInternalResource = isInternalResource;
+
 if (isInternalResource) {
     deLocalisedRoute = '/';
 }
@@ -333,6 +367,6 @@ const mapping = {
     }
 
     [id] {
-        scroll-margin-top: 4rem;
+        scroll-margin-top: var(--vs-navbar-scroll-margin-top, 4rem);
     }
 </style>

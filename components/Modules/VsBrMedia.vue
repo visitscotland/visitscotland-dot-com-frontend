@@ -1,6 +1,6 @@
 <template>
     <VsBrImageWithCaption
-        v-if="videoId"
+        v-if="videoId && !videoWithMediaCaption"
         :image="image"
         :image-string="imageString"
         :image-data-set="imageDataSet"
@@ -23,48 +23,71 @@
         </template>
     </VsBrImageWithCaption>
     <template v-else>
-        <div
+        <figure
             class="vs-br-media"
             :class="{
                 'vs-br-media--mobile-overlap': mobileOverlap,
                 'vs-br-media--full-bleed': fullBleed,
             }"
         >
-            <div class="vs-br-media__img-wrapper">
+            <div
+                class="vs-br-media__img-wrapper"
+                v-if="!videoId"
+            >
                 <VsImg
                     :src="imageSrc"
                     :alt="altText"
                     class="vs-br-media__img"
-                    :class="rounded ? 'rounded-2' : ''"
+                    :class="`${imageClasses} ${rounded ? 'rounded-2' : ''}`"
                 />
             </div>
-            <VsMediaCaption
-                v-if="imageData"
-                :right-align="alignment === 'right'"
-            >
-                <template #caption>
-                    {{ descriptionString }}
-                </template>
-                <template #credit>
-                    <template
-                        v-if="imageData.source"
-                    >
-                        <VsSocialCreditLink
-                            :credit="imageData.credit
-                                ? imageData.credit
-                                : configStore.getLabel('essentials.global', 'image.no.credit')"
-                            :social-post-url="imageData.postUrl ? imageData.postUrl : ''"
-                            :source="imageData.source"
-                        />
+            <div v-else>
+                <VsVideo
+                    :video-id="videoId"
+                    :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
+                    :no-js-message="configStore.getLabel('video', 'video.no-js')"
+                    :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
+                    :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+                />
+            </div>
+
+            <figcaption>
+                <VsMediaCaption
+                    v-if="imageData"
+                    :right-align="alignment === 'right'"
+                >
+                    <template #caption>
+                        {{ descriptionString }}
                     </template>
-                    <template
-                        v-if="!imageData.source && imageData.credit"
-                    >
-                        &copy; {{ imageData.credit }}
+                    <template #credit>
+                        <template
+                            v-if="imageData.source"
+                        >
+                            <VsSocialCreditLink
+                                :credit="imageData.credit
+                                    ? imageData.credit
+                                    : configStore.getLabel('essentials.global', 'image.no.credit')"
+                                :social-post-url="imageData.postUrl ? imageData.postUrl : ''"
+                                :source="imageData.source"
+                            />
+                        </template>
+                        <template
+                            v-if="!imageData.source && imageData.credit"
+                        >
+                            &copy; {{ imageData.credit }}
+                        </template>
                     </template>
-                </template>
-            </VsMediaCaption>
-        </div>
+                </VsMediaCaption>
+                <VsMediaCaption
+                    v-else-if="videoId"
+                    :video-id="videoId"
+                >
+                    <template #caption>
+                        <slot name="video-title" />
+                    </template>
+                </VsMediaCaption>
+            </figcaption>
+        </figure>
     </template>
 </template>
 
@@ -79,6 +102,7 @@ import {
     VsImg,
     VsMediaCaption,
     VsSocialCreditLink,
+    VsVideo,
 } from '@visitscotland/component-library/components';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
@@ -92,6 +116,7 @@ interface IProps {
     imageString?: string,
     imageDataSet?: any,
     imageDescription?: string,
+    imageClasses?: string,
     variant?: string,
     isHero?: boolean,
     isVideo?: boolean,
@@ -106,6 +131,7 @@ interface IProps {
     showToggle?: boolean,
     rounded?: boolean,
     fullBleed?: boolean,
+    videoWithMediaCaption?: boolean,
 };
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -113,6 +139,7 @@ const props = withDefaults(defineProps<IProps>(), {
     imageString: '',
     imageDataSet: null,
     imageDescription: '',
+    imageClasses: '',
     variant: 'fullwidth',
     isHero: false,
     isVideo: false,
@@ -127,6 +154,7 @@ const props = withDefaults(defineProps<IProps>(), {
     videoBtn: '',
     rounded: false,
     fullBleed: false,
+    videoWithMediaCaption: false,
 });
 
 const {
@@ -134,6 +162,7 @@ const {
     imageString,
     imageDataSet,
     imageDescription,
+    imageClasses,
     variant,
     isHero,
     isVideo,
@@ -147,6 +176,7 @@ const {
     noAltText,
     showToggle,
     fullBleed,
+    videoWithMediaCaption,
 } = toRefs(props);
 
 const page: Page | undefined = inject('page');
@@ -157,8 +187,6 @@ let imageSrc = 'https://static.visitscotland.com/img/fallback-img.png';
 
 let descriptionString = '';
 
-let longitude = '';
-let latitude = '';
 let altText = '';
 
 if (page) {
@@ -173,18 +201,10 @@ if (page) {
             imageData.coordinates = configStore.heroImage.coordinates;
         }
 
-        if (isHero.value) {
+        if (isHero.value && configStore.heroImage) {
             imageData.description = configStore.heroImage.description;
         }
 
-        if (imageData.coordinates) {
-            if (imageData.coordinates.longitude) {
-                longitude = imageData.coordinates.longitude.toString();
-            }
-            if (imageData.coordinates.latitude) {
-                latitude = imageData.coordinates.latitude.toString();
-            }
-        }
 
         altText = (noAltText.value || !imageData)
             ? configStore.getLabel('essentials.global', 'default.alt-text')

@@ -10,9 +10,8 @@
             :page-type="pageName"
         />
 
-        <VsBrPageIntro
+        <VsBrHeroSection
             :content="errorData"
-            :light-background="true"
         />
     </div>
 </template>
@@ -25,7 +24,7 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
+import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 import VsBrGtm from '~/components/Modules/VsBrGtm.vue';
 
 import VsBrPageViewEvent from '~/components/Utils/VsBrPageViewEvent.vue';
@@ -42,8 +41,7 @@ let pageDocument : any = {
 };
 
 const errorData = {
-    introduction: {
-    },
+    teaser: '',
 };
 
 const configStore = useConfigStore();
@@ -62,7 +60,7 @@ if (page.value) {
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
-    errorData.introduction.value = `<p>${configStore.getLabel('essentials.global', 'third-party-error')}</p>`;
+    errorData.teaser = configStore.getLabel('essentials.global', 'third-party-error');
 
     const pageContent : any = page.value.getContent(page.value.model.root);
     const pageModels : any = pageContent.models;
@@ -99,11 +97,6 @@ if (page.value) {
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        htmlAttrs: {
-            lang: langString,
-            'data-version': configStore.pageMetaData.version,
-            'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
-        },
         link: [
             {
                 rel: 'icon',
@@ -126,6 +119,16 @@ if (page.value) {
             },
         ],
     });
+
+    if (!configStore.isInternalResource) {
+        useHead({
+            htmlAttrs: {
+                lang: langString,
+                'data-version': configStore.pageMetaData.version,
+                'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
+            },
+        });
+    }
 }
 
 provide('page', page.value);

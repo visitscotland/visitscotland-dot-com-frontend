@@ -1,5 +1,10 @@
 <template>
-    <VsFooter :class="{ 'has-edit-button': page.isPreview() }">
+    <VsFooter
+        :class="{
+            'has-edit-button': page.isPreview(),
+            'd-none d-lg-block': configStore.isMainMapPageFlag,
+        }"
+    >
         <template #accordion-items>
             <VsCol
                 v-for="(menuItem, index) in menuItems"
@@ -74,7 +79,9 @@
             v-for="(utilityMenu, index) in utilityMenuItems"
             :key="index"
         >
-            <VsFooterUtilityList>
+            <VsFooterUtilityList
+                style="position: relative;"
+            >
                 <BrManageMenuButton :menu="utilityData" />
                 <VsFooterNavListItem
                     v-for="(utilityItem, childIndex) in utilityMenu.children"

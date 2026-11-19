@@ -6,3 +6,5 @@ updates:
       interval: "daily"
     cooldown:
       default-days: 7
+    assignees:
+        - "markup-mitchell"

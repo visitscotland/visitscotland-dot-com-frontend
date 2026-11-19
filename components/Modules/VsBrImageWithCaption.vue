@@ -174,7 +174,7 @@ if (page) {
             imageData.coordinates = configStore.heroImage.coordinates;
         }
 
-        if (isHero.value) {
+        if (isHero.value && configStore.heroImage) {
             imageData.description = configStore.heroImage.description;
         }
 

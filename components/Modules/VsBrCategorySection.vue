@@ -4,8 +4,8 @@
         :lede="categories.copy?.value"
     />
     <VsBrCategoryGrid
-        v-if="configStore.pageIntro && configStore.pageIntro.categorySection"
-        :links="configStore.pageIntro.categorySection.links"
+        v-if="configStore.pageTemplate?.categorySection"
+        :links="configStore.pageTemplate.categorySection.links"
     />
 </template>
 

@@ -1,14 +1,60 @@
 <template>
-    <VsBrPageIntro
+    <VsContainer class="mt-075 mt-lg-200">
+        <VsRow>
+            <VsCol
+                col
+                lg="8"
+            >
+                <VsBrBreadcrumb />
+            </VsCol>
+            <VsCol
+                cols="auto"
+                lg="4"
+                class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                v-if="favourites.featureEnabled"
+            >
+                <VsBrFavouriteButton
+                    :uuid="documentData.id"
+                    :gtm-data="{ title: documentData.title, }"
+                    icon-only
+                    class="d-lg-none"
+                    data-test="vs-favourite-button"
+                />
+                <VsBrFavouriteButton
+                    :uuid="documentData.id"
+                    :gtm-data="{ title: documentData.title, }"
+                    class="d-none d-lg-flex"
+                    data-test="vs-favourite-button"
+                />
+            </VsCol>
+        </VsRow>
+    </VsContainer>
+
+    <VsBrHeroSection
         :content="documentData"
-        :hero-image="heroImage"
-        :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
+        :image="heroImage"
+        :inset="true"
     />
 
-    <VsBrModuleBuilder
+    <NuxtLazyHydrate
+        :when-visible="{ rootMargin: '50px' }"
+    >
+        <VsBrKeyInformationPanel
+            v-if="configStore.pageTemplate?.keyInformationPanel"
+            :module="configStore.pageTemplate.keyInformationPanel"
+            :locations="location ? [location] : []"
+            class="my-200 mx-075"
+        />
+    </NuxtLazyHydrate> 
+
+    <div
+        class="mt-500"
         v-if="pageItems"
-        :modules="pageItems"
-    />
+    >
+        <VsBrModuleBuilder
+            :modules="pageItems"
+        />
+    </div>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -21,20 +67,15 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrProductSearch
-            v-if="productSearch"
-            class="mt-300 mt-lg-600"
-        />
-    </NuxtLazyHydrate>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrHorizontalLinksModule
+        <section
+            class="mt-500"
             v-if="otyml"
-            :module="otyml"
-            theme="light"
-        />
+        >
+            <VsBrHorizontalLinksModule
+                :module="otyml"
+                theme="light"
+            />
+        </section>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
@@ -52,53 +93,46 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
+import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
-import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
+import VsBrFavouriteButton from '~/components/Modules/VsBrFavouriteButton.vue';
+
+import {
+    VsContainer, VsRow, VsCol,
+} from '@visitscotland/component-library/components';
+
+const favourites = useFavourites();
 
 const props = defineProps<{ component: Component, page: Page }>();
 
-const { page } = toRefs(props);
+const { component, page } = toRefs(props);
 
 let documentData : any = {
 };
 let pageItems : any[] = [];
-let productSearch : any = {
-};
 let heroImage = {
 };
 let otyml : any = null;
+let location : any = null;
 
 const configStore = useConfigStore();
 
-let firstModuleIsLink = false;
 
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
+    location = component.value.getModels().location;
     pageItems = configStore.pageItems;
-    productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
     if (configStore.otyml) {
         otyml = configStore.otyml;
     }
 
-    if (pageItems && pageItems.length) {
-        let firstNonPersonalisationModule = 0;
-        if (pageItems.length > 1 && pageItems[0].type === 'PersonalisationModule') {
-            firstNonPersonalisationModule = 1;
-        }
-        if (
-            pageItems[firstNonPersonalisationModule].type === 'ListLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'MultiImageLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'SingleImageLinksModule'
-        ) {
-            firstModuleIsLink = true;
-        }
-    }
 }
+
 </script>

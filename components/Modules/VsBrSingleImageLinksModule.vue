@@ -89,7 +89,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import {
+    computed, onMounted, ref, 
+} from 'vue';
 
 import {
     VsMegalinks,
@@ -113,7 +115,7 @@ const theme: string = props.theme;
 
 const media = ref(null);
 
-let negativeMargin = ref('200px');
+const negativeMargin = ref('200px');
 
 const cssVars  = computed(() => {
     return {

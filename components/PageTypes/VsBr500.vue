@@ -1,7 +1,6 @@
 <template>
-    <VsBrPageIntro
+    <VsBrHeroSection
         :content="documentData"
-        :light-background="true"
     />
 
     <NuxtLazyHydrate
@@ -21,7 +20,7 @@ import type { Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
+import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
 
 const configStore = useConfigStore();
 

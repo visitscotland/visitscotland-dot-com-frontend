@@ -2,6 +2,6 @@
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "types": ["node"]
+    "types": ["google.maps", "node"]
   }
 }

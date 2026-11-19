@@ -1,113 +1,108 @@
 <template>
-    <VsContainer
-        class="vs-daysection-wrapper"
+    <section
+        class="
+            vs-daysection-wrapper
+            d-flex flex-column gap-300
+        "
     >
-        <VsRow>
-            <VsCol>
-                <span class="vs-section-header__divider mb-0" />
-            </VsCol>
-        </VsRow>
-        <div class="row gap-300 gap-lg-0">
-            <VsCol
-                cols="12"
-                lg="4"
-                class="mt-150"
-            >
-                <VsHeading
-                    level="2"
-                    heading-style="heading-l"
-                    no-margins
+        <VsContainer>
+            <VsRow>
+                <VsCol>
+                    <span class="vs-section-header__divider mb-0" />
+                </VsCol>
+            </VsRow>
+            <div class="row gap-300 gap-lg-0">
+                <VsCol
+                    cols="12"
+                    lg="4"
+                    class="mt-150"
                 >
-                    {{ dayLabel }} {{ dayNumber }} - {{ day.title }}
-                </VsHeading>
-            </VsCol>
-            <VsCol
-                cols="12"
-                lg="8"
-                class="d-flex flex-column gap-150"
-            >
-                <div v-if="videoValue">
-                    <VsVideo
-                        :video-title="videoLabel"
-                        :video-id="youtubeId"
-                        :single-minute-descriptor="configStore.getLabel('video', 'video.minute-text')"
-                        :plural-minute-descriptor="configStore.getLabel('video', 'video.minutes-text')"
-                        :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
-                        :no-js-message="configStore.getLabel('video', 'video.no-js')"
-                        :cookie-btn-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
-                        :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
-                    />
-                    <VsMediaCaption :video-id="youtubeId">
-                        <template #caption>
-                            {{ videoLabel ?? configStore.getLabel('video', 'video.play-btn') }}
-                        </template>
-                    </VsMediaCaption>
-                </div>
-                <figure
-                    v-if="imageValue"
-                >
-                    <VsImg
-                        :src="imageSrc"
-                        use-lazy-loading
-                        class="rounded-2 w-100"
-                        :alt="imageAlt"
-                    />
-                    <figcaption v-if="imageCredit || imageCaption">
-                        <VsMediaCaption>
-                            <template #caption>
-                                {{ imageCaption }}
-                            </template>
-                            <template v-if="imageCredit" #credit>
-                                {{ imageCredit }}
-                            </template>
-                        </VsMediaCaption>
-                    </figcaption>
-                </figure>
-                <div>
-                    <VsBody>
-                        <VsBrRichText :input-content="day.introduction.value" />
-                    </VsBody>
-                </div>
-                <div
-                    class="d-flex flex-wrap gap-075"
-                >
-                    <VsButton
-                        v-if="day.ctaLink.link && day.ctaLink.label"
-                        :href="day.ctaLink.link"
-                        variant="secondary"
+                    <VsHeading
+                        level="2"
+                        heading-style="heading-l"
+                        no-margins
                     >
-                        {{ day.ctaLink.label }}
-                    </VsButton>
-                    <VsButton
-                        v-if="day.mapLink.link"
-                        :href="day.mapLink.link"
-                        variant="subtle"
-                        icon="fa-regular fa-map"
+                        {{ dayLabel }} {{ dayNumber }} - {{ day.title }}
+                    </VsHeading>
+                </VsCol>
+                <VsCol
+                    cols="12"
+                    lg="8"
+                    class="d-flex flex-column gap-150"
+                >
+                    <template
+                        v-if="day.video"
                     >
-                        {{ day.mapLink.label }}
-                    </VsButton>
-                </div>
-            </VsCol>
-        </div>
-    </VsContainer>
+                        <VsBrMedia
+                            :video-id="day.video.youtubeId"
+                            :video-with-media-caption="true"
+                        >
+                            <template #video-title>
+                                {{ day.video.label }}
+                            </template>
+                        </VsBrMedia>
+                    </template>
+                    <template
+                        v-else-if="day.image"
+                    >
+                        <VsBrMedia
+                            :image="day.image.cmsImage"
+                            :image-description="day.image.description"
+                            :rounded="true"
+                            class="mb-100"
+                        />
+                    </template>    
+
+                    <div>
+                        <VsBody>
+                            <VsBrRichText :input-content="day.introduction.value" />
+                        </VsBody>
+                    </div>
+
+                    <div
+                        class="d-flex flex-wrap gap-075"
+                    >
+                        <VsButton
+                            v-if="day.ctaLink.link && day.ctaLink.label"
+                            :href="day.ctaLink.link"
+                            variant="secondary"
+                        >
+                            {{ day.ctaLink.label }}
+                        </VsButton>
+                        <VsButton
+                            v-if="day.mapLink.link"
+                            :href="day.mapLink.link"
+                            variant="subtle"
+                            icon="fa-regular fa-map"
+                        >
+                            {{ day.mapLink.label }}
+                        </VsButton>
+                    </div>
+                </VsCol>
+            </div>
+        </VsContainer>
+        <VsBrMediaSection
+            v-if="day.mediaSection"
+            :media-section="day.mediaSection"
+        />
+    </section>
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
 import useConfigStore from '~/stores/configStore.ts';
 
 import {
-    VsImg,
     VsHeading,
     VsButton,
     VsContainer,
     VsRow,
     VsCol,
     VsBody,
-    VsMediaCaption,
-    VsVideo,
 } from '@visitscotland/component-library/components';
+
 import VsBrRichText from './VsBrRichText.vue';
+import VsBrMedia from './VsBrMedia.vue';
+import VsBrMediaSection from './VsBrMediaSection.vue';
 
 const configStore = useConfigStore();
 
@@ -116,32 +111,8 @@ const props = defineProps<{
     dayNumber: any,
 }>();
 
-const page: any = inject('page');
 const day: any = props.day;
 const dayNumber: any = props.dayNumber;
-
-let imageValue = false;
-let imageSrc = null;
-let imageCaption = null;
-let imageAlt = null;
-let imageCredit = null;
-
-let videoValue = false;
-let youtubeId = null;
-let videoLabel = null;
-
-if (page.getContent(day.media[0].$ref)) {
-    imageValue = page.getContent(day.media[0].$ref);
-    imageSrc = imageValue.getOriginal().getUrl();
-    imageCaption = imageValue.model.data.description;
-    imageAlt = imageValue.model.data.altText;
-    imageCredit = imageValue.model.data.credit;
-}
-if (page.getContent(day.media[0].videoLink)) {
-    videoValue = page.getContent(day.media[0].videoLink.$ref);
-    youtubeId = videoValue.model.data.url.split('?v=')[1];
-    videoLabel = videoValue.model.data.label;
-}
 
 const dayLabel = configStore.getLabel('itinerary', 'day');
 

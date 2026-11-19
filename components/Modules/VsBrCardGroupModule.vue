@@ -1,70 +1,52 @@
 <template>
-    <VsContainer class="mt-500">
-        <VsRow>
-            <VsCol>
-                <template
-                    v-if="module.introduction"
-                    #vs-megalinks-intro
-                >
-                    <VsBrRichText :input-content="module.introduction.value" />
-                </template>
+    <VsBrSectionHeader
+        :heading="module.title"
+        :lede="module.introduction?.value"
+    />
 
-                <div class="mb-250">
-                    <VsBrSectionHeader
-                        :heading="module.title"
-                        :lede="module.introduction?.value"
+    <VsContentSwiper
+        :next-button-label="configStore.getLabel('essentials.pagination', 'page.next')"
+        :previous-button-label="configStore.getLabel('essentials.pagination', 'page.previous')"
+        :slides-per-view-xs="1.7"
+        :slides-per-view-sm="1.9"
+        :slides-per-view-md="2"
+        :slides-per-view-lg="2.6"
+        :slides-per-view-xl="cardsPerRow"
+    >
+        <VsContentSwiperSlide
+            v-for="(link, index) in links"
+            :key="index"
+        >
+            <VsCard>
+                <template #vs-card-header>
+                    <VsImg
+                        :src="link.image"
+                        class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
                     />
-                </div>
-
-                <VsContainer>
-                    <VsRow>
-                        <VsCol>
-                            <VsCardGroup
-                                scroll-snap
-                                :cards-per-row="cardsPerRow"
-                            >
-                                <VsCard
-                                    v-for="(link, index) in links"
-                                    :key="index"
-                                >
-                                    <template #vs-card-header>
-                                        <VsImg
-                                            :src="link.image"
-                                            class="w-100 aspect-ratio-3-2 rounded-1 object-fit-cover img-zoom-on-hover"
-                                        />
-                                    </template>
-                                    <template #vs-card-body>
-                                        <VsHeading
-                                            level="3"
-                                            heading-style="heading-xs"
-                                        >
-                                            <VsLink
-                                                :href="link.link"
-                                                class="stretched-link"
-                                                variant="secondary"
-                                                :no-visited-styles="true"
-                                            >
-                                                {{ link.label }}
-                                            </VsLink>
-                                        </VsHeading>
-                                        <VsBody class="mb-150">
-                                            <p class="truncate-2-lines">
-                                                {{ link.teaser }}
-                                            </p>
-                                        </VsBody>
-                                    </template>
-                                </VsCard>
-                            </VsCardGroup>
-                        </VsCol>
-                    </VsRow>
-                </VsContainer>
-
-                <template #vs-megalinks-button v-if="module.cta">
-                    {{ module.cta.label }}
                 </template>
-            </VsCol>
-        </VsRow>
-    </VsContainer>
+                <template #vs-card-body>
+                    <VsHeading
+                        level="3"
+                        heading-style="heading-xs"
+                    >
+                        <VsLink
+                            :href="link.link"
+                            class="stretched-link"
+                            variant="secondary"
+                            :no-visited-styles="true"
+                        >
+                            {{ link.label }}
+                        </VsLink>
+                    </VsHeading>
+                    <VsBody class="mb-150">
+                        <p class="truncate-2-lines">
+                            {{ link.teaser }}
+                        </p>
+                    </VsBody>
+                </template>
+            </VsCard>
+        </VsContentSwiperSlide>
+    </VsContentSwiper>
 </template>
 
 <script lang="ts" setup>
@@ -75,20 +57,22 @@ import { inject } from 'vue';
 import type { Page } from '@bloomreach/spa-sdk';
 
 import {
-    VsCardGroup,
     VsCard,
     VsImg,
     VsHeading,
     VsLink,
     VsBody,
-    VsContainer,
-    VsRow,
-    VsCol,
+    VsContentSwiper,
+    VsContentSwiperSlide,
 } from '@visitscotland/component-library/components';
 
 import formatLink from '~/composables/formatLink.ts';
 
+import useConfigStore from '~/stores/configStore.ts';
+
 import VsBrSectionHeader from './VsBrSectionHeader.vue';
+
+const configStore = useConfigStore();
 
 const page: Page | undefined = inject('page');
 

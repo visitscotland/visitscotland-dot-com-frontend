@@ -1,89 +1,82 @@
 <template>
-    <VsModuleWrapper theme="light">
-        <template #vs-module-wrapper-heading>
-            {{ module.title }}
-        </template>
+    <VsBrSectionHeader
+        :heading="module.title"
+        :lede="module.introduction?.value"
+    />
 
-        <template #vs-module-wrapper-intro>
-            <VsBrRichText :input-content="module.introduction.value" />
-        </template>
-
-        <VsContainer>
-            <VsRow
-                class="mx-n100 mx-lg-n200"
+    <VsContainer>
+        <VsRow
+            class="mx-n100 mx-lg-n200"
+        >
+            <VsCol
+                cols="12"
+                sm="6"
+                lg="4"
+                class="px-100 px-lg-200 text-start"
+                v-for="(centre, index) in module.skiCentres"
+                :key="index"
             >
-                <VsCol
-                    cols="12"
-                    sm="6"
-                    lg="4"
-                    class="px-100 px-lg-200 text-start"
-                    v-for="(centre, index) in module.skiCentres"
-                    :key="index"
+                <VsBrSkiScotlandCard
+                    :centre-info-url="centre.feedURL"
+                    :img-src="centreImages[index].url"
+                    :img-alt="centreImages[index].alt"
+                    :locale="configStore.langString || 'en-gb'"
+                    :more-details-link="formatLink(centre.cmsPage.link)"
+                    :piste-map-link="centre.pisteMap"
+                    :last-updated-label="configStore.getLabel('ski', 'ski-centre.last-updated')"
+                    :lifts-label="configStore.getLabel('ski', 'ski-centre.lifts')"
+                    :runs-label="configStore.getLabel('ski', 'ski-centre.runs')"
+                    :runs-lifts-status-label="configStore.getLabel('ski', 'ski-centre.run-lift-status')"
+                    :status-label="configStore.getLabel('ski', 'ski-centre.status')"
+                    :summary-closed-label="configStore.getLabel('ski', 'ski-centre.summary.closed')"
+                    :summary-open-label="configStore.getLabel('ski', 'ski-centre.summary.open')"
+                    :summary-opening-label="configStore.getLabel('ski', 'ski-centre.summary.expected-to-open')"
+                    :summary-limited-patrol-label="configStore.getLabel('ski', 'ski-centre.summary.limited-patrol')"
+                    :summary-on-hold-label="configStore.getLabel('ski', 'ski-centre.summary.on-hold')"
+                    :piste-map-label="configStore.getLabel('ski', 'ski-centre.view-piste-map')"
+                    :more-details-label="configStore.getLabel('ski', 'ski-centre.more-details')"
+                    :timeout-duration="centre.timeout"
                 >
-                    <VsSkiScotlandCard
-                        :centre-info-url="centre.feedURL"
-                        :img-src="centreImages[index].url"
-                        :img-alt="centreImages[index].alt"
-                        :locale="configStore.langString || 'en-gb'"
-                        :more-details-link="formatLink(centre.cmsPage.link)"
-                        :piste-map-link="centre.pisteMap"
-                        :last-updated-label="configStore.getLabel('ski', 'ski-centre.last-updated')"
-                        :lifts-label="configStore.getLabel('ski', 'ski-centre.lifts')"
-                        :runs-label="configStore.getLabel('ski', 'ski-centre.runs')"
-                        :runs-lifts-status-label="configStore.getLabel('ski', 'ski-centre.run-lift-status')"
-                        :status-label="configStore.getLabel('ski', 'ski-centre.status')"
-                        :summary-closed-label="configStore.getLabel('ski', 'ski-centre.summary.closed')"
-                        :summary-open-label="configStore.getLabel('ski', 'ski-centre.summary.open')"
-                        :summary-opening-label="configStore.getLabel('ski', 'ski-centre.summary.expected-to-open')"
-                        :summary-limited-patrol-label="configStore.getLabel('ski', 'ski-centre.summary.limited-patrol')"
-                        :summary-on-hold-label="configStore.getLabel('ski', 'ski-centre.summary.on-hold')"
-                        :piste-map-label="configStore.getLabel('ski', 'ski-centre.view-piste-map')"
-                        :more-details-label="configStore.getLabel('ski', 'ski-centre.more-details')"
-                        :timeout-duration="centre.timeout"
-                    >
-                        <template #centre-name>
-                            {{ centre.title }}
-                        </template>
-                        <template #data-loading>
-                            <div>
-                                {{ configStore.getLabel("ski", "ski-data.loading") }}
-                            </div>
-                        </template>
-                        <template #data-unavailable>
-                            <div>
-                                {{ configStore.getLabel("ski", "ski-data.unavailable") }}
-                            </div>
-                        </template>
-                        <template #js-required>
-                            <div>
-                                {{ configStore.getLabel("ski", "ski-data.no-js") }}
-                            </div>
-                        </template>
-                    </VsSkiScotlandCard>
-                </VsCol>
-            </VsRow>
-        </VsContainer>
-    </VsModuleWrapper>
+                    <template #centre-name>
+                        {{ centre.title }}
+                    </template>
+                    <template #data-loading>
+                        <div>
+                            {{ configStore.getLabel("ski", "ski-data.loading") }}
+                        </div>
+                    </template>
+                    <template #data-unavailable>
+                        <div>
+                            {{ configStore.getLabel("ski", "ski-data.unavailable") }}
+                        </div>
+                    </template>
+                    <template #js-required>
+                        <div>
+                            {{ configStore.getLabel("ski", "ski-data.no-js") }}
+                        </div>
+                    </template>
+                </VsBrSkiScotlandCard>
+            </VsCol>
+        </VsRow>
+    </VsContainer>
 </template>
 
 <script lang="ts" setup>
- 
 
 import { inject } from 'vue';
 
 import type { Page } from '@bloomreach/spa-sdk';
 
+import VsBrSectionHeader from './VsBrSectionHeader.vue';
+
 import {
-    VsModuleWrapper,
     VsContainer,
     VsRow,
     VsCol,
-    VsSkiScotlandCard,
 } from '@visitscotland/component-library/components';
 
 import formatLink from '~/composables/formatLink.ts';
-
-import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+import VsBrSkiScotlandCard from '~/components/Modules/VsBrSkiScotlandCard.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 

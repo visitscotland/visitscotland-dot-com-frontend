@@ -6,7 +6,7 @@
 # These owners will be the default owners for everything in
 # the repo. Unless a later match takes precedence.
 
-* @GemmaLouise @mjpvs @markup-mitchell @duncansanderson @chesterroberts-vs
+* @GemmaLouise @mjpvs @markup-mitchell @duncansanderson @chesterroberts-vs @mikehartvs
 
 # Owners can also be set on a per-filetype basis, if that is useful in the future
 

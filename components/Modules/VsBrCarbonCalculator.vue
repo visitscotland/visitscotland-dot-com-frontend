@@ -1,20 +1,17 @@
 <template>
-    <VsModuleWrapper
-        class="text-start"
-    >
+    <div class="text-start">
         <VsCarbonCalculator
-            :labels-map="configStore.getLabelMap('carbon-calculator')"
-            :locale="configStore.locale"
+            :labels-map="labelsMap"
+            :language="configStore.locale || 'en-gb'"
         />
-    </VsModuleWrapper>
+    </div>
 </template>
 
 <script lang="ts" setup>
-
-import { VsCarbonCalculator, VsModuleWrapper } from '@visitscotland/component-library/components';
-
+import VsCarbonCalculator from '~/components/carbon-calculator/VsCarbonCalculator.vue';
 import useConfigStore from '~/stores/configStore.ts';
 
 const configStore = useConfigStore();
-
+const labelsMap = computed(() => configStore.getLabelMap('carbon-calculator') || {
+});
 </script>

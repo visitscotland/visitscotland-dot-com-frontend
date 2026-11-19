@@ -1,107 +1,172 @@
 <template>
-    <template v-if="documentData.blog">
-        <VsBrPageIntro
-            :content="documentData"
-            :light-background="true"
-            :blog="documentData.blog"
-        />
-        <VsBrIntroImage
-            :image="heroImage"
-        />
+    <template v-if="favourites.isDisplayPage && !configStore.isMainMapPageFlag">
+        <VsContainer class="mt-075 py-150 py-lg-300 ">
+            <VsRow>
+                <VsBrHeroHeading
+                    :content="documentData"
+                >
+                    <template
+                        v-if="favourites.isDisplayPage && !favourites.isSharePage"
+                        #button
+                    >
+                        <VsBrFavouriteShare />
+                    </template>
+                </VsBrHeroHeading>
+            </VsRow>
+        </VsContainer>
     </template>
-    <template v-else-if="configStore.isFavouritesPage">
-        <VsBrHeroSection
-            :content="documentData"
-        />
-    </template>
-    <template v-else-if="documentData.theme === 'Top-Level'">
-        <VsBrHeroSection
-            v-if="configStore.heroVideo && configStore.isLocalVideoheader"
-            :content="documentData"
-            :video="configStore.heroVideo"
-            :image="heroImage"
-        />
-        <template v-else-if="configStore.enableHeroSection">
-            <VsContainer class="mt-075 mt-lg-200">
+    <template v-else-if="documentData.theme === 'Top-Level' && !configStore.isMainMapPageFlag">
+        <template v-if="configStore.heroVideo && configStore.isLocalVideoheader">
+            <VsContainer
+                v-if="!configStore.isHome"
+                class="mt-075 mt-lg-200"
+            >
+                <VsRow class="mb-100">
+                    <VsCol>
+                        <VsBrBreadcrumb />
+                    </VsCol>
+                    <VsCol
+                        cols="auto"
+                        class="d-flex align-items-center"
+                        v-if="favourites.featureEnabled"
+                    >
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            icon-only
+                            class="d-lg-none"
+                            data-test="vs-favourite-button"
+                        />
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            class="d-none d-lg-flex"
+                            data-test="vs-favourite-button"
+                        />
+                    </VsCol>
+                </VsRow>
+            </VsContainer>
+
+            <VsBrHeroSection
+                :content="documentData"
+                :video="configStore.heroVideo"
+                :image="heroImage"
+            />
+        </template>
+        <template v-else>
+            <VsContainer
+                class="mt-075 mt-lg-200"
+            >
                 <VsRow>
                     <VsCol
-                        cols="10"
+                        col
                         lg="8"
                     >
                         <VsBrBreadcrumb />
                     </VsCol>
+                    <VsCol
+                        cols="auto"
+                        lg="4"
+                        class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                        v-if="favourites.featureEnabled"
+                    >
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            icon-only
+                            class="d-lg-none"
+                            data-test="vs-favourite-button"
+                        />
+                        <VsBrFavouriteButton
+                            :uuid="documentData.id"
+                            :gtm-data="{ title: documentData.title, }"
+                            class="d-none d-lg-flex"
+                            data-test="vs-favourite-button"
+                        />
+                    </VsCol>
                 </VsRow>
             </VsContainer>
+
             <VsBrHeroSection
                 :content="documentData"
                 :image="heroImage"
             />
         </template>
-        <VsBrPageIntro
-            v-else
-            :content="documentData"
-            :hero-image="heroImage"
-            :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
-        />
     </template>
+    <template v-else-if="documentData.theme === 'Simple' && !configStore.isMainMapPageFlag">
+        <VsContainer
+            class="mt-075 mt-lg-200"
+        >
+            <VsRow>
+                <VsCol
+                    col
+                    lg="10"
+                >
+                    <VsBrBreadcrumb />
+                </VsCol>
+            </VsRow>
+        </VsContainer>
 
-    <template v-else-if="documentData.theme === 'Standard'">
-        <VsBrPageIntro
-            :content="documentData"
-            :light-background="true"
-        />
-
-        <VsBrIntroImage
-            :image="heroImage"
-        />
-    </template>
-
-    <template v-else-if="documentData.theme === 'Inspiration'">
         <VsBrHeroSection
-            v-if="isSearchResultsPage"
             :content="documentData"
-            :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
-        />
-        <VsBrPageIntro
-            v-else
-            :content="documentData"
-            :hero-image="heroImage"
-            :light-background="true"
-            :full-screen-mobile="true"
         />
     </template>
 
-    <VsBrHeroSection
-        v-else-if="documentData.theme === 'Simple' && isSearchResultsPage"
-        :content="documentData"
-    />
+    <template v-else-if="!configStore.isMainMapPageFlag">
+        <VsContainer
+            v-if="!isSearchResultsPage"
+            class="mt-075 mt-lg-200"
+        >
+            <VsRow>
+                <VsCol
+                    col
+                    lg="8"
+                >
+                    <VsBrBreadcrumb />
+                </VsCol>
+                <VsCol
+                    cols="auto"
+                    lg="4"
+                    class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                    v-if="favourites.featureEnabled"
+                >
+                    <VsBrFavouriteButton
+                        :uuid="documentData.id"
+                        :gtm-data="{ title: documentData.title, }"
+                        icon-only
+                        class="d-lg-none"
+                        data-test="vs-favourite-button"
+                    />
+                    <VsBrFavouriteButton
+                        :uuid="documentData.id"
+                        :gtm-data="{ title: documentData.title, }"
+                        class="d-none d-lg-flex"
+                        data-test="vs-favourite-button"
+                    />
+                </VsCol>
+            </VsRow>
+        </VsContainer>
 
-    <VsBrPageIntro
-        v-else-if="documentData.theme === 'Simple' && !configStore.isMainMapPageFlag"
-        :content="documentData"
-        :light-background="true"
-    />
+        <VsBrHeroSection
+            :content="documentData"
+            :inset="true"
+            :image="isSearchResultsPage ? null : heroImage"
+            class="mb-400"
+            :blog="documentData.blog"
+        />
+    </template>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
         <div
             v-if="documentData && documentData.categoryLinks"
-            class="mt-175 mt-md-500 mb-175 mb-md-500"
+            class="mt-500"
         >
             <VsBrCategorySection
                 :categories="documentData.categoryLinks"
             />
         </div>
-    </NuxtLazyHydrate>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrProductSearch
-            v-if="productSearch && productSearch.position === 'Top'"
-            class="mb-300 mb-lg-600 pt-300"
-        />
     </NuxtLazyHydrate>
 
     <template
@@ -114,21 +179,15 @@
     <template
         v-else
     >
-        <VsBrModuleBuilder
-            v-if="pageItems"
-            :modules="pageItems"
-        />
+        <div
+            :class="!configStore.isMainMapPageFlag ? 'mt-500' : ''"
+        >
+            <VsBrModuleBuilder
+                v-if="pageItems"
+                :modules="pageItems"
+            />
+        </div>
     </template>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-        v-if="!configStore.isMainMapPageFlag"
-    >
-        <VsBrProductSearch
-            v-if="productSearch && productSearch.position === 'Bottom'"
-            class="mt-300 mt-lg-600"
-        />
-    </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
@@ -142,11 +201,15 @@
         :when-visible="{ rootMargin: '50px' }"
         v-if="!configStore.isMainMapPageFlag"
     >
-        <VsBrHorizontalLinksModule
+        <section
+            class="mt-500"
             v-if="otyml"
-            :module="otyml"
-            theme="light"
-        />
+        >
+            <VsBrHorizontalLinksModule
+                :module="otyml"
+                theme="light"
+            />
+        </section>
     </NuxtLazyHydrate>
 
     <NuxtLazyHydrate
@@ -165,18 +228,15 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
-import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
-import VsBrIntroImage from '~/components/Modules/VsBrIntroImage.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
-import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrSocialShare from '~/components/Modules/VsBrSocialShare.vue';
 import VsBrCategorySection from '~/components/Modules/VsBrCategorySection.vue';
 import VsBrSearch from '~/components/Modules/VsBrSearch.vue';
-import VsBrSearchWidget from '~/components/Modules/VsBrSearchWidget.vue';
 import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
 
 import {
@@ -190,26 +250,22 @@ const { page } = toRefs(props);
 let documentData : any = {
 };
 let pageItems : any[] = [];
-let productSearch : any = {
-};
 let heroImage = {
     coordinates: null,
 };
 let otyml : any = null;
 
 const configStore = useConfigStore();
+const favourites = useFavourites();
 
-let firstModuleIsLink = false;
 let isSearchResultsPage = false;
 
-let isSearchWidgetPresent = false;
 
 if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
     pageItems = configStore.pageItems;
-    productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
 
     if (configStore.heroImage && configStore.heroImage.coordinates) {
@@ -220,22 +276,10 @@ if (page.value) {
         otyml = configStore.otyml;
     }
 
-    if (pageItems && pageItems.length) {
-        let firstNonPersonalisationModule = 0;
-        if (pageItems.length > 1 && pageItems[0].type === 'PersonalisationModule') {
-            firstNonPersonalisationModule = 1;
-        }
-        if (
-            pageItems[firstNonPersonalisationModule].type === 'ListLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'MultiImageLinksModule'
-            || pageItems[firstNonPersonalisationModule].type === 'SingleImageLinksModule'
-        ) {
-            firstModuleIsLink = true;
-        }
-    }
 
     // Remove trailing slashes from the global search path to remove path ambiguity
     if (window
+        && configStore.globalSearchPath
         && window.location.pathname.includes(configStore.globalSearchPath.replace(/\/+$/, ''))) {
         isSearchResultsPage = true;
     }

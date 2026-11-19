@@ -2,29 +2,24 @@ import { defineStore } from 'pinia';
 
 interface IConfigState {
     activeSite: string,
-    productSearch: any,
     otyml: any,
     pageItems: any[],
     heroImage: any,
     labels: any,
     newsletterSignpost: any,
-    pageIntro: any,
+    pageTemplate: any,
     gtm: any,
     locale: string,
     langString: string,
     pageMetaData: any,
     heroVideo: any,
     isLocalVideoheader: boolean,
-    allowFavourite: boolean,
-    isFavouritesPage: boolean,
-    featureFavouritesEnabled: boolean,
-    featureFavouritesUrl: string,
-    featureFavouritesEndpoint: string,
     globalSearchPath: string,
     cludoCustomerId: string,
     cludoExperienceId: string,
     cludoEngineId: string,
     cludoLanguage: string,
+    showSearchWidget: boolean,
     searchDmsBased: boolean,
     eventsApiUrl: string,
     searchFilters: object,
@@ -35,21 +30,20 @@ interface IConfigState {
     pageDocument: any,
     enableHeroSection: boolean,
     pathIfError: string,
+    isInternalResource: boolean,
+    isHome: boolean,
 }
 
 const useConfigStore = defineStore('configStore', {
     state: (): IConfigState => ({
         activeSite: '',
-        productSearch: {
-        },
         otyml: null,
         pageItems: [],
         heroImage: null,
         labels: {
         },
-        newsletterSignpost: {
-        },
-        pageIntro: {
+        newsletterSignpost: null,
+        pageTemplate: {
         },
         gtm: null,
         locale: '',
@@ -58,16 +52,12 @@ const useConfigStore = defineStore('configStore', {
         },
         heroVideo: null,
         isLocalVideoheader: false,
-        allowFavourite: false,
-        featureFavouritesEnabled: false,
-        featureFavouritesUrl: '',
-        featureFavouritesEndpoint: '',
         globalSearchPath: '',
-        isFavouritesPage: false,
         cludoCustomerId: '',
         cludoExperienceId: '',
         cludoEngineId: '',
         cludoLanguage: '',
+        showSearchWidget: false,
         searchDmsBased: false,
         eventsApiUrl: '',
         searchFilters: {
@@ -79,6 +69,8 @@ const useConfigStore = defineStore('configStore', {
         pageDocument: null,
         enableHeroSection: false,
         pathIfError: '',
+        isInternalResource: false,
+        isHome: false,
     }),
     actions: {
         getLabel(section: string, key: string) {

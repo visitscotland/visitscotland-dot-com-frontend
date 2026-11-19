@@ -1,54 +1,54 @@
 <template>
     <VsContainer>
-        <VsRow>
-            <VsCol>
-                <VsSpotlightSection
-                    :heading="module.title"
-                    :image-src="image"
-                    :cta-link="formatLink(module.cta.link)"
-                    :cta-text="module.cta.label"
-                    :description="description"
-                    :compact="module.layout === 'compact' ? true : false"
-                >
-                    <template
-                        v-if="module.ambientVideo"
-                        #vs-spotlight-section-media
-                    >
-                        <VsVideo
-                            video-type="html5"
-                            :video-src="module.ambientVideo"
-                            ref="spotlightVideo"
-                            :post-image-src="image"
-                            :play-button-label="configStore.getLabel('ambient-video', 'play-button.text')"
-                            :pause-button-label="configStore.getLabel('ambient-video', 'pause-button.text')"
-                            :show-toggle="false"
-                        />
-                    </template>
+        <VsSpotlightSection
+            :heading="module.title"
+            :image-src="image"
+            :cta-link="formatLink(module.cta.link)"
+            :cta-text="module.cta.label"
+            :description="description"
+            :compact="module.layout === 'compact' ? true : false"
+        >
+            <template
+                v-if="module.ambientVideo"
+                #vs-spotlight-section-media
+            >
+                <VsVideo
+                    video-type="html5"
+                    :video-src="module.ambientVideo"
+                    ref="spotlightVideo"
+                    :post-image-src="image"
+                    :play-button-label="configStore.getLabel('ambient-video', 'play-button.text')"
+                    :pause-button-label="configStore.getLabel('ambient-video', 'pause-button.text')"
+                    :show-toggle="false"
+                />
+            </template>
 
-                    <template
-                        v-if="module.ambientVideo"
-                        #vs-spotlight-section-overlay-controls
-                    >
-                        <VsToggleButton
-                            variant="overlay"
-                            icon="vs-icon-control-pause"
-                            pressed-icon="vs-icon-control-play"
-                            :label="configStore.getLabel('ambient-video', 'play-button.text')"
-                            :pressed-label="configStore.getLabel('ambient-video', 'pause-button.text')"
-                            :aria-controls="videoId"
-                            @click="toggleVideo()"
-                        />
-                    </template>
-                </VsSpotlightSection>
-            </VsCol>
-        </VsRow>
+            <template
+                v-if="module.ambientVideo"
+                #vs-spotlight-section-overlay-controls
+            >
+                <VsToggleButton
+                    variant="overlay"
+                    icon="vs-icon-control-pause"
+                    pressed-icon="vs-icon-control-play"
+                    :label="configStore.getLabel('ambient-video', 'play-button.text')"
+                    :pressed-label="configStore.getLabel('ambient-video', 'pause-button.text')"
+                    :aria-controls="videoId"
+                    @click="toggleVideo()"
+                />
+            </template>
+        </VsSpotlightSection>
     </VsContainer>
 </template>
 
 <script lang="ts" setup>
  
 
-import { inject, ref, getCurrentInstance } from 'vue';
+import {
+    inject,
+    ref,
+    getCurrentInstance,
+} from 'vue';
 
 import { decode } from 'html-entities';
 
@@ -57,8 +57,6 @@ import type { Page } from '@bloomreach/spa-sdk';
 import {
     VsSpotlightSection,
     VsContainer,
-    VsRow,
-    VsCol,
     VsVideo,
     VsToggleButton,
 } from '@visitscotland/component-library/components';

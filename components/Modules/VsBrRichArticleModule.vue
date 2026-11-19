@@ -1,6 +1,6 @@
 <template>
     <VsContainer>
-        <VsRow class="mt-500 mb-500">
+        <VsRow>
             <VsCol
                 cols="12"
                 lg="4"
@@ -25,32 +25,64 @@
                         :input-content="module.introduction.value"
                     />
 
+                    <VsBrMedia
+                        v-if="module.image && module.image.cmsImage"
+                        :image="module.image.cmsImage"
+                        :image-description="module.image.description"
+                        :rounded="true"
+                        class="mb-100"
+                        :class="module.introduction && module.introduction.value ? 'mt-150' : ''"
+                    />
+
                     <template
                         v-for="(section, index) in module.sections"
                         :key="index"
                     >
+
+                        <template
+                            v-if="section.copy"
+                        >
+                            <VsBrRichText :input-content="section.copy.value" />
+                        </template>
+
+                        <template
+                            v-if="section.quote"
+                        >
+                            <VsQuote
+                                :use-legacy="false"
+                                :quote-name="section.quote.authorName"
+                                :class="index !== module.sections.length - 1 ? 'mb-150' : ''"
+                            >
+                                <template
+                                    #quote-content
+                                >
+                                    <VsBody>
+                                        <VsBrRichText :input-content="section.quote.quote.value" />
+                                    </VsBody>
+                                </template>
+
+                                <template
+                                    v-if="section.quote.authorTitle"
+                                    #quote-details
+                                >
+                                    <span>{{ section.quote.authorTitle }}</span>
+                                </template>
+                            </VsQuote>
+                        </template>
+
                         <template
                             v-if="section.video"
                         >
-                            <VsBrVideoModal
-                                :is-video-modal="true"
-                                :close-btn-text="configStore.getLabel('essentials.global', 'close')"
-                                :modal-id="section.video.youtubeId"
-                                :video="section.video"
-                            />
-
                             <VsBrMedia
-                                :image="section.video.image.cmsImage"
-                                :image-description="section.video.image.description"
-                                :is-video="true"
                                 :video-id="section.video.youtubeId"
-                                :video-title="section.video.label
-                                    ? section.video.label
-                                    : configStore.getLabel('video', 'video.play-btn')
-                                "
-                                :small-play-button="true"
-                                :show-toggle="false"
-                            />
+                                :video-with-media-caption="true"
+                                class="mb-100"
+                                :class="mediaHasTopMargin(index) ? 'mt-150' : ''"
+                            >
+                                <template #video-title>
+                                    {{ section.video.label ?? configStore.getLabel('video', 'video.play-btn') }}
+                                </template>
+                            </VsBrMedia>
                         </template>
                         <template
                             v-else-if="section.image"
@@ -60,13 +92,8 @@
                                 :image-description="section.image.description"
                                 :rounded="true"
                                 class="mb-100"
+                                :class="mediaHasTopMargin(index) ? 'mt-150' : ''"
                             />
-                        </template>
-
-                        <template
-                            v-if="section.copy"
-                        >
-                            <VsBrRichText :input-content="section.copy.value" />
                         </template>
                     </template>
                 </VsBody>
@@ -74,14 +101,13 @@
         </VsRow>
     </VsContainer>
 
-    <VsBrMedia
-        v-if="module.image && checkFlags('rich-article-images')"
-        :image="module.image.cmsImage"
-        :image-description="module.image.description"
-        :full-bleed="true"
-        class="mt-n250"
-        :class="nextModuleArticle ? 'mb-n250' : ''"
-    />
+    <div
+        v-if="module.mediaSection"
+    >
+        <VsBrMediaSection
+            :media-section="module.mediaSection"
+        />
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -93,11 +119,11 @@ import {
     VsCol,
     VsHeading,
     VsBody,
+    VsQuote,
 } from '@visitscotland/component-library/components';
 
-import VsBrVideoModal from './VsBrVideoModal.vue';
+import VsBrMediaSection from '~/components/Modules/VsBrMediaSection.vue';
 import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
-
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
@@ -110,6 +136,23 @@ const props = defineProps<{
 }>();
 
 const module: any = props.module;
-const nextModuleArticle: boolean = props.nextModuleArticle;
+
+const mediaHasTopMargin = (index : number) => {
+    if (index !== 0) {
+        return true;
+    }
+
+    if (module.introduction && module.introduction.value) {
+        return true;
+    }
+
+    return false;
+};
 
 </script>
+
+<style lang="scss" scoped>
+    .vs-content-swiper :deep(.vs-button) {
+        scroll-margin-top: 14rem;
+    }
+</style>
