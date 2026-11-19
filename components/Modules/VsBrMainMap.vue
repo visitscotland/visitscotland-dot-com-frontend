@@ -206,6 +206,9 @@ const showError = computed(() =>
 
 // Set when Google Maps fails to load, to show the unavailable message.
 const isMapUnavailable = ref<boolean>(false);
+watch(isMapUnavailable, (unavailable) => {
+    if (unavailable) mainMapStore.isSidebarOpen = true;
+});
 
 /**
  * Set up the featured destinations and add them to the store.
