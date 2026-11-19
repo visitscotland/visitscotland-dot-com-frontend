@@ -236,7 +236,7 @@ async function initialiseMap() {
     } catch {
         // Google Maps couldn't be loaded, eg network issues,
         // a Google outage or an ad blocker.
-        isMapUnavailable.value = checkFlag('use-map-unavailable');
+        isMapUnavailable.value = checkFlag('use-google-map');
         return;
     }
 
@@ -261,7 +261,7 @@ onMounted(async() => {
     // Google calls this when the API key is rejected after the script loads.
     // https://developers.google.com/maps/documentation/javascript/events#auth-errors
     (window as any).gm_authFailure = () => {
-        isMapUnavailable.value = checkFlag('use-map-unavailable');
+        isMapUnavailable.value = checkFlag('use-google-map');
     };
 
     setupFeatureDestinations();

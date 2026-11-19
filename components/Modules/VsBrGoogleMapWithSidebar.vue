@@ -353,7 +353,7 @@ watch([selectedCategory, selectedFeature, hoveredRegionId], () => {
 onMounted(async() => {
     // https://developers.google.com/maps/documentation/javascript/events#auth-errors
     (window as any).gm_authFailure = () => {
-        isMapUnavailable.value = checkFlag('use-map-unavailable');
+        isMapUnavailable.value = checkFlag('use-google-map');
     };
 
     try {
@@ -361,7 +361,7 @@ onMounted(async() => {
     } catch {
         // Catch google maps unavailable error
         // Could be triggered by network issues, google outage or adblocker
-        isMapUnavailable.value = checkFlag('use-map-unavailable');
+        isMapUnavailable.value = checkFlag('use-google-map');
         return;
     }
 
