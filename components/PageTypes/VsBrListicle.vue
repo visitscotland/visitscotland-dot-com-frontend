@@ -2,10 +2,30 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol
-                cols="10"
+                col
                 lg="8"
             >
                 <VsBrBreadcrumb />
+            </VsCol>
+            <VsCol
+                cols="auto"
+                lg="4"
+                class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                v-if="favourites.featureEnabled"
+            >
+                <VsBrFavouriteButton
+                    :uuid="documentData.id"
+                    :gtm-data="{ title: documentData.title, }"
+                    icon-only
+                    class="d-lg-none"
+                    data-test="vs-favourite-button"
+                />
+                <VsBrFavouriteButton
+                    :uuid="documentData.id"
+                    :gtm-data="{ title: documentData.title, }"
+                    class="d-none d-lg-flex"
+                    data-test="vs-favourite-button"
+                />
             </VsCol>
         </VsRow>
     </VsContainer>
@@ -14,7 +34,6 @@
         :content="documentData"
         :inset="true"
         class="mb-400"
-        :favourites-button="true"
     />
 
     <VsContainer>
@@ -51,7 +70,7 @@
                             :messages="item.errorMessages"
                         />
 
-                        <VsListicleItem
+                        <VsBrListicleItem
                             :index="`${item.index}`"
                             :title="item.title"
                             :sub-title="item.subtitle"
@@ -98,20 +117,32 @@
                                 #facilities-slot
                                 v-if="item.facilities && item.facilities.length"
                             >
-                                <div>
-                                    <VsIconList
-                                        :title="configStore.getLabel('listicle', 'keyfacilities.title')"
+                                <div class="vs-icon-list" data-test="vs-icon-list">
+                                    <div
+                                        v-if="configStore.getLabel('listicle', 'keyfacilities.title')"
+                                        class="vs-icon-list__title"
                                     >
-                                        <VsIconListItem
-                                            v-for="(facility, facilityIndex) in item.facilities"
-                                            :key="facilityIndex"
-                                            :icon="getDMSIconName(facility.id)"
-                                            :label="facility.name"
-                                        />
-                                    </vsiconlist>
+                                        {{ configStore.getLabel('listicle', 'keyfacilities.title') }}
+                                    </div>
+
+                                    <ul class="vs-icon-list__list mb-0">
+                                        <li
+                                            v-for="facility in item.facilities"
+                                            :key="facility.id"
+                                            class="vs-icon-list__item"
+                                            data-test="vs-icon-list__item"
+                                        >
+                                            <VsIcon
+                                                :icon="getDMSIconName(facility.id)"
+                                                size="md"
+                                                class="d-block mx-auto"
+                                            />
+                                            {{ facility.name }}
+                                        </li>
+                                    </ul>
                                 </div>
                             </template>
-                        </VsListicleItem>
+                        </VsBrListicleItem>
                     </template>
                 </ol>
             </VsCol>
@@ -152,15 +183,6 @@
     <NuxtLazyHydrate
         :when-visible="{ rootMargin: '50px' }"
     >
-        <VsBrProductSearch
-            v-if="productSearch"
-            class="mt-300 mt-lg-600"
-        />
-    </NuxtLazyHydrate>
-
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
         <section
             class="mt-500"
             v-if="otyml"
@@ -187,37 +209,36 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
 import formatLink from '~/composables/formatLink.ts';
 
 import VsBrHeroSection from '~/components/Modules/VsBrHeroSection.vue';
-import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
+import VsBrListicleItem from '~/components/Modules/VsBrListicleItem.vue';
 
 import {
     VsContainer,
     VsRow,
     VsCol,
-    VsListicleItem,
     VsLink,
-    VsIconList,
-    VsIconListItem,
+    VsIcon,
     VsPanel,
     VsHeading,
     VsBody,
 } from '@visitscotland/component-library/components';
+
+const favourites = useFavourites();
 
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { page, component } = toRefs(props);
 
 let documentData : any = {
-};
-let productSearch : any = {
 };
 let otyml : any = null;
 
@@ -230,7 +251,6 @@ if (page.value) {
     const pageDocument = page.value.getContent(configStore.pageDocument);
 
     documentData = pageDocument.getData();
-    productSearch = configStore.productSearch;
     if (configStore.otyml) {
         otyml = configStore.otyml;
     }
@@ -243,3 +263,35 @@ if (page.value) {
 }
 
 </script>
+
+<style scoped>
+.vs-icon-list {
+    text-align: center;
+}
+
+.vs-icon-list .vs-icon-list__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+}
+
+.vs-icon-list .vs-icon-list__list {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 0;
+    text-align: left;
+}
+
+.vs-icon-list__item {
+    display: inline-table;
+    text-align: center;
+    width: 90px;
+    margin-bottom: 1rem;
+    padding: 0 0.25rem;
+    font-size: 0.875rem;
+}
+
+.vs-icon-list__item :deep(.vs-icon) {
+    margin-bottom: 0.75rem;
+}
+</style>

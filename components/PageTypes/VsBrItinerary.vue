@@ -2,10 +2,30 @@
     <VsContainer class="mt-075 mt-lg-200">
         <VsRow>
             <VsCol
-                cols="10"
+                col
                 lg="8"
             >
                 <VsBrBreadcrumb />
+            </VsCol>
+            <VsCol
+                cols="auto"
+                lg="4"
+                class="d-flex justify-content-end align-items-center w-auto flex-lg-fill"
+                v-if="favourites.featureEnabled"
+            >
+                <VsBrFavouriteButton
+                    :uuid="documentData.id"
+                    :gtm-data="{ title: documentData.title, }"
+                    icon-only
+                    class="d-lg-none"
+                    data-test="vs-favourite-button"
+                />
+                <VsBrFavouriteButton
+                    :uuid="documentData.id"
+                    :gtm-data="{ title: documentData.title, }"
+                    class="d-none d-lg-flex"
+                    data-test="vs-favourite-button"
+                />
             </VsCol>
         </VsRow>
     </VsContainer>
@@ -13,20 +33,9 @@
         <VsRow>
             <VsBrHeroHeading
                 :content="documentData"
-            >
-                <template
-                    #button
-                >
-                    <VsBrFavouriteButton 
-                        :uuid="documentData.id"
-                        :gtm-data="
-                            { title: documentData.title }
-                        "
-                    />
-                </template>
-            </VsBrHeroHeading>
+            />
         </VsRow>
-        <div class="mt-300">
+        <div v-if="configStore.heroImage" class="mt-300">
             <VsBrMedia
                 :image="configStore.heroImage.cmsImage"
                 :image-description="configStore.heroImage.description"
@@ -165,6 +174,7 @@
                             flex-md-row
                             gap-075 gap-md-150
                         "
+                        v-if="itineraryMap"
                     >
                         <VsButton
                             :href="itineraryMap.link"
@@ -183,7 +193,7 @@
                     mt-075 mt-md-0
                 "
             >
-                <div v-html="pageIntro.iframeMap"/>
+                <div v-html="pageTemplate.iframeMap"/>
             </div>  
         </VsRow>
     </VsContainer>
@@ -274,6 +284,7 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
 import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 
@@ -296,6 +307,7 @@ import {
 } from '@visitscotland/component-library/components';
 
 
+const favourites = useFavourites();
 const configStore = useConfigStore();
 
 const props = defineProps<{ component: Component, page: Page }>();
@@ -306,7 +318,7 @@ let documentData : any = {
 };
 let pageItems = {
 };
-let pageIntro = {
+let pageTemplate = {
 };
 let itineraryMap = null;
 let numberOfMiles = null;
@@ -360,15 +372,16 @@ if (page.value) {
 
     if (component.value) {
         pageItems = component.value.model.models.pageItems;
-        pageIntro = component.value.model.models.pageIntro;
-        numberOfDays = pageIntro.dayCount;
+        const componentModels = component.value.getModels();
+        pageTemplate = componentModels.pageTemplate;
+        numberOfDays = pageTemplate.dayCount;
         durationText = `${ numberOfDays } ${ numberOfDays === 1 ? daySingular : daysPlural }`;
-        numberOfMiles = Math.round(pageIntro.distance);
+        numberOfMiles = Math.round(pageTemplate.distance);
         numberOfKm = Math.round(numberOfMiles * 1.6093);
         distanceText = `${ numberOfMiles } ${ milesLabel } (${ numberOfKm } ${ kmLabel })`;
-        locationNames = component.value.model.models.pageIntro.locations;
-        seasonInfo = component.value.model.models.pageIntro.seasons;
-        transportTypes = component.value.model.models.pageIntro.transports;
+        locationNames = pageTemplate.locations;
+        seasonInfo = pageTemplate.seasons;
+        transportTypes = pageTemplate.transports;
     }
 }
 </script>

@@ -1,5 +1,8 @@
 <template>
-    <VsTabItem :title="props.tab.title">
+    <VsTabItem
+        :title="props.tab.title"
+        :tabindex="panelNeedsFocusStop ? 0 : undefined"
+    >
         <div class="px-075 px-md-150 px-lg-300 px-xl-400 pt-200 pb-125">
             <VsAccordion v-if="props.tab.type === 'transport'">
                 <VsAccordionItem
@@ -66,4 +69,11 @@ const articleContent = computed(() => {
 
     return props.tab.practicalInformationContent;
 });
+
+// The tabpanel needs its own tab stop unless it starts with a focusable
+// element (the accordion buttons in the transport tab).
+// This is to ensure that keyboard users can reach the tabpanel content for screen readers.
+const panelNeedsFocusStop = computed(
+    () => !(props.tab.type === 'transport' && transportContent.value.length > 0),
+);
 </script>

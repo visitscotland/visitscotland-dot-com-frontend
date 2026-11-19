@@ -1,7 +1,15 @@
 <template>
-    <div v-if="moduleData.bespoken === 'carbon-calculator'">
-        <VsBrCarbonCalculator />
-    </div>
+    <VsBrCarbonCalculator
+        v-if="moduleData.bespoken === 'carbon-calculator'"
+    />
+
+    <VsBrSupplierDetails
+        v-else-if="module.id === 'supplier-listing'"
+    />
+    <VsBrSupplierListingModule
+        v-else-if="module.id === 'supplier-search'"
+    />
+
     <div
         v-else
         v-html="moduleData.html"
@@ -12,9 +20,7 @@
  
 /* eslint no-undef: 0 */
 
-import VsBrCarbonCalculator from './VsBrCarbonCalculator.vue';
-
-const props = defineProps<{ module: object, content: object, }>();
+const props = defineProps<{ module: any, content: object, }>();
 const content: any = props.content;
 const moduleData = content?.model?.data || {
 };

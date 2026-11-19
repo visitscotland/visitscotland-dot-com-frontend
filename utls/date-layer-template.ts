@@ -113,6 +113,23 @@ const googleMapInteractionTemplate = [
     'interaction_timestamp_ms',
 ];
 
+const carbonQuestionTemplate = [
+    'event',
+    'tag_name',
+    'question_number',
+    'answer',
+];
+
+const carbonCompleteTemplate = [
+    'event',
+    'tag_name',
+    'total_emissions',
+    'total_per_day',
+    'travel_percent',
+    'accommodation_percent',
+    'food_percent',
+];
+
 export {
     siteSearchOpenTemplate,
     siteSearchUsageTemplate,
@@ -127,4 +144,6 @@ export {
     googleMapFilterInteractionTemplate,
     googleMapTimeToFirstInteractionTemplate,
     googleMapInteractionTemplate,
+    carbonQuestionTemplate,
+    carbonCompleteTemplate,
 };

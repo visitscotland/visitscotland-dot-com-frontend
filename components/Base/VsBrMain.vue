@@ -3,7 +3,6 @@
         class="vs-main-container"
         :class="{
             'has-edit-button': page.isPreview(),
-            'has-transparent-nav': configStore.isLocalVideoheader && checkFlags('use-navbar'),
         }"
     >
         <BrManageContentButton
@@ -26,13 +25,8 @@
             :component="component"
         />
 
-        <VsBrItineraryLegacy
-            v-if="pageName === 'itinerary-page' && hasStops"
-            :page="page"
-            :component="component"
-        />
         <VsBrItinerary
-            v-else-if="pageName === 'itinerary-page' && !hasStops"
+            v-else-if="pageName === 'itinerary-page'"
             :page="page"
             :component="component"
         />
@@ -61,11 +55,9 @@ import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 import forceHttps from '~/composables/forceHttps.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
-import { useFavourites } from '#imports';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
-import VsBrItineraryLegacy from '~/components/PageTypes/VsBrItineraryLegacy.vue';
 import VsBrDestination from '~/components/PageTypes/VsBrDestination.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
@@ -84,10 +76,7 @@ let pageName : string = '';
 let pageDocument : any = {
 };
 
-let hasStops = null;
-
 const configStore = useConfigStore();
-const favourites = useFavourites();
 
 if (page.value) {
     pageComponent = page.value.getComponent();
@@ -103,110 +92,9 @@ if (page.value) {
         setResponseStatus(event, 500, 'Something Went Wrong');
     }
 
-    /**
-     * As a quirk of the data structure in the resourceApi, this main component receives all
-     * of the labels, as well as things like the is-business-events flag, the locale and gtm
-     * information. As a lot of this is needed in the menu and footer components, the easiest
-     * way to make it available globally is to place it in this configStore at the point this
-     * component is mounted, which can then be queried anywhere.
-     */
-
-    const componentModels = component.value.getModels();
-
-    configStore.activeSite = componentModels['site-id'];
-    configStore.productSearch = componentModels.psrWidget;
-    if (componentModels.otyml) {
-        configStore.otyml = componentModels.otyml;
-    }
-    configStore.pageItems = componentModels.pageItems;
-    configStore.heroImage = componentModels.heroImage;
-    configStore.labels = componentModels.labels;
-    configStore.newsletterSignpost = componentModels.newsletterSignpost;
-    configStore.pageIntro = componentModels.pageIntro;
-    configStore.gtm = componentModels.gtm;
-    configStore.pageMetaData = componentModels.metadata;
-
-    if (componentModels.pageConfiguration) {
-        hasStops = componentModels.pageConfiguration.hasStops;
-        configStore.globalSearchPath = componentModels.pageConfiguration['global-search.path'];
-        configStore.cludoCustomerId = componentModels.pageConfiguration['cludo.customer-id'];
-        configStore.cludoExperienceId = componentModels.pageConfiguration['cludo.experience-id'];
-        configStore.cludoEngineId = componentModels.pageConfiguration['cludo.engine-id'];
-        configStore.cludoLanguage = componentModels.pageConfiguration.language;
-        configStore.eventsApiUrl = componentModels.pageConfiguration['events-endpoint'];
-        configStore.cludoApiOperator = componentModels.pageConfiguration.cludoApiOperator;
-        configStore.googleMapApiKey = componentModels.pageConfiguration.mapsAPI;
-        configStore.isMainMapPageFlag = componentModels.pageConfiguration.mainMapPage;
-        configStore.enableHeroSection = componentModels.pageConfiguration['feature.hero-section.enable'];
-
-        favourites.isDisplayPage = componentModels.pageConfiguration['is-favourites-page'];
-        favourites.isSharePage = componentModels.pageConfiguration['is-favourites-share-page'];
-        favourites.pageEnabled = componentModels.pageConfiguration['allow-favourite'];
-        favourites.featureEnabled = componentModels.pageConfiguration['feature.favourites.enable'];
-        favourites.displaySavedUrl = componentModels.pageConfiguration['feature.favourites.url'];
-        favourites.brGetPagesEndpoint = componentModels.pageConfiguration['feature.favourites.endpoint'];
-        favourites.serviceUrl = componentModels.pageConfiguration['feature.favourites.share-service-base-url'];
-        favourites.displaySharedUrl = componentModels.pageConfiguration['feature.favourites.share-url'];
-
-        configStore.mainMapPath = componentModels.pageConfiguration['main-map-path'];
-
-        if (componentModels.heroVideo) {
-            configStore.heroVideo = componentModels.heroVideo;
-        }
-
-        if (componentModels.pageConfiguration['hero-ambient-video']) {
-            configStore.isLocalVideoheader = true;
-        }
-
-        if (componentModels.pageConfiguration['dms-based']) {
-            configStore.searchDmsBased = true;
-        }
-
-        if (componentModels.pageConfiguration.searchWidget) {
-            configStore.showSearchWidget = true;
-        }
-
-        if (componentModels.pageConfiguration.filters) {
-            configStore.searchFilters = componentModels.pageConfiguration.filters;
-        }
-
-    }
-
-    const pageContent : any = page.value.getContent(page.value.model.root);
-    const pageModels : any = pageContent.models;
+    const pageModels = page.value.getComponent().getModels();
     pageDocument = page.value.getContent(pageModels.document);
-
-    configStore.pageDocument = pageModels.document;
-
-    configStore.locale = componentModels.pageConfiguration.language;
-
-    let langString = '';
-
-    switch (configStore.locale) {
-    case 'fr':
-        langString = 'fr-fr';
-        break;
-    case 'nl':
-        langString = 'nl-nl';
-        break;
-    case 'de':
-        langString = 'de-de';
-        break;
-    case 'it':
-        langString = 'it-it';
-        break;
-    case 'es':
-        langString = 'es-es';
-        break;
-    case 'en':
-    default:
-        langString = 'en-gb';
-        break;
-    }
-
-    if (langString !== 'en-gb') {
-        configStore.langString = langString;
-    }
+    const langString = configStore.langString || 'en-gb';
 
     const hrefLangs = [];
 
@@ -225,15 +113,15 @@ if (page.value) {
         }
     }
 
-    configStore.isHome = pageModels.isHome;
 
     const canonicalLink = forceHttps(useRequestURL().toString().split('?')[0]);
 
     let ogImageSrc = '';
 
-    if (pageDocument.model.data.heroImage.$ref) {
-        const ogImageValue = page.value.getContent(pageDocument.model.data.heroImage.$ref);
-        ogImageSrc = ogImageValue.getOriginal().getUrl();
+    const heroImageRef = pageDocument.model.data.heroImage?.$ref;
+    if (heroImageRef) {
+        const ogImageValue = page.value.getContent(heroImageRef);
+        ogImageSrc = ogImageValue?.getOriginal()?.getUrl() ?? '';
     }
 
     const runtimeConfig = useRuntimeConfig();
@@ -392,17 +280,4 @@ provide('page', page.value);
         }
     }
 
-    .has-transparent-nav {
-        margin-top: -76px;
-
-        .vs-hero-section__video-overlay {
-            background: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 50.48%, rgba(0, 0, 0, 0.30) 89.9%),
-                        linear-gradient(180deg, rgba(0, 0, 0, 0.00) 39.5%, rgba(0, 0, 0, 0.85) 100%);
-        }
-
-        .vs-hero-section__video .vs-video-html5__toggle-video {
-            top: auto;
-            bottom: 1.25rem;
-        }
-    }
 </style>

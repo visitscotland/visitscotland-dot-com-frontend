@@ -6,47 +6,76 @@
         style="background-color: #200F2E; position: relative; z-index: 10000;"
     >
         <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
-            <span class="text-warning"><strong>Branch:</strong> {{ configStore.pageMetaData.branch }}</span>
-            <span class="text-warning"><strong>Author:</strong> {{ configStore.pageMetaData.lastCommitAuthor }}</span>
+            <span
+                v-if="runtimeConfig.public.VS_BRANCH_NAME"
+                class="text-warning"
+            >
+                <strong>FE branch:</strong> {{ runtimeConfig.public.VS_BRANCH_NAME }}
+            </span>
+            <span
+                v-if="runtimeConfig.public.VS_COMMIT_AUTHOR"
+                class="text-warning"
+            >
+                <strong>FE author:</strong> {{ runtimeConfig.public.VS_COMMIT_AUTHOR }}
+            </span>
+            <span
+                v-if="runtimeConfig.public.CHANGE_ID"
+                class="text-warning"
+            >
+                <strong>FE PR:</strong> {{ runtimeConfig.public.CHANGE_ID }}
+            </span>
+        </div>
+    </div>
+
+    <div
+        v-if="configStore.pageMetaData
+            && (configStore.pageMetaData.branch || configStore.pageMetaData.pr)"
+        style="background-color: #200F2E; position: relative; z-index: 10000;"
+    >
+        <div class="d-flex flex-column flex-lg-row justify-content-lg-between container-lg py-050">
+            <span class="text-warning"><strong>BRXM branch:</strong> {{ configStore.pageMetaData.branch }}</span>
+            <span class="text-warning"><strong>BRXM author:</strong> {{ configStore.pageMetaData.lastCommitAuthor }}</span>
             <span
                 v-if="configStore.pageMetaData.pr"
                 class="text-warning"
             >
-                <strong>PR:</strong> {{ configStore.pageMetaData.pr }}
+                <strong>BRXM PR:</strong> {{ configStore.pageMetaData.pr }}
             </span>
         </div>
     </div>
 
     <VsBrSkipTo />
-    <VsBanner
-        v-if="banner"
-        :close-btn-text="configStore.getLabel('essentials.global', 'close')"
-    >
-        <template #banner-text>
-            <div v-html="banner.copy.value" />
-        </template>
+    <div ref="bannerElement">
+        <VsBanner
+            v-if="banner"
+            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+        >
+            <template #banner-text>
+                <div v-html="banner.copy.value" />
+            </template>
 
-        <template #banner-cta>
-            <VsLink
-                :href="banner.ctaLink.link"
-                :type="banner.ctaLink.type"
-            >
-                {{ banner.ctaLink.label }}
-            </VsLink>
-        </template>
-    </VsBanner>
+            <template #banner-cta>
+                <VsLink
+                    :href="banner.ctaLink.link"
+                    :type="banner.ctaLink.type"
+                >
+                    {{ banner.ctaLink.label }}
+                </VsLink>
+            </template>
+        </VsBanner>
+    </div>
 
     <!-- Navbar To Do - Switch to feature flag -->
     <div
         ref="navElement"
         class="vs-sticky-nav--no-global"
-        :class="{ 'transparent-nav-bar': shouldShowTransparent }"
-        @mouseenter="isHovered = true"
-        @mouseleave="isHovered = false"
-        @focusin="isFocused = true"
-        @focusout="isFocused = false"
+        :class="{
+            'has-edit-button': page.isPreview(),
+        }"
     >
         <!-- Navbar To Do - Get real labels -->
+        <BrManageMenuButton :menu="menuData" />
+
         <VsNavigationBar
             :sidebar-close-label="configStore.getLabel('navigation.static', 'meganav.sidebar-close-label')"
             :sidebar-open-label="configStore.getLabel('navigation.static', 'meganav.sidebar-open-label')"
@@ -54,14 +83,16 @@
             sidebar-breakpoint="xl"
         >
             <template #logo-link>
-                <VsSvgLink
-                    :link-alt-text="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
+                <VsLink
                     :href="`/${configStore.langString}`"
-                    svg-fill="#5B2487"
-                    svg-path="visitscotland-logo"
-                    svg-width="167px"
-                    svg-height="28px"
-                />
+                    no-visited-styles
+                >
+                    <VsImg
+                        src="/visitscotland-logo.svg"
+                        :alt="configStore.getLabel('navigation.static', 'meganav.logo-alt-text')"
+                        :style="{ width: '167px', height: '28px' }"
+                    />
+                </VsLink>
             </template>
 
             <template #navigation-bar-menu>
@@ -118,7 +149,10 @@
                     :aria-label="configStore.getLabel('navigation.static', 'meganav.utility-aria-label')"
                 >
                     <ul class="d-flex">
-                        <li class="me-075">
+                        <li
+                            class="me-075"
+                            v-if="configStore.globalSearchPath"
+                        >
                             <VsButton
                                 size="sm"
                                 variant="secondary"
@@ -151,6 +185,7 @@
 
                         <li
                             class="d-none d-md-block me-025"
+                            v-if="configStore.mainMapPath"
                         >
                             <VsTooltip
                                 :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
@@ -167,6 +202,7 @@
                         </li>
                         <li
                             class="d-none d-md-block me-0 me-md-075 me-lg-0"
+                            v-if="localisedUrls && localisedUrls.length"
                         >
                             <VsNavigationBarMenuDropdown subtle>
                                 <template #button-content>
@@ -268,7 +304,10 @@
                                 </VsTooltip>
                             </li>
 
-                            <li class="d-block d-md-none me-075">
+                            <li
+                                class="d-block d-md-none me-075"
+                                v-if="configStore.mainMapPath"
+                            >
                                 <VsTooltip
                                     :title="configStore.getLabel('navigation.static', 'meganav.map-link-tooltip')"
                                     subtle
@@ -282,7 +321,10 @@
                                     {{ configStore.getLabel('navigation.static', 'meganav.map-link-tooltip') }}
                                 </VsTooltip>
                             </li>
-                            <li class="d-block d-md-none">
+                            <li
+                                class="d-block d-md-none"
+                                v-if="localisedUrls && localisedUrls.length"
+                            >
                                 <VsNavigationBarMenuDropdown subtle>
                                     <template #button-content>
                                         {{ configStore.locale.toUpperCase() }}
@@ -306,10 +348,9 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    toRefs, provide, ref, computed, onMounted, onUnmounted,
-} from 'vue';
+import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
+import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 import formatLink from '~/composables/formatLink.ts';
 import { useFavourites } from '~/stores/favouritesStore.ts';
 import useConfigStore from '~/stores/configStore.ts';
@@ -318,7 +359,7 @@ import {
     VsBanner,
     VsLink,
     VsNavigationBar,
-    VsSvgLink,
+    VsImg,
     VsNavigationBarMenu,
     VsNavigationBarMenuDropdown,
     VsNavigationBarMenuItem,
@@ -346,22 +387,14 @@ let menuItems : any[] = [];
 let localisedUrls : any[] = [];
 let banner : any = null;
 
-let cacheBustDate : string = '';
-
 const configStore = useConfigStore();
+const runtimeConfig = useRuntimeConfig();
 
-const isHovered = ref(false);
-const isFocused = ref(false);
 const scrollY = ref(1);
 const navElement = ref<HTMLElement | null>(null);
+const bannerElement = ref<HTMLElement | null>(null);
 let navResizeObserver: ResizeObserver | undefined;
 let skipToResizeObserver: ResizeObserver | undefined;
-
-const shouldShowTransparent = computed(() => configStore.isLocalVideoheader
-    && checkFlags('use-navbar')
-    && scrollY.value === 0
-    && !isHovered.value
-    && !isFocused.value);
 
 function handleScroll() {
     scrollY.value = window.scrollY;
@@ -376,9 +409,16 @@ function updateNavbarHeight() {
             ? skipToElement.getBoundingClientRect().height
             : 0;
 
+        const navHeight = navElement.value.getBoundingClientRect().height;
+        const bannerHeight = bannerElement.value?.getBoundingClientRect().height ?? 0;
+
+        document.documentElement.style.setProperty(
+            '--vs-nav-banner-scroll-height',
+            `${navHeight + bannerHeight}px`,
+        );
         document.documentElement.style.setProperty(
             '--vs-navbar-scroll-margin-top',
-            `calc(${navElement.value.getBoundingClientRect().height}px + ${skipToHeight}px + 1rem)`,
+            `calc(${navHeight}px + ${skipToHeight}px + 1rem)`,
         );
     }
 }
@@ -395,6 +435,9 @@ onMounted(() => {
     if (navElement.value && typeof ResizeObserver !== 'undefined') {
         navResizeObserver = new ResizeObserver(updateNavbarHeight);
         navResizeObserver.observe(navElement.value);
+        if (bannerElement.value) {
+            navResizeObserver.observe(bannerElement.value);
+        }
     }
 
     const skipToElement = document.querySelector<HTMLElement>('[data-test="vs-skip-to"]');
@@ -417,6 +460,7 @@ onUnmounted(() => {
     skipToElement?.removeEventListener('focusout', handleSkipToFocus);
 
     document.documentElement.style.removeProperty('--vs-navbar-scroll-margin-top');
+    document.documentElement.style.removeProperty('--vs-nav-banner-scroll-height');
 });
 
 if (page.value) {
@@ -436,66 +480,12 @@ if (page.value) {
         banner.ctaLink.link = banner.ctaLink.link.replace('/site/resourceapi', '');
     }
 
-    const timestamp = menuData.model.data.timeStamp;
-    const date = new Date(timestamp);
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1);
-    const day = String(date.getDate());
-    const hours = String(date.getHours());
-    const minutes = String(date.getMinutes());
-    const seconds = String(date.getSeconds());
-
-    cacheBustDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 provide('page', page.value);
 </script>
 
 <style lang="scss">
-    .vs-navigation-bar {
-        transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
-    }
-
-    .transparent-nav-bar .vs-navigation-bar {
-        background-color: rgba(0,0,0,0);
-        box-shadow: none;
-
-        .vs-svg-link > svg {
-            fill: white !important;
-        }
-
-        .vs-navigation-bar-menu-dropdown > .btn {
-            color: white;
-
-            &:after {
-                color: white;
-            }
-        }
-
-        .vs-navigation-bar-menu-item > a {
-            color: white;
-        }
-
-        .dropdown-menu > .vs-navigation-bar-menu-item > a {
-            color: #200f2e;
-        }
-
-        .vs-button--icon-only.btn-subtle i {
-            color: white !important;
-        }
-
-        .vs-navigation-bar__search-link {
-            background-color: rgba(0,0,0,0);
-            color: white;
-            border-color: white;
-
-            i {
-                color: white !important;
-            }
-        }
-    }
-
     .vs-favourites-link {
         font-size: .75rem;
         gap: 0.25rem;
@@ -516,5 +506,21 @@ provide('page', page.value);
     .vs-favourites-link:focus {
         box-shadow: 0 0 0 2px #fffa99 inset;
         outline: none;
+    }
+
+    .no-js {
+        .vs-navigation-bar__utilities {
+            nav > ul > li:not(first-child) {
+                margin: 0 1rem !important;
+            }
+
+            nav > ul > li:not(:first-child) {
+                margin: 1.5rem 0 !important;
+            }
+
+            .vs-button {
+                display: inline !important;
+            }
+        }
     }
 </style>
