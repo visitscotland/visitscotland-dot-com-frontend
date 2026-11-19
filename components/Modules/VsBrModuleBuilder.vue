@@ -261,7 +261,7 @@ import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
 import VsBrGoogleMapWithSidebar from './VsBrGoogleMapWithSidebar.vue';
-// import checkFlag from '~/composables/checkFlags';
+import checkFlag from '~/composables/checkFlags.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
 
