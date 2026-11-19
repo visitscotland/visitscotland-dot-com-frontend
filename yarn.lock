@@ -4903,9 +4903,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromatic@npm:^18.13.6":
-  version: 18.13.6
-  resolution: "chromatic@npm:18.13.6"
+"chromatic@npm:^18.14.3":
+  version: 18.14.3
+  resolution: "chromatic@npm:18.14.3"
   dependencies:
     semver: "npm:^7.3.5"
   peerDependencies:
@@ -4928,7 +4928,7 @@ __metadata:
     chroma: dist/bin.cjs
     chromatic: dist/bin.cjs
     chromatic-cli: dist/bin.cjs
-  checksum: 10c0/9b6cc28b55f4dbc4f49984c426f194453f9655fd6282e465cc38353d6375f1d8e4380c1b0e5abcd9fc7e28741c38c33b9a4f5abf6bd2b135777d5abdb5111f56
+  checksum: 10c0/6d595d026507ff982d100791b7aad5c4137d6f1a7495a86b77dc3c3aeb381b61f9f94096fd5d9a4567799a03a30584e61a097d201197665d0e77f6e57c11534c
   languageName: node
   linkType: hard
 
@@ -10181,7 +10181,7 @@ __metadata:
     "@types/node": "npm:^26.6.6"
     "@visitscotland/component-library": "npm:5.83.3"
     axios: "npm:^1.21.1"
-    chromatic: "npm:^18.13.6"
+    chromatic: "npm:^18.14.3"
     commitizen: "npm:^4.3.2"
     cz-conventional-changelog: "npm:^3.3.0"
     eslint: "npm:^10.14.0"
