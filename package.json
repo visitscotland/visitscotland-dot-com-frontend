@@ -16,6 +16,8 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:update": "playwright test --update-snapshots",
+    "chromatic": "node scripts/run-chromatic.mjs",
+    "chromatic:upload": "chromatic",
     "test:pinia": "node tests/pinia-migration.mjs",
     "test:dependencies": "node --test tests/dependency-*.test.mjs tests/prepare-dependency-triage.test.mjs tests/dependabot-auto-merge.test.mjs .github/skills/dependency-triage/scripts/collect.test.mjs",
     "test:smoke": "node ci/dependency-smoke.mjs",
@@ -29,9 +31,11 @@
     "*.{js,vue,ts}": "eslint"
   },
   "devDependencies": {
+    "@chromatic-com/playwright": "^1.0.0",
     "@nuxt/eslint-config": "^1.17.0",
-    "@types/google.maps": "^3.66.9",
+    "@types/google.maps": "^3.66.10",
     "@types/node": "^26.6.6",
+    "chromatic": "^18.13.6",
     "eslint": "^10.14.0",
     "husky": "^9.1.7",
     "nuxt": "^4.6.4",
@@ -46,7 +50,7 @@
     "@pinia/nuxt": "^1.0.3",
     "@playwright/test": "^1.65.0",
     "@visitscotland/component-library": "5.83.3",
-    "axios": "^1.21.0",
+    "axios": "^1.21.1",
     "commitizen": "^4.3.2",
     "cz-conventional-changelog": "^3.3.0",
     "html-entities": "^2.6.0",
@@ -54,7 +58,7 @@
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^3.0.0",
     "pinia": "^4.1.0",
-    "sass": "^1.108.0",
+    "sass": "^1.108.2",
     "standard-version": "^9.5.0",
     "typescript": "^6.0.3",
     "vue": "3.5.45"
@@ -62,8 +66,9 @@
   "resolutions": {
     "vue": "3.5.45",
     "simple-git": "4.0.2",
-    "axios": "1.21.0",
-    "lodash": "4.18.1"
+    "axios": "1.21.1",
+    "lodash": "4.18.1",
+    "js-yaml@npm:^4.1.0": "4.3.2"
   },
   "overrides": {
     "minimist": "latest"
