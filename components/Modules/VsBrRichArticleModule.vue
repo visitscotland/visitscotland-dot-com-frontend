@@ -106,6 +106,7 @@
     >
         <VsBrMediaSection
             :media-section="module.mediaSection"
+            :aria-description="`${configStore.getLabel('article', 'carousel.description')} ${module.title}`"
         />
     </div>
 </template>
