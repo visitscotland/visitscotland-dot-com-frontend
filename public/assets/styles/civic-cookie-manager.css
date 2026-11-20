@@ -36,12 +36,12 @@
 }
 
 #ccc .checkbox-toggle--slider input:checked~ .checkbox-toggle-on {
-  background-color: #1F49D6;
+  background-color: #441B65;
   opacity: 1;
 }
 
 #ccc .checkbox-toggle--slider input:checked~ .checkbox-toggle-off {
-  background-color: #1F49D6;
+  background-color: #441B65;
   opacity: 1;
 }
 
@@ -58,8 +58,8 @@
 }
 
 #ccc #ccc-content button:hover {
-  border-color: #1F49D6;
-  background-color: #1F49D6;
+  border-color: #8535C5;
+  background-color: #8535C5;
 }
 
 #ccc .ccc-svg-element {
@@ -67,12 +67,12 @@
 }
 
 #ccc .ccc-content--dark #ccc-end .ccc-button-solid:hover span {
-  background: #1F49D6;
+  background: #8535C5;
   color: #FFFFFF;
 }
 
 #ccc .ccc-content--dark #ccc-end .ccc-button-solid:hover {
-  background: #1F49D6;
+  background: #8535C5;
   color: #FFFFFF;
 }
 
@@ -85,5 +85,13 @@
 #ccc .ccc-content--dark #ccc-end .ccc-button-solid {
   font-weight: normal;
   background: rgba(0, 0, 0, 0);
+  color: #FFFFFF;
+}
+
+#ccc #ccc-content button:active,
+#ccc .ccc-content--dark #ccc-end .ccc-button-solid:active,
+#ccc .ccc-content--dark #ccc-end .ccc-button-solid:active span {
+  border-color: #5B2487;
+  background: #5B2487;
   color: #FFFFFF;
 }

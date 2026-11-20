@@ -262,7 +262,7 @@ onMounted(async() => {
     --gmp-mat-color-surface: #fff; //$vs-color-background-primary;
     --gmp-mat-color-on-surface: #200F2E; //$vs-color-text-primary;
     --gmp-mat-color-on-surface-variant: #606060; //$vs-color-text-secondary;
-    --gmp-mat-color-primary: #1F49D6; //$vs-color-text-cta-on-light;
+    --gmp-mat-color-primary: #441B65; //$vs-color-text-cta-on-light;
     --gmp-mat-color-negative: #940F2C; //$vs-color-text-error;
     --gmp-mat-color-positive: #03AA46; //$vs-color-text-success;
     --gmp-mat-color-info: #A8308C; //$vs-color-icon-highlight;

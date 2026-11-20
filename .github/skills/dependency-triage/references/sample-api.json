@@ -1,0 +1,219 @@
+{
+  "/repos/example/demo": {
+    "data": {
+      "full_name": "example/demo",
+      "default_branch": "main",
+      "html_url": "https://github.com/example/demo"
+    }
+  },
+  "/repos/example/demo/commits/main": {
+    "data": {
+      "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  },
+  "/repos/example/demo/contents/package.json?ref=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": {
+    "data": {
+      "sha": "example-blob",
+      "encoding": "base64",
+      "content": "eyJkZXBlbmRlbmNpZXMiOnsiZXhhbXBsZS1kaXJlY3QiOiJeMS4wLjAiLCJleGFtcGxlLXBhcmVudCI6IjIuMC4wIn0sInJlc29sdXRpb25zIjp7ImV4YW1wbGUtdHJhbnNpdGl2ZSI6IjEuMC4wIn19"
+    }
+  },
+  "/repos/example/demo/contents/yarn.lock?ref=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": {
+    "data": {
+      "sha": "example-blob",
+      "encoding": "base64",
+      "content": "IyBTeW50aGV0aWMgWWFybiBldmlkZW5jZTsgbm90IGFuIGluc3RhbGxhYmxlIGRlcGVuZGVuY3kgZ3JhcGguCl9fbWV0YWRhdGE6CiAgdmVyc2lvbjogOAo="
+    }
+  },
+  "/repos/example/demo/dependabot/alerts?state=open&per_page=100": {
+    "data": [
+      {
+        "number": 1,
+        "state": "open",
+        "html_url": "https://github.com/example/demo/security/dependabot/1",
+        "dependency": {
+          "package": {
+            "ecosystem": "npm",
+            "name": "example-direct"
+          },
+          "manifest_path": "yarn.lock",
+          "scope": "runtime",
+          "relationship": "direct"
+        },
+        "security_advisory": {
+          "ghsa_id": "GHSA-example-1",
+          "severity": "high",
+          "summary": "Synthetic practice advisory; no real vulnerability or exploitation claim.",
+          "references": []
+        },
+        "security_vulnerability": {
+          "package": {
+            "ecosystem": "npm",
+            "name": "example-direct"
+          },
+          "vulnerable_version_range": "< 1.0.1",
+          "first_patched_version": {
+            "identifier": "1.0.1"
+          }
+        }
+      },
+      {
+        "number": 2,
+        "state": "open",
+        "html_url": "https://github.com/example/demo/security/dependabot/2",
+        "dependency": {
+          "package": {
+            "ecosystem": "npm",
+            "name": "example-transitive"
+          },
+          "manifest_path": "yarn.lock",
+          "scope": "runtime",
+          "relationship": "indirect"
+        },
+        "security_advisory": {
+          "ghsa_id": "GHSA-example-2",
+          "severity": "medium",
+          "summary": "Synthetic practice advisory; no real vulnerability or exploitation claim.",
+          "references": []
+        },
+        "security_vulnerability": {
+          "package": {
+            "ecosystem": "npm",
+            "name": "example-transitive"
+          },
+          "vulnerable_version_range": "< 1.0.1",
+          "first_patched_version": {
+            "identifier": "1.0.1"
+          }
+        }
+      },
+      {
+        "number": 3,
+        "state": "open",
+        "html_url": "https://github.com/example/demo/security/dependabot/3",
+        "dependency": {
+          "package": {
+            "ecosystem": "npm",
+            "name": "example-no-fix"
+          },
+          "manifest_path": "yarn.lock",
+          "scope": "runtime",
+          "relationship": "unknown"
+        },
+        "security_advisory": {
+          "ghsa_id": "GHSA-example-3",
+          "severity": "critical",
+          "summary": "Synthetic practice advisory; no real vulnerability or exploitation claim.",
+          "references": []
+        },
+        "security_vulnerability": {
+          "package": {
+            "ecosystem": "npm",
+            "name": "example-no-fix"
+          },
+          "vulnerable_version_range": "< 1.0.1",
+          "first_patched_version": null
+        }
+      }
+    ]
+  },
+  "/repos/example/demo/pulls?state=open&per_page=100": {
+    "data": [
+      {
+        "number": 10,
+        "state": "open",
+        "draft": false,
+        "user": {
+          "login": "dependabot[bot]"
+        },
+        "title": "Synthetic patch update",
+        "body": "Practice evidence only. Inspect the patch rather than trusting this title.",
+        "html_url": "https://github.com/example/demo/pull/10",
+        "head": {
+          "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "repo": {
+            "full_name": "example/demo"
+          }
+        },
+        "base": {
+          "ref": "main",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      {
+        "number": 11,
+        "state": "open",
+        "draft": false,
+        "user": {
+          "login": "human"
+        },
+        "title": "Synthetic patch update",
+        "body": "Practice evidence only. Inspect the patch rather than trusting this title.",
+        "html_url": "https://github.com/example/demo/pull/10",
+        "head": {
+          "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "repo": {
+            "full_name": "example/demo"
+          }
+        },
+        "base": {
+          "ref": "main",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      }
+    ]
+  },
+  "/repos/example/demo/pulls/10": {
+    "data": {
+      "number": 10,
+      "state": "open",
+      "draft": false,
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "title": "Synthetic patch update",
+      "body": "Practice evidence only. Inspect the patch rather than trusting this title.",
+      "html_url": "https://github.com/example/demo/pull/10",
+      "head": {
+        "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "repo": {
+          "full_name": "example/demo"
+        }
+      },
+      "base": {
+        "ref": "main",
+        "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "changed_files": 2
+    }
+  },
+  "/repos/example/demo/pulls/10/files?per_page=100": {
+    "data": [
+      {
+        "filename": "package.json",
+        "status": "modified",
+        "patch": "@@ -1 +1 @@\n-\"example-direct\": \"^1.0.0\"\n+\"example-direct\": \"^1.0.1\""
+      },
+      {
+        "filename": "yarn.lock",
+        "status": "modified",
+        "patch": "@@ -1 +1 @@\n-  version: 1.0.0\n+  version: 1.0.1"
+      }
+    ]
+  },
+  "/repos/example/demo/commits/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/check-runs?per_page=100": {
+    "data": {
+      "check_runs": [
+        {
+          "name": "Dependency smoke tests",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      ]
+    }
+  },
+  "/repos/example/demo/commits/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/statuses?per_page=100": {
+    "data": []
+  }
+}
