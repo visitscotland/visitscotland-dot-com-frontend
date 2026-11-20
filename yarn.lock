@@ -1176,7 +1176,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/core@npm:^1.7.5":
+"@floating-ui/core@npm:^1.7.5, @floating-ui/core@npm:^1.8.0":
   version: 1.8.0
   resolution: "@floating-ui/core@npm:1.8.0"
   dependencies:
@@ -1185,13 +1185,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/dom@npm:^1.6.13, @floating-ui/dom@npm:^1.7.6":
+"@floating-ui/dom@npm:^1.7.6":
   version: 1.7.6
   resolution: "@floating-ui/dom@npm:1.7.6"
   dependencies:
     "@floating-ui/core": "npm:^1.7.5"
     "@floating-ui/utils": "npm:^0.2.11"
   checksum: 10c0/5c098e0d7b58c9bc769f276cca1766994c2c9c70c92d091a61bba8b3e9be53c011e0a79a8457fc2fb2f3d91697a26eb52e0a4962ef936dc963b45f58613c212f
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "@floating-ui/dom@npm:1.8.0"
+  dependencies:
+    "@floating-ui/core": "npm:^1.8.0"
+    "@floating-ui/utils": "npm:^0.2.12"
+  checksum: 10c0/c32b2de7a596b69cfffa909c7028825e14f6319be1b45da529f8943c89fe16b75a49c214e800c87ded3f172353d3b99163d50072f11410488e756961b7b629cc
   languageName: node
   linkType: hard
 
@@ -1202,14 +1212,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/vue@npm:^1.1.11, @floating-ui/vue@npm:^1.1.6":
-  version: 1.1.11
-  resolution: "@floating-ui/vue@npm:1.1.11"
+"@floating-ui/vue@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@floating-ui/vue@npm:2.0.1"
   dependencies:
-    "@floating-ui/dom": "npm:^1.7.6"
-    "@floating-ui/utils": "npm:^0.2.11"
-    vue-demi: "npm:>=0.13.0"
-  checksum: 10c0/5b081a243925e201e83895631f6e3cb68c4563f2f67f21e9127ed8ca97bc2b86f32c44c506132d2827e989d1beb8bf8f6715a6f2e5d80ce70e847920aa758d38
+    "@floating-ui/dom": "npm:^1.8.0"
+    "@floating-ui/utils": "npm:^0.2.12"
+  peerDependencies:
+    vue: ">=3.3.0"
+  checksum: 10c0/9c1480782a1d51b5f4b7f959fa235cd7f7d02652a54532184a54b6b88ee61bffb6d1abc84e1081b50e7c3e4a58ca3e182d841ae07a2f3baa26776ea31b6ddbf3
   languageName: node
   linkType: hard
 
@@ -3462,9 +3473,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@visitscotland/component-library@npm:5.83.3":
-  version: 5.83.3
-  resolution: "@visitscotland/component-library@npm:5.83.3"
+"@visitscotland/component-library@npm:5.84.0":
+  version: 5.84.0
+  resolution: "@visitscotland/component-library@npm:5.84.0"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.6"
     "@googlemaps/js-api-loader": "npm:^2.0.1"
@@ -3472,7 +3483,7 @@ __metadata:
     "@vuelidate/core": "npm:^2.0.2"
     "@vuelidate/validators": "npm:^2.0.2"
     axios: "npm:^1.4.0"
-    bootstrap-vue-next: "npm:^0.45.4"
+    bootstrap-vue-next: "npm:^1.2.3"
     glob: "npm:^12.0.0"
     lodash: "npm:^4.17.21"
     mapbox-gl: "npm:^1.11.1"
@@ -3492,7 +3503,7 @@ __metadata:
   dependenciesMeta:
     husky:
       built: true
-  checksum: 10c0/e2fe3203b61a744530f0d03dc84bf2549f839752f62d457c18f4eab6712559037c3359b9b12c7b43d201a241ec5f8ee95490f87b5208a3a78e9a023836ec1517
+  checksum: 10c0/4f161081c6ccef4d9ece3b91b8cf27d62a4c06a8c5225dee5a28a0822faacd64b5e90d284fef9b0b8a2686b1a671e1cf15f6f8891bb288161d3ecf455415ac73
   languageName: node
   linkType: hard
 
@@ -3891,7 +3902,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:^14.1.0, @vueuse/core@npm:^14.2.1":
+"@vueuse/core@npm:^14.1.0":
   version: 14.3.0
   resolution: "@vueuse/core@npm:14.3.0"
   dependencies:
@@ -3904,10 +3915,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vueuse/core@npm:~14.2.1":
+  version: 14.2.1
+  resolution: "@vueuse/core@npm:14.2.1"
+  dependencies:
+    "@types/web-bluetooth": "npm:^0.0.21"
+    "@vueuse/metadata": "npm:14.2.1"
+    "@vueuse/shared": "npm:14.2.1"
+  peerDependencies:
+    vue: ^3.5.0
+  checksum: 10c0/cd6f01fb074d423bdab324d8f262ff2597d6ce397d6fd139f3fe741e3e4f636b3481456e12b265021bf3626026410df1c3635981c1912648d80581cf066a3bf4
+  languageName: node
+  linkType: hard
+
+"@vueuse/metadata@npm:14.2.1":
+  version: 14.2.1
+  resolution: "@vueuse/metadata@npm:14.2.1"
+  checksum: 10c0/f36571b6898876242dd20a621d343caa1804fabeb14cacd89571fedd0d56885066587aa6b0c6f98108d3d26e1876e61913629cbc70e3776949326f312e6ad769
+  languageName: node
+  linkType: hard
+
 "@vueuse/metadata@npm:14.3.0":
   version: 14.3.0
   resolution: "@vueuse/metadata@npm:14.3.0"
   checksum: 10c0/2b2c34057ecd0116ad80ba96170491575f4e5f5ee4d94b48dddc68ed156f4167cbbc9716107913b931ab1466591dd0f5962fdfb99bd455449a2e2af304a58936
+  languageName: node
+  linkType: hard
+
+"@vueuse/shared@npm:14.2.1":
+  version: 14.2.1
+  resolution: "@vueuse/shared@npm:14.2.1"
+  peerDependencies:
+    vue: ^3.5.0
+  checksum: 10c0/c646b6313ba1092f858dfda13aa84750844661919632346202a2ed9e640febd0898953d2cdaa3e42ea174bea95ad0ba61295ce5bc32a49502f1583f1f3471bd7
   languageName: node
   linkType: hard
 
@@ -4507,14 +4547,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-vue-next@npm:^0.45.4":
-  version: 0.45.6
-  resolution: "bootstrap-vue-next@npm:0.45.6"
+"bootstrap-vue-next@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "bootstrap-vue-next@npm:1.2.3"
   dependencies:
-    "@floating-ui/core": "npm:^1.7.5"
-    "@floating-ui/vue": "npm:^1.1.11"
-    "@vueuse/core": "npm:^14.2.1"
-    reka-ui: "npm:^2.9.2"
+    "@floating-ui/core": "npm:^1.8.0"
+    "@floating-ui/vue": "npm:^2.0.1"
+    "@vueuse/core": "npm:~14.2.1"
+    reka-ui: "npm:^2.10.3"
   peerDependencies:
     "@floating-ui/vue": "*"
     "@internationalized/date": "*"
@@ -4540,7 +4580,7 @@ __metadata:
       optional: true
     vue-router:
       optional: true
-  checksum: 10c0/991aacf22925b4648ef9369cd00044ed81c80b83ea5a39442eb08890206c28535e2917b9a45ea6d4158e8646d37722c531ba214ecf36d8df7a0be103847f3628
+  checksum: 10c0/48dca171eb52058d25ea39d172eeec3cffd95973f750f0d574efc845cf554efac54ab44f484c908d1413b276806681c32d4ef9aa505e884b6530bb4c3a44eb99
   languageName: node
   linkType: hard
 
@@ -10179,7 +10219,7 @@ __metadata:
     "@playwright/test": "npm:^1.65.0"
     "@types/google.maps": "npm:^3.66.10"
     "@types/node": "npm:^26.6.6"
-    "@visitscotland/component-library": "npm:5.83.3"
+    "@visitscotland/component-library": "npm:5.84.0"
     axios: "npm:^1.21.1"
     chromatic: "npm:^18.14.3"
     commitizen: "npm:^4.3.2"
@@ -11364,12 +11404,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reka-ui@npm:^2.9.2":
-  version: 2.9.9
-  resolution: "reka-ui@npm:2.9.9"
+"reka-ui@npm:^2.10.3":
+  version: 2.11.0
+  resolution: "reka-ui@npm:2.11.0"
   dependencies:
-    "@floating-ui/dom": "npm:^1.6.13"
-    "@floating-ui/vue": "npm:^1.1.6"
+    "@floating-ui/vue": "npm:^2.0.1"
     "@internationalized/date": "npm:^3.5.0"
     "@internationalized/number": "npm:^3.5.0"
     "@tanstack/vue-virtual": "npm:^3.12.0"
@@ -11380,7 +11419,7 @@ __metadata:
     ohash: "npm:^2.0.11"
   peerDependencies:
     vue: ">= 3.4.0"
-  checksum: 10c0/4bae39b09917232685b9250c8126584a9e0fd8fada88aa0634534bc4b5277c4127ec5781c5c0a535807b5951ae24429283709d945371f5fdf2ff5527332d9c55
+  checksum: 10c0/4f012607f487e161473a9c7e3f7d05494d9ab83522b7907df25fb62e776fd8a950f84a0ca5c4493fdba886912651fe45cbdb8e4115fb35a252ad9bbbfaad6aac
   languageName: node
   linkType: hard
 
@@ -14091,22 +14130,6 @@ __metadata:
   version: 3.3.14
   resolution: "vue-component-type-helpers@npm:3.3.14"
   checksum: 10c0/2c22d3d977424a03dffa77eda6dcd88af6d6b5506a85d9825af6baf54f78ce8e84acbd095868d13145c10916a1c270bd06cff0f05b128ce6d42153e8f73e99b6
-  languageName: node
-  linkType: hard
-
-"vue-demi@npm:>=0.13.0":
-  version: 0.14.10
-  resolution: "vue-demi@npm:0.14.10"
-  peerDependencies:
-    "@vue/composition-api": ^1.0.0-rc.1
-    vue: ^3.0.0-0 || ^2.6.0
-  peerDependenciesMeta:
-    "@vue/composition-api":
-      optional: true
-  bin:
-    vue-demi-fix: bin/vue-demi-fix.js
-    vue-demi-switch: bin/vue-demi-switch.js
-  checksum: 10c0/a9ed8712fa36d01bc13c39757f95f30cebf42d557b99e94bff86d8660c81f2911b41220f7affc023d1ffcc19e13999e4a83019991e264787cca2c616e83aea48
   languageName: node
   linkType: hard
 
