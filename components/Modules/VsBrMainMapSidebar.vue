@@ -387,9 +387,13 @@ body.map-page {
             width: 33.875rem; /* 542px */
         }
 
-        .vs-map-unavailable__panel {
+        .vs-map-unavailable__warning {
             max-width: none;
             width: 100%;
+
+            .vs-warning__content {
+                max-width: 100%;
+            }
         }
     }
 
