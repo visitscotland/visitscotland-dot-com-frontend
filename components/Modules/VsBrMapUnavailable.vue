@@ -1,7 +1,8 @@
 <template>
     <div class="vs-map-unavailable">
         <VsHeading
-            level="3"
+            :id="headingId"
+            level="1"
             heading-style="heading-s"
             class="vs-map-unavailable__heading mb-150"
             no-margins
@@ -22,7 +23,7 @@
                 />
                 <div>
                     <VsHeading
-                        level="6"
+                        level="2"
                         heading-style="heading-xxs"
                         class="vs-map-unavailable__panel-title mb-100"
                         no-margins
@@ -61,8 +62,14 @@ import {
 withDefaults(defineProps<{
     /** Where the call to action button links to. */
     ctaHref?: string,
+    /**
+     * Optional id for the heading. Pass `main-heading` where this
+     * replaces the page's main heading (e.g. the /map page).
+     */
+    headingId?: string,
 }>(), {
     ctaHref: '#section-1',
+    headingId: undefined,
 });
 
 // TODO: move to CMS labels

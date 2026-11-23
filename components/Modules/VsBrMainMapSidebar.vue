@@ -31,6 +31,7 @@
             <VsBrMapUnavailable
                 v-if="props.mapUnavailable"
                 cta-href="/places-to-go#section-1"
+                heading-id="main-heading"
             />
 
             <div
