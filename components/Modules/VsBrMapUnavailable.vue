@@ -9,40 +9,27 @@
         >
             {{ mapUnavailableTitle }}
         </VsHeading>
-        <VsPanel
-            variant="information"
-            class="vs-map-unavailable__panel p-125 rounded-0"
+        <!-- VsWarning wraps both slots in a <p>, so only inline content
+            can go in them (no headings or divs) -->
+        <VsWarning
+            icon="fa-regular fa-triangle-exclamation"
+            class="vs-map-unavailable__warning"
             role="alert"
         >
-            <div class="d-flex flex-column flex-sm-row">
-                <VsIcon
-                    icon="fa-regular fa-triangle-exclamation"
+            <strong class="vs-map-unavailable__warning-title d-block mb-100">
+                {{ mapUnavailablePanelTitle }}
+            </strong>
+            {{ mapUnavailableMessage }}
+            <template #extra-content>
+                <VsButton
                     size="sm"
-                    class="me-125 mt-025 mb-050"
-                    variant="highlight"
-                />
-                <div>
-                    <VsHeading
-                        level="2"
-                        heading-style="heading-xxs"
-                        class="vs-map-unavailable__panel-title mb-100"
-                        no-margins
-                    >
-                        {{ mapUnavailablePanelTitle }}
-                    </VsHeading>
-                    <VsBody>
-                        {{ mapUnavailableMessage }}
-                    </VsBody>
-                    <VsButton
-                        size="sm"
-                        class="mt-125 mb-050"
-                        :href="ctaHref"
-                    >
-                        {{ mapUnavailableButtonCTA }}
-                    </VsButton>
-                </div>
-            </div>
-        </VsPanel>
+                    class="mb-050"
+                    :href="ctaHref"
+                >
+                    {{ mapUnavailableButtonCTA }}
+                </VsButton>
+            </template>
+        </VsWarning>
     </div>
 </template>
 
@@ -52,11 +39,9 @@
  * Used by VsBrGoogleMapWithSidebar and VsBrMainMapSidebar.
  */
 import {
-    VsBody,
     VsButton,
     VsHeading,
-    VsIcon,
-    VsPanel,
+    VsWarning,
 } from '@visitscotland/component-library/components';
 
 withDefaults(defineProps<{
@@ -83,12 +68,12 @@ const mapUnavailableButtonCTA = 'Explore Scotland\'s Destinations';
 
 <style lang="scss">
     .vs-map-unavailable {
-        &__panel {
+        &__warning {
             max-width: 29.625rem; /* 474px */
         }
 
         // figma specifies 20px at mobile and desktop for this one
-        .vs-map-unavailable__panel-title {
+        .vs-map-unavailable__warning-title {
             font-size: 1.25rem; /* 20px */
         }
     }
