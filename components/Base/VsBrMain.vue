@@ -56,6 +56,7 @@ import forceHttps from '~/composables/forceHttps.ts';
 import buildPageSchemas from '~/composables/buildPageSchemas.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
@@ -78,6 +79,7 @@ let pageDocument : any = {
 };
 
 const configStore = useConfigStore();
+const favourites = useFavourites();
 
 if (page.value) {
     pageComponent = page.value.getComponent();
