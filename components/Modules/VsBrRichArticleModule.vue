@@ -136,7 +136,6 @@ const props = defineProps<{
 }>();
 
 const module: any = props.module;
-const nextModuleArticle: boolean = props.nextModuleArticle;
 
 const mediaHasTopMargin = (index : number) => {
     if (index !== 0) {
@@ -148,7 +147,7 @@ const mediaHasTopMargin = (index : number) => {
     }
 
     return false;
-}
+};
 
 </script>
 

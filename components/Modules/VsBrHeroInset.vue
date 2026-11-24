@@ -46,18 +46,18 @@
             <VsCol>
                 <VsImg
                     :src="imageSrc"
-                    :alt="imageData?.altText"
+                    :alt="imageAltText"
                     fluid
                 />
                 <VsMediaCaption
-                    v-if="imageData?.description || imageData?.credit"
+                    v-if="imageCaption || imageCredit"
                     data-test="vs-hero-section-image__caption"
                 >
                     <template #caption>
-                        {{ imageData?.description }}
+                        {{ imageCaption }}
                     </template>
                     <template #credit>
-                        {{ imageData?.credit }}
+                        {{ imageCredit }}
                     </template>
                 </VsMediaCaption>
             </VsCol>
@@ -78,6 +78,10 @@ import {
     VsMediaCaption,
 } from '@visitscotland/component-library/components';
 
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
+
 const page: any = inject('page');
 
 const props = defineProps<{
@@ -94,11 +98,20 @@ const {
 let imageValue = null;
 let imageData = null;
 let imageSrc = 'https://static.visitscotland.com/img/fallback-img.png';
+let imageCaption = '';
+let imageCredit = '';
+let imageAltText = '';
 
 if (image.value) {
     imageValue = page.getContent(image.value.$ref);
     imageData = imageValue.model.data;
     imageSrc = imageValue.getOriginal().getUrl();
+
+    // The raw image document's fields are always English. The heroImage component model holds
+    // them localised for the current page, so prefer it on translated pages.
+    imageCaption = configStore.heroImage?.description || imageData?.description;
+    imageCredit = configStore.heroImage?.credit || imageData?.credit;
+    imageAltText = configStore.heroImage?.altText || imageData?.altText;
 }
 
 </script>

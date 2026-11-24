@@ -369,7 +369,7 @@
 
 .c-search__button--submit {
     bottom: 0 !important;
-    background: #1F49D6 !important;
+    background: #441B65 !important;
     border: 0 !important;
     border-radius: 0 !important;
     color: #fff !important;
@@ -377,6 +377,14 @@
     text-align: center !important;
     text-transform: uppercase !important;
     max-width: 164px !important;
+}
+
+.c-search__button--submit:hover {
+    background: #8535C5 !important;
+}
+
+.c-search__button--submit:active {
+    background: #5B2487 !important;
 }
 
 .listing-content {

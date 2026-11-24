@@ -102,9 +102,6 @@ import {
     VsImg,
     VsMediaCaption,
     VsSocialCreditLink,
-    VsContainer,
-    VsRow,
-    VsCol,
     VsVideo,
 } from '@visitscotland/component-library/components';
 
@@ -190,8 +187,6 @@ let imageSrc = 'https://static.visitscotland.com/img/fallback-img.png';
 
 let descriptionString = '';
 
-let longitude = '';
-let latitude = '';
 let altText = '';
 
 if (page) {
@@ -206,18 +201,10 @@ if (page) {
             imageData.coordinates = configStore.heroImage.coordinates;
         }
 
-        if (isHero.value) {
+        if (isHero.value && configStore.heroImage) {
             imageData.description = configStore.heroImage.description;
         }
 
-        if (imageData.coordinates) {
-            if (imageData.coordinates.longitude) {
-                longitude = imageData.coordinates.longitude.toString();
-            }
-            if (imageData.coordinates.latitude) {
-                latitude = imageData.coordinates.latitude.toString();
-            }
-        }
 
         altText = (noAltText.value || !imageData)
             ? configStore.getLabel('essentials.global', 'default.alt-text')

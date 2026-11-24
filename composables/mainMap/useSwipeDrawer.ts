@@ -18,7 +18,8 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
 
     const OPEN_POSITION = 0;
     const SWIPE_THRESHOLD = 30;
-    const HEADER_HEIGHT = 81;
+    const HEADER_HEIGHT = 'var(--vs-nav-banner-scroll-height, 81px)';
+    let sidebarResizeObserver: ResizeObserver | undefined;
 
     // Set the how much of the sidebar is visible when it's closed.
     const closedPosition = computed(() =>
@@ -33,8 +34,8 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
         if (!isMobile.value) return undefined;
 
         return {
-            height: `calc(100dvh - ${HEADER_HEIGHT}px)`,
-            top: `${HEADER_HEIGHT}px`,
+            height: `calc(100dvh - ${HEADER_HEIGHT})`,
+            top: HEADER_HEIGHT,
             transform: `translateY(${currentY.value}px)`,
             transition: isDragging.value
                 ? 'none'
@@ -142,6 +143,14 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
             document.body.classList.add('map-page');
         }
         
+        // Keep the closed position in sync when the banner changes the drawer height.
+        if (sidebar.value && typeof ResizeObserver !== 'undefined') {
+            sidebarResizeObserver = new ResizeObserver(() => {
+                sidebarHeight.value = sidebar.value?.getBoundingClientRect().height ?? 500;
+            });
+            sidebarResizeObserver.observe(sidebar.value);
+        }
+
         // Set the sidebar position when the screen size changes.
         window.addEventListener('resize', onResize);
     });
@@ -151,6 +160,7 @@ export default function useSwipeDrawer(isOpen: Ref<boolean>, sidebar: Ref<HTMLEl
         document.body.classList.remove('map-page');
 
         window.removeEventListener('resize', onResize);
+        sidebarResizeObserver?.disconnect();
     });
 
     return {
