@@ -8,6 +8,7 @@ import type {
     Article,
     Thing,
     ImageObject,
+    VideoObject,
 } from 'schema-dts';
 
 import { decode } from 'html-entities';
@@ -38,6 +39,59 @@ type HeroContext = {
 type HeroImage = {
     contentUrl: string;
     credit?: string;
+};
+
+type PageVideo = {
+    label?: string;
+    teaser?: string;
+    youtubeId?: string;
+    publishedDate?: number | string | null;
+    videoMetadata?: { duration?: string } | null;
+    image?: {
+        cmsImage?: { $ref: string } | null;
+        externalImage?: string | { $ref: string } | null;
+    } | null;
+};
+
+const buildVideoSchemas = (page: Page): WithContext<VideoObject>[] => {
+    const videos: Record<string, PageVideo | null> = page.getComponent('main')
+        ?.getModels().pageConfiguration?.videoSchema ?? {
+    };
+
+    return Object.entries(videos).flatMap(([id, video]) => {
+        if (!video) {
+            return [];
+        }
+        const schema: WithContext<VideoObject> = {
+            '@context': 'https://schema.org',
+            '@type': 'VideoObject',
+            name: video.label,
+            description: plainText(video.teaser ?? ''),
+            embedUrl: `https://www.youtube.com/embed/${video.youtubeId || id}`,
+        };
+        const image = video.image?.cmsImage ?? video.image?.externalImage;
+        if (typeof image === 'string') {
+            schema.thumbnailUrl = image;
+        } else if (image?.$ref) {
+            const content = page.getContent<{
+                getOriginal: () => { getUrl: () => string };
+                    }>(image.$ref);
+            const url = content?.getOriginal()?.getUrl();
+            if (url) {
+                schema.thumbnailUrl = url;
+            }
+        }
+        if (video.publishedDate !== undefined && video.publishedDate !== null) {
+            const published = new Date(video.publishedDate);
+            if (!Number.isNaN(published.getTime())) {
+                schema.uploadDate = published.toISOString();
+            }
+        }
+        if (video.videoMetadata?.duration) {
+            schema.duration = video.videoMetadata.duration;
+        }
+        return [schema];
+    });
 };
 
 export const hasVisibleHeroImage = (documentData: DocumentData | undefined, context?: HeroContext): boolean => {
@@ -244,6 +298,7 @@ const buildPageSchemas = (
     if (imageSchema) {
         schemas.push(imageSchema);
     }
+    schemas.push(...buildVideoSchemas(page));
 
     return schemas;
 };
