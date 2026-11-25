@@ -1,3 +1,10 @@
+/* Keep Nuxt's development error UI out of local screenshots and Chromatic
+   archives. Browser errors are still logged by the visual tests. */
+nuxt-error-overlay,
+[data-nuxt-dev-error] {
+    display: none !important;
+}
+
 /* Hide video players — these render non-deterministic content (YouTube iframes,
    HTML5 video frames) that causes false snapshot failures. */
 
