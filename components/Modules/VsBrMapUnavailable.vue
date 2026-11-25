@@ -7,7 +7,7 @@
             class="vs-map-unavailable__heading mb-150"
             no-margins
         >
-            {{ mapUnavailableTitle }}
+            {{ configStore.getLabel('map', 'map.main-map.error-cta-title') }}
         </VsHeading>
         <!-- VsWarning wraps both slots in a <p>, so only inline content
             can go in them (no headings or divs) -->
@@ -17,16 +17,16 @@
             role="alert"
         >
             <strong class="vs-map-unavailable__warning-title d-block mb-100">
-                {{ mapUnavailablePanelTitle }}
+                {{ configStore.getLabel('map', 'map.main-map.error-title') }}
             </strong>
-            {{ mapUnavailableMessage }}
+            {{ configStore.getLabel('map', 'map.main-map.error-copy') }}
             <template #extra-content>
                 <VsButton
                     size="sm"
                     class="mb-050"
-                    :href="ctaHref"
+                    :href="props.ctaHref ?? configStore.getLabel('map', 'map.main-map.error-cta-link')"
                 >
-                    {{ mapUnavailableButtonCTA }}
+                    {{ configStore.getLabel('map', 'map.main-map.error-cta-title') }}
                 </VsButton>
             </template>
         </VsWarning>
@@ -44,8 +44,15 @@ import {
     VsWarning,
 } from '@visitscotland/component-library/components';
 
-withDefaults(defineProps<{
-    /** Where the call to action button links to. */
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
+
+const props = withDefaults(defineProps<{
+    /**
+     * Where the call to action button links to. Defaults to the
+     * `map.main-map.error-cta-link` CMS label.
+     */
     ctaHref?: string,
     /**
      * Optional id for the heading. Pass `main-heading` where this
@@ -53,17 +60,9 @@ withDefaults(defineProps<{
      */
     headingId?: string,
 }>(), {
-    ctaHref: '#section-1',
+    ctaHref: undefined,
     headingId: undefined,
 });
-
-// TODO: move to CMS labels
-const mapUnavailableTitle = 'Explore Scotland';
-const mapUnavailablePanelTitle = 'Map temporarily unavailable';
-const mapUnavailableMessage = 'We\'re having trouble displaying the map at the moment. '
-    + 'You can still explore Scotland using search, navigation and destination pages '
-    + 'while we work to restore the map.';
-const mapUnavailableButtonCTA = 'Explore Scotland\'s Destinations';
 </script>
 
 <style lang="scss">

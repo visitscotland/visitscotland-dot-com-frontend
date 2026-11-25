@@ -22,7 +22,10 @@
                     class="vs-google-map-with-sidebar__sidebar-wrapper"
                     :class="{ 'p-150': isMapUnavailable }"
                 >
-                    <VsBrMapUnavailable v-if="isMapUnavailable" />
+                    <VsBrMapUnavailable
+                        v-if="isMapUnavailable"
+                        cta-href="#section-1"
+                    />
                     <template v-else>
                         <div class="vs-google-map-with-sidebar__sidebar-header">
                             <VsButton
