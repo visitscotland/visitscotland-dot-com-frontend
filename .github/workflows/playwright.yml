@@ -53,12 +53,7 @@ jobs:
     name: Playwright and Chromatic
     needs: classify
     if: needs.classify.outputs.exempt != 'true'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.65.0-noble
-      options: --init --ipc=host
-    env:
-      HOME: /root
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -66,10 +61,6 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - name: Trust the mounted workspace in the container
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git --no-pager log -1 --format=%H
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 24
@@ -90,6 +81,8 @@ jobs:
         with:
           path: .yarn/cache
           key: ${{ steps.yarn-cache.outputs.cache-primary-key }}
+      - name: Install Chromium and Linux dependencies
+        run: yarn playwright install --with-deps chromium
       - name: Assert rendering and capture Chromatic archives
         run: yarn playwright test
         env:
@@ -119,12 +112,8 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         uses: chromaui/action@6ac4c49524e1b1358b8c593c5eea877604228268 # v18.14.2
         with:
-          playwright: true
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          exitZeroOnChanges: true
           branchName: ${{ github.head_ref || github.ref_name }}
-        env:
-          CHROMATIC_ARCHIVE_LOCATION: test-results
       - name: Link to Chromatic visual review
         if: ${{ !cancelled() && steps.chromatic.outputs.buildUrl != '' }}
         env:
@@ -144,7 +133,6 @@ jobs:
     timeout-minutes: 15
     env:
       CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-      CHROMATIC_BRANCH: ${{ github.head_ref || github.ref_name }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
