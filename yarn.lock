@@ -3480,9 +3480,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@visitscotland/component-library@npm:5.84.0":
-  version: 5.84.0
-  resolution: "@visitscotland/component-library@npm:5.84.0"
+"@visitscotland/component-library@npm:5.85.0":
+  version: 5.85.0
+  resolution: "@visitscotland/component-library@npm:5.85.0"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.6"
     "@googlemaps/js-api-loader": "npm:^2.0.1"
@@ -3510,7 +3510,7 @@ __metadata:
   dependenciesMeta:
     husky:
       built: true
-  checksum: 10c0/4f161081c6ccef4d9ece3b91b8cf27d62a4c06a8c5225dee5a28a0822faacd64b5e90d284fef9b0b8a2686b1a671e1cf15f6f8891bb288161d3ecf455415ac73
+  checksum: 10c0/c5b2847c5ee14ae83587260ba10289cb4e94b7ede17f09f1863c7943e6a422a0644eb019ccde01808e910e2a10a8f5995db62dfd05f4984b23356f65c529d363
   languageName: node
   linkType: hard
 
@@ -4555,8 +4555,8 @@ __metadata:
   linkType: hard
 
 "bootstrap-vue-next@npm:^1.2.3":
-  version: 1.2.3
-  resolution: "bootstrap-vue-next@npm:1.2.3"
+  version: 1.2.4
+  resolution: "bootstrap-vue-next@npm:1.2.4"
   dependencies:
     "@floating-ui/core": "npm:^1.8.0"
     "@floating-ui/vue": "npm:^2.0.1"
@@ -4587,7 +4587,7 @@ __metadata:
       optional: true
     vue-router:
       optional: true
-  checksum: 10c0/48dca171eb52058d25ea39d172eeec3cffd95973f750f0d574efc845cf554efac54ab44f484c908d1413b276806681c32d4ef9aa505e884b6530bb4c3a44eb99
+  checksum: 10c0/0cda9e091a795ca44734ecc54a66aa2b38823256cd6855f8331a97abb5de1dfef4b20dea54a87e588543b7d4f87846534740d37bea2637f8cf237d78cf4efebf
   languageName: node
   linkType: hard
 
@@ -4959,9 +4959,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromatic@npm:^18.14.4":
-  version: 18.14.4
-  resolution: "chromatic@npm:18.14.4"
+"chromatic@npm:^18.14.6":
+  version: 18.14.6
+  resolution: "chromatic@npm:18.14.6"
   dependencies:
     semver: "npm:^7.3.5"
   peerDependencies:
@@ -4984,7 +4984,7 @@ __metadata:
     chroma: dist/bin.cjs
     chromatic: dist/bin.cjs
     chromatic-cli: dist/bin.cjs
-  checksum: 10c0/56aa7501483cfcf6062882a35b77cd67e45f4c58e47de54a69cd9e144a00b12a5d2e171443e8d26b95436294b36b3069f48d3e464d19c17cf679c1b5cbcbbc29
+  checksum: 10c0/0c36b13269ab6f7a1da5dd06e19d6f2d9f557215974630d86accf3c4389a51b116bd17d9aba13e5fa9bb9991e2111e130bc5751608fa47c6f6498d77be551c8b
   languageName: node
   linkType: hard
 
@@ -10236,9 +10236,9 @@ __metadata:
     "@playwright/test": "npm:^1.65.1"
     "@types/google.maps": "npm:^3.66.10"
     "@types/node": "npm:^26.6.6"
-    "@visitscotland/component-library": "npm:5.84.0"
+    "@visitscotland/component-library": "npm:5.85.0"
     axios: "npm:^1.21.1"
-    chromatic: "npm:^18.14.4"
+    chromatic: "npm:^18.14.6"
     commitizen: "npm:^4.3.2"
     cz-conventional-changelog: "npm:^3.3.0"
     eslint: "npm:^10.15.0"
