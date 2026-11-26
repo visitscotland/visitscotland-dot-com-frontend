@@ -20,6 +20,7 @@ for (const app of apps) {
 
                 const piniaErrors: string[] = [];
                 browserPage.on('pageerror', (error) => {
+                    console.error(`[${app.name}/${page.name}] Browser error:`, error.stack || error.message);
                     if (/pinia|storeToRefs/i.test(error.message)) {
                         piniaErrors.push(error.message);
                     }
