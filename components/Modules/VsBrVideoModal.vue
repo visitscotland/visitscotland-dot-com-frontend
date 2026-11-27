@@ -40,9 +40,7 @@
 <script lang="ts" setup>
 /* eslint no-undef: 0 */
 
-import { toRefs, inject } from 'vue';
-
-import type { Page } from '@bloomreach/spa-sdk';
+import { toRefs } from 'vue';
 
 import {
     VsModal, VsVideo, VsRow, VsCol, VsBody,
@@ -73,34 +71,5 @@ const {
     modalId,
     video,
 } = toRefs(props);
-
-const page: Page | undefined = inject('page');
-
-const contentUrl = video.value.youtubeId
-    ? `https://youtube.com/watch?v=${video.value.youtubeId}`
-    : video.value.url;
-
-let imageValue : any = null;
-
-if (page) {
-    if (video.value.image.cmsImage) {
-        imageValue = page.getContent(video.value.image.cmsImage.$ref);
-        imageValue = imageValue.getOriginal().getUrl();
-    } else {
-        imageValue = video.value.image;
-    }
-}
-
-useJsonld({
-    '@context': 'https://schema.org',
-    '@type': 'VideoObject',
-    name: video.value.label,
-    description: video.value.teaser,
-    contentUrl,
-    thumbnailUrl: imageValue,
-    uploadDate: video.value.publishedDate
-        ? new Date(video.value.publishedDate).toISOString()
-        : '',
-});
 
 </script>

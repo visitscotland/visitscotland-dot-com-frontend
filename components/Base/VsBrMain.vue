@@ -53,8 +53,10 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 
 import forceHttps from '~/composables/forceHttps.ts';
+import buildPageSchemas from '~/composables/buildPageSchemas.ts';
 
 import useConfigStore from '~/stores/configStore.ts';
+import { useFavourites } from '#imports';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBrItinerary from '~/components/PageTypes/VsBrItinerary.vue';
@@ -77,6 +79,7 @@ let pageDocument : any = {
 };
 
 const configStore = useConfigStore();
+const favourites = useFavourites();
 
 if (page.value) {
     pageComponent = page.value.getComponent();
@@ -114,7 +117,25 @@ if (page.value) {
     }
 
 
-    const canonicalLink = forceHttps(useRequestURL().toString().split('?')[0]);
+    const requestUrl = useRequestURL();
+    const canonicalLink = forceHttps(requestUrl.toString().split('?')[0]);
+
+    useJsonld(() => {
+        const schemas = buildPageSchemas(
+            component.value.getModels().pageItems,
+            page.value,
+            canonicalLink,
+            pageDocument.getData(),
+            {
+                pageName,
+                isMainMapPage: configStore.isMainMapPageFlag,
+                isFavouritesPage: favourites.isDisplayPage,
+                isSearchResultsPage: !!configStore.globalSearchPath
+                    && requestUrl.pathname.includes(configStore.globalSearchPath.replace(/\/+$/, '')),
+            },
+        );
+        return schemas.length ? schemas : null;
+    });
 
     let ogImageSrc = '';
 
