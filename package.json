@@ -61,10 +61,10 @@
     "sass": "^1.108.2",
     "standard-version": "^9.5.0",
     "typescript": "^6.0.3",
-    "vue": "3.5.45"
+    "vue": "3.5.46"
   },
   "resolutions": {
-    "vue": "3.5.45",
+    "vue": "3.5.46",
     "axios": "1.21.1",
     "lodash": "4.18.1",
     "js-yaml@npm:^4.1.0": "4.3.2"
