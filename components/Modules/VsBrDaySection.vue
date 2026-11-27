@@ -84,6 +84,7 @@
         <VsBrMediaSection
             v-if="day.mediaSection"
             :media-section="day.mediaSection"
+            :aria-description="`${configStore.getLabel('itinerary', 'carousel.description')} ${day.title}`"
         />
     </section>
 </template>
