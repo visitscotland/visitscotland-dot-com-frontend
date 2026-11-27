@@ -10,6 +10,7 @@
                 v-model:is-results-open="mainMapStore.isSidebarResultsOpen"
                 :heading="props.module.tabTitle ?? props.module.title"
                 :map-loaded="mapContext.mapLoaded.value"
+                :map-unavailable="isMapUnavailable"
                 :place="mapContext.selectedPlace.value"
                 @destination-type-selected="mapMarkers.addDestinationMarkers"
                 @reset-map="mapSearch.resetMap(true, false)"
@@ -107,10 +108,11 @@
                     id="vs-map"
                     map-id="vs-map"
                     ref="map-container"
+                    :class="{ 'vs-map__map--error': isMapUnavailable }"
                 />
 
                 <div
-                    v-if="mainMapStore.showSearchAreaButton"
+                    v-if="mainMapStore.showSearchAreaButton && !isMapUnavailable"
                     class="vs-map__search-area"
                 >
                     <VsButton
@@ -149,8 +151,10 @@
 <script setup lang="ts">
 import {
     computed,
+    onBeforeUnmount,
     onMounted,
     provide,
+    ref,
     useTemplateRef,
 } from 'vue';
 import {
@@ -170,6 +174,7 @@ import useGoogleMap from '~/composables/mainMap/useGoogleMap.ts';
 import useMapSearch from '~/composables/mainMap/useMapSearch.ts';
 import useMapMarkers from '~/composables/mainMap/useMapMarkers.ts';
 import useVerifyCookies from '~/composables/useVerifyCookies.ts';
+import checkFlag from '~/composables/checkFlags.ts';
 import cookieValues from '~/utls/required-cookies-data.ts';
 import VsBrMainMapSidebar from './VsBrMainMapSidebar.vue';
 
@@ -199,6 +204,12 @@ const showError = computed(() =>
     !cookieCheck.cookiesAllowed.value,
 );
 
+// Set when Google Maps fails to load, to show the unavailable message.
+const isMapUnavailable = ref<boolean>(false);
+watch(isMapUnavailable, (unavailable) => {
+    if (unavailable) mainMapStore.isSidebarOpen = true;
+});
+
 /**
  * Set up the featured destinations and add them to the store.
  */
@@ -223,7 +234,15 @@ function setupFeatureDestinations() {
 async function initialiseMap() {
     if (showError.value || !mapContainer.value || !cookieCheck.cookiesLoaded.value) return;
 
-    await googleMap.loadGoogleMaps();
+    try {
+        await googleMap.loadGoogleMaps();
+    } catch {
+        // Google Maps couldn't be loaded, eg network issues,
+        // a Google outage or an ad blocker.
+        isMapUnavailable.value = checkFlag('use-google-map');
+        return;
+    }
+
     googleMap.initMap(mapContainer.value);
 }
 
@@ -242,6 +261,12 @@ watch(
 );
 
 onMounted(async() => {
+    // Google calls this when the API key is rejected after the script loads.
+    // https://developers.google.com/maps/documentation/javascript/events#auth-errors
+    (window as any).gm_authFailure = () => {
+        isMapUnavailable.value = checkFlag('use-google-map');
+    };
+
     setupFeatureDestinations();
 
     // Load the map categories from the static server.
@@ -252,6 +277,10 @@ onMounted(async() => {
     mainMapStore.filterUsesCount = 0;
 
     await initialiseMap();
+});
+
+onBeforeUnmount(() => {
+    delete (window as any).gm_authFailure;
 });
 </script>
 
@@ -324,6 +353,16 @@ onMounted(async() => {
             top: 1rem;
             left: 0;
             width: 100%;
+        }
+    }
+
+    // Map failed to load: show a plain grey area and hide anything
+    // Google has rendered (eg its own error message).
+    &__map--error {
+        background: #E5E5E5;
+
+        > * {
+            visibility: hidden;
         }
     }
 

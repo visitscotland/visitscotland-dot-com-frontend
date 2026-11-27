@@ -10,8 +10,9 @@
         @pointercancel="endDrag"
     >
         <div
-            v-show="props.mapLoaded"
+            v-show="props.mapLoaded || props.mapUnavailable"
             class="vs-map-sidebar__panel1"
+            :class="{ 'vs-map-sidebar__panel1--unavailable': props.mapUnavailable }"
         >
             <div class="vs-map-sidebar__handle">
                 <VsButton
@@ -25,7 +26,17 @@
                 </VsButton>
             </div>
 
-            <div class="vs-map-sidebar__content">
+            <!-- Google Maps failed to load: replace the search and filters
+                with a message, in the drawer on mobile and panel on desktop -->
+            <VsBrMapUnavailable
+                v-if="props.mapUnavailable"
+                heading-id="main-heading"
+            />
+
+            <div
+                v-else
+                class="vs-map-sidebar__content"
+            >
                 <div class="vs-map-sidebar__section1">
                     <VsHeading
                         class="flex-grow-1"
@@ -228,6 +239,7 @@ import useMapCategoryStore from '~/stores/mapCategory.ts';
 import useSwipeDrawer from '~/composables/mainMap/useSwipeDrawer.ts';
 import VsBrMainMapFeaturedLocation from './VsBrMainMapFeaturedLocation.vue';
 import VsBrMainMapFilter from './VsBrMainMapFilter.vue';
+import VsBrMapUnavailable from './VsBrMapUnavailable.vue';
 import type { MapLabels } from '~/types/main-map-types.ts';
 
 type Props = {
@@ -235,12 +247,15 @@ type Props = {
     heading: string;
     /** Whether the map is loaded or not. */
     mapLoaded?: boolean;
+    /** Whether Google Maps failed to load. */
+    mapUnavailable?: boolean;
     /** Selected google maps result. */
     place?: google.maps.places.Place | null;
 };
 
 const props = withDefaults(defineProps<Props>(), {
     mapLoaded: false,
+    mapUnavailable: false,
     place: undefined,
 });
 
@@ -362,6 +377,22 @@ body.map-page {
 
         @media (max-width: 768px) {
             height: 100%;
+        }
+    }
+
+    // Wider panel on desktop while the map unavailable message is shown.
+    &__panel1--unavailable {
+        @media (min-width: 768px) {
+            width: 33.875rem; /* 542px */
+        }
+
+        .vs-map-unavailable__warning {
+            max-width: none;
+            width: 100%;
+
+            .vs-warning__content {
+                max-width: 100%;
+            }
         }
     }
 
